@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:mvc="http://www.springframework.org/schema/mvc"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<!--	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <property name="maxUploadSize" value="100000"/>
+	</bean>
+	-->
+
+	<!-- service bean -->
+	<context:annotation-config />	
+	<context:component-scan base-package="com.netkiller.service" />
+	<context:component-scan base-package="com.netkiller.manager" />
+	<mvc:annotation-driven />
+	<context:component-scan base-package="com.netkiller.controller" />
+	<context:component-scan base-package="com.netkiller.dao" /> 
+	<context:component-scan base-package="com.netkiller.web.sharedcontacts" />
+	
+	<bean id="persistenceManagerFactory" class="org.springframework.orm.jdo.LocalPersistenceManagerFactoryBean" scope="singleton" >
+	  <property name="persistenceManagerFactoryName" value="transactions-optional"/>
+   </bean>
+  
+    <!-- Transaction manager for a  PMF -->
+    <bean id="transactionManager" class="org.springframework.orm.jdo.JdoTransactionManager" >
+        <property name="persistenceManagerFactory"><ref local="persistenceManagerFactory"/></property>
+    </bean>
+	
+	<bean id="gridRequestParser" class="com.netkiller.util.GridRequestParser">
+	</bean>
+	<bean id="sharedContactsService" class="com.netkiller.service.sharedcontacts.SharedContactsServiceImpl">
+		<property name="appProperties" ref="appProperties" />
+	</bean>
+		
+	<!-- application properties configurer -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/classes/app.properties</value>
+			</list>
+		</property>
+	</bean>	
+	
+	<!-- application properties bean -->
+	<bean id="appProperties" class="com.netkiller.vo.AppProperties">
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
+		<property name="feedurl" value="${feedurl}" />
+		<property name="groupFeedUrl" value="${groupFeedUrl}" />
+		<property name="sharedContactsGroupName" value="${sharedContactsGroupName}" />
+		<property name="adminDomain" value="${adminDomain}" />
+		<property name="domainCheck" value="${domainCheck}" />
+		<property name="isUseForSharedContacts" value="${isUseForSharedContacts}" />
+		<property name="isSortingSupported" value="${isSortingSupported}" />
+		<property name="useDb" value="${useDb}" />
+		<property name="consumerKey" value="${consumer-key}" />
+		<property name="consumerKeySecret" value="${consumer-key-secret}" />
+		<property name="paymentGatewayAppid" value="${payment-gateway-appid}" />
+		<property name="paymentGatewayUsername" value="${payment-gateway-username}" />
+		<property name="paymentGatewayPassword" value="${payment-gateway-password}" />
+		<property name="paymentGatewaySignature" value="${payment-gateway-signature}" />
+		<property name="paymentGatewayAccountEmail" value="${payment-gateway-account-email}" />
+	</bean>
+
+	<!-- Controller Bean -->
+	<!-- <bean name="/sharedcontacts/main.do" class="com.netkiller.web.sharedcontacts.SharedContactsController">
+		<property name="sharedContactsService" ref="sharedContactsService" />
+		<property name="appProperties" ref="appProperties" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="gridRequestParser" ref="gridRequestParser" />
+	</bean> -->
+	
+	<!-- Controller Bean -->
+	<!-- <bean name="/sharedcontacts/fileupload.do" class="com.netkiller.web.sharedcontacts.SharedContactsFileUpload">
+		<property name="sharedContactsService" ref="sharedContactsService" />
+		<property name="appProperties" ref="appProperties" />
+		<property name="messageSource" ref="messageSource" />
+	</bean>	 -->
+	
+
+	<!-- Controller Bean -->
+	<!-- <bean name="/sharedcontacts/prop.do" class="com.netkiller.web.sharedcontacts.SharedContactsProperties">
+	</bean>	
+	 -->
+	<!-- messages properties -->
+ 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+        	<value>messages</value>
+    	</property>
+    </bean>    		
+	
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<bean id="syncUserContactsTask" name="syncUserContactsTask" class="com.netkiller.workflow.impl.task.SyncUserContactsTask"  scope="prototype" >
+		<property name="taskName" value="syncUserContactsTask"></property>
+	   <property name="retryCount" value="1"></property>
+	</bean>
+	<bean id="syncUserContactsWorkflowProcessor" name="syncUserContactsWorkflowProcessor" class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor" scope="prototype" lazy-init="true">
+	<property name="workflowTasks">
+	 <list>
+            <ref bean="syncUserContactsTask"/>
+     </list>
+	</property>
+	</bean>
+	
+	<bean id="addGroupsAndContactsByUsersTask" name="addGroupsAndContactsByUsersTask" class="com.netkiller.workflow.impl.task.AddGroupsAndContactsByUsersTask"  scope="prototype" >
+		<property name="taskName" value="addGroupsAndContactsByUsersTask"></property>
+	   <property name="retryCount" value="1"></property>
+	</bean>
+	<bean id="addGroupsAndContactsByUsersWorkflowProcessor" name="addGroupsAndContactsByUsersWorkflowProcessor" class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor" scope="prototype" lazy-init="true">
+	<property name="workflowTasks">
+	 <list>
+            <ref bean="addGroupsAndContactsByUsersTask"/>
+     </list>
+	</property>
+	</bean>
+	
+	<bean id="deleteGroupsAndContactsByUsersTask" name="deleteGroupsAndContactsByUsersTask" class="com.netkiller.workflow.impl.task.DeleteGroupsAndContactsByUsersTask"  scope="prototype" >
+		<property name="taskName" value="deleteGroupsAndContactsByUsersTask"></property>
+	   <property name="retryCount" value="1"></property>
+	</bean>
+	<bean id="deleteGroupsAndContactsByUsersWorkflowProcessor" name="deleteGroupsAndContactsByUsersWorkflowProcessor" class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor" scope="prototype" lazy-init="true">
+	<property name="workflowTasks">
+	 <list>
+            <ref bean="deleteGroupsAndContactsByUsersTask"/>
+     </list>
+	</property>
+	</bean>
+	
+	<bean id="addInitialContactsAndGroupTask" name="addInitialContactsAndGroupTask" class="com.netkiller.workflow.impl.task.AddInitialContactsAndGroupTask"  scope="prototype" >
+		<property name="taskName" value="addInitialContactsAndGroupTask"></property>
+	   <property name="retryCount" value="1"></property>
+	</bean>
+	<bean id="addInitialContactsAndGroupWorkflowProcessor" name="addInitialContactsAndGroupWorkflowProcessor" class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor" scope="prototype" lazy-init="true">
+	<property name="workflowTasks">
+	 <list>
+            <ref bean="addInitialContactsAndGroupTask"/>
+     </list>
+	</property>
+	</bean>
+	
+	<bean id="addContactForAllDomainUsersTask" name="addContactForAllDomainUsersTask" class="com.netkiller.workflow.impl.task.AddContactForAllDomainUsersTask"  scope="prototype" >
+		<property name="taskName" value="addContactForAllDomainUsersTask"></property>
+	   <property name="retryCount" value="1"></property>
+	</bean>
+	<bean id="addContactForAllDomainUsersWorkflowProcessor" name="addContactForAllDomainUsersWorkflowProcessor" class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor" scope="prototype" lazy-init="true">
+	<property name="workflowTasks">
+	 <list>
+            <ref bean="addContactForAllDomainUsersTask"/>
+     </list>
+	</property>
+	</bean>
+	
+</beans>	

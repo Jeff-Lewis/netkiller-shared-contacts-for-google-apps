@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	
+	<!--
+	<servlet>
+		<servlet-name>SharedContacts</servlet-name>
+		<servlet-class>com.test.SharedContactsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SharedContacts</servlet-name>
+		<url-pattern>/sharedcontacts</url-pattern>
+	</servlet-mapping>
+	-->
+	
+	<!-- added by ykko -->
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	
+	<!-- added by munawar - for marketplace openid -->
+	<servlet>
+	  	<servlet-name>OpenIdServlet</servlet-name>
+	    <servlet-class>com.netkiller.servlets.OpenIdServlet</servlet-class>
+	    <init-param>
+	    	<param-name>realm</param-name>
+	        <param-value></param-value>
+		</init-param>
+	    <init-param>
+	    	<param-name>return_to_path</param-name>
+	        <param-value>/openid</param-value>
+		</init-param>
+	    <init-param>
+	    	<param-name>home_path</param-name>
+	        <param-value>/</param-value>
+		</init-param>
+  	</servlet>
+	<servlet-mapping>
+    	<servlet-name>OpenIdServlet</servlet-name>
+		<url-pattern>/openid</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>mapreduce</servlet-name>
+		<servlet-class>com.google.appengine.tools.mapreduce.MapReduceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mapreduce</servlet-name>
+		<url-pattern>/mapreduce/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>workflowCacheRegisterServlet</servlet-name>
+	<servlet-class>com.netkiller.servlets.InitWorkflowCacheServlet</servlet-class>
+	<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!--
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>sharedcontacts</web-resource-name>
+            <url-pattern>/sharedcontacts/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    -->
+	<servlet>
+                <servlet-name>AdaptiveSampleFnAPI</servlet-name>
+                <servlet-class>test.AdaptiveSampleFnAPIServlet</servlet-class>
+                <init-param>  
+                        <param-name>PPAPIUsername</param-name>  
+                        <param-value>netkil_1322483717_biz_api1.gmail.com</param-value>  
+                </init-param>
+                <init-param>  
+                        <param-name>PPAPIPassword</param-name>  
+                        <param-value>1322483741</param-value>  
+                </init-param>
+                <init-param>  
+                        <param-name>PPAPISignature</param-name>  
+                        <param-value>AzvRp6TAv8Ub3EDQC514tbPhWjcsAyM9aUzWSZ.OWOLUGXP.w1sF.yX-</param-value>  
+                </init-param>
+                <init-param>  
+                        <param-name>PPAppID</param-name>  
+                        <param-value>APP-80W284485P519543T</param-value>  
+                </init-param>
+                <init-param>  
+                        <param-name>PPAccountEmail</param-name>  
+                        <param-value>netkil_1322483717_biz@gmail.com</param-value>  
+                </init-param>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>AdaptiveSampleFnAPI</servlet-name>
+                <url-pattern>/adaptivesamplefnapi</url-pattern>
+        </servlet-mapping>
+	
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	
+</web-app>

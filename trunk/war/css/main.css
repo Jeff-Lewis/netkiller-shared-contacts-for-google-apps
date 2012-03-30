@@ -1,0 +1,166 @@
+@CHARSET "UTF-8";
+/* 기본 텍스트를 바꾼다. */
+body, table, td, th, h1, h2, h3, h4, h5, h6, p, span, div,input,textarea,strong{font-family:Arial, Helvetica, sans-serif, 굴림; font-size:11px; text-decoration:none; word-break:break-all; line-height:18px;}
+html {overflow-y:scroll;font-family:Arial, Helvetica, sans-serif ,굴림; font-size:12px; text-decoration:none; word-break:break-all; line-height:18px; height:100%;}
+table{border-spacing:0px; border-collapse:collapse;}
+td, th{padding:0px 0px 0px 0px;margin:0px;word-break:break-all;}
+
+/*이미지 보더값을 0으로 지정 */
+img{border:0px;}
+
+
+/*form 태그로 생기는 여백을 방지*/
+form{display:inline;}
+
+table.vphtbl td {
+	padding:5px 0px 5px 5px;margin:0px;
+}
+
+/*input style*/
+input {
+	margin:0;
+	padding: 0;
+	vertical-align: middle;
+}
+.checkbox{MARGIN: 0px 0px -2px 0px;border:1px solid #4982B4;}
+.login{width:99px;height:18px;border:1px solid #87AED7;} /*로그인 인풋박스 스타일*/
+.box1{height:21px;border:1px solid #A7A7A7;background:#D9D9D9;font-family:Arial, Helvetica, sans-serif, 굴림;color:#606060;}
+/*input style - 텍스트 입력되어있는 입력창*/
+.disabledBox{
+	height:17px;
+	border:1px solid #DDDDDD;
+	background:#F8F8F8;
+	font-family:Arial, Helvetica, sans-serif, 굴림;
+	padding-right:5px;
+	text-align:center
+}
+.vphbox{
+	height:20px;
+	border:1px solid #72a9d3;
+	background:#F8F8F8;
+	font-family:Arial, Helvetica, sans-serif,굴림;
+	padding-left:2px;
+	text-align:left;
+	width:80%;
+}
+
+.titlebox{
+	height:20px;
+	border:1px solid #72a9d3;
+	background:#F8F8F8;
+	font-family:Arial, Helvetica, sans-serif,굴림;
+	padding-left:2px;
+	text-align:left;
+	font-size:13px;
+}
+
+th{
+	font-size:13px; 
+}
+/*link style*/
+a:visited, a:link, a{text-decoration:none}
+a:hover{color:#0059B1;text-decoration:underline}
+
+.top {
+	height: 90px;
+	margin: 0px 0px 0px 0px;
+}
+
+/*a:table_my: visited, a:link, a{color:#0059B1;text-decoration:underline;}
+a:table_my: hover{color:#0059B1; text-decoration:underline}*/
+a:link.table_my {color:#0059B1;text-decoration:underline;}
+a:visited.table_my {color:#0059B1;text-decoration:underline;}
+a:active.table_my {color:#0059B1;text-decoration:underline;}
+a:hover.table_my {color:#0059B1; text-decoration:underline}
+
+A:link.sort_link { COLOR: #005496; TEXT-DECORATION: none; }
+A:visited.sort_link { COLOR: #005496; TEXT-DECORATION: none; }
+A:hover.sort_link { COLOR: #6ea5da; TEXT-DECORATION: underline; }
+A:active.sort_link { TEXT-DECORATION: none }
+
+/* validator */
+input.error, textarea.error {
+	border:1px solid red;
+}
+label.error {
+	margin-left:10px;
+	color:red;
+}
+.resultMsg {
+	margin-left:10px;
+	color:red;
+}
+
+.myTurn {
+	background-color:#E3E988;
+}
+
+.approved {
+	background-color:#E3E9FF;
+}
+
+.docsListHeader {
+	border-bottom: 1px solid #BCF;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #BCF;
+	border-top: ;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #BCF;
+	empty-cells: show;
+	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	white-space: nowrap;
+}
+
+.clearBoth { clear: both; }
+
+.floatLeft { float: left; }
+
+.fixHeight { height: 140px; }
+
+.docsStatus {
+	width: 80px; 
+	float: left;
+	margin: 5px 5px 2px 5px; 
+}
+
+.docsLink {
+	width: 30%;
+	float: left;
+	margin: 5px 5px 2px 5px;
+}
+
+.docsUsername { 
+	width: 130px;
+	float: left;
+	margin: 5px 5px 2px 5px; 
+}
+
+.docsDate {
+	width: 100px;
+	float: left;
+	margin: 5px 5px 2px 5px;
+}
+
+.headerRight {
+	width: 98%;
+	text-align: right;
+	margin:  5px 5px 2px 5px; 
+}
+
+.formLabel {
+	text-align: left;
+	padding: 4px 20px;
+	font-weight:bold;
+}
+
+.divBlank {
+	height:10px;
+}
+
+.tdFocus {
+	background-color:#E3E9FF;
+}	
