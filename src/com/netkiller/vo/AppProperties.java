@@ -206,4 +206,24 @@ public class AppProperties {
 		else
 			return paymentGatewayAccountEmail;
 	}
+
+	public void setPaymentGatewayAppid(String paymentGatewayAppid) {
+		this.paymentGatewayAppid = paymentGatewayAppid;
+	}
+
+	public void setPaymentGatewayUsername(String paymentGatewayUsername) {
+		this.paymentGatewayUsername = paymentGatewayUsername;
+	}
+
+	public void setPaymentGatewayPassword(String paymentGatewayPassword) {
+		this.paymentGatewayPassword = paymentGatewayPassword;
+	}
+
+	public void setPaymentGatewaySignature(String paymentGatewaySignature) {
+		this.paymentGatewaySignature = paymentGatewaySignature;
+	}
+
+	public void setPaymentGatewayAccountEmail(String paymentGatewayAccountEmail) {
+		this.paymentGatewayAccountEmail = paymentGatewayAccountEmail;
+	}
 }
