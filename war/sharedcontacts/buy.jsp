@@ -58,7 +58,7 @@ $(document).ready(function() {
 				<td style="text-align:center;vertical-align: top;">
 					<div style="font-size:28px;margin-right:60px;">
 						<span style="font:bold 14px arial; color:#000">Current Membership<br /><br /><b>Free</b></span><br />
-						<span style="font:bold 14px arial; color:#ff0000;"><br/><br/>Limited to 100 contacts</span>
+						<span style="font:bold 14px arial; color:#ff0000;"><br/><br/>Limited to 50 contacts</span>
 					</div>
 				<td style="border-left:2px dashed;padding-left:60px;text-align:center;">
 					<div style="font-size:28px;">

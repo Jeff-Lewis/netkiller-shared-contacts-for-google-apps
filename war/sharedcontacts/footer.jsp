@@ -23,7 +23,7 @@
 </div>
 <%} else {%>
 <div style="float:right;text-align:right;font-family:Arial;font-size:12px;padding: 5px 1px 2px 3px;">
-	You have <font color="red"><%=count %></font> shared Contacts (Free up to 100 Shared Contacts).<br/>Paid version supports up to 30,000 Contacts. 
+	You have <font color="red"><%=count %></font> shared Contacts (Free up to 50 Shared Contacts).<br/>Paid version supports up to 30,000 Contacts. 
 	<a href="/sharedcontacts/buy.jsp"><font color="red">Buy it now</font></a>
 </div>
 <%} %>
