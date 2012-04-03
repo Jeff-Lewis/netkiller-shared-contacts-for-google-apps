@@ -1,14 +1,19 @@
 package com.netkiller.util;
 
-import java.util.Date;
-import java.util.TimeZone;
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.netkiller.vo.Customer;
 
 public class CommonUtil {
+	private static final Logger logger = Logger.getLogger(CommonUtil.class.getName());
 	
 	public static String convertEncodingType(String orgStr, String orgStrType, String newStrType) throws UnsupportedEncodingException{
 		return new String(orgStr.getBytes(orgStrType), newStrType);
@@ -83,4 +88,29 @@ public class CommonUtil {
 	
 //	Kentucky,+United+States
 	
+	public static boolean isTheSecondTypeCustomer(Customer customer) {
+		boolean isTheSecondTypeCustomer = false;
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			long registeredTimestamp = 
+				customer.getRegisteredDate() == null? 0 : customer.getRegisteredDate().getTime();
+			long april1;
+				april1 = format.parse("2012-04-01 00:00").getTime();
+		
+			
+			if (registeredTimestamp == 0 || registeredTimestamp > april1) {
+				isTheSecondTypeCustomer = true;
+			}
+			
+			logger.warning("customer.getAccountType(): " + customer.getAccountType() +
+					"april1: " + april1 + ", " + 
+					"registeredTimestamp("+customer.getRegisteredDate()+"): " + 
+					registeredTimestamp + ", isTheSecondTypeCustomer:" + isTheSecondTypeCustomer);
+		
+		} catch (ParseException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+		
+		return isTheSecondTypeCustomer;
+	}
 }

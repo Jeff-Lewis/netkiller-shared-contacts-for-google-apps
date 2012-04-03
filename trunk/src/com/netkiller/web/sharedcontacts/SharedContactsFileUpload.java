@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +45,7 @@ import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.google.gdata.data.contacts.GroupMembershipInfo;
 import com.netkiller.service.sharedcontacts.SharedContactsService;
+import com.netkiller.util.CommonUtil;
 import com.netkiller.util.CommonWebUtil;
 import com.netkiller.vo.AppProperties;
 import com.netkiller.vo.Customer;
@@ -179,26 +179,11 @@ public class SharedContactsFileUpload {
 						true, null);
 				int count = list.size();
 				
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-				long registeredTimestamp = 
-					currentCustomer.getRegisteredDate() == null? 0 : currentCustomer.getRegisteredDate().getTime();
-				long april1 = format.parse("2012-04-01 00:00").getTime();
-				boolean isTheSecondTypeCustomer = false;
-				
-				if (registeredTimestamp == 0 || registeredTimestamp > april1) {
-					isTheSecondTypeCustomer = true;
-				}
-				
-				logger.warning("currentCustomer.getAccountType(): " + currentCustomer.getAccountType() +
-						"april1: " + april1 + ", " + 
-						"registeredTimestamp("+currentCustomer.getRegisteredDate()+"): " + 
-						registeredTimestamp + ", isTheSecondTypeCustomer:" + isTheSecondTypeCustomer);
-				
 				if ((!currentCustomer.getAccountType().equals("Paid")
 						&& (count+x.getStoreValuesList().size()) > 100)
 							|| (!currentCustomer.getAccountType().equals("Paid") 
 								&& (count+x.getStoreValuesList().size()) > 50 
-								&& isTheSecondTypeCustomer)) {
+								&& CommonUtil.isTheSecondTypeCustomer(currentCustomer))) {
 					String message = messageSource.getMessage("account.limit",
 							null, Locale.US);
 					Map result1 = new HashMap();
