@@ -62,6 +62,7 @@ import com.netkiller.manager.WorkflowManager;
 import com.netkiller.payment.PaymentGateway;
 import com.netkiller.search.GridRequest;
 import com.netkiller.service.sharedcontacts.SharedContactsService;
+import com.netkiller.util.CommonUtil;
 import com.netkiller.util.CommonWebUtil;
 import com.netkiller.util.GridRequestParser;
 import com.netkiller.util.SharedContactsUtil;
@@ -474,7 +475,10 @@ public class SharedContactsController  {
 				int limit = 100;
 				if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
 					limit = 30000;
-
+				} else {
+					if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+						limit = 50;
+					}
 				}
 
 				List<ContactEntry> list = sharedContactsService.getContacts(1, limit, getGroupId(),
@@ -555,24 +559,9 @@ public class SharedContactsController  {
 											// Ã¬Å¡â€�Ã¬Â²Â­
 			mnv = new ModelAndView("/sharedcontacts/create");
 		} else if (cmd.equals("actcreate")) {// Contact Ã¬Æ’ï¿½Ã¬â€žÂ± Ã¬Â²ËœÃ«Â¦Â¬
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-			long registeredTimestamp = 
-				currentCustomer.getRegisteredDate() == null? 0 : currentCustomer.getRegisteredDate().getTime();
-			long april1 = format.parse("2012-04-01 00:00").getTime();
-			boolean isTheSecondTypeCustomer = false;
-			
-			if (registeredTimestamp == 0 || registeredTimestamp > april1) {
-				isTheSecondTypeCustomer = true;
-			}
-			
-			logger.warning("currentCustomer.getAccountType(): " + currentCustomer.getAccountType() +
-					"april1: " + april1 + ", " + 
-					"registeredTimestamp("+currentCustomer.getRegisteredDate()+"): " + 
-					registeredTimestamp + ", isTheSecondTypeCustomer:" + isTheSecondTypeCustomer);
-			
 			if ((!currentCustomer.getAccountType().equals("Paid") && count == 100)
 					|| (!currentCustomer.getAccountType().equals("Paid") && count == 50 
-							&& isTheSecondTypeCustomer)) {
+							&& CommonUtil.isTheSecondTypeCustomer(currentCustomer))) {
 				String message = messageSource.getMessage("account.limit", null, Locale.US);
 				Map result = new HashMap();
 				result.put("code", "error");
@@ -692,6 +681,10 @@ public class SharedContactsController  {
 			
 			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
 				totalLimit = 30000;
+			} else {
+				if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+					totalLimit = 50;
+				}
 			}
 
 			entries = sharedContactsService.getContacts(1, totalLimit, groupId, isUseForSharedContacts, null);
@@ -1695,6 +1688,10 @@ public class SharedContactsController  {
 			int totalLimit = 100;
 			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
 				totalLimit = 30000;
+			} else {
+				if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+					totalLimit = 50;
+				}
 			}
 
 			entries = sharedContactsService.getContacts(1, totalLimit, groupId, isUseForSharedContacts, dataCriteria);
@@ -1784,6 +1781,10 @@ public class SharedContactsController  {
 			int totalLimit = 100;
 			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
 				totalLimit = 30000;
+			} else {
+				if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+					totalLimit = 50;
+				}
 			}
 			List<ContactEntry> contacts = sharedContactsService.getContacts(1, totalLimit, getGroupId(),
 					isUseForSharedContacts, null);
