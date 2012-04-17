@@ -196,29 +196,131 @@ function toggleChecked(status, nodeId) {
 		</tr>
 <tr>
 <td>
-<div style="margin:10px 0px 10px 0px;">
-			<!-- button id="SelectAll" style="font-family:Arial;font-size:12px;height:30px;width:80px;text-align:center;">Select All</button-->
-			<table border="0" width="100%">
-				<tr>
-					<td valign="middle" style="font-family:Arial;font-size:13px;">
-						<a href="javascript:backToContacts();" style="color:#3B5323;text-decoration: none;"><< &nbsp; Back to contacts</a>
-					</td>
-					<td align="right">
-						<table border="0">
-							<tr>
-								<td><buton id="Save" onclick="populateFinalList()" style="cursor:pointer;  background: url('images/ui-bg_glass_85_dfeffc_1x400.png') repeat-x scroll 50% 50% #DFEFFC;border: 1px solid #C5DBEC;color: #2E6E9E;font-weight: bold;font-family:Arial;font-size:11px;height:20px;width:75px;border-radius: 5px 5px 5px 5px;text-align:center;padding:3px 8px 3px 8px;margin:0 5px 0 0">Save now</button></td>
-								<td><buton id="Cancel" onclick="backToContacts()" style="cursor:pointer;background: url('images/ui-bg_glass_85_dfeffc_1x400.png') repeat-x scroll 50% 50% #DFEFFC;border: 1px solid #C5DBEC;color: #2E6E9E;font-weight: bold;font-family:Arial;font-size:11px;height:20px;width:75px;border-radius: 5px 5px 5px 5px;text-align:center;padding:3px 8px 3px 8px;margin:0 5px 0 0">Cancel</button></td>
-							</tr>
+
+		<div style="width:100%;font-family:Arial;font-size:17px;text-align:center;display:block">
+		
+			<div
+					style="text-align: left; margin: 10px 0px 2px 0px; float: left;">
+					<!-- button id="SelectAll" style="font-family:Arial;font-size:12px;height:30px;width:80px;text-align:center;">Select All</button-->
+					
+					<table border="0">
+						<tr><td style="font-size:12px; font-weight:bold; font-family:Arial">Managing Users Previliges:</td>
+							<td><input type="button" class="def_bt"   onclick='window.location.href="/sharedcontacts/main.do?cmd=authorizeForm";' value="User Editing" ></td>
+								<td><input type="button" class="def_bt" onclick='window.location.href="/sharedcontacts/main.do?cmd=unauthorizeForm"' value="User Access" ></td>
+						
+						
+							
+						</tr>
+					</table>
+					
+				</div>
+							
+		<div
+					style="float: left; margin: 8px 0px 2px 0px; font-size: 0.6em; overflow: auto;"
+					class="searchFilter" id="fbox_list2">
+					
+						<table style="border: 0px none;"
+							class="group ui-widget ui-widget-content">
+
+							<tbody>
+								<tr style="display: none;" class="error">
+									<th align="left" class="ui-state-error" colspan="5"></th>
+								</tr>
+								<tr>
+									<th align="left" class="ui-widget" colspan="5"><select
+										id="groupOperator" class="opsel" style="display: none;"><option
+												selected="selected" value="AND">AND</option>
+											<option value="OR">OR</option>
+									</select><span></span><input type="button" class="add-rule ui-add"
+										title="Add rule" value="+" style="display: none;">
+									</th>
+								</tr>
+								<tr>
+									<td class="first ui-widget"></td>
+									<td style="width:70px; float:left;" class="columns ui-widget">
+									<div style="display: block;z-index:1000;margin-top:2px" class="menu">
+			<ul>
+				<li onmouseout="$('#fielddropdownlist').hide();" onmouseover="$('#fielddropdownlist').show();"><a style="width:40px" onclick="$('#fielddropdownlist').show();" id="fielddropdown" class="check dropdown" href="#">All<span class="arrow"></span></a>
+				<ul onmouseout="$(this).hide();" onmouseover="$(this).show();" id="fielddropdownlist" class="width-1">
+					<li><a  style="width:40px" onclick = "$('#fielddropdownlist').hide();$('#field').val('all');$('#fielddropdown').html('All');var newSpan=document.createElement('span');newSpan.className='arrow';$('#fielddropdown').append(newSpan);" href="#">All</a></li>
+					<li><a  style="width:40px" onclick = "$('#fielddropdownlist').hide();$('#field').val('left');$('#fielddropdown').html('Left');var newSpan=document.createElement('span');newSpan.className='arrow';$('#fielddropdown').append(newSpan);" href="#">Left</a></li>
+					<li><a style="width:40px" onclick = "$('#fielddropdownlist').hide();$('#field').val('right');$('#fielddropdown').html('Right');var newSpan=document.createElement('span');newSpan.className='arrow';$('#fielddropdown').append(newSpan);" href="#">Right</a></li>
+
+				
+				</ul>
+				</li></ul></div>
+				
+									<div style="display:none">
+									<select
+										onkeypress="submitForm(event)" id="field">
+											<option  value="all">All</option>
+											<option value="left">Left</option>
+											<option value="right">Right</option>
+											
+									</select></div>
+									</td>
+									<td style="width:103px; float:left;" class="operators ui-widget">
+								
+									<div style="display: block;z-index:1000;margin-top:2px" class="menu">
+			<ul>
+				<li onmouseout="$('#operatordropdownlist').hide();" onmouseover="$('#operatordropdownlist').show();" ><a onclick="$('#operatordropdownlist').show();" style="width:80px" id="operatordropdown" class="check dropdown" href="#">contains<span class="arrow"></span></a>
+				<ul onmouseout="$(this).hide();" onmouseover="$(this).show();" id="operatordropdownlist" class="width-1">
+					<li><a style="width:80px" onclick = "$('#operatordropdownlist').hide();$('#operator').val('cn');$('#operatordropdown').html('contains');var newSpan=document.createElement('span');newSpan.className='arrow';$('#operatordropdown').append(newSpan);" href="#">contains</a></li>
+					<li><a style="width:80px" onclick = "$('#operatordropdownlist').hide();$('#operator').val('bw');$('#operatordropdown').html('begins with');var newSpan=document.createElement('span');newSpan.className='arrow';$('#operatordropdown').append(newSpan);" href="#">begins with</a></li>
+					<li><a style="width:80px" onclick = "$('#operatordropdownlist').hide();$('#operator').val('eq');$('#operatordropdown').html('equal');var newSpan=document.createElement('span');newSpan.className='arrow';$('#operatordropdown').append(newSpan);" href="#">equal</a></li>
+				</ul>
+				</li></ul></div>
+				
+									
+									
+									
+									<div style="display:none;">
+									<select
+										onkeypress="submitForm(event)" id="operator"
+										class="selectopts"><option value="eq">equal</option>
+											<option value="bw">begins with</option>
+											<option value="cn" selected="selected">contains</option>
+									</select>
+									</div>
+									</td>
+									<td class="data ui-widget"><input
+										onkeypress="submitForm(event)" type="text" id="searchText" name="searchText"
+										style="width: 98%;height:24px;border:solid 1px #CCC;font-size:12px" class="input-elm">
+									</td>
+									<td class="ui-widget"><input type="button"
+										class="delete-rule ui-del" title="Delete rule" value="-"
+										style="display: none;">
+									</td>
+									<td class="EditButton"><div id="findButton" class="submit_bt" style=""><a id="search"
+										class="fm-button ui-state-default ui-corner-all fm-button-icon-right ui-reset"
+										 href="javascript:searchJqgrid()" style="width:45px"><span
+											class="ui-icon ui-icon-search"></span>Find</a></div>
+									</td>
+								</tr>
+							</tbody>
 						</table>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div style="width:100%;font-family:Arial;font-size:17px;text-align:center;display:block">Netkiller Shared Contacts Access Privileges</div>
-		<div class="hdng_lnk">
-		<a style="text-decoration: none;color:#000" href="/sharedcontacts/main.do?cmd=authorizeForm">Enabled Users</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		<a style="text-decoration: none; color:#f00;" href="/sharedcontacts/main.do?cmd=unauthorizeForm">Restricted Users</a>
-		</div>
+					</form>
+				</div>
+		
+								
+								
+								<div
+					style="text-align: left; margin: 10px 0px 2px 0px; float: right;">
+					<!-- button id="SelectAll" style="font-family:Arial;font-size:12px;height:30px;width:80px;text-align:center;">Select All</button-->
+					
+					<table border="0">
+						<tr>
+							<td><button id="Save" onclick="populateFinalList()" >Save</button></td>
+								<td><button id="Cancel" onclick="backToContacts()" >Cancel</button></td>
+						
+						
+							
+						</tr>
+					</table>
+					
+				</div>
+								
+								</div>
 <div class="panel">
 <div class="pnl_img"><img src="/css/images/top-hdng.gif"></div>
 	<div style="display:none" class="panel_top">
