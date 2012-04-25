@@ -55,9 +55,11 @@ $(function(){
 	if(eval(<%=onlyAdminPermitted %>))	{
 		$('#onlyAdminPermitted').attr('checked', true);
 		$('#UserPermissionSelectDiv').hide();
+		$('#messageDiv').html("Only Super Admin(s) can edit shared contacts.");
 	} else
 	if(eval(<%=allUsersPermitted %>))	{
 		$('#allUsersPermitted').attr('checked',true);
+		$('#messageDiv').html("All users can edit shared contacts.");
 		$('#UserPermissionSelectDiv').hide();
 	} else	{
 		$('#UserPermissionSelectDiv').show();
