@@ -73,7 +73,7 @@ if(!queryParams.toString().equals("")){
 		|| userEmail.equals("ys.kim@netkiller.com")
 		|| userEmail.equals("ashley@netkiller.com")
 		|| userEmail.equals("jszin@netkiller.com")
-		|| userEmail.equals("admin@mellong.com")
+		
 	) {%>
 <a href="/sharedcontacts/main.do?cmd=customers" style="text-decoration: none;">Customers</a>
 &nbsp;|&nbsp;
