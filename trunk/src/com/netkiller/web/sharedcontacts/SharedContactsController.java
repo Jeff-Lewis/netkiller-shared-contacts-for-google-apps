@@ -81,8 +81,8 @@ import com.netkiller.workflow.impl.context.SyncUserContactsContext;
 import com.netkiller.workflow.impl.processor.WorkflowStatusType;
 
 /**
- * Ã¬â€šÂ¬Ã¬Å¡Â©Ã¬Å¾ï¿½ Ã¬â€ºÂ¹Ã«Â¸Å’Ã«ï¿½Â¼Ã¬Å¡Â°Ã¬Â Â¸Ã¬ï¿½Ëœ Ã¬Â¡Â°Ã­Å¡Å’/Ã¬Æ’ï¿½Ã¬â€žÂ±/ÃªÂ°Â±Ã¬â€¹Â /Ã¬â€šÂ­Ã¬Â Å“ URLÃ¬Å¡â€�Ã¬Â²Â­Ã¬ï¿½â€ž
- * Ã¬â€žÅ“Ã«Â¹â€žÃ¬Å Â¤ Ã¬Â»Â´Ã­ï¿½Â¬Ã«â€žÅ’Ã­Å Â¸Ã«Â¥Â¼ Ã­â€ ÂµÃ­â€¢Â´ Ã¬Â²ËœÃ«Â¦Â¬
+ * ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¬Ã…Â¡Ã‚Â©ÃƒÂ¬Ã…Â¾Ã¯Â¿Â½ ÃƒÂ¬Ã¢â‚¬ÂºÃ‚Â¹ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‹Å“ ÃƒÂ¬Ã‚Â¡Ã‚Â°ÃƒÂ­Ã…Â¡Ã…â€™/ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±/ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â /ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â­ÃƒÂ¬Ã‚Â Ã…â€œ URLÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+ * ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤ ÃƒÂ¬Ã‚Â»Ã‚Â´ÃƒÂ­Ã¯Â¿Â½Ã‚Â¬ÃƒÂ«Ã¢â‚¬Å¾Ã…â€™ÃƒÂ­Ã…Â Ã‚Â¸ÃƒÂ«Ã‚Â¥Ã‚Â¼ ÃƒÂ­Ã¢â‚¬Â Ã‚ÂµÃƒÂ­Ã¢â‚¬Â¢Ã‚Â´ ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
  * 
  * @author ykko
  */
@@ -98,7 +98,7 @@ public class SharedContactsController  {
 
 	protected final Logger logger = Logger.getLogger(getClass().getName());
 
-	// Ã­â€�â€žÃ«Â¡Å“Ã­ï¿½Â¼Ã­â€¹Â° Ã¬â€žÅ“Ã«Â¹â€žÃ¬Å Â¤
+	// ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ­Ã¯Â¿Â½Ã‚Â¼ÃƒÂ­Ã¢â‚¬Â¹Ã‚Â° ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤
 	@Autowired
 	private AppProperties appProperties;
 	
@@ -109,7 +109,7 @@ public class SharedContactsController  {
 		this.appProperties = appProperties;
 	}
 
-	// Ã«Â©â€�Ã¬â€¹Å“Ã¬Â§â‚¬ Ã¬â€žÅ“Ã«Â¹â€žÃ¬Å Â¤
+	// ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¢â‚¬Â¹Ã…â€œÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤
 	@Autowired
 	private MessageSource messageSource;
 
@@ -117,7 +117,7 @@ public class SharedContactsController  {
 		this.messageSource = messageSource;
 	}
 
-	// Ã«ï¿½â€žÃ«Â©â€�Ã¬ï¿½Â¸ÃªÂ³ÂµÃ¬Å“Â Ã¬Â£Â¼Ã¬â€ Å’Ã«Â¡ï¿½ Ã¬â€žÅ“Ã«Â¹â€žÃ¬Å Â¤Ã¬Â»Â´Ã­ï¿½Â¬Ã«â€žÅ’Ã­Å Â¸
+	// ÃƒÂ«Ã¯Â¿Â½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ÃƒÂªÃ‚Â³Ã‚ÂµÃƒÂ¬Ã…â€œÃ‚Â ÃƒÂ¬Ã‚Â£Ã‚Â¼ÃƒÂ¬Ã¢â‚¬Â Ã…â€™ÃƒÂ«Ã‚Â¡Ã¯Â¿Â½ ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤ÃƒÂ¬Ã‚Â»Ã‚Â´ÃƒÂ­Ã¯Â¿Â½Ã‚Â¬ÃƒÂ«Ã¢â‚¬Å¾Ã…â€™ÃƒÂ­Ã…Â Ã‚Â¸
 	@Autowired
 	private SharedContactsService sharedContactsService;
 
@@ -126,7 +126,7 @@ public class SharedContactsController  {
 	}
 
 	/**
-	 * Ã«Â¸Å’Ã«ï¿½Â¼Ã¬Å¡Â°Ã¬Â Â¸Ã«Â¡Å“Ã«Â¶â‚¬Ã­â€žÂ° Ã«â€žËœÃ¬â€“Â´Ã¬ËœÂ¨ ÃªÂ°ï¿½Ã¬Â¢â€¦ Ã­Å’Å’Ã«ï¿½Â¼Ã«Â¯Â¸Ã­â€žÂ°Ã«Â¥Â¼ Ã¬Â¶Å“Ã«Â Â¥
+	 * ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â° ÃƒÂ«Ã¢â‚¬Å¾Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´ÃƒÂ¬Ã‹Å“Ã‚Â¨ ÃƒÂªÃ‚Â°Ã¯Â¿Â½ÃƒÂ¬Ã‚Â¢Ã¢â‚¬Â¦ ÃƒÂ­Ã…â€™Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ«Ã‚Â¯Ã‚Â¸ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â°ÃƒÂ«Ã‚Â¥Ã‚Â¼ ÃƒÂ¬Ã‚Â¶Ã…â€œÃƒÂ«Ã‚Â Ã‚Â¥
 	 * 
 	 * @param request
 	 */
@@ -139,9 +139,9 @@ public class SharedContactsController  {
 	}
 
 	/**
-	 * app.properties Ã­Å’Å’Ã¬ï¿½Â¼Ã¬â€”ï¿½ Ã«â€œÂ±Ã«Â¡ï¿½Ã«ï¿½Å“ SharedContactsGroupNameÃ¬ï¿½Â´ Google
-	 * Domain Shared ContactsÃ¬â€”ï¿½ Ã¬â€”â€ Ã¬ï¿½â€ž ÃªÂ²Â½Ã¬Å¡Â° SharedContactsGroupNameÃ¬ï¿½â€ž
-	 * Ã¬Æ’ï¿½Ã¬â€žÂ±, Ã¬Å¾Ë†Ã¬ï¿½â€ž ÃªÂ²Â½Ã¬Å¡Â° Ã­â€ ÂµÃªÂ³Â¼
+	 * app.properties ÃƒÂ­Ã…â€™Ã…â€™ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½ ÃƒÂ«Ã¢â‚¬Å“Ã‚Â±ÃƒÂ«Ã‚Â¡Ã¯Â¿Â½ÃƒÂ«Ã¯Â¿Â½Ã…â€œ SharedContactsGroupNameÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ Google
+	 * Domain Shared ContactsÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½ ÃƒÂ¬Ã¢â‚¬â€�Ã¢â‚¬Â ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â° SharedContactsGroupNameÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+	 * ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±, ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â° ÃƒÂ­Ã¢â‚¬Â Ã‚ÂµÃƒÂªÃ‚Â³Ã‚Â¼
 	 * 
 	 * @return
 	 */
@@ -271,8 +271,8 @@ public class SharedContactsController  {
 	private static double count = 0d;
 
 	/**
-	 * Ã¬â€ºÂ¹Ã«Â¸Å’Ã«ï¿½Â¼Ã¬Å¡Â°Ã¬Â Â¸ URL Ã¬Å¡â€�Ã¬Â²Â­Ã¬â€¹Å“ Ã­â€�â€žÃ«Â Ë†Ã¬Å¾â€žÃ¬â€ºÅ’Ã­ï¿½Â¬Ã¬â€”ï¿½ Ã¬ï¿½ËœÃ­â€¢Â´ Ã¬Å¾ï¿½Ã«ï¿½â„¢ Ã¬â€¹Â¤Ã­â€“â€°,
-	 * ÃªÂ°ï¿½Ã¬Â¢â€¦ Ã¬Å¡â€�Ã¬Â²Â­Ã¬ï¿½â€ž Ã¬Â²ËœÃ«Â¦Â¬
+	 * ÃƒÂ¬Ã¢â‚¬ÂºÃ‚Â¹ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸ URL ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­ÃƒÂ¬Ã¢â‚¬Â¹Ã…â€œ ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â Ã‹â€ ÃƒÂ¬Ã…Â¾Ã¢â‚¬Å¾ÃƒÂ¬Ã¢â‚¬ÂºÃ…â€™ÃƒÂ­Ã¯Â¿Â½Ã‚Â¬ÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½ ÃƒÂ¬Ã¯Â¿Â½Ã‹Å“ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â´ ÃƒÂ¬Ã…Â¾Ã¯Â¿Â½ÃƒÂ«Ã¯Â¿Â½Ã¢â€žÂ¢ ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â¤ÃƒÂ­Ã¢â‚¬â€œÃ¢â‚¬Â°,
+	 * ÃƒÂªÃ‚Â°Ã¯Â¿Â½ÃƒÂ¬Ã‚Â¢Ã¢â‚¬Â¦ ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 	 */
 	@RequestMapping("/sharedcontacts/main.do")
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
@@ -293,21 +293,21 @@ public class SharedContactsController  {
 //		    response.sendRedirect("/login.jsp");
 //			 String loginURL =
 //			 userService.createLoginURL(request.getRequestURI());
-//			 response.sendRedirect(loginURL); //Ã«Â¡Å“ÃªÂ·Â¸Ã¬ï¿½Â¸ Ã¬â€¢Ë†Ã«ï¿½ËœÃ¬â€“Â´ Ã¬Å¾Ë†Ã¬ï¿½â€ž
-			// ÃªÂ²Â½Ã¬Å¡Â° Ã«Â¡Å“ÃªÂ·Â¸Ã¬ï¿½Â¸ Ã­Å½ËœÃ¬ï¿½Â´Ã¬Â§â‚¬Ã«Â¡Å“ Ã«Â¦Â¬Ã«â€¹Â¤Ã¬ï¿½Â´Ã«Â â€°Ã­Å Â¸
+//			 response.sendRedirect(loginURL); //ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂ¬Ã¢â‚¬Â¢Ã‹â€ ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´ ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+			// ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â° ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂ­Ã…Â½Ã‹Å“ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¡Ã…â€œ ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ«Ã‚Â Ã¢â‚¬Â°ÃƒÂ­Ã…Â Ã‚Â¸
 		}
 
 		if (user == null) {
 			String loginURL = userService.createLoginURL(request.getRequestURI());
-			response.sendRedirect(loginURL); // Ã«Â¡Å“ÃªÂ·Â¸Ã¬ï¿½Â¸ Ã¬â€¢Ë†Ã«ï¿½ËœÃ¬â€“Â´ Ã¬Å¾Ë†Ã¬ï¿½â€ž
-												// ÃªÂ²Â½Ã¬Å¡Â° Ã«Â¡Å“ÃªÂ·Â¸Ã¬ï¿½Â¸ Ã­Å½ËœÃ¬ï¿½Â´Ã¬Â§â‚¬Ã«Â¡Å“
-												// Ã«Â¦Â¬Ã«â€¹Â¤Ã¬ï¿½Â´Ã«Â â€°Ã­Å Â¸
+			response.sendRedirect(loginURL); // ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂ¬Ã¢â‚¬Â¢Ã‹â€ ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´ ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+												// ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â° ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂ­Ã…Â½Ã‹Å“ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¡Ã…â€œ
+												// ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ«Ã‚Â Ã¢â‚¬Â°ÃƒÂ­Ã…Â Ã‚Â¸
 
 		}
 
 		/* else{ */
-		if (!arePropertiesLoaded) { // Ã­â€�â€žÃ«Â¡Å“Ã­ï¿½Â¼Ã­â€¹Â° ÃªÂ°â€™Ã«â€œÂ¤Ã¬ï¿½Â´ Assign
-									// Ã«ï¿½ËœÃ¬â€”Ë†Ã«Å â€�Ã¬Â§â‚¬ Ã­â„¢â€¢Ã¬ï¿½Â¸
+		if (!arePropertiesLoaded) { // ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ­Ã¯Â¿Â½Ã‚Â¼ÃƒÂ­Ã¢â‚¬Â¹Ã‚Â° ÃƒÂªÃ‚Â°Ã¢â‚¬â„¢ÃƒÂ«Ã¢â‚¬Å“Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ Assign
+									// ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€�Ã‹â€ ÃƒÂ«Ã…Â Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬Â¢ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
 
 			// userEmail = user.getEmail();
 			// userDomain = CommonWebUtil.getDomain(userEmail);
@@ -326,8 +326,8 @@ public class SharedContactsController  {
 			arePropertiesLoaded = true;
 		}
 
-		if (domainCheck) { // Ã­Å Â¹Ã¬Â â€¢ Ã«ï¿½â€žÃ«Â©â€�Ã¬ï¿½Â¸ Ã¬Å“Â Ã¬Â â‚¬ÃªÂ°â‚¬ Ã¬â€¢â€žÃ«â€¹Å’ Ã¬Â â€˜ÃªÂ·Â¼Ã¬ï¿½Â¸ ÃªÂ²Â½Ã¬Å¡Â°
-							// permission error Ã«Â©â€�Ã¬â€¹Å“Ã¬Â§â‚¬Ã«Â¥Â¼ Ã«Â³Â´Ã«Æ’â€ž
+		if (domainCheck) { // ÃƒÂ­Ã…Â Ã‚Â¹ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢ ÃƒÂ«Ã¯Â¿Â½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂ¬Ã…â€œÃ‚Â ÃƒÂ¬Ã‚Â Ã¢â€šÂ¬ÃƒÂªÃ‚Â°Ã¢â€šÂ¬ ÃƒÂ¬Ã¢â‚¬Â¢Ã¢â‚¬Å¾ÃƒÂ«Ã¢â‚¬Â¹Ã…â€™ ÃƒÂ¬Ã‚Â Ã¢â‚¬ËœÃƒÂªÃ‚Â·Ã‚Â¼ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â°
+							// permission error ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¢â‚¬Â¹Ã…â€œÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¥Ã‚Â¼ ÃƒÂ«Ã‚Â³Ã‚Â´ÃƒÂ«Ã†â€™Ã¢â‚¬Å¾
 			if (!userDomain.equals(adminDomain)) {
 				Map<String, String> result = new HashMap<String, String>();
 				result.put("logoutUrl", userService.createLogoutURL(request.getRequestURI()));
@@ -397,7 +397,7 @@ public class SharedContactsController  {
 		String cmd = CommonWebUtil.getParameter(request, "cmd");
 		logger.info("cmd:" + cmd);
 
-		if (cmd.equals("getheader")) { // UI Ã­â„¢â€�Ã«Â©Â´ Ã¬Æ’ï¿½Ã«â€¹Â¨
+		if (cmd.equals("getheader")) { // UI ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´ ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨
 
 			Map<String, Object> result = new HashMap<String, Object>();
 
@@ -438,7 +438,7 @@ public class SharedContactsController  {
 			result.put("isUserAdmin", sharedContactsService.isUserAdmin());
 			mnv = new ModelAndView("/sharedcontacts/list", "result", result);
 
-		} else if (cmd.equals("actcustomerremove")) {// Contact Ã¬Æ’ï¿½Ã¬â€žÂ± Ã¬Â²ËœÃ«Â¦Â¬
+		} else if (cmd.equals("actcustomerremove")) {// Contact ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â± ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			String domain = CommonWebUtil.getParameter(request, "domainToBeDeleted");
 			if (domain == null) {
 				String message = "Delete Operation failed";
@@ -468,7 +468,7 @@ public class SharedContactsController  {
 			// getUserGroupId(request);
 			Map<String, String> result = new HashMap<String, String>();
 			mnv = new ModelAndView("/sharedcontacts/customers-list", "result", result);
-		} else if (cmd.equals("getfooter")) { // UI Ã­â„¢â€�Ã«Â©Â´ Ã­â€¢ËœÃ«â€¹Â¨
+		} else if (cmd.equals("getfooter")) { // UI ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´ ÃƒÂ­Ã¢â‚¬Â¢Ã‹Å“ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨
 			Map<String, String> result = new HashMap<String, String>();
 
 			try {
@@ -502,14 +502,14 @@ public class SharedContactsController  {
 			} else
 				result.put("isPurchased", "false");
 			mnv = new ModelAndView("/sharedcontacts/footer", "result", result);
-		} else if (cmd.equals("list_data")) { // Grid Ã«ï¿½Â°Ã¬ï¿½Â´Ã­â€žÂ° Ã¬Å¡â€�Ã¬Â²Â­
+		} else if (cmd.equals("list_data")) { // Grid ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â° ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 			mnv = getContacts(request, response, currentCustomer);
-		} else if (cmd.equals("syncContacts")) { // Grid Ã«ï¿½Â°Ã¬ï¿½Â´Ã­â€žÂ° Ã¬Å¡â€�Ã¬Â²Â­
+		} else if (cmd.equals("syncContacts")) { // Grid ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â° ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 			mnv = syncContacts(request, response, currentCustomer);
-		} else if (cmd.equals("customers-list-data")) { // Grid Ã«ï¿½Â°Ã¬ï¿½Â´Ã­â€žÂ° Ã¬Å¡â€�Ã¬Â²Â­
+		} else if (cmd.equals("customers-list-data")) { // Grid ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â° ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 			mnv = getCustomersList(request, response);
-		} else if (cmd.equals("details")) { // Ã­Å Â¹Ã¬Â â€¢ ContactÃ¬ï¿½Ëœ Ã¬Æ’ï¿½Ã¬â€žÂ¸Ã¬Â â€¢Ã«Â³Â´
-											// Ã¬Å¡â€�Ã¬Â²Â­
+		} else if (cmd.equals("details")) { // ÃƒÂ­Ã…Â Ã‚Â¹ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢ ContactÃƒÂ¬Ã¯Â¿Â½Ã‹Å“ ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â¸ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢ÃƒÂ«Ã‚Â³Ã‚Â´
+											// ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 
 			// return new ModelAndView("/sharedcontacts/details", "result",
 			// result);
@@ -555,10 +555,10 @@ public class SharedContactsController  {
 			// String adminUserName = appProperties.getUsername();
 			result.put("adminUserName", currentCustomer.getAdminEmail());
 			mnv = new ModelAndView("/sharedcontacts/details", "result", result);
-		} else if (cmd.equals("create")) { // Contact Ã¬Æ’ï¿½Ã¬â€žÂ±Ã¬ï¿½â€ž Ã¬Å“â€žÃ­â€¢Å“ Ã­â„¢â€�Ã«Â©Â´
-											// Ã¬Å¡â€�Ã¬Â²Â­
+		} else if (cmd.equals("create")) { // Contact ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂ¬Ã…â€œÃ¢â‚¬Å¾ÃƒÂ­Ã¢â‚¬Â¢Ã…â€œ ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´
+											// ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 			mnv = new ModelAndView("/sharedcontacts/create");
-		} else if (cmd.equals("actcreate")) {// Contact Ã¬Æ’ï¿½Ã¬â€žÂ± Ã¬Â²ËœÃ«Â¦Â¬
+		} else if (cmd.equals("actcreate")) {// Contact ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â± ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			if ((!currentCustomer.getAccountType().equals("Paid") && count == 100)
 					|| (!currentCustomer.getAccountType().equals("Paid") && count == 50 
 							&& CommonUtil.isTheSecondTypeCustomer(currentCustomer))) {
@@ -570,8 +570,8 @@ public class SharedContactsController  {
 			} else {
 				mnv = create(request, response);
 			}
-		} else if (cmd.equals("modify")) { // Contact ÃªÂ°Â±Ã¬â€¹Â Ã¬ï¿½â€ž Ã¬Å“â€žÃ­â€¢Å“ Ã­â„¢â€�Ã«Â©Â´
-											// Ã¬Å¡â€�Ã¬Â²Â­
+		} else if (cmd.equals("modify")) { // Contact ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂ¬Ã…â€œÃ¢â‚¬Å¾ÃƒÂ­Ã¢â‚¬Â¢Ã…â€œ ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´
+											// ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 			// mnv = getContact(request, response);
 			ContactEntry contact = getContact(request, response);
 
@@ -615,14 +615,14 @@ public class SharedContactsController  {
 			// String adminUserName = appProperties.getUsername();
 			result.put("adminUserName", currentCustomer.getAdminEmail());
 			mnv = new ModelAndView("/sharedcontacts/modify", "result", result);
-		} else if (cmd.equals("actmodify")) { // Contact ÃªÂ°Â±Ã¬â€¹Â  Ã¬Â²ËœÃ«Â¦Â¬
+		} else if (cmd.equals("actmodify")) { // Contact ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â  ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			mnv = modify(request, response);
-		} else if (cmd.equals("actmodifysimply")) { // Ã¬â€šÂ¬Ã¬Å¡Â©Ã¬Å¾ï¿½ Ã­â„¢â€�Ã«Â©Â´Ã¬ï¿½Ëœ
-													// Contact Grid Ã¬Æ’ï¿½
-													// ÃªÂ°â€žÃ«â€¹Â¨Ã­â€¢Å“ Contact ÃªÂ°Â±Ã¬â€¹Â 
-													// Ã¬Â²ËœÃ«Â¦Â¬
+		} else if (cmd.equals("actmodifysimply")) { // ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¬Ã…Â¡Ã‚Â©ÃƒÂ¬Ã…Â¾Ã¯Â¿Â½ ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´ÃƒÂ¬Ã¯Â¿Â½Ã‹Å“
+													// Contact Grid ÃƒÂ¬Ã†â€™Ã¯Â¿Â½
+													// ÃƒÂªÃ‚Â°Ã¢â‚¬Å¾ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨ÃƒÂ­Ã¢â‚¬Â¢Ã…â€œ Contact ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â 
+													// ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			mnv = modifySimply(request, response);
-		} else if (cmd.equals("actremove")) { // Contact Ã¬â€šÂ­Ã¬Â Å“ Ã¬Â²ËœÃ«Â¦Â¬
+		} else if (cmd.equals("actremove")) { // Contact ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â­ÃƒÂ¬Ã‚Â Ã…â€œ ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			mnv = remove(request, response);
 		} else if (cmd.equals("actdownload")) {
 			mnv = download(request, response, currentCustomer);
@@ -781,8 +781,8 @@ public class SharedContactsController  {
 	}
 	
 	/**
-	 * Ã¬â€ºÂ¹Ã«Â¸Å’Ã«ï¿½Â¼Ã¬Å¡Â°Ã¬Â Â¸Ã«Â¡Å“Ã«Â¶â‚¬Ã­â€žÂ° Ã¬Â â€žÃ¬â€ Â¡Ã«ï¿½Å“ Ã«ï¿½Â°Ã¬ï¿½Â´Ã­â€žÂ°Ã«â€œÂ¤Ã¬ï¿½â€ž Ã¬ï¿½Â´Ã¬Å¡Â©Ã­â€¢Â´
-	 * ContactEntryÃ«Â¥Â¼ Ã¬Æ’ï¿½Ã¬â€žÂ±
+	 * ÃƒÂ¬Ã¢â‚¬ÂºÃ‚Â¹ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â° ÃƒÂ¬Ã‚Â Ã¢â‚¬Å¾ÃƒÂ¬Ã¢â‚¬Â Ã‚Â¡ÃƒÂ«Ã¯Â¿Â½Ã…â€œ ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â°ÃƒÂ«Ã¢â‚¬Å“Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ¬Ã…Â¡Ã‚Â©ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â´
+	 * ContactEntryÃƒÂ«Ã‚Â¥Ã‚Â¼ ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±
 	 * 
 	 * @param request
 	 * @return
@@ -1458,13 +1458,13 @@ public class SharedContactsController  {
 
 				// TEST
 				// entry.getUserDefinedFields().add(new
-				// UserDefinedField("Ã«Â¶â‚¬Ã«Â¬Â¸", "ÃªÂ²Â½Ã¬Ëœï¿½ÃªÂ´â‚¬Ã«Â¦Â¬Ã«Â¶â‚¬-TEST"));
+				// UserDefinedField("ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¬Ã‚Â¸", "ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã‹Å“Ã¯Â¿Â½ÃƒÂªÃ‚Â´Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬-TEST"));
 				// entry.getUserDefinedFields().add(new
 				// UserDefinedField("Bumun", "Management-TEST"));
 			} else {
 				// TEST
 				// entry.getUserDefinedFields().add(new
-				// UserDefinedField("Ã«Â¶â‚¬Ã«Â¬Â¸", "ÃªÂ²Â½Ã¬Ëœï¿½ÃªÂ´â‚¬Ã«Â¦Â¬Ã«Â¶â‚¬"));
+				// UserDefinedField("ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¬Ã‚Â¸", "ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã‹Å“Ã¯Â¿Â½ÃƒÂªÃ‚Â´Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬"));
 				// entry.getUserDefinedFields().add(new
 				// UserDefinedField("Bumun", "Management"));
 			}
@@ -1960,6 +1960,7 @@ public class SharedContactsController  {
 		result.put("onlyAdminPermitted", domainSettings.isOnlyAdminPermitted());
 		result.put("usersWithWritePermission", usersWithWritePermission);
 		result.put("usersWithReadPermission", usersWithReadPermission);
+		result.put("domainName",CommonWebUtil.getDomain(getCurrentUser(request).getEmail()));
 		return new ModelAndView("/sharedcontacts/authorize", "result", result);
 	}
 
@@ -2026,6 +2027,7 @@ public class SharedContactsController  {
 		result.put("onlyAdminPermitted", domainSettings.isOnlyAdminPermitted());
 		result.put("usersWithNoPermission", usersWithNoPermission);
 		result.put("usersWithReadPermission", usersWithReadPermission);
+		result.put("domainName",CommonWebUtil.getDomain(getCurrentUser(request).getEmail()));
 		return new ModelAndView("/sharedcontacts/unauthorize", "result", result);
 	}
 
