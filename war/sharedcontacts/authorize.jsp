@@ -18,6 +18,7 @@
 	boolean onlyAdminPermitted = (Boolean)result.get("onlyAdminPermitted");
 	boolean allUsersPermitted = (Boolean)result.get("allUsersPermitted");
 	boolean success = false;
+	String domain = (String)result.get("domainName");
 	if(result.get("success")!=null)
 		 success = (Boolean)result.get("success");
 	System.out.println("success:"+success);
@@ -43,6 +44,41 @@
 <script type="text/javascript" src="/js/jquery.fileinput.min.js"></script>
 <link href="/css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
+var domainName = '<%=domain%>';
+
+function submitForm(e)
+{
+
+
+    // Get the ASCII value of the key that the user entered
+	if(window.event)
+ 		var key = window.event.keyCode; 
+	else
+		var key = e.which;
+
+
+   
+
+    // Verify if the key entered was a numeric character (0-9) or a backspace (.)
+    if(key != 13 )
+	{
+	
+        // If it was, then allow the entry to continue
+        return;
+		}
+    else
+	{
+	    searchJqgrid();
+	        // If it was not, then dispose the key and continue with entry
+	
+		if(window.event)
+			window.event.returnValue = null; // IE hack
+		else
+			e.preventDefault(); // standard method
+	
+	}
+}
+
 $(function(){
 	
 	
@@ -169,9 +205,7 @@ function toggleChecked(status, nodeId) {
 	$(this).attr("checked",status);
 	})
 }
-
-$(function(){
-	$('#search').click(function(){
+ var searchJqgrid= function(){
 		var operator=getOperator();
 		var field= getField();
 $('input[type="checkbox"]').each(function(){
@@ -180,13 +214,20 @@ $('input[type="checkbox"]').each(function(){
 			$(this).attr('checked', false);
 			
 		});
-$(field+' input[type="checkbox"][value'+operator+'"'+$('#searchText').val()+'"]').each(function(){
+		var searchText=$('#searchText').val();
+if($('#searchText').val().indexOf("@"+domainName)!=-1)	{
+	searchText = searchText.substring(0,$('#searchText').val().indexOf("@"+domainName));
+}
+$(field+' input[type="checkbox"][value'+operator+'"'+searchText+'"]').each(function(){
 	
 	$(this).parent().parent().attr('style', 'background:url("/css/images/heading.gif") repeat scroll 0 0 transparent')
 	$(this).attr('checked',true);
 });
 
-	});
+
+	};
+$(function(){
+	$('#search').click(searchJqgrid);
 		
 	
 });
@@ -328,7 +369,9 @@ function getField()	{
 									<td class="EditButton"><div id="findButton" class="submit_bt" style=""><a id="search"
 										class="fm-button ui-state-default ui-corner-all fm-button-icon-right ui-reset"
 										 href="javascript:searchJqgrid()" style="width:45px"><span
-											class="ui-icon ui-icon-search"></span>Find</a></div>
+											class="ui-icon ui-icon-search"></span>Find</a>
+											<div style="display:none"><input type="submit"   /> </div>
+											</div>
 									</td>
 								</tr>
 							</tbody>

@@ -18,6 +18,7 @@
 	boolean onlyAdminPermitted = (Boolean)result.get("onlyAdminPermitted");
 	boolean allUsersPermitted = (Boolean)result.get("allUsersPermitted");
 	boolean success = false;
+	String domain = (String)result.get("domainName");
 	if(result.get("success")!=null)
 		 success = (Boolean)result.get("success");
 	System.out.println("success:"+success);
@@ -34,7 +35,7 @@
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 
 <script type="text/javascript" src='/js/jquery-1.5.2.min.js'></script>
-
+<link rel='stylesheet' type='text/css' href='/css/ui.jqgrid.css' />
 <script type="text/javascript" src='/js/jquery-ui-1.8.12.custom.min.js'></script>
 <script type="text/javascript" src='/js/jquery.form.js'></script>
 <script type="text/javascript" src='/js/i18n/grid.locale-en.js'></script>
@@ -42,6 +43,40 @@
 <script type="text/javascript" src="/js/jquery.fileinput.min.js"></script>
 <link href="/css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
+var domainName = '<%=domain%>';
+
+function submitForm(e)
+{
+
+
+    // Get the ASCII value of the key that the user entered
+	if(window.event)
+ 		var key = window.event.keyCode; 
+	else
+		var key = e.which;
+
+
+   
+
+    // Verify if the key entered was a numeric character (0-9) or a backspace (.)
+    if(key != 13 )
+	{
+	
+        // If it was, then allow the entry to continue
+        return;
+		}
+    else
+	{
+	    searchJqgrid();
+	        // If it was not, then dispose the key and continue with entry
+	
+		if(window.event)
+			window.event.returnValue = null; // IE hack
+		else
+			e.preventDefault(); // standard method
+	
+	}
+}
 $(function(){
 	if(eval(<%=success %>))	{
 		alert("Settings saved Successfully.");
@@ -180,6 +215,59 @@ function toggleChecked(status, nodeId) {
 	$("#"+nodeId+" input").each( function() {
 	$(this).attr("checked",status);
 	})
+}
+
+var searchJqgrid= function(){
+	var operator=getOperator();
+	var field= getField();
+$('input[type="checkbox"]').each(function(){
+		
+		$(this).parent().parent().attr('style', 'background:none');
+		$(this).attr('checked', false);
+		
+	});
+	var searchText=$('#searchText').val();
+if($('#searchText').val().indexOf("@"+domainName)!=-1)	{
+searchText = searchText.substring(0,$('#searchText').val().indexOf("@"+domainName));
+}
+$(field+' input[type="checkbox"][value'+operator+'"'+searchText+'"]').each(function(){
+
+$(this).parent().parent().attr('style', 'background:url("/css/images/heading.gif") repeat scroll 0 0 transparent')
+$(this).attr('checked',true);
+});
+
+
+};
+$(function(){
+$('#search').click(searchJqgrid);
+	
+
+});
+
+function getOperator()	{
+var operator="*=";
+var operatorValue = $('#operator').val();
+
+if(operatorValue == 'bw')	{
+	operator = "^=";
+}
+if(operatorValue == 'eq')	{
+	operator = "=";
+}
+return operator;
+}
+
+function getField()	{
+
+var field="";
+var fieldValue = $('#field').val();
+if(fieldValue=='right')	{
+	field = '#updateUserDiv';
+}
+if(fieldValue=='left')	{
+	field = '#readOnlyUserDiv';
+}
+	return field;
 }
 
 </script>
