@@ -294,8 +294,8 @@ if(fieldValue=='left')	{
 					
 					<table border="0">
 						<tr><td style="font-size:12px; font-weight:bold; font-family:Arial">Managing Users Previliges:</td>
-							<td><input type="button" class="def_bt"   onclick='window.location.href="/sharedcontacts/main.do?cmd=authorizeForm";' value="User Editing" ></td>
-								<td><input type="button" class="def_bt" onclick='window.location.href="/sharedcontacts/main.do?cmd=unauthorizeForm"' value="User Access" ></td>
+							<td><input type="button" class="def_bt"  style="border-color:#DCDCDC"  onclick='window.location.href="/sharedcontacts/main.do?cmd=authorizeForm";' value="User Editing" ></td>
+								<td><input type="button" class="def_bt" style="border-color:#000" onclick='window.location.href="/sharedcontacts/main.do?cmd=unauthorizeForm"' value="User Access" ></td>
 						
 						
 							
