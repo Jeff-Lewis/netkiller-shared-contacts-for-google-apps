@@ -134,11 +134,13 @@ var readOnlyUsers = eval('<%=usersWithReadPermissionJsonString%>');
 var updateUsers = eval('<%=usersWithWritePermissionJsonString%>');
 readOnlyUsersSize = readOnlyUsers.length;
 updateUsersSize = updateUsers.length;
+readOnlyUsers.sort();
 for(var user in readOnlyUsers)	{
 	if(readOnlyUsers[user]!='')	{
 		appendNewCheckBoxWithinNode('readOnlyUserDiv',readOnlyUsers[user],readOnlyUsers[user],readOnlyUsers[user]);
 	}//document.write(users[user]);
 }
+updateUsers.sort()
 for(var user in updateUsers)	{
 	if(updateUsers[user]!='')	{
 		appendNewCheckBoxWithinNode('updateUserDiv',updateUsers[user],updateUsers[user],updateUsers[user]);
