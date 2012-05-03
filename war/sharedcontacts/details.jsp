@@ -124,6 +124,7 @@ String otherAddress = util.getFormattedAddress(contact, otherRel);
 <link rel='stylesheet' type='text/css' href='/css/main.css'/>
 <link rel='stylesheet' type='text/css' href='/css/jquery-ui-1.8.12.custom.css'/>
 <link rel='stylesheet' type='text/css' href='/css/ui.jqgrid.css'/>
+<link rel='stylesheet' type='text/css' href='/css/style.css' />
 <script type="text/javascript" src='/js/jquery-1.5.2.min.js'></script>
 <script type="text/javascript" src='/js/jquery-ui-1.8.12.custom.min.js'></script>
 <script type="text/javascript" src='/js/i18n/grid.locale-en.js'></script>
@@ -134,18 +135,18 @@ $(document).ready ( function () {
 	// $('input[type="submit"]').attr('disabled','disabled');
 	
 	//$( ".selector" ).button({ disabled: true });
-	$( "#Save" ).button({ disabled: true });
+	$( "#Save" ).attr("disabled",true);
 
 	
 	
-	$( "#Edit" ).button();
+	
 	$( "#Edit" ).click(function() {
 		//alert("Edit");
 		var $id = "<%= id %>";
 		window.location.href = "/sharedcontacts/main.do?cmd=modify&id=" + $id + "<%=queryString%>";
 	});
 	
-	$( "#Cancel" ).button({ disabled: true });
+	$( "#Cancel" ).attr("disabled",true);
 	//$( "#Cancel" ).button();
 
 	//$("#Cancel").attr("disabled", true);
@@ -154,12 +155,12 @@ $(document).ready ( function () {
     // OR you can set attr to ""   $('.someElement').attr('disabled', '');
 	
 	
-	$( "#Back" ).button();
+	
 	$( "#Back" ).click(function() {
 		window.location.href = "/sharedcontacts/main.do?cmd=list" + "<%=queryString%>";
 	});	
 	
-	$( "#Modify" ).button();
+	
 	$( "#Modify" ).click(function() {
 		var $id = "<%= id %>";
 		window.location.href = "/sharedcontacts/main.do?cmd=modify&id=" + $id + "<%=queryString%>";
@@ -212,13 +213,13 @@ function backToContacts(){
 			
 				<table border="0">
 				<tr><td>
-				<buton id="Save" style="font-family:Arial;font-size:11px;height:20px;width:75px;text-align:center;padding:0px 0px 0px 0px;">Save now</button>			
+				<button id="Save" style="font-family:Arial;font-size:11px;height:20px;width:75px;text-align:center;padding:0px 0px 0px 0px;">Save now</button>			
 				</td>
 				<td>
-				<buton id="Edit" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Edit</button>
+				<button id="Edit" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Edit</button>
 				</td>
 				<td>
-				<buton id="Cancel" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Cancel</button>
+				<button id="Cancel" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Cancel</button>
 				</td>
 				</tr>
 				</table>

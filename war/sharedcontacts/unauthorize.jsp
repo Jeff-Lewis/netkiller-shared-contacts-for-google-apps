@@ -418,7 +418,7 @@ if(fieldValue=='left')	{
 		<div class="panel_top_left" style="float:right;"><input id="selectUserPermitted" name="domainSettings" checked type="radio" value="selectUserPermitted" />Selected User Allowed</div>
 	</div>
 	
-	<div align="center" style="color:#f00;"><font face="arial">Restricted users can not access (read) shared contacts.</font></div>
+	<div  style="float:left;width:100%;color:#f00;text-align:center"><font face="arial">Restricted users can not access (read) shared contacts.</font></div>
 	<div  id="UserPermissionSelectDiv">
 	<div style="width:220px;height:360px;overflow:auto" class="left_panel">
 		<div class="left_panel_top">
