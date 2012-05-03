@@ -380,12 +380,12 @@ function backToContacts(){
 	  						</table>
 					</div>
 					<div id=subbox class="ui-widget-content" style="font-family:Arial;font-size:15px; margin:7px 0px 0px 3px;width:900px;">
-						<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Email</h5>
+						<div style="float:left;"><h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Email</h5></div><div style="float:left;">&nbsp;<input class='row_bt' type='button' value='Check Duplicates' onclick='checkDuplicateEmail();'  style="margin-left:32px;"/></div>
 	  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
 	  							<tr>
 	  								<td width="33%"><b>Work:</b> <input id="workemail" type="text" class="txtBox" value="" style="margin-left:25px"/></td>
 	  								<td width="33%"><b>Home:</b> <input id="homeemail" type="text" class="txtBox" value="" style="margin-left:32px;"/></td>
-	  								<td width="33%"><b>Other:</b> <input id="otheremail" type="text" class="txtBox" value="" style="margin-left:32px;"/><input class='row_bt' type='button' value='Duplicate' onclick='checkDuplicateEmail();'  style="margin-left:32px;"/></td>
+	  								<td width="33%"><b>Other:</b> <input id="otheremail" type="text" class="txtBox" value="" style="margin-left:32px;"/></td>
 	  								
 	  							</tr>
 	  						</table>
