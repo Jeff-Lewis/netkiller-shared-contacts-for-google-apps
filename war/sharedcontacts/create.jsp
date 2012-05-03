@@ -22,6 +22,7 @@
 <link rel='stylesheet' type='text/css' href='/css/main.css'/>
 <link rel='stylesheet' type='text/css' href='/css/jquery-ui-1.8.12.custom.css'/>
 <link rel='stylesheet' type='text/css' href='/css/ui.jqgrid.css'/>
+<link rel='stylesheet' type='text/css' href='/css/style.css' />
 <script type="text/javascript" src='/js/jquery-1.5.2.min.js'></script>
 <script type="text/javascript" src='/js/jquery-ui-1.8.12.custom.min.js'></script>
 <script type="text/javascript" src='/js/i18n/grid.locale-en.js'></script>
@@ -29,7 +30,65 @@
 
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 <script type="text/javascript">
+function checkDuplicateEmail()	{
+	var $workemail = $("#workemail").val();
+	var $homeemail = $("#homeemail").val();
+	var $otheremail = $("#otheremail").val();
+	
+	if(isDuplicateEmail($workemail)||isDuplicateEmail($homeemail)||isDuplicateEmail($otheremail))	{
+		alert('Duplicate email found');
+	} else	{
+		alert('No duplicate email found');
+	}
+	
+}
+function isDuplicateEmail(email){
+	var result = false;
+	var $duplicateCheckData = { 
+			cmd:'list_data', 
+			_search:'true',
+			rows:'15',
+			page:'1',
+			sidx:'no',
+			sord:'asc',
+			filters:'{"groupOp":"AND","rules":[{"field":"email","op":"eq","data":"'+email+'"}]}'
+			};
+	
+	$.ajax({
+		url:'/sharedcontacts/main.do',
+		type:'post',
+		async:false,
+		
+		data: $duplicateCheckData,
+		//success:handleSuccess,
+		//error:handleError,
+		success:function(data){
+			//alert(xml);
+			
+			//var xml_text = $(xml).text();
+			//alert(xml_text);			
 
+			if(data["rows"].length!=undefined&&data["rows"].length!=null &&data["rows"].length>0)	{
+				
+				result =  true;
+			} else{
+				result = false;
+			}
+			
+			//alert(message);
+			
+			//$(xml).find('cat').each(function(){
+			//	var item_text=$(this).text();
+			//	alert(item_text);
+			//});
+		},
+		error:function(xhr,status,e){
+			alert("Error occured");
+			
+		}
+	}); //end ajax		
+	return result;
+}
 $(document).ready ( function () {
 	
 	$('#givenname').change(function(){
@@ -326,7 +385,8 @@ function backToContacts(){
 	  							<tr>
 	  								<td width="33%"><b>Work:</b> <input id="workemail" type="text" class="txtBox" value="" style="margin-left:25px"/></td>
 	  								<td width="33%"><b>Home:</b> <input id="homeemail" type="text" class="txtBox" value="" style="margin-left:32px;"/></td>
-	  								<td width="33%"><b>Other:</b> <input id="otheremail" type="text" class="txtBox" value="" style="margin-left:32px;"/></td>
+	  								<td width="33%"><b>Other:</b> <input id="otheremail" type="text" class="txtBox" value="" style="margin-left:32px;"/><input class='row_bt' type='button' value='Duplicate' onclick='checkDuplicateEmail();'  style="margin-left:32px;"/></td>
+	  								
 	  							</tr>
 	  						</table>
 					</div>
