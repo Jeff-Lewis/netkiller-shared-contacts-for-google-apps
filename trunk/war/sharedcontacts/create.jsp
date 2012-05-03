@@ -100,7 +100,7 @@ $(document).ready ( function () {
 	});
 	
 	
-	$( "#Save" ).button();
+	
 	$( "#Save" ).click(function() {
 		//alert("SaveNow");
 		//window.location.href = "/sharedcontacts/main.do?cmd=create";
@@ -206,9 +206,9 @@ $(document).ready ( function () {
 	
 	
 	//$( "#Edit" ).button();
-	$( "#Edit" ).button({ disabled: true });
+	$( "#Edit" ).attr("disabled", true );
 	
-	$( "#Cancel" ).button();
+	
 	$( "#Cancel" ).click(function() {
 		//alert("Cancel");
 		$("#fullname").val("");
@@ -232,7 +232,7 @@ $(document).ready ( function () {
 	
 	
 	
-	$( "#Sbmt" ).button();
+	
 	$( "#Sbmt" ).click(function() {
 		var $fullname = $("#fullname").val();
 		var $givenname = $("#givenname").val();
@@ -345,9 +345,9 @@ function backToContacts(){
 					<td align="right">
 						<table border="0">
 							<tr>
-								<td><buton id="Save" style="font-family:Arial;font-size:11px;height:20px;width:75px;text-align:center;padding:0px 0px 0px 0px;">Save now</button></td>
-								<td><buton id="Edit" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Edit</button></td>
-								<td><buton id="Cancel" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Cancel</button></td>
+								<td><button id="Save" style="font-family:Arial;font-size:11px;height:20px;width:75px;text-align:center;padding:0px 0px 0px 0px;">Save now</button></td>
+								<td><button id="Edit" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Edit</button></td>
+								<td><button id="Cancel" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Cancel</button></td>
 							</tr>
 						</table>
 					</td>
