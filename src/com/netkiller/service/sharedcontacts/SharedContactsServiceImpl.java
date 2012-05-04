@@ -310,8 +310,8 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	}
 
 	/**
-	 * ìž…ë ¥ë�œ List Elementsë¥¼ 100ê°œ ì”© ë¬¶ì–´ Listì—� ë„£ì�€ í›„ Container
-	 * Listì—� ë‹´ì•„ ë°˜í™˜
+	 * Ã¬Å¾â€¦Ã«Â Â¥Ã«ï¿½Å“ List ElementsÃ«Â¥Â¼ 100ÃªÂ°Å“ Ã¬â€�Â© Ã«Â¬Â¶Ã¬â€“Â´ ListÃ¬â€”ï¿½ Ã«â€žÂ£Ã¬ï¿½â‚¬ Ã­â€ºâ€ž Container
+	 * ListÃ¬â€”ï¿½ Ã«â€¹Â´Ã¬â€¢â€ž Ã«Â°ËœÃ­â„¢Ëœ
 	 * 
 	 * @param list
 	 * @return
@@ -338,7 +338,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		for (int i = 0; i < containerSize; i++) {
 			innerList = new ArrayList();
 			for (int j = 0; j < size; j++) {
+				if(!list.isEmpty())		{
 				innerList.add(list.get(tmpCnt++));
+				}
 				if (tmpCnt == totalSize) {
 					break;
 				}
@@ -369,9 +371,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 				batchFeed = new ContactFeed();
 
-				List<ContactEntry> splittedList = (List) container.get(i); // ë¶„ë¦¬ë�œ
+				List<ContactEntry> splittedList = (List) container.get(i); // Ã«Â¶â€žÃ«Â¦Â¬Ã«ï¿½Å“
 																			// List
-																			// ì–»ê¸°
+																			// Ã¬â€“Â»ÃªÂ¸Â°
 				logger.info("==> splittedList size: " + splittedList.size());
 
 				for (int j = 0; j < splittedList.size(); j++) {
@@ -444,9 +446,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 					batchFeed = new ContactFeed();
 
-					List<ContactEntry> splittedList = (List) container.get(i); // ë¶„ë¦¬ë�œ
+					List<ContactEntry> splittedList = (List) container.get(i); // Ã«Â¶â€žÃ«Â¦Â¬Ã«ï¿½Å“
 																				// List
-																				// ì–»ê¸°
+																				// Ã¬â€“Â»ÃªÂ¸Â°
 					logger.info("==> splittedList size: " + splittedList.size());
 
 					for (int j = 0; j < splittedList.size(); j++) {
@@ -519,9 +521,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 				batchFeed = new ContactFeed();
 
-				List<ContactEntry> splittedList = (List) container.get(i); // ë¶„ë¦¬ë�œ
+				List<ContactEntry> splittedList = (List) container.get(i); // Ã«Â¶â€žÃ«Â¦Â¬Ã«ï¿½Å“
 																			// List
-																			// ì–»ê¸°
+																			// Ã¬â€“Â»ÃªÂ¸Â°
 				logger.info("==> splittedList size: " + splittedList.size());
 
 				for (int j = 0; j < splittedList.size(); j++) {
@@ -880,9 +882,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 					batchFeed = new ContactFeed();
 
-					List<String> splittedList = (List) container.get(i); // ë¶„ë¦¬ë�œ
+					List<String> splittedList = (List) container.get(i); // Ã«Â¶â€žÃ«Â¦Â¬Ã«ï¿½Å“
 																			// List
-																			// ì–»ê¸°
+																			// Ã¬â€“Â»ÃªÂ¸Â°
 					logger.info("==> splittedList size: " + splittedList.size());
 
 					for (int j = 0; j < splittedList.size(); j++) {
