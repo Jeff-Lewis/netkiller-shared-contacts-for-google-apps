@@ -358,7 +358,7 @@ public class SharedContactsController  {
 			context.setWorkflowInfo(workflowInfo);
 			workflowManager.triggerWorkflow(workflow);	
 			
-			String message = "Sahred Groups Succesfully Created";
+			String message = "Shared Groups Succesfully Created";
 			Map result = new HashMap();
 			result.put("code", "success");
 			result.put("message", message);
