@@ -15,7 +15,7 @@
 	}
 %>
 <div style="float:left;font-family:Arial;font-size:12px">
-<a href="http://www.netkiller.com/pure-google-apps" target="_blank"><img src="/img/securenew.png"/></a>
+<a href="http://netkilleramerica.blogspot.com/2012/03/top-10-reasons-to-use-netkiller-shared.html" target="_blank"><img src="/img/pure_google_security.png"/></a>
 </div>
 <%if(isPurchased) {%>
 <div style="float:right;font-family:Arial;font-size:12px;padding: 5px 1px 2px 3px;">
@@ -37,6 +37,9 @@
  | 
 <a href="http://www.netkiller.com/contact" target="_blank" style="text-decoration:none;color:#42426F;">Contact</a>
  | 
-<a href="http://goo.gl/mod/uip4" target="_blank" style="text-decoration:none;color:#42426F;">Tell us what you think</a>
-</font>
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#!forum/netkillersc" target="_blank" style="text-decoration:none;color:#42426F;">Public Forum</a>
+ | 
+<a href="http://code.google.com/p/netkiller-shared-contacts-for-google-apps/" target="_blank" style="text-decoration:none;color:#42426F;">Open Source</a>
+ | 
+<a href="https://www.google.com/enterprise/marketplace/viewListing?productListingId=2333+5834727858349999229" target="_blank" style="text-decoration:none;color:#42426F;">Review.</a>
 </div>

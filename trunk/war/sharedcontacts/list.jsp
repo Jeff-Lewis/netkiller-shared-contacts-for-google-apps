@@ -417,15 +417,15 @@ $(document).ready(function() {
 	    viewrecords: true,
 	   	multiselect: false,
 	   	multiboxonly: true,
-	   	shrinkToFit: true,
-	   	autowidth: true,
+		shrinkToFit: false,
+		   	//autowidth: true,
   	   	rowNum:15, 
 		rowList:[5, 10, 15, 30, 50, 100],
 		pager: '#pager2', 
 		sortname: 'no', 
 		viewrecords: true, 
 		sortorder: "asc", 
-		width: 1024,
+		width: 942,
 		height: '100%',
 		//cellEdit: true, //if true, onSelectRow event can not be used
 		//editurl:"/sharedcontacts/main.do?cmd=list_data",
@@ -573,6 +573,20 @@ function getCellValue(rowId, cellId) {
     var val = cell.val();
     return val;
 }
+</script>
+
+<!-- Google Analytics  -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-32320031-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 </script>
 </head>
 <body onload="waitPreloadPage()">
@@ -786,10 +800,10 @@ function getCellValue(rowId, cellId) {
   					<p><img style="line-height:400px;margin-top:150px; width:20px;height:20px" src="/img/loading.gif" /> </p>
 				</div>
 				
-				<div style="clear: both;min-height: 405px;" >
+				<div style="clear: both;min-height: 405px; width:944px;" >
 				
 					<form name="listFrm">
-						<table id="list2" style="height: "></table>
+						<table id="list2" style="width:944px; "></table>
 						<div id="pager2"></div>
 					</form>
 				</div></td>
