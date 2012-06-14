@@ -370,6 +370,19 @@ $(document).ready(function() {
 		<%}%>
 		colModel:[                   
 		           {name:'id',index:'id', width:0, hidden:true,search:false, hidedlg:true},		           
+		          
+		           <%if (isAdmin) {%>
+		           {name:'no',index:'no', width:32, align:"center",search:false, sortable:false},
+                   {name:'delete',index:'delete', sortable:false,search:false, formatter: "checkbox", formatoptions: {disabled : false}, editable: true, edittype:"checkbox", align:"center", width:32},		            
+		           {name:'givenname',index:'givenname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:80},
+		           {name:'familyname',index:'familyname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:80,  searchoptions:{sopt:['eq','bw']}},
+		           {name:'company',index:'company',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100}, 
+		           {name:'email',index:'email',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:130, align:"left"}, 
+		           {name:'phone',index:'phone',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100, align:"left"}, 
+		           {name:'address',index:'address', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:225,align:"left",sortable:false},
+		           {name:'act',index:'act', width:118,search:false, sortable:false}		           
+		           
+		           <%} else {%>
 		           {name:'no',index:'no', width:32, align:"center",search:false, sortable:false},
                    {name:'delete',index:'delete', sortable:false,search:false, formatter: "checkbox", formatoptions: {disabled : false}, editable: true, edittype:"checkbox", align:"center", width:46},		            
 		           {name:'givenname',index:'givenname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:90},
@@ -377,10 +390,6 @@ $(document).ready(function() {
 		           {name:'company',index:'company',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100}, 
 		           {name:'email',index:'email',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:130, align:"left"}, 
 		           {name:'phone',index:'phone',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100, align:"left"}, 
-		           <%if (isAdmin) {%>
-		           {name:'address',index:'address', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:245,align:"left",sortable:false},
-		           {name:'act',index:'act', width:129,search:false, sortable:false}		           
-		           <%} else {%>
 		           {name:'address',index:'address', editrules:{edithidden:true, required:false}, editable:true, width:314,align:"left",sortable:false}
 		           <%}%>
 		],
