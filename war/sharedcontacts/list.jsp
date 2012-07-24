@@ -117,58 +117,7 @@ document.getElementById('container').style.display="";
 <script type="text/javascript" src="/js/jquery.fileinput.min.js"></script>
 
 <script type="text/javascript">
-function deleteDuplicate(){
-	showLoading();
-	
-	//$('#SyncDialog').dialog('close');
-	var $data = { 
-			cmd: 'deleteDuplicate' 
-			
-		};
-	$.ajax({
-		url:'/sharedcontacts/main.do',
-		type:'post',
-		
-		data: $data,
-		//success:handleSuccess,
-		//error:handleError,
-		success:function(xml){
-			$("#loading").dialog('close');
-			$(".ui-dialog-titlebar").show() ; 
-			//alert(xml);
-			
-			//var xml_text = $(xml).text();
-			//alert(xml_text);			
 
-			var code = $(xml).find('code').text();
-			var message = $(xml).find('message').text();
-			//alert(code);
-			if(code == "success"){
-				alert(message);
-				/* window.location.href = "/sharedcontacts/main.do?cmd=list&defaultGridOrder=lastModifiedDate"; */
-			}
-			else{
-				alert(message);
-			}
-			
-			//alert(message);
-			
-			//$(xml).find('cat').each(function(){
-			//	var item_text=$(this).text();
-			//	alert(item_text);
-			//});
-		},
-		error:function(xhr,status,e){
-			$("#loading").dialog('close');
-			$(".ui-dialog-titlebar").show() ; 
-			alert("Error Occured");
-			
-		}
-	}); //end ajax		
-
-
-	
-}
 
 
 function submitForm(e)

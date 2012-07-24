@@ -216,11 +216,11 @@ public class SharedContactsController {
 
 				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
 				gmInfo.setHref(groupId); // added
-				/*for (ContactEntry entry : makeInitialContacts()) {
+				for (ContactEntry entry : makeInitialContacts()) {
 					entry.addGroupMembershipInfo(gmInfo);
 					sharedContactsService.create(entry);
 
-				}*/
+				}
 
 			}
 		} catch (Exception e) {
