@@ -109,5 +109,6 @@ public interface SharedContactsService {
 
 	public ContactEntry makeContact(String fullname, String givenname, String familyname, String companydept,
 			String workemail, String workphone, String workaddress);
+	public void removeDuplicateGroups(String groupName, String userEmail);
 	
 }

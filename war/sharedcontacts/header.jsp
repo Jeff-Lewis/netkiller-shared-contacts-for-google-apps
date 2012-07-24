@@ -81,6 +81,8 @@ if(!queryParams.toString().equals("")){
  <% if(isAdmin){ %>
  <a style="text-decoration: none;" href="/sharedcontacts/main.do?cmd=authorizeForm">Manage Users</a>
 &nbsp;|&nbsp;
+ <a style="text-decoration: none;" href="javascript:deleteDuplicate()">Delete Duplicate Groups</a>
+&nbsp;|&nbsp;
  <%} %>
 <% if( !logoutUrl.equals("") ){ %>
 <a href="<%= logoutUrl %>" style="text-decoration: none;">Sign out</a>&nbsp;&nbsp;

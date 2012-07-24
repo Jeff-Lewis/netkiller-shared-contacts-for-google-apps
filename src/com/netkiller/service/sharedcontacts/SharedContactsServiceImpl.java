@@ -310,8 +310,11 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	}
 
 	/**
-	 * Ã¬Å¾â€¦Ã«Â Â¥Ã«ï¿½Å“ List ElementsÃ«Â¥Â¼ 100ÃªÂ°Å“ Ã¬â€�Â© Ã«Â¬Â¶Ã¬â€“Â´ ListÃ¬â€”ï¿½ Ã«â€žÂ£Ã¬ï¿½â‚¬ Ã­â€ºâ€ž Container
-	 * ListÃ¬â€”ï¿½ Ã«â€¹Â´Ã¬â€¢â€ž Ã«Â°ËœÃ­â„¢Ëœ
+	 * ÃƒÂ¬Ã…Â¾Ã¢â‚¬Â¦ÃƒÂ«Ã‚Â Ã‚Â¥ÃƒÂ«Ã¯Â¿Â½Ã…â€œ List ElementsÃƒÂ«Ã‚Â¥Ã‚Â¼
+	 * 100ÃƒÂªÃ‚Â°Ã…â€œ ÃƒÂ¬Ã¢â‚¬ï¿½Ã‚Â© ÃƒÂ«Ã‚Â¬Ã‚Â¶ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´
+	 * ListÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½ ÃƒÂ«Ã¢â‚¬Å¾Ã‚Â£ÃƒÂ¬Ã¯Â¿Â½Ã¢â€šÂ¬
+	 * ÃƒÂ­Ã¢â‚¬ÂºÃ¢â‚¬Å¾ Container ListÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
+	 * ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â´ÃƒÂ¬Ã¢â‚¬Â¢Ã¢â‚¬Å¾ ÃƒÂ«Ã‚Â°Ã‹Å“ÃƒÂ­Ã¢â€žÂ¢Ã‹Å“
 	 * 
 	 * @param list
 	 * @return
@@ -338,8 +341,8 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		for (int i = 0; i < containerSize; i++) {
 			innerList = new ArrayList();
 			for (int j = 0; j < size; j++) {
-				if(!list.isEmpty())		{
-				innerList.add(list.get(tmpCnt++));
+				if (!list.isEmpty()) {
+					innerList.add(list.get(tmpCnt++));
 				}
 				if (tmpCnt == totalSize) {
 					break;
@@ -371,9 +374,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 				batchFeed = new ContactFeed();
 
-				List<ContactEntry> splittedList = (List) container.get(i); // Ã«Â¶â€žÃ«Â¦Â¬Ã«ï¿½Å“
+				List<ContactEntry> splittedList = (List) container.get(i); // ÃƒÂ«Ã‚Â¶Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¯Â¿Â½Ã…â€œ
 																			// List
-																			// Ã¬â€“Â»ÃªÂ¸Â°
+																			// ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â»ÃƒÂªÃ‚Â¸Ã‚Â°
 				logger.info("==> splittedList size: " + splittedList.size());
 
 				for (int j = 0; j < splittedList.size(); j++) {
@@ -446,9 +449,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 					batchFeed = new ContactFeed();
 
-					List<ContactEntry> splittedList = (List) container.get(i); // Ã«Â¶â€žÃ«Â¦Â¬Ã«ï¿½Å“
+					List<ContactEntry> splittedList = (List) container.get(i); // ÃƒÂ«Ã‚Â¶Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¯Â¿Â½Ã…â€œ
 																				// List
-																				// Ã¬â€“Â»ÃªÂ¸Â°
+																				// ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â»ÃƒÂªÃ‚Â¸Ã‚Â°
 					logger.info("==> splittedList size: " + splittedList.size());
 
 					for (int j = 0; j < splittedList.size(); j++) {
@@ -521,9 +524,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 				batchFeed = new ContactFeed();
 
-				List<ContactEntry> splittedList = (List) container.get(i); // Ã«Â¶â€žÃ«Â¦Â¬Ã«ï¿½Å“
+				List<ContactEntry> splittedList = (List) container.get(i); // ÃƒÂ«Ã‚Â¶Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¯Â¿Â½Ã…â€œ
 																			// List
-																			// Ã¬â€“Â»ÃªÂ¸Â°
+																			// ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â»ÃƒÂªÃ‚Â¸Ã‚Â°
 				logger.info("==> splittedList size: " + splittedList.size());
 
 				for (int j = 0; j < splittedList.size(); j++) {
@@ -882,9 +885,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 					batchFeed = new ContactFeed();
 
-					List<String> splittedList = (List) container.get(i); // Ã«Â¶â€žÃ«Â¦Â¬Ã«ï¿½Å“
+					List<String> splittedList = (List) container.get(i); // ÃƒÂ«Ã‚Â¶Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¯Â¿Â½Ã…â€œ
 																			// List
-																			// Ã¬â€“Â»ÃªÂ¸Â°
+																			// ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â»ÃƒÂªÃ‚Â¸Ã‚Â°
 					logger.info("==> splittedList size: " + splittedList.size());
 
 					for (int j = 0; j < splittedList.size(); j++) {
@@ -1685,7 +1688,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			}
 
 		} catch (AppException e) {
-System.out.println("Exception caught");
+			System.out.println("Exception caught");
 		}
 	}
 
@@ -1714,6 +1717,49 @@ System.out.println("Exception caught");
 							logger.info("Group Name: " + titleTmp);
 							logger.info("Group Id: " + result);
 							break;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.severe("e.getMessage: " + e.getMessage());
+
+		}
+
+	}
+
+	@Override
+	public void removeDuplicateGroups(String groupName, String userEmail) {
+		String result = null;
+		try {
+			String feedurl = getUserFeedUrl(appProperties.getGroupFeedUrl(),
+					userEmail);
+			String scGrpName = groupName;
+			logger.info("scGrpName: " + scGrpName);
+			ContactsService service = getContactsService();
+			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+					ContactGroupFeed.class);
+			if (resultFeed != null) {
+				String titleTmp = null;
+				TextConstruct tc = null;
+				int count = 0;
+				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
+					ContactGroupEntry groupEntry = resultFeed.getEntries().get(
+							i);
+					tc = groupEntry.getTitle();
+					if (tc != null) {
+						titleTmp = tc.getPlainText();
+						System.out.println("Contacts group Name:"+titleTmp);
+						// logger.info("Id: " + groupEntry.getId());
+						if (titleTmp.equals(scGrpName)) {
+
+							if (count != 0) {
+								groupEntry.delete();
+								logger.info("Deleted Group Name: " + titleTmp);
+								logger.info("Deleted Group Id: " + result);
+							}
+							count++;
 						}
 					}
 				}

@@ -81,13 +81,32 @@ import com.netkiller.workflow.impl.context.SyncUserContactsContext;
 import com.netkiller.workflow.impl.processor.WorkflowStatusType;
 
 /**
- * ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¬Ã…Â¡Ã‚Â©ÃƒÂ¬Ã…Â¾Ã¯Â¿Â½ ÃƒÂ¬Ã¢â‚¬ÂºÃ‚Â¹ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‹Å“ ÃƒÂ¬Ã‚Â¡Ã‚Â°ÃƒÂ­Ã…Â¡Ã…â€™/ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±/ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â /ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â­ÃƒÂ¬Ã‚Â Ã…â€œ URLÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
- * ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤ ÃƒÂ¬Ã‚Â»Ã‚Â´ÃƒÂ­Ã¯Â¿Â½Ã‚Â¬ÃƒÂ«Ã¢â‚¬Å¾Ã…â€™ÃƒÂ­Ã…Â Ã‚Â¸ÃƒÂ«Ã‚Â¥Ã‚Â¼ ÃƒÂ­Ã¢â‚¬Â Ã‚ÂµÃƒÂ­Ã¢â‚¬Â¢Ã‚Â´ ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
+ * ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¬Ã…Â¡Ã‚Â©ÃƒÂ¬Ã…Â¾
+ * Ã¯Â¿Â½
+ * ÃƒÂ¬Ã¢â‚¬ÂºÃ‚Â¹ÃƒÂ«Ã‚Â¸Ã…â€™Ã�
+ * �Â«Ã¯Â¿
+ * Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸
+ * ÃƒÂ¬Ã¯Â¿Â½Ã‹Å“
+ * ÃƒÂ¬Ã‚Â¡Ã‚Â°ÃƒÂ­Ã…Â¡Ã�
+ * �â€™/ÃƒÂ¬Ã†â€™Ã�
+ * �Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±/Ã�
+ * �ÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚�
+ * �Â¹Ã‚Â /ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â­ÃƒÂ¬Ã‚Â Ã…â€œ
+ * URLÃ�
+ * �Â¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­ÃƒÂ¬Ã¯Â�
+ * �Â½Ã¢â‚¬Å¾
+ * ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚�
+ * �Å¾ÃƒÂ¬Ã…Â Ã‚Â¤
+ * ÃƒÂ¬Ã‚Â»Ã‚Â´ÃƒÂ­Ã¯Â¿Â½
+ * Ã‚Â¬ÃƒÂ«Ã¢â‚¬Å¾
+ * Ã…â€™ÃƒÂ­Ã…Â Ã‚Â¸ÃƒÂ«Ã‚Â¥Ã‚Â¼
+ * ÃƒÂ­Ã¢â‚¬Â Ã‚ÂµÃƒÂ­Ã¢â‚¬Â¢Ã‚Â´
+ * ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
  * 
  * @author ykko
  */
 @org.springframework.stereotype.Controller
-public class SharedContactsController  {
+public class SharedContactsController {
 
 	@Resource
 	private GridRequestParser gridRequestParser;
@@ -98,10 +117,11 @@ public class SharedContactsController  {
 
 	protected final Logger logger = Logger.getLogger(getClass().getName());
 
-	// ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ­Ã¯Â¿Â½Ã‚Â¼ÃƒÂ­Ã¢â‚¬Â¹Ã‚Â° ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤
+	// ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ­Ã¯Â¿Â½Ã‚Â¼ÃƒÂ­Ã¢â‚¬Â¹Ã‚Â°
+	// ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤
 	@Autowired
 	private AppProperties appProperties;
-	
+
 	@Autowired
 	private WorkflowManager workflowManager;
 
@@ -109,7 +129,8 @@ public class SharedContactsController  {
 		this.appProperties = appProperties;
 	}
 
-	// ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¢â‚¬Â¹Ã…â€œÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤
+	// ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¢â‚¬Â¹Ã…â€œÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬
+	// ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤
 	@Autowired
 	private MessageSource messageSource;
 
@@ -117,16 +138,28 @@ public class SharedContactsController  {
 		this.messageSource = messageSource;
 	}
 
-	// ÃƒÂ«Ã¯Â¿Â½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ÃƒÂªÃ‚Â³Ã‚ÂµÃƒÂ¬Ã…â€œÃ‚Â ÃƒÂ¬Ã‚Â£Ã‚Â¼ÃƒÂ¬Ã¢â‚¬Â Ã…â€™ÃƒÂ«Ã‚Â¡Ã¯Â¿Â½ ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤ÃƒÂ¬Ã‚Â»Ã‚Â´ÃƒÂ­Ã¯Â¿Â½Ã‚Â¬ÃƒÂ«Ã¢â‚¬Å¾Ã…â€™ÃƒÂ­Ã…Â Ã‚Â¸
+	// ÃƒÂ«Ã¯Â¿Â½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ÃƒÂªÃ‚Â³Ã‚ÂµÃƒÂ¬Ã…â€œÃ‚Â ÃƒÂ¬Ã‚Â£Ã‚Â¼ÃƒÂ¬Ã¢â‚¬Â Ã…â€™ÃƒÂ«Ã‚Â¡Ã¯Â¿Â½
+	// ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤ÃƒÂ¬Ã‚Â»Ã‚Â´ÃƒÂ­Ã¯Â¿Â½Ã‚Â¬ÃƒÂ«Ã¢â‚¬Å¾Ã…â€™ÃƒÂ­Ã…Â Ã‚Â¸
 	@Autowired
 	private SharedContactsService sharedContactsService;
 
-	public void setSharedContactsService(SharedContactsService sharedContactsService) {
+	public void setSharedContactsService(
+			SharedContactsService sharedContactsService) {
 		this.sharedContactsService = sharedContactsService;
 	}
 
 	/**
-	 * ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â° ÃƒÂ«Ã¢â‚¬Å¾Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´ÃƒÂ¬Ã‹Å“Ã‚Â¨ ÃƒÂªÃ‚Â°Ã¯Â¿Â½ÃƒÂ¬Ã‚Â¢Ã¢â‚¬Â¦ ÃƒÂ­Ã…â€™Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ«Ã‚Â¯Ã‚Â¸ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â°ÃƒÂ«Ã‚Â¥Ã‚Â¼ ÃƒÂ¬Ã‚Â¶Ã…â€œÃƒÂ«Ã‚Â Ã‚Â¥
+	 * ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…�
+	 * �¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ
+	 * «Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â°
+	 * ÃƒÂ«Ã¢â‚�
+	 * �Å¾Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´ÃƒÂ
+	 * ¬Ã‹Å“Ã‚Â¨
+	 * ÃƒÂªÃ‚Â°Ã¯Â¿Â½ÃƒÂ¬Ã‚Â¢Ã¢â‚¬Â¦
+	 * ÃƒÂ­Ã�
+	 * �â€™Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ«Ã‚�
+	 * �¯Ã‚Â¸ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â°ÃƒÂ«Ã‚Â¥Ã‚Â¼
+	 * ÃƒÂ¬Ã‚Â¶Ã…â€œÃƒÂ«Ã‚Â Ã‚Â¥
 	 * 
 	 * @param request
 	 */
@@ -134,14 +167,27 @@ public class SharedContactsController  {
 		Enumeration enu = request.getParameterNames();
 		while (enu.hasMoreElements()) {
 			String name = (String) enu.nextElement();
-			logger.info("name: " + name + "\t value:" + request.getParameter(name));
+			logger.info("name: " + name + "\t value:"
+					+ request.getParameter(name));
 		}
 	}
 
 	/**
-	 * app.properties ÃƒÂ­Ã…â€™Ã…â€™ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½ ÃƒÂ«Ã¢â‚¬Å“Ã‚Â±ÃƒÂ«Ã‚Â¡Ã¯Â¿Â½ÃƒÂ«Ã¯Â¿Â½Ã…â€œ SharedContactsGroupNameÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ Google
-	 * Domain Shared ContactsÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½ ÃƒÂ¬Ã¢â‚¬â€�Ã¢â‚¬Â ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â° SharedContactsGroupNameÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
-	 * ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±, ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â° ÃƒÂ­Ã¢â‚¬Â Ã‚ÂµÃƒÂªÃ‚Â³Ã‚Â¼
+	 * app.properties
+	 * ÃƒÂ­Ã…â€™Ã…â€™ÃƒÂ¬Ã¯Â¿Â½Ã‚�
+	 * �¼ÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
+	 * ÃƒÂ«Ã¢â‚¬Å“Ã‚Â
+	 * ±ÃƒÂ«Ã‚Â¡Ã¯Â¿Â½ÃƒÂ«Ã¯Â¿Â½Ã…â€œ
+	 * SharedContactsGroupNameÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ Google Domain Shared
+	 * ContactsÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
+	 * ÃƒÂ¬Ã¢â‚¬â€�
+	 * �Ã¢â‚¬Â ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+	 * ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â°
+	 * SharedContactsGroupNameÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+	 * ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±,
+	 * ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+	 * ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â°
+	 * ÃƒÂ­Ã¢â‚¬Â Ã‚ÂµÃƒÂªÃ‚Â³Ã‚Â¼
 	 * 
 	 * @return
 	 */
@@ -152,57 +198,71 @@ public class SharedContactsController  {
 		try {
 			UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();
-			String sharedContactsGroupName = sharedContactsService.getGroupName(CommonWebUtil.getDomain(user.getEmail()));
+			String sharedContactsGroupName = sharedContactsService
+					.getGroupName(CommonWebUtil.getDomain(user.getEmail()));
 
-			groupId = sharedContactsService.getSharedContactsGroupId(sharedContactsGroupName);
-			logger.info("sharedContactsGroupName ===> " + sharedContactsGroupName);
+			groupId = sharedContactsService
+					.getSharedContactsGroupId(sharedContactsGroupName);
+			logger.info("sharedContactsGroupName ===> "
+					+ sharedContactsGroupName);
 			logger.info("groupId ===> " + groupId);
 			if (groupId == null || groupId.equals("")) {
 				ContactGroupEntry group = new ContactGroupEntry();
 				group.setSummary(new PlainTextConstruct(sharedContactsGroupName));
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
 				sharedContactsService.create(group);
-				groupId = sharedContactsService.getSharedContactsGroupId(sharedContactsGroupName);
+				groupId = sharedContactsService
+						.getSharedContactsGroupId(sharedContactsGroupName);
 
 				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
 				gmInfo.setHref(groupId); // added
-				for (ContactEntry entry : makeInitialContacts()) {
+				/*for (ContactEntry entry : makeInitialContacts()) {
 					entry.addGroupMembershipInfo(gmInfo);
 					sharedContactsService.create(entry);
 
-				}
-				
+				}*/
 
 			}
 		} catch (Exception e) {
-			logger.log(Level.SEVERE,e.getMessage(),e);
+			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return groupId;
 	}
-	
+
 	private List<ContactEntry> makeInitialContacts() {
 		List<ContactEntry> contactEntries = new ArrayList<ContactEntry>();
-		contactEntries.add(sharedContactsService.makeContact("Netkiller Support", "Netkiller", "Support", "Support", "support@netkiller.com",
-				"1-424-785-0180", "2033 Gateway Place, Ste 500, San Jose, CA 95110"));
-		contactEntries.add(sharedContactsService.makeContact("Netkiller Sales", "Netkiller", "Sales", "Sales", "sales@netkiller.com",
-				"1-424-785-0180", "2033 Gateway Place, Ste 500, San Jose, CA 95110"));
-		contactEntries.add(sharedContactsService.makeContact("Netkiller Korea", "Netkiller", "Korea", "Support", "support@netkiller.com",
-				"82-2-2052-0453", "16F, Gangnam BLDG.,1321-1 Seocho-dong, Seocho-gu, Seoul 137070, South Korea"));
+		contactEntries.add(sharedContactsService.makeContact(
+				"Netkiller Support", "Netkiller", "Support", "Support",
+				"support@netkiller.com", "1-424-785-0180",
+				"2033 Gateway Place, Ste 500, San Jose, CA 95110"));
+		contactEntries.add(sharedContactsService.makeContact("Netkiller Sales",
+				"Netkiller", "Sales", "Sales", "sales@netkiller.com",
+				"1-424-785-0180",
+				"2033 Gateway Place, Ste 500, San Jose, CA 95110"));
+		contactEntries
+				.add(sharedContactsService
+						.makeContact("Netkiller Korea", "Netkiller", "Korea",
+								"Support", "support@netkiller.com",
+								"82-2-2052-0453",
+								"16F, Gangnam BLDG.,1321-1 Seocho-dong, Seocho-gu, Seoul 137070, South Korea"));
 		return contactEntries;
 	}
 
 	/*
-	 //  This method is now called from the "AddInitialGroupAndContactsTask" workflow
-	 private List<ContactEntry> makeInitialContacts() {
-		List<ContactEntry> contactEntries = new ArrayList<ContactEntry>();
-		contactEntries.add(makeContact("Netkiller Support", "Netkiller", "Support", "Support", "support@netkiller.com",
-				"1-424-785-0180", "2033 Gateway Place, Ste 500, San Jose, CA 95110"));
-		contactEntries.add(makeContact("Netkiller Sales", "Netkiller", "Sales", "Sales", "sales@netkiller.com",
-				"1-424-785-0180", "2033 Gateway Place, Ste 500, San Jose, CA 95110"));
-		contactEntries.add(makeContact("Netkiller Korea", "Netkiller", "Korea", "Support", "support@netkiller.com",
-				"82-2-2052-0453", "16F, Gangnam BLDG.,1321-1 Seocho-dong, Seocho-gu, Seoul 137070, South Korea"));
-		return contactEntries;
-	}*/
+	 * // This method is now called from the "AddInitialGroupAndContactsTask"
+	 * workflow private List<ContactEntry> makeInitialContacts() {
+	 * List<ContactEntry> contactEntries = new ArrayList<ContactEntry>();
+	 * contactEntries.add(makeContact("Netkiller Support", "Netkiller",
+	 * "Support", "Support", "support@netkiller.com", "1-424-785-0180",
+	 * "2033 Gateway Place, Ste 500, San Jose, CA 95110"));
+	 * contactEntries.add(makeContact("Netkiller Sales", "Netkiller", "Sales",
+	 * "Sales", "sales@netkiller.com", "1-424-785-0180",
+	 * "2033 Gateway Place, Ste 500, San Jose, CA 95110"));
+	 * contactEntries.add(makeContact("Netkiller Korea", "Netkiller", "Korea",
+	 * "Support", "support@netkiller.com", "82-2-2052-0453",
+	 * "16F, Gangnam BLDG.,1321-1 Seocho-dong, Seocho-gu, Seoul 137070, South Korea"
+	 * )); return contactEntries; }
+	 */
 
 	private String getUserGroupId(String email) {
 
@@ -213,9 +273,11 @@ public class SharedContactsController  {
 			User user = userService.getCurrentUser();
 			String sharedContactsGroupName = sharedContactsService
 					.getGroupName(CommonWebUtil.getDomain(user.getEmail()));
-
-			groupId = sharedContactsService.getUserContactsGroupId(sharedContactsGroupName, email);
-			logger.info("sharedContactsGroupName ===> " + sharedContactsGroupName);
+			
+			groupId = sharedContactsService.getUserContactsGroupId(
+					sharedContactsGroupName, email);
+			logger.info("sharedContactsGroupName ===> "
+					+ sharedContactsGroupName);
 			logger.info("groupId ===> " + groupId);
 			while (groupId == null || groupId.equals("")) {
 				ContactGroupEntry group = new ContactGroupEntry();
@@ -225,7 +287,8 @@ public class SharedContactsController  {
 				// getCurrentUser(request).getEmail());
 				sharedContactsService.createGroup(group, email);
 
-				groupId = sharedContactsService.getUserContactsGroupId(sharedContactsGroupName, email);
+				groupId = sharedContactsService.getUserContactsGroupId(
+						sharedContactsGroupName, email);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -233,7 +296,7 @@ public class SharedContactsController  {
 		}
 		return groupId;
 	}
-	
+
 	private String getUserGroupId(String email, String groupName) {
 
 		String groupId = null;
@@ -243,8 +306,10 @@ public class SharedContactsController  {
 			User user = userService.getCurrentUser();
 			String sharedContactsGroupName = groupName;
 
-			groupId = sharedContactsService.getUserContactsGroupId(sharedContactsGroupName, email);
-			logger.info("sharedContactsGroupName ===> " + sharedContactsGroupName);
+			groupId = sharedContactsService.getUserContactsGroupId(
+					sharedContactsGroupName, email);
+			logger.info("sharedContactsGroupName ===> "
+					+ sharedContactsGroupName);
 			logger.info("groupId ===> " + groupId);
 			while (groupId == null || groupId.equals("")) {
 				ContactGroupEntry group = new ContactGroupEntry();
@@ -254,7 +319,8 @@ public class SharedContactsController  {
 				// getCurrentUser(request).getEmail());
 				sharedContactsService.createGroup(group, email);
 
-				groupId = sharedContactsService.getUserContactsGroupId(sharedContactsGroupName, email);
+				groupId = sharedContactsService.getUserContactsGroupId(
+						sharedContactsGroupName, email);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -270,44 +336,84 @@ public class SharedContactsController  {
 	private boolean arePropertiesLoaded;
 	private static double count = 0d;
 
+	/*
+	 * @RequestMapping("/deleteDuplicateGroups.do") public
+	 */
+
 	/**
-	 * ÃƒÂ¬Ã¢â‚¬ÂºÃ‚Â¹ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸ URL ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­ÃƒÂ¬Ã¢â‚¬Â¹Ã…â€œ ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â Ã‹â€ ÃƒÂ¬Ã…Â¾Ã¢â‚¬Å¾ÃƒÂ¬Ã¢â‚¬ÂºÃ…â€™ÃƒÂ­Ã¯Â¿Â½Ã‚Â¬ÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½ ÃƒÂ¬Ã¯Â¿Â½Ã‹Å“ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â´ ÃƒÂ¬Ã…Â¾Ã¯Â¿Â½ÃƒÂ«Ã¯Â¿Â½Ã¢â€žÂ¢ ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â¤ÃƒÂ­Ã¢â‚¬â€œÃ¢â‚¬Â°,
-	 * ÃƒÂªÃ‚Â°Ã¯Â¿Â½ÃƒÂ¬Ã‚Â¢Ã¢â‚¬Â¦ ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
+	 * ÃƒÂ¬Ã¢â‚¬ÂºÃ‚Â¹ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã�
+	 * �Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸
+	 * URL ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­ÃƒÂ¬
+	 * Ã¢â‚¬Â¹Ã…â€œ
+	 * ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ
+	 * «Ã‚Â Ã‹â€ Ãƒ�
+	 * �¬Ã…Â¾Ã¢â‚¬Å¾ÃƒÂ¬Ã¢â‚¬
+	 * ÂºÃ…â€™ÃƒÂ­Ã�
+	 * �Â¿Â½Ã‚Â¬ÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
+	 * ÃƒÂ¬Ã¯Â¿Â½Ã‹Å“ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â´
+	 * ÃƒÂ¬Ã…Â¾Ã¯Â¿Â½ÃƒÂ«Ã¯Â¿Â½Ã¢â€žÂ¢
+	 * ÃƒÂ¬Ã¢â‚�
+	 * �Â¹Ã‚Â¤ÃƒÂ­Ã¢â‚¬â€œÃ¢â‚¬Â°,
+	 * ÃƒÂªÃ‚Â°Ã¯Â¿Â½ÃƒÂ¬Ã‚Â¢Ã¢â‚¬Â¦
+	 * ÃƒÂ¬Ã�
+	 * �Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­ÃƒÂ¬Ã¯Â
+	 * ¿Â½Ã¢â‚¬Å¾
+	 * ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 	 */
 	@RequestMapping("/sharedcontacts/main.do")
-	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, ParseException {
+	public ModelAndView handleRequest(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException,
+			ParseException {
 
 		ModelAndView mnv = null;
 		UserService userService = UserServiceFactory.getUserService();
 		Customer currentCustomer = null;
 		User user = userService.getCurrentUser();
 		if (user != null) {
-			request.getSession().setAttribute("user", new UserInfo(user.getUserId(), user.getEmail(), null, null));
+			request.getSession()
+					.setAttribute(
+							"user",
+							new UserInfo(user.getUserId(), user.getEmail(),
+									null, null));
 		}
 		// set User Email in contact service
 		try {
-			currentCustomer = sharedContactsService.verifyUser(getCurrentUser(request).getEmail());
+			currentCustomer = sharedContactsService.verifyUser(getCurrentUser(
+					request).getEmail());
 			// sharedContactsService.setUserEamil(getCurrentUser(request).getEmail());
 		} catch (Exception e) {
-//		    response.sendRedirect("/login.jsp");
-//			 String loginURL =
-//			 userService.createLoginURL(request.getRequestURI());
-//			 response.sendRedirect(loginURL); //ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂ¬Ã¢â‚¬Â¢Ã‹â€ ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´ ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
-			// ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â° ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂ­Ã…Â½Ã‹Å“ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¡Ã…â€œ ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ«Ã‚Â Ã¢â‚¬Â°ÃƒÂ­Ã…Â Ã‚Â¸
+			// response.sendRedirect("/login.jsp");
+			// String loginURL =
+			// userService.createLoginURL(request.getRequestURI());
+			// response.sendRedirect(loginURL);
+			// //ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
+			// ÃƒÂ¬Ã¢â‚¬Â¢Ã‹â€ ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´
+			// ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+			// ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â°
+			// ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
+			// ÃƒÂ­Ã…Â½Ã‹Å“ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¡Ã…â€œ
+			// ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ«Ã‚Â Ã¢â‚¬Â°ÃƒÂ­Ã…Â Ã‚Â¸
 		}
 
 		if (user == null) {
-			String loginURL = userService.createLoginURL(request.getRequestURI());
-			response.sendRedirect(loginURL); // ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂ¬Ã¢â‚¬Â¢Ã‹â€ ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´ ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
-												// ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â° ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂ­Ã…Â½Ã‹Å“ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¡Ã…â€œ
+			String loginURL = userService.createLoginURL(request
+					.getRequestURI());
+			response.sendRedirect(loginURL); // ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
+												// ÃƒÂ¬Ã¢â‚¬Â¢Ã‹â€ ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´
+												// ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+												// ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â°
+												// ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
+												// ÃƒÂ­Ã…Â½Ã‹Å“ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¡Ã…â€œ
 												// ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ«Ã‚Â Ã¢â‚¬Â°ÃƒÂ­Ã…Â Ã‚Â¸
 
 		}
 
 		/* else{ */
-		if (!arePropertiesLoaded) { // ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ­Ã¯Â¿Â½Ã‚Â¼ÃƒÂ­Ã¢â‚¬Â¹Ã‚Â° ÃƒÂªÃ‚Â°Ã¢â‚¬â„¢ÃƒÂ«Ã¢â‚¬Å“Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ Assign
-									// ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€�Ã‹â€ ÃƒÂ«Ã…Â Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬Â¢ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
+		if (!arePropertiesLoaded) { // ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ­Ã¯Â¿Â½Ã‚Â¼ÃƒÂ­Ã¢â‚¬Â¹Ã‚Â°
+									// ÃƒÂªÃ‚Â°Ã¢â‚¬â„¢ÃƒÂ«Ã¢â‚¬Å“Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´
+									// Assign
+									// ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€�Ã‹â€ ÃƒÂ«Ã…Â Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬
+									// ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬Â¢ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
 
 			// userEmail = user.getEmail();
 			// userDomain = CommonWebUtil.getDomain(userEmail);
@@ -315,7 +421,8 @@ public class SharedContactsController  {
 			// adminDomain = appProperties.getAdminDomain();
 
 			domainCheck = Boolean.parseBoolean(appProperties.getDomainCheck());
-			isUseForSharedContacts = Boolean.parseBoolean(appProperties.getIsUseForSharedContacts());
+			isUseForSharedContacts = Boolean.parseBoolean(appProperties
+					.getIsUseForSharedContacts());
 
 			// logger.info("userEmail: " + userEmail);
 			// logger.info("userDomain: " + userDomain);
@@ -326,90 +433,109 @@ public class SharedContactsController  {
 			arePropertiesLoaded = true;
 		}
 
-		if (domainCheck) { // ÃƒÂ­Ã…Â Ã‚Â¹ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢ ÃƒÂ«Ã¯Â¿Â½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂ¬Ã…â€œÃ‚Â ÃƒÂ¬Ã‚Â Ã¢â€šÂ¬ÃƒÂªÃ‚Â°Ã¢â€šÂ¬ ÃƒÂ¬Ã¢â‚¬Â¢Ã¢â‚¬Å¾ÃƒÂ«Ã¢â‚¬Â¹Ã…â€™ ÃƒÂ¬Ã‚Â Ã¢â‚¬ËœÃƒÂªÃ‚Â·Ã‚Â¼ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â°
-							// permission error ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¢â‚¬Â¹Ã…â€œÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¥Ã‚Â¼ ÃƒÂ«Ã‚Â³Ã‚Â´ÃƒÂ«Ã†â€™Ã¢â‚¬Å¾
+		if (domainCheck) { // ÃƒÂ­Ã…Â Ã‚Â¹ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢
+							// ÃƒÂ«Ã¯Â¿Â½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
+							// ÃƒÂ¬Ã…â€œÃ‚Â ÃƒÂ¬Ã‚Â Ã¢â€šÂ¬ÃƒÂªÃ‚Â°Ã¢â€šÂ¬
+							// ÃƒÂ¬Ã¢â‚¬Â¢Ã¢â‚¬Å¾ÃƒÂ«Ã¢â‚¬Â¹Ã…â€™
+							// ÃƒÂ¬Ã‚Â Ã¢â‚¬ËœÃƒÂªÃ‚Â·Ã‚Â¼ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
+							// ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â°
+							// permission error
+							// ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¢â‚¬Â¹Ã…â€œÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¥Ã‚Â¼
+							// ÃƒÂ«Ã‚Â³Ã‚Â´ÃƒÂ«Ã†â€™Ã¢â‚¬Å¾
 			if (!userDomain.equals(adminDomain)) {
 				Map<String, String> result = new HashMap<String, String>();
-				result.put("logoutUrl", userService.createLogoutURL(request.getRequestURI()));
-				return new ModelAndView("/sharedcontacts/permission_error", "result", result);
+				result.put("logoutUrl",
+						userService.createLogoutURL(request.getRequestURI()));
+				return new ModelAndView("/sharedcontacts/permission_error",
+						"result", result);
 			}
 		}
-		
-		if(!StringUtils.isBlank(CommonWebUtil.getParameter(request, "group"))&&CommonWebUtil.getParameter(request, "cmd").equals("initializeContacts"))	{
+
+		if (!StringUtils.isBlank(CommonWebUtil.getParameter(request, "group"))
+				&& CommonWebUtil.getParameter(request, "cmd").equals(
+						"initializeContacts")) {
 			String domain = CommonWebUtil.getDomain(user.getEmail());
-			
-			
+
 			// Create a workflow to create the initial contacts and groups
 			AddInitialContactsAndGroupContext context = new AddInitialContactsAndGroupContext();
 			context.setDomain(domain);
 			context.setEmail(user.getEmail());
 			context.setGroup(CommonWebUtil.getParameter(request, "group"));
-			
-			WorkflowInfo workflowInfo = new WorkflowInfo("addInitialContactsAndGroupWorkflowProcessor");
+
+			WorkflowInfo workflowInfo = new WorkflowInfo(
+					"addInitialContactsAndGroupWorkflowProcessor");
 			workflowInfo.setIsNewWorkflow(true);
-			
-			
+
 			Workflow workflow = new Workflow();
 			workflow.setContext(context);
 			workflow.setWorkflowName(workflowInfo.getWorkflowName());
 			workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
 			workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
-			
+
 			context.setWorkflowInfo(workflowInfo);
-			workflowManager.triggerWorkflow(workflow);	
-			
+			workflowManager.triggerWorkflow(workflow);
+
 			String message = "Shared Groups Succesfully Created";
 			Map result = new HashMap();
 			result.put("code", "success");
 			result.put("message", message);
-			return new ModelAndView("/sharedcontacts/comm_result_xml", "result", result);
-			
-			
-			
-			
-			/*for (String userId : sharedContactsService.getAllDomainUsersIncludingAdmin(domain)) {
-				List<ContactEntry> contactEntries = new ArrayList<ContactEntry>();
-				for (ContactEntry entry : makeInitialContacts()) {
-					String userGroupId = getUserGroupId(userId + "@" + domain,CommonWebUtil.getParameter(request, "group")); // added
-					GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
-					userGmInfo.setHref(userGroupId); // added
-					entry.addGroupMembershipInfo(userGmInfo);
-					contactEntries.add(entry);
-				}
-				
-				try {
-					sharedContactsService.multipleCreateUserContacts(contactEntries, user.getEmail());
-				} catch (AppException e) {
-					e.printStackTrace();
-				}
-			}*/
+			return new ModelAndView("/sharedcontacts/comm_result_xml",
+					"result", result);
+
+			/*
+			 * for (String userId :
+			 * sharedContactsService.getAllDomainUsersIncludingAdmin(domain)) {
+			 * List<ContactEntry> contactEntries = new
+			 * ArrayList<ContactEntry>(); for (ContactEntry entry :
+			 * makeInitialContacts()) { String userGroupId =
+			 * getUserGroupId(userId + "@" +
+			 * domain,CommonWebUtil.getParameter(request, "group")); // added
+			 * GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); //
+			 * added userGmInfo.setHref(userGroupId); // added
+			 * entry.addGroupMembershipInfo(userGmInfo);
+			 * contactEntries.add(entry); }
+			 * 
+			 * try {
+			 * sharedContactsService.multipleCreateUserContacts(contactEntries,
+			 * user.getEmail()); } catch (AppException e) { e.printStackTrace();
+			 * } }
+			 */
 		}
-		if (getGroupId() == null && !StringUtils.isBlank(CommonWebUtil.getParameter(request, "groupName"))) {
-			sharedContactsService.setGroupName(CommonWebUtil.getDomain(getCurrentUser(request).getEmail()),
-					CommonWebUtil.getParameter(request, "groupName"));
+		if (getGroupId() == null
+				&& !StringUtils.isBlank(CommonWebUtil.getParameter(request,
+						"groupName"))) {
+			sharedContactsService
+					.setGroupName(CommonWebUtil.getDomain(getCurrentUser(
+							request).getEmail()), CommonWebUtil.getParameter(
+							request, "groupName"));
 		}
 		if (getGroupId() == null) {
-			return new ModelAndView("/sharedcontacts/promptSharedContactsGroupName", "result", null);
+			return new ModelAndView(
+					"/sharedcontacts/promptSharedContactsGroupName", "result",
+					null);
 		}
-		
-		
 
 		String cmd = CommonWebUtil.getParameter(request, "cmd");
 		logger.info("cmd:" + cmd);
 
-		if (cmd.equals("getheader")) { // UI ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´ ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨
+		if (cmd.equals("getheader")) { // UI
+										// ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´
+										// ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨
 
 			Map<String, Object> result = new HashMap<String, Object>();
 
 			// String adminUserName = appProperties.getUsername();
 			result.put("adminUserName", currentCustomer.getAdminEmail());
 			result.put("userEmail", getCurrentUser(request).getEmail());
-			result.put("logoutUrl", "https://mail.google.com/mail/?logout&hl=en");
+			result.put("logoutUrl",
+					"https://mail.google.com/mail/?logout&hl=en");
 			result.put(
 					"isUserAdmin",
 					!sharedContactsService.getAllDomainUsers(
-							CommonWebUtil.getDomain(getCurrentUser(request).getEmail())).contains(
-							CommonWebUtil.getUserId(getCurrentUser(request).getEmail())));
+							CommonWebUtil.getDomain(getCurrentUser(request)
+									.getEmail())).contains(
+							CommonWebUtil.getUserId(getCurrentUser(request)
+									.getEmail())));
 			// result.put("logoutUrl",
 			// userService.createLogoutURL(request.getRequestURI()));
 
@@ -417,8 +543,10 @@ public class SharedContactsController  {
 
 		} else if (!sharedContactsService.isUserAuthorized(user.getEmail())) {
 			Map<String, String> result = new HashMap<String, String>();
-			result.put("logoutUrl", userService.createLogoutURL(request.getRequestURI()));
-			return new ModelAndView("/sharedcontacts/authorizationerror", "result", result);
+			result.put("logoutUrl",
+					userService.createLogoutURL(request.getRequestURI()));
+			return new ModelAndView("/sharedcontacts/authorizationerror",
+					"result", result);
 
 		}
 
@@ -428,47 +556,61 @@ public class SharedContactsController  {
 			Map<String, Object> result = new HashMap<String, Object>();
 			result.put("adminUserName", currentCustomer.getAdminEmail());
 			result.put("userEmail", getCurrentUser(request).getEmail());
-			if (sharedContactsService.isUserPermitted(getCurrentUser(request).getEmail()))
+			if (sharedContactsService.isUserPermitted(getCurrentUser(request)
+					.getEmail()))
 				result.put("isUserPermitted", true);
 			else
 				result.put("isUserPermitted", false);
-			String defaultGridOrder = CommonWebUtil.getParameter(request, "defaultGridOrder");
+			String defaultGridOrder = CommonWebUtil.getParameter(request,
+					"defaultGridOrder");
 			result.put("defaultGridOrder", defaultGridOrder);
 
 			result.put("isUserAdmin", sharedContactsService.isUserAdmin());
 			mnv = new ModelAndView("/sharedcontacts/list", "result", result);
 
-		} else if (cmd.equals("actcustomerremove")) {// Contact ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â± ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
-			String domain = CommonWebUtil.getParameter(request, "domainToBeDeleted");
+		} else if (cmd.equals("actcustomerremove")) {// Contact
+														// ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±
+														// ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
+			String domain = CommonWebUtil.getParameter(request,
+					"domainToBeDeleted");
 			if (domain == null) {
 				String message = "Delete Operation failed";
 				Map result = new HashMap();
 				result.put("code", "error");
 				result.put("message", message);
-				return new ModelAndView("/sharedcontacts/comm_result_xml", "result", result);
+				return new ModelAndView("/sharedcontacts/comm_result_xml",
+						"result", result);
 			} else {
 				sharedContactsService.removeDomainAdmin(domain);
 				String message = "Succesfully Deleted";
 				Map result = new HashMap();
 				result.put("code", "success");
 				result.put("message", message);
-				return new ModelAndView("/sharedcontacts/comm_result_xml", "result", result);
+				return new ModelAndView("/sharedcontacts/comm_result_xml",
+						"result", result);
 			}
 		} else if (cmd.equals("customers")) {
 			Map<String, String> result = new HashMap<String, String>();
-			if (!StringUtils.isBlank(CommonWebUtil.getParameter(request, "domain"))) {
-				if (sharedContactsService.getAllDomainUsers(CommonWebUtil.getParameter(request, "domain")) == null) {
+			if (!StringUtils.isBlank(CommonWebUtil.getParameter(request,
+					"domain"))) {
+				if (sharedContactsService.getAllDomainUsers(CommonWebUtil
+						.getParameter(request, "domain")) == null) {
 					result.put("domainStatus", "notInUse");
-					result.put("domainToBeDeleted", CommonWebUtil.getParameter(request, "domain"));
+					result.put("domainToBeDeleted",
+							CommonWebUtil.getParameter(request, "domain"));
 				} else
 					result.put("domainStatus", "inUse");
 			}
-			mnv = new ModelAndView("/sharedcontacts/customers-list", "result", result);
+			mnv = new ModelAndView("/sharedcontacts/customers-list", "result",
+					result);
 		} else if (cmd.equals("actgroupcreate")) {
 			// getUserGroupId(request);
 			Map<String, String> result = new HashMap<String, String>();
-			mnv = new ModelAndView("/sharedcontacts/customers-list", "result", result);
-		} else if (cmd.equals("getfooter")) { // UI ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´ ÃƒÂ­Ã¢â‚¬Â¢Ã‹Å“ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨
+			mnv = new ModelAndView("/sharedcontacts/customers-list", "result",
+					result);
+		} else if (cmd.equals("getfooter")) { // UI
+												// ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´
+												// ÃƒÂ­Ã¢â‚¬Â¢Ã‹Å“ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨
 			Map<String, String> result = new HashMap<String, String>();
 
 			try {
@@ -481,8 +623,8 @@ public class SharedContactsController  {
 					}
 				}
 
-				List<ContactEntry> list = sharedContactsService.getContacts(1, limit, getGroupId(),
-						isUseForSharedContacts, null);
+				List<ContactEntry> list = sharedContactsService.getContacts(1,
+						limit, getGroupId(), isUseForSharedContacts, null);
 				count = list.size();
 
 			} catch (AppException e) {
@@ -502,13 +644,25 @@ public class SharedContactsController  {
 			} else
 				result.put("isPurchased", "false");
 			mnv = new ModelAndView("/sharedcontacts/footer", "result", result);
-		} else if (cmd.equals("list_data")) { // Grid ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â° ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
+		} else if (cmd.equals("list_data")) { // Grid
+												// ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â°
+												// ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 			mnv = getContacts(request, response, currentCustomer);
-		} else if (cmd.equals("syncContacts")) { // Grid ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â° ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
+		} else if (cmd.equals("syncContacts")) { // Grid
+													// ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â°
+													// ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 			mnv = syncContacts(request, response, currentCustomer);
-		} else if (cmd.equals("customers-list-data")) { // Grid ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â° ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
+		} else if (cmd.equals("deleteDuplicate")) { // Grid
+													// ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â°
+													// ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
+			mnv = deleteDuplicate(request, response, currentCustomer);
+		} else if (cmd.equals("customers-list-data")) { // Grid
+														// ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â°
+														// ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 			mnv = getCustomersList(request, response);
-		} else if (cmd.equals("details")) { // ÃƒÂ­Ã…Â Ã‚Â¹ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢ ContactÃƒÂ¬Ã¯Â¿Â½Ã‹Å“ ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â¸ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢ÃƒÂ«Ã‚Â³Ã‚Â´
+		} else if (cmd.equals("details")) { // ÃƒÂ­Ã…Â Ã‚Â¹ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢
+											// ContactÃƒÂ¬Ã¯Â¿Â½Ã‹Å“
+											// ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â¸ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢ÃƒÂ«Ã‚Â³Ã‚Â´
 											// ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 
 			// return new ModelAndView("/sharedcontacts/details", "result",
@@ -542,8 +696,8 @@ public class SharedContactsController  {
 			String sord = CommonWebUtil.getParameter(request, "sord"); // ascending
 																		// or
 																		// descending.
-			logger.info("### PARAMS: page: " + page + ", " + "rows: " + rows + ", " + "sidx: " + sidx + ", " + "sord: "
-					+ sord);
+			logger.info("### PARAMS: page: " + page + ", " + "rows: " + rows
+					+ ", " + "sidx: " + sidx + ", " + "sord: " + sord);
 
 			Map result = new HashMap();
 			result.put("page", page);
@@ -555,22 +709,33 @@ public class SharedContactsController  {
 			// String adminUserName = appProperties.getUsername();
 			result.put("adminUserName", currentCustomer.getAdminEmail());
 			mnv = new ModelAndView("/sharedcontacts/details", "result", result);
-		} else if (cmd.equals("create")) { // Contact ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂ¬Ã…â€œÃ¢â‚¬Å¾ÃƒÂ­Ã¢â‚¬Â¢Ã…â€œ ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´
+		} else if (cmd.equals("create")) { // Contact
+											// ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+											// ÃƒÂ¬Ã…â€œÃ¢â‚¬Å¾ÃƒÂ­Ã¢â‚¬Â¢Ã…â€œ
+											// ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´
 											// ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 			mnv = new ModelAndView("/sharedcontacts/create");
-		} else if (cmd.equals("actcreate")) {// Contact ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â± ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
+		} else if (cmd.equals("actcreate")) {// Contact
+												// ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±
+												// ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			if ((!currentCustomer.getAccountType().equals("Paid") && count == 100)
-					|| (!currentCustomer.getAccountType().equals("Paid") && count == 50 
-							&& CommonUtil.isTheSecondTypeCustomer(currentCustomer))) {
-				String message = messageSource.getMessage("account.limit", null, Locale.US);
+					|| (!currentCustomer.getAccountType().equals("Paid")
+							&& count == 50 && CommonUtil
+							.isTheSecondTypeCustomer(currentCustomer))) {
+				String message = messageSource.getMessage("account.limit",
+						null, Locale.US);
 				Map result = new HashMap();
 				result.put("code", "error");
 				result.put("message", message);
-				return new ModelAndView("/sharedcontacts/comm_result_xml", "result", result);
+				return new ModelAndView("/sharedcontacts/comm_result_xml",
+						"result", result);
 			} else {
 				mnv = create(request, response);
 			}
-		} else if (cmd.equals("modify")) { // Contact ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂ¬Ã…â€œÃ¢â‚¬Å¾ÃƒÂ­Ã¢â‚¬Â¢Ã…â€œ ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´
+		} else if (cmd.equals("modify")) { // Contact
+											// ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+											// ÃƒÂ¬Ã…â€œÃ¢â‚¬Å¾ÃƒÂ­Ã¢â‚¬Â¢Ã…â€œ
+											// ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´
 											// ÃƒÂ¬Ã…Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­
 			// mnv = getContact(request, response);
 			ContactEntry contact = getContact(request, response);
@@ -602,8 +767,8 @@ public class SharedContactsController  {
 			String sord = CommonWebUtil.getParameter(request, "sord"); // ascending
 																		// or
 																		// descending.
-			logger.info("### PARAMS: page: " + page + ", " + "rows: " + rows + ", " + "sidx: " + sidx + ", " + "sord: "
-					+ sord);
+			logger.info("### PARAMS: page: " + page + ", " + "rows: " + rows
+					+ ", " + "sidx: " + sidx + ", " + "sord: " + sord);
 
 			Map result = new HashMap();
 			result.put("page", page);
@@ -615,14 +780,22 @@ public class SharedContactsController  {
 			// String adminUserName = appProperties.getUsername();
 			result.put("adminUserName", currentCustomer.getAdminEmail());
 			mnv = new ModelAndView("/sharedcontacts/modify", "result", result);
-		} else if (cmd.equals("actmodify")) { // Contact ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â  ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
+		} else if (cmd.equals("actmodify")) { // Contact
+												// ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â 
+												// ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			mnv = modify(request, response);
-		} else if (cmd.equals("actmodifysimply")) { // ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¬Ã…Â¡Ã‚Â©ÃƒÂ¬Ã…Â¾Ã¯Â¿Â½ ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´ÃƒÂ¬Ã¯Â¿Â½Ã‹Å“
-													// Contact Grid ÃƒÂ¬Ã†â€™Ã¯Â¿Â½
-													// ÃƒÂªÃ‚Â°Ã¢â‚¬Å¾ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨ÃƒÂ­Ã¢â‚¬Â¢Ã…â€œ Contact ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â 
+		} else if (cmd.equals("actmodifysimply")) { // ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¬Ã…Â¡Ã‚Â©ÃƒÂ¬Ã…Â¾Ã¯Â¿Â½
+													// ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´ÃƒÂ¬Ã¯Â¿Â½Ã‹Å“
+													// Contact Grid
+													// ÃƒÂ¬Ã†â€™Ã¯Â¿Â½
+													// ÃƒÂªÃ‚Â°Ã¢â‚¬Å¾ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨ÃƒÂ­Ã¢â‚¬Â¢Ã…â€œ
+													// Contact
+													// ÃƒÂªÃ‚Â°Ã‚Â±ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â 
 													// ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			mnv = modifySimply(request, response);
-		} else if (cmd.equals("actremove")) { // Contact ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â­ÃƒÂ¬Ã‚Â Ã…â€œ ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
+		} else if (cmd.equals("actremove")) { // Contact
+												// ÃƒÂ¬Ã¢â‚¬Å¡Ã‚Â­ÃƒÂ¬Ã‚Â Ã…â€œ
+												// ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			mnv = remove(request, response);
 		} else if (cmd.equals("actdownload")) {
 			mnv = download(request, response, currentCustomer);
@@ -635,7 +808,8 @@ public class SharedContactsController  {
 		} else if (cmd.equals("showmap")) {
 
 			Map result = new HashMap();
-			result.put("address", CommonWebUtil.getParameter(request, "address"));
+			result.put("address",
+					CommonWebUtil.getParameter(request, "address"));
 			mnv = new ModelAndView("/sharedcontacts/map", "result", result);
 		} else if (cmd.equals("authorizeForm")) {
 
@@ -662,7 +836,38 @@ public class SharedContactsController  {
 		return mnv;
 	}
 
-	private ModelAndView syncContacts(HttpServletRequest request, HttpServletResponse response, Customer currentCustomer) {
+	private ModelAndView deleteDuplicate(HttpServletRequest request,
+			HttpServletResponse response, Customer currentCustomer) {
+		// TODO Auto-generated method stub
+		
+		String email = getCurrentUser(request).getEmail();
+		String domain = CommonWebUtil.getDomain(email);
+		Map<String, String> result = new HashMap<String, String>();
+		String message = null;
+		String groupName = sharedContactsService.getGroupName(domain);
+		boolean success = true;
+		try {
+			sharedContactsService.removeDuplicateGroups(groupName, email);
+			message ="Duplicate Groups removed successfully";
+		} catch (Exception e) {
+			e.printStackTrace();
+			success = false;
+			message ="Error Occured";
+		}
+		if(success)	{
+		result.put("code", "success");
+		}
+		else 	{
+			result.put("code", "error");	
+		}
+		result.put("message", message);
+
+		return new ModelAndView("/sharedcontacts/comm_result_xml", "result",
+				result);
+	}
+
+	private ModelAndView syncContacts(HttpServletRequest request,
+			HttpServletResponse response, Customer currentCustomer) {
 		// TODO Auto-generated method stub
 		List<ContactEntry> entries = null;
 		int total_pages = 0;
@@ -673,12 +878,11 @@ public class SharedContactsController  {
 
 			// entries = sharedContactsService.getContacts(page, rows, sidx,
 			// sord);
-			
+
 			if (isUseForSharedContacts) {
 				groupId = getGroupId();
 			}
 
-			
 			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
 				totalLimit = 30000;
 			} else {
@@ -687,10 +891,9 @@ public class SharedContactsController  {
 				}
 			}
 
-			entries = sharedContactsService.getContacts(1, totalLimit, groupId, isUseForSharedContacts, null);
+			entries = sharedContactsService.getContacts(1, totalLimit, groupId,
+					isUseForSharedContacts, null);
 			logger.info("### 1. entries.size() ===> " + entries.size());
-
-			
 
 		} catch (Exception e) {
 			logger.severe(e.getMessage());
@@ -700,53 +903,62 @@ public class SharedContactsController  {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		String dateString = formatter.format(date);
 		String email = getCurrentUser(request).getEmail();
-		UserSync userSync = sharedContactsService.getUserSync(getCurrentUser(request).getEmail(),dateString);
+		UserSync userSync = sharedContactsService.getUserSync(
+				getCurrentUser(request).getEmail(), dateString);
 		Map<String, String> result = new HashMap<String, String>();
 		String message = null;
-		if (userSync == null || (userSync != null && !userSync.getDate().equals(dateString))) {
+		if (userSync == null
+				|| (userSync != null && !userSync.getDate().equals(dateString))) {
 			SyncUserContactsContext syncUserContactsContext = new SyncUserContactsContext();
-			syncUserContactsContext.setUserEmail(getCurrentUser(request).getEmail());
+			syncUserContactsContext.setUserEmail(getCurrentUser(request)
+					.getEmail());
 			syncUserContactsContext.setGroupId(groupId);
-			syncUserContactsContext.setIsUseForSharedContacts(isUseForSharedContacts);
+			syncUserContactsContext
+					.setIsUseForSharedContacts(isUseForSharedContacts);
 			syncUserContactsContext.setTotalLimit(totalLimit);
-			
-			WorkflowInfo workflowInfo = new WorkflowInfo("syncUserContactsWorkflowProcessor");
+
+			WorkflowInfo workflowInfo = new WorkflowInfo(
+					"syncUserContactsWorkflowProcessor");
 			workflowInfo.setIsNewWorkflow(true);
-			
-			
+
 			Workflow workflow = new Workflow();
 			workflow.setContext(syncUserContactsContext);
 			workflow.setWorkflowName(workflowInfo.getWorkflowName());
 			workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
 			workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
-			
+
 			syncUserContactsContext.setWorkflowInfo(workflowInfo);
-			workflowManager.triggerWorkflow(workflow);	
-			//sharedContactsService.syncUserContacts(getCurrentUser(request).getEmail(), entries);
+			workflowManager.triggerWorkflow(workflow);
+			// sharedContactsService.syncUserContacts(getCurrentUser(request).getEmail(),
+			// entries);
 			message = "User Contacts will get syncronized within 10 minutes";
 		} else {
 			message = "Cannot sync. User limit crossed for the day ";
 		}
 		if (userSync == null) {
-			sharedContactsService.createUserSync(email, CommonWebUtil.getDomain(email), dateString);
+			sharedContactsService.createUserSync(email,
+					CommonWebUtil.getDomain(email), dateString);
 		} else {
-			sharedContactsService.createUserSync(email, CommonWebUtil.getDomain(email), dateString);
+			sharedContactsService.createUserSync(email,
+					CommonWebUtil.getDomain(email), dateString);
 		}
 
 		result.put("code", "success");
 		result.put("message", message);
 
-		return new ModelAndView("/sharedcontacts/comm_result_xml", "result", result);
+		return new ModelAndView("/sharedcontacts/comm_result_xml", "result",
+				result);
 
 	}
 
-	private ContactInfo getContactInfo(HttpServletRequest request){
+	private ContactInfo getContactInfo(HttpServletRequest request) {
 		String fullname = CommonWebUtil.getParameter(request, "fullname");
 		String givenname = CommonWebUtil.getParameter(request, "givenname");
 		String familyname = CommonWebUtil.getParameter(request, "familyname");
 		String companyname = CommonWebUtil.getParameter(request, "companyname");
 		String companydept = CommonWebUtil.getParameter(request, "companydept");
-		String companytitle = CommonWebUtil.getParameter(request, "companytitle");
+		String companytitle = CommonWebUtil.getParameter(request,
+				"companytitle");
 		String workemail = CommonWebUtil.getParameter(request, "workemail");
 		String homeemail = CommonWebUtil.getParameter(request, "homeemail");
 		String otheremail = CommonWebUtil.getParameter(request, "otheremail");
@@ -755,9 +967,10 @@ public class SharedContactsController  {
 		String mobilephone = CommonWebUtil.getParameter(request, "mobilephone");
 		String workaddress = CommonWebUtil.getParameter(request, "workaddress");
 		String homeaddress = CommonWebUtil.getParameter(request, "homeaddress");
-		String otheraddress = CommonWebUtil.getParameter(request, "otheraddress");
+		String otheraddress = CommonWebUtil.getParameter(request,
+				"otheraddress");
 		String notes = CommonWebUtil.getParameter(request, "notes");
-		
+
 		ContactInfo contactInfo = new ContactInfo();
 		contactInfo.setCompanydept(companydept);
 		contactInfo.setCompanyname(companyname);
@@ -775,14 +988,26 @@ public class SharedContactsController  {
 		contactInfo.setWorkaddress(workaddress);
 		contactInfo.setWorkemail(workemail);
 		contactInfo.setWorkphone(workphone);
-		
+
 		return contactInfo;
-		
+
 	}
-	
+
 	/**
-	 * ÃƒÂ¬Ã¢â‚¬ÂºÃ‚Â¹ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â° ÃƒÂ¬Ã‚Â Ã¢â‚¬Å¾ÃƒÂ¬Ã¢â‚¬Â Ã‚Â¡ÃƒÂ«Ã¯Â¿Â½Ã…â€œ ÃƒÂ«Ã¯Â¿Â½Ã‚Â°ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚¬Å¾Ã‚Â°ÃƒÂ«Ã¢â‚¬Å“Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ¬Ã…Â¡Ã‚Â©ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â´
-	 * ContactEntryÃƒÂ«Ã‚Â¥Ã‚Â¼ ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±
+	 * ÃƒÂ¬Ã¢â‚¬ÂºÃ‚Â¹ÃƒÂ«Ã‚Â¸Ã…â€™ÃƒÂ«Ã�
+	 * �Â¿Â½Ã‚Â¼ÃƒÂ¬Ã…Â¡Ã‚Â°ÃƒÂ¬Ã‚Â Ã‚Â¸Ã�
+	 * �Â«Ã‚Â¡Ã…â€œÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ
+	 * ­Ã¢â‚¬Å¾Ã‚Â°
+	 * ÃƒÂ¬Ã‚Â Ã¢â‚¬Å¾ÃƒÂ¬Ã¢â‚�
+	 * �Â Ã‚Â¡ÃƒÂ«Ã¯Â¿Â½Ã…â€œ
+	 * ÃƒÂ«Ã¯Â¿Â½Ã‚Â
+	 * °ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ­Ã¢â‚�
+	 * �Å¾Ã‚Â°ÃƒÂ«Ã¢â‚�
+	 * �Å“Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+	 * ÃƒÂ¬Ã¯Â¿Â½Ã‚�
+	 * �´ÃƒÂ¬Ã…Â¡Ã‚Â©ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â´
+	 * ContactEntryÃƒÂ«Ã‚Â¥Ã‚Â¼
+	 * ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±
 	 * 
 	 * @param request
 	 * @return
@@ -794,7 +1019,8 @@ public class SharedContactsController  {
 		String familyname = CommonWebUtil.getParameter(request, "familyname");
 		String companyname = CommonWebUtil.getParameter(request, "companyname");
 		String companydept = CommonWebUtil.getParameter(request, "companydept");
-		String companytitle = CommonWebUtil.getParameter(request, "companytitle");
+		String companytitle = CommonWebUtil.getParameter(request,
+				"companytitle");
 		String workemail = CommonWebUtil.getParameter(request, "workemail");
 		String homeemail = CommonWebUtil.getParameter(request, "homeemail");
 		String otheremail = CommonWebUtil.getParameter(request, "otheremail");
@@ -803,7 +1029,8 @@ public class SharedContactsController  {
 		String mobilephone = CommonWebUtil.getParameter(request, "mobilephone");
 		String workaddress = CommonWebUtil.getParameter(request, "workaddress");
 		String homeaddress = CommonWebUtil.getParameter(request, "homeaddress");
-		String otheraddress = CommonWebUtil.getParameter(request, "otheraddress");
+		String otheraddress = CommonWebUtil.getParameter(request,
+				"otheraddress");
 		String notes = CommonWebUtil.getParameter(request, "notes");
 
 		logger.info("fullname: " + fullname);
@@ -913,7 +1140,8 @@ public class SharedContactsController  {
 		 */
 
 		if (!workaddress.equals("")) {
-			FormattedAddress formattedAddress = new FormattedAddress(workaddress);
+			FormattedAddress formattedAddress = new FormattedAddress(
+					workaddress);
 			StructuredPostalAddress postalAddress = new StructuredPostalAddress();
 			postalAddress.setFormattedAddress(formattedAddress);
 			postalAddress.setRel(StaticProperties.WORK_REL);
@@ -922,7 +1150,8 @@ public class SharedContactsController  {
 		}
 
 		if (!homeaddress.equals("")) {
-			FormattedAddress formattedAddress = new FormattedAddress(homeaddress);
+			FormattedAddress formattedAddress = new FormattedAddress(
+					homeaddress);
 			StructuredPostalAddress postalAddress = new StructuredPostalAddress();
 			postalAddress.setFormattedAddress(formattedAddress);
 			postalAddress.setRel(StaticProperties.HOME_REL);
@@ -931,7 +1160,8 @@ public class SharedContactsController  {
 		}
 
 		if (!otheraddress.equals("")) {
-			FormattedAddress formattedAddress = new FormattedAddress(otheraddress);
+			FormattedAddress formattedAddress = new FormattedAddress(
+					otheraddress);
 			StructuredPostalAddress postalAddress = new StructuredPostalAddress();
 			postalAddress.setFormattedAddress(formattedAddress);
 			postalAddress.setRel(StaticProperties.OTHER_REL);
@@ -956,16 +1186,15 @@ public class SharedContactsController  {
 
 		if (!notes.equals("")) {
 			// contact.setContent(new PlainTextConstruct(notes));
-			contact.getUserDefinedFields().add(new UserDefinedField("Notes", notes));
+			contact.getUserDefinedFields().add(
+					new UserDefinedField("Notes", notes));
 		}
 
 		return contact;
 	}
 
-	
-
-	public ModelAndView modifySimply(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
+	public ModelAndView modifySimply(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		printParams(request);
 
@@ -1078,15 +1307,20 @@ public class SharedContactsController  {
 			}
 
 			if (workaddress.equals("")) {
-				util.removeStructuredPostalAddress(entry, StaticProperties.WORK_REL);
+				util.removeStructuredPostalAddress(entry,
+						StaticProperties.WORK_REL);
 			} else {
-				StructuredPostalAddress address = util.getStructuredPostalAddress(entry, StaticProperties.WORK_REL);
+				StructuredPostalAddress address = util
+						.getStructuredPostalAddress(entry,
+								StaticProperties.WORK_REL);
 
 				logger.info("address is null? " + (address == null));
 
 				if (address != null) {
-					FormattedAddress formattedAddress = address.getFormattedAddress();
-					logger.info("formattedAddress is null? " + (formattedAddress == null));
+					FormattedAddress formattedAddress = address
+							.getFormattedAddress();
+					logger.info("formattedAddress is null? "
+							+ (formattedAddress == null));
 					if (formattedAddress != null) {
 						formattedAddress.setValue(workaddress);
 					} else {
@@ -1110,7 +1344,8 @@ public class SharedContactsController  {
 			// }
 
 			sharedContactsService.update(entry);
-			String message = messageSource.getMessage("modification.success", null, Locale.US);
+			String message = messageSource.getMessage("modification.success",
+					null, Locale.US);
 
 			result.put("code", "success");
 			result.put("message", message);
@@ -1118,15 +1353,17 @@ public class SharedContactsController  {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe(e.getMessage());
-			String message = messageSource.getMessage("error.default", null, Locale.US);
+			String message = messageSource.getMessage("error.default", null,
+					Locale.US);
 			result.put("code", "error");
 			result.put("message", message);
 		}
-		return new ModelAndView("/sharedcontacts/comm_result_xml", "result", result);
+		return new ModelAndView("/sharedcontacts/comm_result_xml", "result",
+				result);
 	}
 
-	public ModelAndView modify(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
+	public ModelAndView modify(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		String id = CommonWebUtil.getParameter(request, "id");
 		logger.info("=====> id: " + id);
@@ -1136,21 +1373,25 @@ public class SharedContactsController  {
 		try {
 			ContactEntry contact = sharedContactsService.getContact(id);
 			logger.info("contact is null? " + (contact == null));
-			logger.info("contact.getEditLink().getHref()? " + contact.getEditLink().getHref());
+			logger.info("contact.getEditLink().getHref()? "
+					+ contact.getEditLink().getHref());
 			update(request, contact);
 			sharedContactsService.update(contact);
-			String message = messageSource.getMessage("modification.success", null, Locale.US);
+			String message = messageSource.getMessage("modification.success",
+					null, Locale.US);
 			result.put("code", "success");
 			result.put("message", message);
 			logger.info("No error!");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe(e.getMessage());
-			String message = messageSource.getMessage("error.default", null, Locale.US);
+			String message = messageSource.getMessage("error.default", null,
+					Locale.US);
 			result.put("code", "error");
 			result.put("message", message);
 		}
-		return new ModelAndView("/sharedcontacts/comm_result_xml", "result", result);
+		return new ModelAndView("/sharedcontacts/comm_result_xml", "result",
+				result);
 	}
 
 	private void update(HttpServletRequest request, ContactEntry contact) {
@@ -1160,7 +1401,8 @@ public class SharedContactsController  {
 		String familyname = CommonWebUtil.getParameter(request, "familyname");
 		String companyname = CommonWebUtil.getParameter(request, "companyname");
 		String companydept = CommonWebUtil.getParameter(request, "companydept");
-		String companytitle = CommonWebUtil.getParameter(request, "companytitle");
+		String companytitle = CommonWebUtil.getParameter(request,
+				"companytitle");
 		String workemail = CommonWebUtil.getParameter(request, "workemail");
 		String homeemail = CommonWebUtil.getParameter(request, "homeemail");
 		String otheremail = CommonWebUtil.getParameter(request, "otheremail");
@@ -1169,7 +1411,8 @@ public class SharedContactsController  {
 		String mobilephone = CommonWebUtil.getParameter(request, "mobilephone");
 		String workaddress = CommonWebUtil.getParameter(request, "workaddress");
 		String homeaddress = CommonWebUtil.getParameter(request, "homeaddress");
-		String otheraddress = CommonWebUtil.getParameter(request, "otheraddress");
+		String otheraddress = CommonWebUtil.getParameter(request,
+				"otheraddress");
 		String notes = CommonWebUtil.getParameter(request, "notes");
 
 		logger.info("fullname: " + fullname);
@@ -1298,7 +1541,8 @@ public class SharedContactsController  {
 		if (workphone.equals("")) {
 			util.removePhoneNumberObj(contact, "work");
 		} else {
-			PhoneNumber workPhoneNumber = util.getPhoneNumberObj(contact, "work");
+			PhoneNumber workPhoneNumber = util.getPhoneNumberObj(contact,
+					"work");
 			if (workPhoneNumber != null) {
 				workPhoneNumber.setPhoneNumber(workphone);
 			} else {
@@ -1315,7 +1559,8 @@ public class SharedContactsController  {
 		if (homephone.equals("")) {
 			util.removePhoneNumberObj(contact, "home");
 		} else {
-			PhoneNumber homePhoneNumber = util.getPhoneNumberObj(contact, "home");
+			PhoneNumber homePhoneNumber = util.getPhoneNumberObj(contact,
+					"home");
 			if (homePhoneNumber != null) {
 				homePhoneNumber.setPhoneNumber(homephone);
 			} else {
@@ -1332,7 +1577,8 @@ public class SharedContactsController  {
 		if (mobilephone.equals("")) {
 			util.removePhoneNumberObj(contact, "mobile");
 		} else {
-			PhoneNumber mobilePhoneNumber = util.getPhoneNumberObj(contact, "mobile");
+			PhoneNumber mobilePhoneNumber = util.getPhoneNumberObj(contact,
+					"mobile");
 			if (mobilePhoneNumber != null) {
 				mobilePhoneNumber.setPhoneNumber(mobilephone);
 			} else {
@@ -1347,15 +1593,19 @@ public class SharedContactsController  {
 		}
 
 		if (workaddress.equals("")) {
-			util.removeStructuredPostalAddress(contact, StaticProperties.WORK_REL);
+			util.removeStructuredPostalAddress(contact,
+					StaticProperties.WORK_REL);
 		} else {
-			StructuredPostalAddress address = util.getStructuredPostalAddress(contact, StaticProperties.WORK_REL);
+			StructuredPostalAddress address = util.getStructuredPostalAddress(
+					contact, StaticProperties.WORK_REL);
 
 			logger.info("address is null? " + (address == null));
 
 			if (address != null) {
-				FormattedAddress formattedAddress = address.getFormattedAddress();
-				logger.info("formattedAddress is null? " + (formattedAddress == null));
+				FormattedAddress formattedAddress = address
+						.getFormattedAddress();
+				logger.info("formattedAddress is null? "
+						+ (formattedAddress == null));
 				if (formattedAddress != null) {
 					formattedAddress.setValue(workaddress);
 				} else {
@@ -1375,11 +1625,14 @@ public class SharedContactsController  {
 		}
 
 		if (homeaddress.equals("")) {
-			util.removeStructuredPostalAddress(contact, StaticProperties.HOME_REL);
+			util.removeStructuredPostalAddress(contact,
+					StaticProperties.HOME_REL);
 		} else {
-			StructuredPostalAddress address = util.getStructuredPostalAddress(contact, StaticProperties.HOME_REL);
+			StructuredPostalAddress address = util.getStructuredPostalAddress(
+					contact, StaticProperties.HOME_REL);
 			if (address != null) {
-				FormattedAddress formattedAddress = address.getFormattedAddress();
+				FormattedAddress formattedAddress = address
+						.getFormattedAddress();
 				if (formattedAddress != null) {
 					formattedAddress.setValue(homeaddress);
 				} else {
@@ -1399,11 +1652,14 @@ public class SharedContactsController  {
 		}
 
 		if (otheraddress.equals("")) {
-			util.removeStructuredPostalAddress(contact, StaticProperties.OTHER_REL);
+			util.removeStructuredPostalAddress(contact,
+					StaticProperties.OTHER_REL);
 		} else {
-			StructuredPostalAddress address = util.getStructuredPostalAddress(contact, StaticProperties.OTHER_REL);
+			StructuredPostalAddress address = util.getStructuredPostalAddress(
+					contact, StaticProperties.OTHER_REL);
 			if (address != null) {
-				FormattedAddress formattedAddress = address.getFormattedAddress();
+				FormattedAddress formattedAddress = address
+						.getFormattedAddress();
 				if (formattedAddress != null) {
 					formattedAddress.setValue(otheraddress);
 				} else {
@@ -1433,22 +1689,18 @@ public class SharedContactsController  {
 		}
 	}
 
-	public ModelAndView create(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
+	public ModelAndView create(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		Map result = new HashMap();
-		String domain = CommonWebUtil.getDomain(getCurrentUser(request).getEmail());
+		String domain = CommonWebUtil.getDomain(getCurrentUser(request)
+				.getEmail());
 
 		try {
-			
-			
+
 			ContactEntry entry = makeContact(request);
-			
-			
-			
-			
-			
-			//ContactEntry entry = makeContact(request);
+
+			// ContactEntry entry = makeContact(request);
 
 			if (isUseForSharedContacts) {
 				String groupId = getGroupId(); // added
@@ -1458,64 +1710,72 @@ public class SharedContactsController  {
 
 				// TEST
 				// entry.getUserDefinedFields().add(new
-				// UserDefinedField("ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¬Ã‚Â¸", "ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã‹Å“Ã¯Â¿Â½ÃƒÂªÃ‚Â´Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬-TEST"));
+				// UserDefinedField("ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¬Ã‚Â¸",
+				// "ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã‹Å“Ã¯Â¿Â½ÃƒÂªÃ‚Â´Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬-TEST"));
 				// entry.getUserDefinedFields().add(new
 				// UserDefinedField("Bumun", "Management-TEST"));
 			} else {
 				// TEST
 				// entry.getUserDefinedFields().add(new
-				// UserDefinedField("ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¬Ã‚Â¸", "ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã‹Å“Ã¯Â¿Â½ÃƒÂªÃ‚Â´Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬"));
+				// UserDefinedField("ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¬Ã‚Â¸",
+				// "ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã‹Å“Ã¯Â¿Â½ÃƒÂªÃ‚Â´Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬"));
 				// entry.getUserDefinedFields().add(new
 				// UserDefinedField("Bumun", "Management"));
 			}
 
-			sharedContactsService.create(entry);			
-			
+			sharedContactsService.create(entry);
+
 			AddContactForAllDomainUsersContext context = new AddContactForAllDomainUsersContext();
-			
+
 			context.setContactInfo(getContactInfo(request));
 			context.setDomain(domain);
 			context.setIsUseForSharedContacts(isUseForSharedContacts);
-			
-			WorkflowInfo workflowInfo = new WorkflowInfo("addContactForAllDomainUsersWorkflowProcessor");
+
+			WorkflowInfo workflowInfo = new WorkflowInfo(
+					"addContactForAllDomainUsersWorkflowProcessor");
 			workflowInfo.setIsNewWorkflow(true);
-			
-			
+
 			Workflow workflow = new Workflow();
 			workflow.setContext(context);
 			workflow.setWorkflowName(workflowInfo.getWorkflowName());
 			workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
 			workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
-			
-			context.setWorkflowInfo(workflowInfo);
-			workflowManager.triggerWorkflow(workflow);	
-			
-			/*for (String userId : sharedContactsService.getAllDomainUsersWithReadAndWritePErmissionIncludingAdmin(domain)) {
-				System.out.println("contacts creation  uiser id  = " + userId);
-				ContactEntry newentry = makeContact(request);
-				String userGroupId = getUserGroupId(userId + "@" + domain); // added
 
-				GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
-				userGmInfo.setHref(userGroupId); // added
-				newentry.addGroupMembershipInfo(userGmInfo);
-				sharedContactsService.createUserContact(newentry, userId + "@" + domain);
-			}*/
-			String message = messageSource.getMessage("creation.success", null, Locale.US);
+			context.setWorkflowInfo(workflowInfo);
+			workflowManager.triggerWorkflow(workflow);
+
+			/*
+			 * for (String userId : sharedContactsService.
+			 * getAllDomainUsersWithReadAndWritePErmissionIncludingAdmin
+			 * (domain)) { System.out.println("contacts creation  uiser id  = "
+			 * + userId); ContactEntry newentry = makeContact(request); String
+			 * userGroupId = getUserGroupId(userId + "@" + domain); // added
+			 * 
+			 * GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); //
+			 * added userGmInfo.setHref(userGroupId); // added
+			 * newentry.addGroupMembershipInfo(userGmInfo);
+			 * sharedContactsService.createUserContact(newentry, userId + "@" +
+			 * domain); }
+			 */
+			String message = messageSource.getMessage("creation.success", null,
+					Locale.US);
 			result.put("code", "success");
 			result.put("message", message);
 			logger.info("No error!");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe(e.getMessage());
-			String message = messageSource.getMessage("error.default", null, Locale.US);
+			String message = messageSource.getMessage("error.default", null,
+					Locale.US);
 			result.put("code", "error");
 			result.put("message", message);
 		}
-		return new ModelAndView("/sharedcontacts/comm_result_xml", "result", result);
+		return new ModelAndView("/sharedcontacts/comm_result_xml", "result",
+				result);
 	}
 
-	public ContactEntry getContact(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
+	public ContactEntry getContact(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		String page = CommonWebUtil.getParameter(request, "page"); // get the
 																	// requested
@@ -1536,8 +1796,8 @@ public class SharedContactsController  {
 		String sord = CommonWebUtil.getParameter(request, "sord"); // ascending
 																	// or
 																	// descending.
-		logger.info("### PARAMS: page: " + page + ", " + "rows: " + rows + ", " + "sidx: " + sidx + ", " + "sord: "
-				+ sord);
+		logger.info("### PARAMS: page: " + page + ", " + "rows: " + rows + ", "
+				+ "sidx: " + sidx + ", " + "sord: " + sord);
 
 		String id = CommonWebUtil.getParameter(request, "id");
 		logger.info("id: " + id);
@@ -1563,8 +1823,8 @@ public class SharedContactsController  {
 		return contact;
 	}
 
-	public ModelAndView getCustomersList(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public ModelAndView getCustomersList(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		String page = CommonWebUtil.getParameter(request, "page"); // get the
 																	// requested
@@ -1632,10 +1892,12 @@ public class SharedContactsController  {
 		result.put("sidx", sidx);
 		result.put("sord", sord);
 
-		return new ModelAndView("/sharedcontacts/customers-list-data", "result", result);
+		return new ModelAndView("/sharedcontacts/customers-list-data",
+				"result", result);
 	}
 
-	public ModelAndView getContacts(HttpServletRequest request, HttpServletResponse response, Customer currentCustomer)
+	public ModelAndView getContacts(HttpServletRequest request,
+			HttpServletResponse response, Customer currentCustomer)
 			throws ServletException, IOException {
 		GridRequest dataCriteria = gridRequestParser.parseDataCriteria(request);
 		String page = CommonWebUtil.getParameter(request, "page"); // get the
@@ -1666,8 +1928,8 @@ public class SharedContactsController  {
 		String sord = CommonWebUtil.getParameter(request, "sord"); // ascending
 																	// or
 																	// descending.
-		logger.info("### PARAMS: page: " + page + ", " + "rows: " + rows + ", " + "sidx: " + sidx + ", " + "sord: "
-				+ sord);
+		logger.info("### PARAMS: page: " + page + ", " + "rows: " + rows + ", "
+				+ "sidx: " + sidx + ", " + "sord: " + sord);
 
 		int pageNum = Integer.parseInt(page);
 		double limit = Double.parseDouble(rows);
@@ -1694,7 +1956,8 @@ public class SharedContactsController  {
 				}
 			}
 
-			entries = sharedContactsService.getContacts(1, totalLimit, groupId, isUseForSharedContacts, dataCriteria);
+			entries = sharedContactsService.getContacts(1, totalLimit, groupId,
+					isUseForSharedContacts, dataCriteria);
 			logger.info("### 1. entries.size() ===> " + entries.size());
 
 			if (entries != null) {
@@ -1732,7 +1995,8 @@ public class SharedContactsController  {
 		result.put("gridRequest", dataCriteria);
 
 		result.put("rows", rows);
-		if (CommonWebUtil.getParameter(request, "defaultGridOrder").equals("lastModifiedDate")) {
+		if (CommonWebUtil.getParameter(request, "defaultGridOrder").equals(
+				"lastModifiedDate")) {
 
 			result.put("sidx", "no");
 			result.put("sord", "");
@@ -1745,8 +2009,8 @@ public class SharedContactsController  {
 		return new ModelAndView("/sharedcontacts/list_data", "result", result);
 	}
 
-	public ModelAndView remove(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
+	public ModelAndView remove(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		Map result = new HashMap();
 		String ids_to_del = CommonWebUtil.getParameter(request, "ids_to_del");
 		logger.info("ids_to_del: " + ids_to_del);
@@ -1759,22 +2023,26 @@ public class SharedContactsController  {
 		}
 		try {
 			sharedContactsService.remove(ids);
-			String message = messageSource.getMessage("deletion.success", null, Locale.US);
+			String message = messageSource.getMessage("deletion.success", null,
+					Locale.US);
 			result.put("code", "success");
 			result.put("message", message);
 			logger.info("No error!");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe(e.getMessage());
-			String message = messageSource.getMessage("error.default", null, Locale.US);
+			String message = messageSource.getMessage("error.default", null,
+					Locale.US);
 			result.put("code", "error");
 			result.put("message", message);
 		}
 
-		return new ModelAndView("/sharedcontacts/comm_result_xml", "result", result);
+		return new ModelAndView("/sharedcontacts/comm_result_xml", "result",
+				result);
 	}
 
-	public ModelAndView download(HttpServletRequest request, HttpServletResponse response, Customer currentCustomer)
+	public ModelAndView download(HttpServletRequest request,
+			HttpServletResponse response, Customer currentCustomer)
 			throws ServletException, IOException {
 		Map result = new HashMap();
 		try {
@@ -1786,8 +2054,8 @@ public class SharedContactsController  {
 					totalLimit = 50;
 				}
 			}
-			List<ContactEntry> contacts = sharedContactsService.getContacts(1, totalLimit, getGroupId(),
-					isUseForSharedContacts, null);
+			List<ContactEntry> contacts = sharedContactsService.getContacts(1,
+					totalLimit, getGroupId(), isUseForSharedContacts, null);
 			String sheetName = "SharedContacts";
 			/*
 			 * response.setContentType("application/vnd.ms-excel");
@@ -1795,17 +2063,21 @@ public class SharedContactsController  {
 			 * + sheetName + ".xls");
 			 */
 			response.setContentType("application/CSV");
-			response.setHeader("Content-Disposition", "attachment; filename=" + sheetName + ".csv");
+			response.setHeader("Content-Disposition", "attachment; filename="
+					+ sheetName + ".csv");
 
-			sharedContactsService.download(contacts, response.getOutputStream());
-			String message = messageSource.getMessage("deletion.success", null, Locale.US);
+			sharedContactsService
+					.download(contacts, response.getOutputStream());
+			String message = messageSource.getMessage("deletion.success", null,
+					Locale.US);
 			result.put("code", "success");
 			result.put("message", message);
 			logger.info("No error!");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe(e.getMessage());
-			String message = messageSource.getMessage("error.default", null, Locale.US);
+			String message = messageSource.getMessage("error.default", null,
+					Locale.US);
 			result.put("code", "error");
 			result.put("message", message);
 		}
@@ -1813,52 +2085,61 @@ public class SharedContactsController  {
 		return null;
 	}
 
-	private ModelAndView updateStatus(HttpServletRequest request, HttpServletResponse response, Customer currentCustomer) {
+	private ModelAndView updateStatus(HttpServletRequest request,
+			HttpServletResponse response, Customer currentCustomer) {
 
-		sharedContactsService.updateMembership(Long.parseLong(CommonWebUtil.getParameter(request, "id")),
+		sharedContactsService.updateMembership(
+				Long.parseLong(CommonWebUtil.getParameter(request, "id")),
 				CommonWebUtil.getParameter(request, "accountType"));
 
 		return null;
 	}
 
-	public ModelAndView upgrade(HttpServletRequest request, HttpServletResponse response, Customer currentCustomer)
+	public ModelAndView upgrade(HttpServletRequest request,
+			HttpServletResponse response, Customer currentCustomer)
 			throws ServletException, IOException {
 		Map result = new HashMap();
 
 		try {
 
 			if (!StringUtils.isBlank(request.getParameter("paykey"))
-					&& request.getSession().getAttribute("paykey").equals(request.getParameter("paykey"))) {
+					&& request.getSession().getAttribute("paykey")
+							.equals(request.getParameter("paykey"))) {
 				request.getSession().removeAttribute("paykey");
 				try {
-					sharedContactsService.upgradeMembership(currentCustomer.getId());
+					sharedContactsService.upgradeMembership(currentCustomer
+							.getId());
 
-					String message = messageSource.getMessage("upgraded.success", null, Locale.US);
+					String message = messageSource.getMessage(
+							"upgraded.success", null, Locale.US);
 					result.put("code", "success");
 					result.put("message", message);
 
 				} catch (Exception e) {
 					e.printStackTrace();
 					logger.log(Level.SEVERE, e.getMessage(), e);
-					String message = messageSource.getMessage("error.default", null, Locale.US);
+					String message = messageSource.getMessage("error.default",
+							null, Locale.US);
 					result.put("code", "error");
 					result.put("message", message);
 				}
 				String orderNumber = RandomStringUtils.randomNumeric(5);
 				sendMail(getCurrentUser(request), orderNumber);
 				sendAdminMail(getCurrentUser(request), orderNumber);
-				return new ModelAndView("/sharedcontacts/paymentsuccess", "result", result);
+				return new ModelAndView("/sharedcontacts/paymentsuccess",
+						"result", result);
 
 			} else {
 
 				PaymentGateway paymentGateway = new PaymentGateway(
 						appProperties.getPaymentGatewayAppid(),
-						appProperties.getPaymentGatewayUsername(), 
+						appProperties.getPaymentGatewayUsername(),
 						appProperties.getPaymentGatewayPassword(),
-						appProperties.getPaymentGatewaySignature(), 
+						appProperties.getPaymentGatewaySignature(),
 						appProperties.getPaymentGatewayAccountEmail());
-				
-				String url = paymentGateway.makeRequest(HttpUtils.getRequestURL(request).toString(), request, response);
+
+				String url = paymentGateway.makeRequest(HttpUtils
+						.getRequestURL(request).toString(), request, response);
 				result.put("url", url);
 
 			}
@@ -1873,12 +2154,16 @@ public class SharedContactsController  {
 
 	}
 
-	private void sendAdminMail(UserInfo currentCustomer, String orderNumber) throws AppException {
+	private void sendAdminMail(UserInfo currentCustomer, String orderNumber)
+			throws AppException {
 		MailMessage mail = new MailMessage();
-		mail.setSubject("Netkiller Shared Contacts Order Receipt - " + orderNumber);
-		mail.setSender(new MailAddress("Netkiller Admin", "agent_noreply@netkiller.com"));
+		mail.setSubject("Netkiller Shared Contacts Order Receipt - "
+				+ orderNumber);
+		mail.setSender(new MailAddress("Netkiller Admin",
+				"agent_noreply@netkiller.com"));
 		Recipient recipient = new Recipient();
-		recipient.setMailAddress(new MailAddress("Netkiller Admin", "admin@netkiller.com"));
+		recipient.setMailAddress(new MailAddress("Netkiller Admin",
+				"admin@netkiller.com"));
 		recipient.setRecipientType(RecipientType.TO);
 		String firstName = "";
 		if (currentCustomer.getFirstName() != null) {
@@ -1901,23 +2186,30 @@ public class SharedContactsController  {
 
 	}
 
-	private void sendMail(UserInfo currentCustomer, String orderNumber) throws AppException {
+	private void sendMail(UserInfo currentCustomer, String orderNumber)
+			throws AppException {
 		MailMessage mail = new MailMessage();
 		String firstName = "Netkiller";
 		String lastName = "Customer";
-		if (currentCustomer.getFirstName() != null && !StringUtils.isBlank(currentCustomer.getFirstName())) {
+		if (currentCustomer.getFirstName() != null
+				&& !StringUtils.isBlank(currentCustomer.getFirstName())) {
 			firstName = currentCustomer.getFirstName();
 		}
-		if (currentCustomer.getLastName() != null && !StringUtils.isBlank(currentCustomer.getLastName())) {
+		if (currentCustomer.getLastName() != null
+				&& !StringUtils.isBlank(currentCustomer.getLastName())) {
 			lastName = currentCustomer.getLastName();
 		}
-		mail.setSubject("Netkiller Shared Contacts Order Receipt - " + orderNumber);
-		mail.setSender(new MailAddress("Netkiller", "agent_noreply@netkiller.com"));
+		mail.setSubject("Netkiller Shared Contacts Order Receipt - "
+				+ orderNumber);
+		mail.setSender(new MailAddress("Netkiller",
+				"agent_noreply@netkiller.com"));
 		Recipient recipient = new Recipient();
-		recipient.setMailAddress(new MailAddress(firstName + " " + lastName, currentCustomer.getEmail()));
+		recipient.setMailAddress(new MailAddress(firstName + " " + lastName,
+				currentCustomer.getEmail()));
 		recipient.setRecipientType(RecipientType.TO);
 		Recipient ccrecipient = new Recipient();
-		ccrecipient.setMailAddress(new MailAddress("Netkiller Agent", "agent_noreply@netkiller.com"));
+		ccrecipient.setMailAddress(new MailAddress("Netkiller Agent",
+				"agent_noreply@netkiller.com"));
 		ccrecipient.setRecipientType(RecipientType.CC);
 		mail.addRecipient(ccrecipient);
 		mail.addRecipient(recipient);
@@ -1948,29 +2240,38 @@ public class SharedContactsController  {
 		return user;
 	}
 
-	private ModelAndView getAuthorizeForm(HttpServletRequest request, HttpServletResponse response,
-			Customer currentCustomer) {
+	private ModelAndView getAuthorizeForm(HttpServletRequest request,
+			HttpServletResponse response, Customer currentCustomer) {
 		Map result = new HashMap();
-		String domain = CommonWebUtil.getDomain(currentCustomer.getAdminEmail());
-		DomainSettings domainSettings = sharedContactsService.getDomainSettings(domain);
+		String domain = CommonWebUtil
+				.getDomain(currentCustomer.getAdminEmail());
+		DomainSettings domainSettings = sharedContactsService
+				.getDomainSettings(domain);
 		List<String> users = sharedContactsService.getAllDomainUsers(domain);
-		List<String> usersWithWritePermission = sharedContactsService.getAllUserNamesWithWritePermissions(domain);
-		List<String> usersWithReadPermission = sharedContactsService.getAllUserWithReadPermissions(domain);
+		List<String> usersWithWritePermission = sharedContactsService
+				.getAllUserNamesWithWritePermissions(domain);
+		List<String> usersWithReadPermission = sharedContactsService
+				.getAllUserWithReadPermissions(domain);
 		result.put("allUsersPermitted", domainSettings.isAllUserPermitted());
 		result.put("onlyAdminPermitted", domainSettings.isOnlyAdminPermitted());
 		result.put("usersWithWritePermission", usersWithWritePermission);
 		result.put("usersWithReadPermission", usersWithReadPermission);
-		result.put("domainName",CommonWebUtil.getDomain(getCurrentUser(request).getEmail()));
+		result.put("domainName",
+				CommonWebUtil.getDomain(getCurrentUser(request).getEmail()));
 		return new ModelAndView("/sharedcontacts/authorize", "result", result);
 	}
 
-	private ModelAndView authorize(HttpServletRequest request, HttpServletResponse response, Customer currentCustomer) {
+	private ModelAndView authorize(HttpServletRequest request,
+			HttpServletResponse response, Customer currentCustomer) {
 		Map result = new HashMap();
-		String domain = CommonWebUtil.getDomain(currentCustomer.getAdminEmail());
+		String domain = CommonWebUtil
+				.getDomain(currentCustomer.getAdminEmail());
 		List<String> users = sharedContactsService.getAllDomainUsers(domain);
 		List<String> usersWithWritePermission = new ArrayList<String>();
-		String newDomainSettings = CommonWebUtil.getParameter(request, "domainSettings");
-		DomainSettings domainSettings = sharedContactsService.getDomainSettings(domain);
+		String newDomainSettings = CommonWebUtil.getParameter(request,
+				"domainSettings");
+		DomainSettings domainSettings = sharedContactsService
+				.getDomainSettings(domain);
 		if (newDomainSettings.equals("allUsersPermitted")) {
 			domainSettings.setAllUserPermitted(true);
 			domainSettings.setOnlyAdminPermitted(false);
@@ -1980,30 +2281,36 @@ public class SharedContactsController  {
 		} else {
 			domainSettings.setOnlyAdminPermitted(false);
 			domainSettings.setAllUserPermitted(false);
-			List<String> newUsersWithUpdatePermission = Arrays
-					.asList(request.getParameter("updateUserList").split(","));
-			usersWithWritePermission = sharedContactsService.getAllUserNamesWithWritePermissions(domain);
+			List<String> newUsersWithUpdatePermission = Arrays.asList(request
+					.getParameter("updateUserList").split(","));
+			usersWithWritePermission = sharedContactsService
+					.getAllUserNamesWithWritePermissions(domain);
 			List<String> usersToBeAdded = new ArrayList<String>();
 			for (String user : newUsersWithUpdatePermission) {
 				if (!usersWithWritePermission.contains(user))
 					usersToBeAdded.add(user);
 			}
-			usersToBeAdded = new ArrayList<String>(new HashSet<String>(usersToBeAdded));
+			usersToBeAdded = new ArrayList<String>(new HashSet<String>(
+					usersToBeAdded));
 			List<String> usersToBeRemoved = new ArrayList<String>();
 			for (String user : usersWithWritePermission) {
 				if (!newUsersWithUpdatePermission.contains(user))
 					usersToBeRemoved.add(user);
 			}
-			usersToBeRemoved = new ArrayList<String>(new HashSet<String>(usersToBeRemoved));
+			usersToBeRemoved = new ArrayList<String>(new HashSet<String>(
+					usersToBeRemoved));
 			sharedContactsService.assignUpdatePermissions(usersToBeAdded,
 					CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
 			sharedContactsService.removeUpdatePermissions(usersToBeRemoved,
 					CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
 		}
 
-		domainSettings = sharedContactsService.updateDomainSettings(domainSettings);
-		usersWithWritePermission = sharedContactsService.getAllUserNamesWithWritePermissions(domain);
-		List<String> usersWithReadPermission = sharedContactsService.getAllUserWithReadPermissions(domain);
+		domainSettings = sharedContactsService
+				.updateDomainSettings(domainSettings);
+		usersWithWritePermission = sharedContactsService
+				.getAllUserNamesWithWritePermissions(domain);
+		List<String> usersWithReadPermission = sharedContactsService
+				.getAllUserWithReadPermissions(domain);
 		result.put("usersWithWritePermission", usersWithWritePermission);
 		result.put("usersWithReadPermission", usersWithReadPermission);
 		result.put("allUsersPermitted", domainSettings.isAllUserPermitted());
@@ -2013,35 +2320,48 @@ public class SharedContactsController  {
 
 	}
 
-	private ModelAndView getUnAuthorizeForm(HttpServletRequest request, HttpServletResponse response,
-			Customer currentCustomer) {
+	private ModelAndView getUnAuthorizeForm(HttpServletRequest request,
+			HttpServletResponse response, Customer currentCustomer) {
 		Map result = new HashMap();
-		String domain = CommonWebUtil.getDomain(currentCustomer.getAdminEmail());
-		DomainSettings domainSettings = sharedContactsService.getDomainSettings(domain);
+		String domain = CommonWebUtil
+				.getDomain(currentCustomer.getAdminEmail());
+		DomainSettings domainSettings = sharedContactsService
+				.getDomainSettings(domain);
 		List<String> users = sharedContactsService.getAllDomainUsers(domain);
-		List<String> usersWithNoPermission = sharedContactsService.getAllUserNamesWithNoPermissions(domain);
-		List<String> usersWithWritePermission = sharedContactsService.getAllUserNamesWithWritePermissions(domain);
-		List<String> usersWithReadPermission = sharedContactsService.getAllUserWithReadPermissions(domain);
+		List<String> usersWithNoPermission = sharedContactsService
+				.getAllUserNamesWithNoPermissions(domain);
+		List<String> usersWithWritePermission = sharedContactsService
+				.getAllUserNamesWithWritePermissions(domain);
+		List<String> usersWithReadPermission = sharedContactsService
+				.getAllUserWithReadPermissions(domain);
 		usersWithReadPermission.addAll(usersWithWritePermission);
 		result.put("allUsersPermitted", domainSettings.isAllUserPermitted());
 		result.put("onlyAdminPermitted", domainSettings.isOnlyAdminPermitted());
 		result.put("usersWithNoPermission", usersWithNoPermission);
 		result.put("usersWithReadPermission", usersWithReadPermission);
-		result.put("domainName",CommonWebUtil.getDomain(getCurrentUser(request).getEmail()));
+		result.put("domainName",
+				CommonWebUtil.getDomain(getCurrentUser(request).getEmail()));
 		return new ModelAndView("/sharedcontacts/unauthorize", "result", result);
 	}
 
-	private ModelAndView unauthorize(HttpServletRequest request, HttpServletResponse response, Customer currentCustomer) {
+	private ModelAndView unauthorize(HttpServletRequest request,
+			HttpServletResponse response, Customer currentCustomer) {
 		Map result = new HashMap();
-		String domain = CommonWebUtil.getDomain(currentCustomer.getAdminEmail());
+		String domain = CommonWebUtil
+				.getDomain(currentCustomer.getAdminEmail());
 		List<String> users = sharedContactsService.getAllDomainUsers(domain);
 		List<String> usersWithWritePermission = new ArrayList<String>();
-		String newDomainSettings = CommonWebUtil.getParameter(request, "domainSettings");
-		DomainSettings domainSettings = sharedContactsService.getDomainSettings(domain);
-		List<String> usersWithNoPermission = sharedContactsService.getAllUserNamesWithNoPermissions(domain);
-		List<String> newUsersWithNoPermission = Arrays.asList(request.getParameter("updateUserList").split(","));
-		usersWithWritePermission = sharedContactsService.getAllUserNamesWithWritePermissions(domain);
-		
+		String newDomainSettings = CommonWebUtil.getParameter(request,
+				"domainSettings");
+		DomainSettings domainSettings = sharedContactsService
+				.getDomainSettings(domain);
+		List<String> usersWithNoPermission = sharedContactsService
+				.getAllUserNamesWithNoPermissions(domain);
+		List<String> newUsersWithNoPermission = Arrays.asList(request
+				.getParameter("updateUserList").split(","));
+		usersWithWritePermission = sharedContactsService
+				.getAllUserNamesWithWritePermissions(domain);
+
 		/*
 		 * List<String> usersToBeAdded = new ArrayList<String>(); for (String
 		 * user : newUsersWithNoPermission) { if
@@ -2056,15 +2376,18 @@ public class SharedContactsController  {
 		}
 		List<String> noPermissionUsersToBeRemoved = new ArrayList<String>();
 		for (String user : usersWithNoPermission) {
-			if (!newUsersWithNoPermission.contains(user) &&  !StringUtils.isEmpty(user))
+			if (!newUsersWithNoPermission.contains(user)
+					&& !StringUtils.isEmpty(user))
 				noPermissionUsersToBeRemoved.add(user);
 		}
 		List<String> usersToBeAdded = new ArrayList<String>();
 		for (String user : newUsersWithNoPermission) {
-			if (!usersWithNoPermission.contains(user) && !StringUtils.isEmpty(user))
+			if (!usersWithNoPermission.contains(user)
+					&& !StringUtils.isEmpty(user))
 				usersToBeAdded.add(user);
 		}
-		usersToBeRemoved = new ArrayList<String>(new HashSet<String>(usersToBeRemoved));
+		usersToBeRemoved = new ArrayList<String>(new HashSet<String>(
+				usersToBeRemoved));
 		/*
 		 * sharedContactsService.assignUpdatePermissions(usersToBeAdded,
 		 * CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
@@ -2076,62 +2399,64 @@ public class SharedContactsController  {
 				CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
 		sharedContactsService.assignNoPermissions(usersToBeAdded,
 				CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
-		
-			if(usersToBeAdded!=null && !usersToBeAdded.isEmpty()) {
-				
-				DeleteGroupsAndContactsByUsersContext context = new DeleteGroupsAndContactsByUsersContext();
-				context.setDomain(CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
-				context.setUsers(usersToBeAdded);
-				
-				
-				WorkflowInfo workflowInfo = new WorkflowInfo("deleteGroupsAndContactsByUsersWorkflowProcessor");
-				workflowInfo.setIsNewWorkflow(true);
-				
-				
-				Workflow workflow = new Workflow();
-				workflow.setContext(context);
-				workflow.setWorkflowName(workflowInfo.getWorkflowName());
-				workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
-				workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
-				
-				context.setWorkflowInfo(workflowInfo);
-				workflowManager.triggerWorkflow(workflow);
-				
-				//sharedContactsService.deleteGroupsAndContactsByUsers(usersToBeAdded,CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
-			}
-		
-		
-		
-			if(noPermissionUsersToBeRemoved!=null && !noPermissionUsersToBeRemoved.isEmpty()) {
-				System.out.println("MEthod entered to be executed..!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				
-				AddGroupsAndContactsByUsersContext context = new AddGroupsAndContactsByUsersContext();
-				context.setDomain(CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
-				context.setUsers(noPermissionUsersToBeRemoved);
-				
-				
-				WorkflowInfo workflowInfo = new WorkflowInfo("addGroupsAndContactsByUsersWorkflowProcessor");
-				workflowInfo.setIsNewWorkflow(true);
-				
-				
-				Workflow workflow = new Workflow();
-				workflow.setContext(context);
-				workflow.setWorkflowName(workflowInfo.getWorkflowName());
-				workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
-				workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
-				
-				context.setWorkflowInfo(workflowInfo);
-				workflowManager.triggerWorkflow(workflow);	
-				
-				//sharedContactsService.addGroupsAndContactsByUsers(noPermissionUsersToBeRemoved,CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
-			}
-		
+
+		if (usersToBeAdded != null && !usersToBeAdded.isEmpty()) {
+
+			DeleteGroupsAndContactsByUsersContext context = new DeleteGroupsAndContactsByUsersContext();
+			context.setDomain(CommonWebUtil.getDomain(currentCustomer
+					.getAdminEmail()));
+			context.setUsers(usersToBeAdded);
+
+			WorkflowInfo workflowInfo = new WorkflowInfo(
+					"deleteGroupsAndContactsByUsersWorkflowProcessor");
+			workflowInfo.setIsNewWorkflow(true);
+
+			Workflow workflow = new Workflow();
+			workflow.setContext(context);
+			workflow.setWorkflowName(workflowInfo.getWorkflowName());
+			workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
+			workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
+
+			context.setWorkflowInfo(workflowInfo);
+			workflowManager.triggerWorkflow(workflow);
+
+			// sharedContactsService.deleteGroupsAndContactsByUsers(usersToBeAdded,CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
+		}
+
+		if (noPermissionUsersToBeRemoved != null
+				&& !noPermissionUsersToBeRemoved.isEmpty()) {
+			System.out
+					.println("MEthod entered to be executed..!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+			AddGroupsAndContactsByUsersContext context = new AddGroupsAndContactsByUsersContext();
+			context.setDomain(CommonWebUtil.getDomain(currentCustomer
+					.getAdminEmail()));
+			context.setUsers(noPermissionUsersToBeRemoved);
+
+			WorkflowInfo workflowInfo = new WorkflowInfo(
+					"addGroupsAndContactsByUsersWorkflowProcessor");
+			workflowInfo.setIsNewWorkflow(true);
+
+			Workflow workflow = new Workflow();
+			workflow.setContext(context);
+			workflow.setWorkflowName(workflowInfo.getWorkflowName());
+			workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
+			workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
+
+			context.setWorkflowInfo(workflowInfo);
+			workflowManager.triggerWorkflow(workflow);
+
+			// sharedContactsService.addGroupsAndContactsByUsers(noPermissionUsersToBeRemoved,CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
+		}
 
 		// domainSettings =
 		// sharedContactsService.updateDomainSettings(domainSettings);
-		usersWithWritePermission = sharedContactsService.getAllUserNamesWithWritePermissions(domain);
-		usersWithNoPermission = sharedContactsService.getAllUserNamesWithNoPermissions(domain);
-		List<String> usersWithReadPermission = sharedContactsService.getAllUserWithReadPermissions(domain);
+		usersWithWritePermission = sharedContactsService
+				.getAllUserNamesWithWritePermissions(domain);
+		usersWithNoPermission = sharedContactsService
+				.getAllUserNamesWithNoPermissions(domain);
+		List<String> usersWithReadPermission = sharedContactsService
+				.getAllUserWithReadPermissions(domain);
 		usersWithReadPermission.addAll(usersWithWritePermission);
 		result.put("usersWithNoPermission", usersWithNoPermission);
 		result.put("usersWithReadPermission", usersWithReadPermission);
