@@ -53,10 +53,10 @@ import com.netkiller.vo.UserInfo;
 import com.netkiller.web.sharedcontacts.upload.CSVFileReader;
 
 /**
- * Ã«Å’â‚¬Ã«Å¸â€° Contact Ã«â€œÂ±Ã«Â¡ï¿½Ã¬ï¿½â€ž Ã¬Å“â€žÃ­â€¢Å“
- * Ã¬â€”â€˜Ã¬â€¦â‚¬Ã­Å’Å’Ã¬ï¿½Â¼ Ã¬â€”â€¦Ã«Â¡Å“Ã«â€œÅ
+ * ÃƒÂ«Ã…â€™Ã¢â€šÂ¬ÃƒÂ«Ã…Â¸Ã¢â‚¬Â° Contact ÃƒÂ«Ã¢â‚¬Å“Ã‚Â±ÃƒÂ«Ã‚Â¡Ã¯Â¿Â½ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂ¬Ã…â€œÃ¢â‚¬Å¾ÃƒÂ­Ã¢â‚¬Â¢Ã…â€œ
+ * ÃƒÂ¬Ã¢â‚¬â€�Ã¢â‚¬ËœÃƒÂ¬Ã¢â‚¬Â¦Ã¢â€šÂ¬ÃƒÂ­Ã…â€™Ã…â€™ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¼ ÃƒÂ¬Ã¢â‚¬â€�Ã¢â‚¬Â¦ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ«Ã¢â‚¬Å“Ã…
  * 
- * “Ã«Â¥Â¼ Ã¬Â²ËœÃ«Â¦Â¬Ã­â€¢Â¨
+ * â€œÃƒÂ«Ã‚Â¥Ã‚Â¼ ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â¨
  * 
  * @author ykko
  * @modified Munawar Saeed Update it to support mapper,, converts .xls file to
@@ -68,7 +68,7 @@ public class SharedContactsFileUpload {
 
 	protected final Logger logger = Logger.getLogger(getClass().getName());
 
-	// Ã­â€�â€žÃ«Â¡Å“Ã­ï¿½Â¼Ã­â€¹Â° Ã¬â€žÅ“Ã«Â¹â€žÃ¬Å Â¤
+	// ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ­Ã¯Â¿Â½Ã‚Â¼ÃƒÂ­Ã¢â‚¬Â¹Ã‚Â° ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤
 	@Autowired
 	private AppProperties appProperties;
 
@@ -76,7 +76,7 @@ public class SharedContactsFileUpload {
 		this.appProperties = appProperties;
 	}
 
-	// Ã«Â©â€�Ã¬â€¹Å“Ã¬Â§â‚¬ Ã¬â€žÅ“Ã«Â¹â€žÃ¬Å Â¤
+	// ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¢â‚¬Â¹Ã…â€œÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤
 	@Autowired
 	private MessageSource messageSource;
 
@@ -84,8 +84,8 @@ public class SharedContactsFileUpload {
 		this.messageSource = messageSource;
 	}
 
-	// Ã«ï¿½â€žÃ«Â©â€�Ã¬ï¿½Â¸ÃªÂ³ÂµÃ¬Å“Â Ã¬Â£Â¼Ã¬â€ Å’Ã«Â¡ï¿½
-	// Ã¬â€žÅ“Ã«Â¹â€žÃ¬Å Â¤Ã¬Â»Â´Ã­ï¿½Â¬Ã«â€žÅ’Ã­Å Â¸
+	// ÃƒÂ«Ã¯Â¿Â½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â©Ã¢â‚¬ï¿½ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸ÃƒÂªÃ‚Â³Ã‚ÂµÃƒÂ¬Ã…â€œÃ‚Â ÃƒÂ¬Ã‚Â£Ã‚Â¼ÃƒÂ¬Ã¢â‚¬Â Ã…â€™ÃƒÂ«Ã‚Â¡Ã¯Â¿Â½
+	// ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œÃƒÂ«Ã‚Â¹Ã¢â‚¬Å¾ÃƒÂ¬Ã…Â Ã‚Â¤ÃƒÂ¬Ã‚Â»Ã‚Â´ÃƒÂ­Ã¯Â¿Â½Ã‚Â¬ÃƒÂ«Ã¢â‚¬Å¾Ã…â€™ÃƒÂ­Ã…Â Ã‚Â¸
 	@Autowired
 	private SharedContactsService sharedContactsService;
 
@@ -95,12 +95,12 @@ public class SharedContactsFileUpload {
 	}
 
 	/**
-	 * app.properties Ã­Å’Å’Ã¬ï¿½Â¼Ã¬â€”ï¿½ Ã«â€œÂ±Ã«Â¡ï¿½Ã«ï¿½Å“
-	 * SharedContactsGroupNameÃ¬ï¿½Â´ Google Domain
+	 * app.properties ÃƒÂ­Ã…â€™Ã…â€™ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½ ÃƒÂ«Ã¢â‚¬Å“Ã‚Â±ÃƒÂ«Ã‚Â¡Ã¯Â¿Â½ÃƒÂ«Ã¯Â¿Â½Ã…â€œ
+	 * SharedContactsGroupNameÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ Google Domain
 	 * 
-	 * Shared ContactsÃ¬â€”ï¿½ Ã¬â€”â€ Ã¬ï¿½â€ž ÃªÂ²Â½Ã¬Å¡Â°
-	 * SharedContactsGroupNameÃ¬ï¿½â€ž Ã¬Æ’ï¿½Ã¬â€žÂ±, Ã¬Å¾Ë†Ã¬ï¿½â€ž
-	 * ÃªÂ²Â½Ã¬Å¡Â° Ã­â€ ÂµÃªÂ³Â¼
+	 * Shared ContactsÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½ ÃƒÂ¬Ã¢â‚¬â€�Ã¢â‚¬Â ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â°
+	 * SharedContactsGroupNameÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾ ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±, ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+	 * ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â° ÃƒÂ­Ã¢â‚¬Â Ã‚ÂµÃƒÂªÃ‚Â³Ã‚Â¼
 	 * 
 	 * @return
 	 */
@@ -137,10 +137,10 @@ public class SharedContactsFileUpload {
 	
 
 	/**
-	 * Ã¬â€”â€˜Ã¬â€¦â‚¬Ã­Å’Å’Ã¬ï¿½Â¼ Ã¬â€”â€¦Ã«Â¡Å“Ã«â€œÅ“Ã¬â€¹Å“
-	 * Ã­â€�â€žÃ«Â Ë†Ã¬Å¾â€žÃ¬â€ºÅ’Ã­ï¿½Â¬Ã¬â€”ï¿½
+	 * ÃƒÂ¬Ã¢â‚¬â€�Ã¢â‚¬ËœÃƒÂ¬Ã¢â‚¬Â¦Ã¢â€šÂ¬ÃƒÂ­Ã…â€™Ã…â€™ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¼ ÃƒÂ¬Ã¢â‚¬â€�Ã¢â‚¬Â¦ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂ«Ã¢â‚¬Å“Ã…â€œÃƒÂ¬Ã¢â‚¬Â¹Ã…â€œ
+	 * ÃƒÂ­Ã¢â‚¬ï¿½Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â Ã‹â€ ÃƒÂ¬Ã…Â¾Ã¢â‚¬Å¾ÃƒÂ¬Ã¢â‚¬ÂºÃ…â€™ÃƒÂ­Ã¯Â¿Â½Ã‚Â¬ÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
 	 * 
-	 * Ã¬ï¿½ËœÃ­â€¢Â´ Ã¬â€¹Â¤Ã­â€“â€°Ã«ï¿½Â¨
+	 * ÃƒÂ¬Ã¯Â¿Â½Ã‹Å“ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â´ ÃƒÂ¬Ã¢â‚¬Â¹Ã‚Â¤ÃƒÂ­Ã¢â‚¬â€œÃ¢â‚¬Â°ÃƒÂ«Ã¯Â¿Â½Ã‚Â¨
 	 */
 	@RequestMapping("/sharedcontacts/fileupload.do")
 	public ModelAndView handleRequest(HttpServletRequest request,
@@ -165,8 +165,8 @@ public class SharedContactsFileUpload {
 				// response.sendRedirect("/login.jsp");
 				// String loginURL =
 				// userService.createLoginURL(request.getRequestURI());
-				// response.sendRedirect(loginURL); //ë¡œê·¸ì�¸ ì•ˆë�˜ì–´ ìžˆì�„
-				// ê²½ìš° ë¡œê·¸ì�¸ íŽ˜ì�´ì§€ë¡œ ë¦¬ë‹¤ì�´ë ‰íŠ¸
+				// response.sendRedirect(loginURL); //Ã«Â¡Å“ÃªÂ·Â¸Ã¬ï¿½Â¸ Ã¬â€¢Ë†Ã«ï¿½ËœÃ¬â€“Â´ Ã¬Å¾Ë†Ã¬ï¿½â€ž
+				// ÃªÂ²Â½Ã¬Å¡Â° Ã«Â¡Å“ÃªÂ·Â¸Ã¬ï¿½Â¸ Ã­Å½ËœÃ¬ï¿½Â´Ã¬Â§â‚¬Ã«Â¡Å“ Ã«Â¦Â¬Ã«â€¹Â¤Ã¬ï¿½Â´Ã«Â â€°Ã­Å Â¸
 			}
 			while (iterator.hasNext()) {
 
@@ -262,7 +262,7 @@ public class SharedContactsFileUpload {
 					if (row.size() > j && !StringUtils.isEmpty(row.get(j))) {
 						sb.append((row.get(j)));
 					} else {
-						sb.append("-");
+						sb.append("");
 					}
 
 					if (j + 1 != 16) {
