@@ -118,15 +118,15 @@ public class SharedContactsUtil {
 			jsonObj.put("totalContacts", totalContacts);
 			jsonArray.add(jsonObj);
 		}
-		List<Map> list = makeListWithMap(jsonArray, sidx); // Ã¬Â â€¢Ã«Â Â¬Ã­â€¢Â 
-															// Ã­â€¢â€žÃ«â€œÅ“(Ã¬ï¿½Â´Ã«Â¦â€ž,
-															// Ã¬Â â€žÃ­â„¢â€�Ã«Â²Ë†Ã­ËœÂ¸
-															// Ã«â€œÂ±),
+		List<Map> list = makeListWithMap(jsonArray, sidx); // ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢ÃƒÂ«Ã‚Â Ã‚Â¬ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â 
+															// ÃƒÂ­Ã¢â‚¬Â¢Ã¢â‚¬Å¾ÃƒÂ«Ã¢â‚¬Å“Ã…â€œ(ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ«Ã‚Â¦Ã¢â‚¬Å¾,
+															// ÃƒÂ¬Ã‚Â Ã¢â‚¬Å¾ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â²Ã‹â€ ÃƒÂ­Ã‹Å“Ã‚Â¸
+															// ÃƒÂ«Ã¢â‚¬Å“Ã‚Â±),
 															// JSONObject
-															// Ã¬Å’ï¿½Ã¬ï¿½â€ž
-															// ÃªÂ°â€“Ã«Å â€�
-															// ListÃ«Â¥Â¼
-															// Ã«Â§Å’Ã«â€œÂ Ã«â€¹Â¤.
+															// ÃƒÂ¬Ã…â€™Ã¯Â¿Â½ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+															// ÃƒÂªÃ‚Â°Ã¢â‚¬â€œÃƒÂ«Ã…Â Ã¢â‚¬ï¿½
+															// ListÃƒÂ«Ã‚Â¥Ã‚Â¼
+															// ÃƒÂ«Ã‚Â§Ã…â€™ÃƒÂ«Ã¢â‚¬Å“Ã‚Â ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¤.
 		jsonArray = sort(list, sidx, sord); // Name
 		insertNo(jsonArray);
 		return jsonArray;
@@ -243,15 +243,15 @@ public class SharedContactsUtil {
 
 		// logger.info("#CCC-1 ==> jsonArray.size(): " + jsonArray.size());
 		if (!sidx.equals("")) {
-			List<Map> list = makeListWithMap(jsonArray, sidx); // Ã¬Â â€¢Ã«Â Â¬Ã­â€¢Â 
-																// Ã­â€¢â€žÃ«â€œÅ“(Ã¬ï¿½Â´Ã«Â¦â€ž,
-																// Ã¬Â â€žÃ­â„¢â€�Ã«Â²Ë†Ã­ËœÂ¸
-																// Ã«â€œÂ±),
+			List<Map> list = makeListWithMap(jsonArray, sidx); // ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢ÃƒÂ«Ã‚Â Ã‚Â¬ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â 
+																// ÃƒÂ­Ã¢â‚¬Â¢Ã¢â‚¬Å¾ÃƒÂ«Ã¢â‚¬Å“Ã…â€œ(ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ«Ã‚Â¦Ã¢â‚¬Å¾,
+																// ÃƒÂ¬Ã‚Â Ã¢â‚¬Å¾ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â²Ã‹â€ ÃƒÂ­Ã‹Å“Ã‚Â¸
+																// ÃƒÂ«Ã¢â‚¬Å“Ã‚Â±),
 																// JSONObject
-																// Ã¬Å’ï¿½Ã¬ï¿½â€ž
-																// ÃªÂ°â€“Ã«Å â€�
-																// ListÃ«Â¥Â¼
-																// Ã«Â§Å’Ã«â€œÂ Ã«â€¹Â¤.
+																// ÃƒÂ¬Ã…â€™Ã¯Â¿Â½ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+																// ÃƒÂªÃ‚Â°Ã¢â‚¬â€œÃƒÂ«Ã…Â Ã¢â‚¬ï¿½
+																// ListÃƒÂ«Ã‚Â¥Ã‚Â¼
+																// ÃƒÂ«Ã‚Â§Ã…â€™ÃƒÂ«Ã¢â‚¬Å“Ã‚Â ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¤.
 			System.out.println("sisx and sord are empty");
 			System.out.println("sidx" + sidx);
 			// logger.info("#CCC-2 ==> list.size(): " + list.size());
@@ -697,7 +697,7 @@ public class SharedContactsUtil {
 		return list;
 	}
 
-	// Sorted Set Ã¬ï¿½Â´Ã«ï¿½Â¼Ã¬â€žÅ“ Ã«Â¬Â¸Ã¬Â Å“ÃªÂ°â‚¬ Ã«ï¿½Â¨
+	// Sorted Set ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ«Ã¯Â¿Â½Ã‚Â¼ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œ ÃƒÂ«Ã‚Â¬Ã‚Â¸ÃƒÂ¬Ã‚Â Ã…â€œÃƒÂªÃ‚Â°Ã¢â€šÂ¬ ÃƒÂ«Ã¯Â¿Â½Ã‚Â¨
 	/*
 	 * private JSONArray sort(JSONArray orgJsonArray, String elementName){
 	 * 
@@ -708,7 +708,7 @@ public class SharedContactsUtil {
 	 * i<orgJsonArray.length(); i++){ jObj = (JSONObject)orgJsonArray.get(i);
 	 * name = (String)jObj.get("name"); sm.put(name, jObj); } Set set =
 	 * sm.entrySet(); logger.info("##AAA6 set.size(): " + set.size()); //<==
-	 * Ã¬â€”Â¬ÃªÂ¸Â°Ã¬â€žÅ“ ÃªÂ°Å“Ã¬Ë†ËœÃªÂ°â‚¬ Ã¬Â¤â€žÃ¬â€“Â´Ã«â€œÂ Ã«â€¹Â¤
+	 * ÃƒÂ¬Ã¢â‚¬â€�Ã‚Â¬ÃƒÂªÃ‚Â¸Ã‚Â°ÃƒÂ¬Ã¢â‚¬Å¾Ã…â€œ ÃƒÂªÃ‚Â°Ã…â€œÃƒÂ¬Ã‹â€ Ã‹Å“ÃƒÂªÃ‚Â°Ã¢â€šÂ¬ ÃƒÂ¬Ã‚Â¤Ã¢â‚¬Å¾ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´ÃƒÂ«Ã¢â‚¬Å“Ã‚Â ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¤
 	 * Iterator itr = set.iterator(); int tmpCnt = orgJsonArray.length();
 	 * while(itr.hasNext()){ Map.Entry m = (Map.Entry)itr.next(); jObj =
 	 * (JSONObject)m.getValue(); jObj.put("no", Integer.toString(tmpCnt--));
@@ -738,7 +738,14 @@ public class SharedContactsUtil {
 		try {
 			for (int i = 0; i < orgJsonArray.size(); i++) {
 				if (i >= beginIdx) {
-					newJsonArray.add(orgJsonArray.get(i));
+					Object o = orgJsonArray.get(i);
+					if(o instanceof String){
+						String str = (String) o;
+						if(str.equals("-")){
+							o="";
+						}
+					}
+					newJsonArray.add(o);
 					if (newJsonArray.size() == size) {
 						break;
 					}
