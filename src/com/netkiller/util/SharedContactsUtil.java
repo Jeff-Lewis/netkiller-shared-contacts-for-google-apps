@@ -738,13 +738,20 @@ public class SharedContactsUtil {
 		try {
 			for (int i = 0; i < orgJsonArray.size(); i++) {
 				if (i >= beginIdx) {
-					Object o = orgJsonArray.get(i);
-					if(o instanceof String){
-						String str = (String) o;
-						if(str.equals("-")){
-							o="";
+					JSONObject o = (JSONObject) orgJsonArray.get(i);
+					for(Object key : o.keySet()){
+						Object thisO = o.get(key);
+						if(thisO instanceof String){
+							String str = (String)thisO;
+							if(str.equals("-")){
+								o.put(key, "");
+								System.out.println("new O " + o.get(key));
+							}
 						}
 					}
+							
+					
+					
 					newJsonArray.add(o);
 					if (newJsonArray.size() == size) {
 						break;
