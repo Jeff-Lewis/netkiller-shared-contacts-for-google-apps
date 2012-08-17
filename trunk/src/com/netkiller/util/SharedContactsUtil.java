@@ -745,7 +745,6 @@ public class SharedContactsUtil {
 							String str = (String)thisO;
 							if(str.equals("-")){
 								o.put(key, "");
-								System.out.println("new O " + o.get(key));
 							}
 						}
 					}
