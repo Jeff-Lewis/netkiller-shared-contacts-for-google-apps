@@ -96,6 +96,12 @@ if(!queryParams.toString().equals("")){
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<style>
+span.required{
+color:red;
+font-size: 15px;
+}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 <link rel='stylesheet' type='text/css' href='/css/main.css'/>
@@ -360,7 +366,7 @@ function backToContacts(){
 			<tr>
 			<td valign="middle" style="font-family:Arial;font-size:13px;">
 				<a href="javascript:backToContacts();" style="color:#3B5323;text-decoration: none;"><< &nbsp; Back to contacts</a>
-			</td>
+			<span class="required">* </span><span style="color:red">Required Field</span></td>
 			<td align="right">
 				<table border="0">
 				<tr><td>
@@ -385,8 +391,8 @@ function backToContacts(){
  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
  							<tr>
  								
- 								<td width="33%">First Name:&nbsp;<input id="givenname" type="text" class="txtBox" value="<%= givenName %>" style="margin-left:5px;"/></td>
- 								<td width="33%">Last Name: <input id="familyname" type="text" class="txtBox" value="<%= familyName %>"/></td>
+ 								<td width="33%">First Name<span class="required">*&nbsp</span>:&nbsp;<input id="givenname" type="text" class="txtBox" value="<%= givenName %>" style="margin-left:5px;"/></td>
+ 								<td width="33%">Last Name<span class="required">*&nbsp</span>: <input id="familyname" type="text" class="txtBox" value="<%= familyName %>"/></td>
  								<td width="33%">Full Name: <input id="fullname" type="text" class="txtBox" value="<%= fullName %>"/></td>
  							</tr>
  						</table>
@@ -405,7 +411,7 @@ function backToContacts(){
 				<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Email</h5>
  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
  							<tr>
- 								<td width="33%">Work: <input id="workemail" type="text" class="txtBox" value="<%= workEmail %>" style="margin-left:25px"/></td>
+ 								<td width="33%">Work<span class="required">*&nbsp</span>: <input id="workemail" type="text" class="txtBox" value="<%= workEmail %>" style="margin-left:25px"/></td>
  								<td width="33%">Home: <input id="homeemail" type="text" class="txtBox" value="<%= homeEmail %>" style="margin-left:32px"/></td>
  								<td width="33%">Other: <input id="otheremail" type="text" class="txtBox" value="<%= otherEmail %>" style="margin-left:32px"/></td>
  							</tr>
@@ -415,7 +421,7 @@ function backToContacts(){
 				<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Phone</h5>
  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
  							<tr>
- 								<td width="33%">Work: <input id="workphone" type="text" class="txtBox" value="<%= workPhoneNumber %>" style="margin-left:25px"/></td>
+ 								<td width="33%">Work<span class="required">*&nbsp</span>: <input id="workphone" type="text" class="txtBox" value="<%= workPhoneNumber %>" style="margin-left:25px"/></td>
  								<td width="33%">Home: <input id="homephone" type="text" class="txtBox" value="<%= homePhoneNumber %>" style="margin-left:32px"/></td>
  								<td width="33%">Mobile: <input id="mobilephone" type="text" class="txtBox" value="<%= mobilePhoneNumber %>" style="margin-left:28px"/></td>
  							</tr>
