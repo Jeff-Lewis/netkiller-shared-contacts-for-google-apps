@@ -60,14 +60,12 @@ response.setDateHeader ("Expires", -1);
 		int totalRecords = jsonArray.size();
 		int total_pages = (int)Math.ceil( jsonArray.size() / rows )+1;
 		jsonArray = util.getListForPaging(jsonArray, startIndex, rows);	
-		logger.info("AAA3===> jsonArray.size(): " + jsonArray.size());
-		
+		logger.info("AAA3===> jsonArray.size(): " + jsonArray.size());		
 		jsonObj.put("rows", jsonArray);
 		jsonObj.put("page", result.get("page"));
 		jsonObj.put("total", total_pages);
 		jsonObj.put("records", totalRecords);
 		//jsonObj.put("url", "/sharedcontacts/main.do?cmd=list_data");
-		
 		
 		//jsonObj.put("page", pageNum);
 		logger.info(jsonObj.toString());
