@@ -262,7 +262,7 @@ public class SharedContactsFileUpload {
 					if (row.size() > j && !StringUtils.isEmpty(row.get(j))) {
 						sb.append((row.get(j)));
 					} else {
-						sb.append("");
+						sb.append("-");
 					}
 
 					if (j + 1 != 16) {

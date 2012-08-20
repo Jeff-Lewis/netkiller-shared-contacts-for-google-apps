@@ -315,9 +315,17 @@ $(document).ready ( function () {
 				alert("Error occured!");
 			}
 		});
+	});	
+	
+});
+$(function(){
+	$("input").each(function(){
+		var thisVal = $(this).val();
+		if(thisVal=="-"){
+			$(this).val("");
+		}
 	});
 });
-
 function backToContacts(){
 	window.location.href = "/sharedcontacts/main.do?cmd=list" + "<%=queryString%>";
 }
