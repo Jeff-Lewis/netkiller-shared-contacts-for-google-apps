@@ -1,0 +1,12 @@
+<!-- Indices written at Mon, 18 Jun 2012 11:32:02 UTC -->
+
+<datastore-indexes>
+
+    <!-- Used 4 times in query history -->
+    <datastore-index kind="Student" ancestor="false" source="auto">
+        <property name="active" direction="asc"/>
+        <property name="isDeleted" direction="asc"/>
+        <property name="firstNameUpperCase" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

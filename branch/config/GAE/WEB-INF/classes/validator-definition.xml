@@ -1,0 +1,818 @@
+
+
+
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	You under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+<!DOCTYPE form-validation PUBLIC
+     "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN"
+     "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+	<global>
+
+		<validator name="alldayevent"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="isAllDayEvent" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.required" />
+
+		<validator name="int"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="validateInt" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.int" />
+
+		<validator name="double"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="validateDouble" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.int" />
+
+		<validator name="required"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="validateRequired" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.required" />
+
+		<validator name="long"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="validateLong" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.long" />
+
+		<validator name="email"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="validateEmail" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.email" />
+
+		<validator name="daterange"
+			classname="com.metacube.ipathshala.view.validators.DateValidator"
+			method="validateDates" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.datesrangeinvalid" />
+
+		<validator name="workingDaysForTerm"
+			classname="com.metacube.ipathshala.view.validators.WorkingDaysValidator"
+			method="validateWorkingDaysForEvent" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.workingDaysinvalid" />
+
+		<validator methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			name="endDateValidator" classname="com.metacube.ipathshala.view.validators.DateValidator"
+			msg="errors.enddateinvalid" method="validateEndDate">
+		</validator>
+
+		<validator name="autocomplete"
+			classname="com.metacube.ipathshala.view.validators.AutoCompleteValidator"
+			method="validateAutoComplete" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.autocomplete" />
+
+		<validator name="userId"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="validateUserId" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.userId" />
+
+		<validator name="minLength"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="validateMinimumLength" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.minLength" />
+
+		<validator name="defaultAcademicYear"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="validateDefaultAcademicYear" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.defaultAcademicYear" />
+
+		<validator name="primaryRequired"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="validatePrimaryContact" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.primaryContacy" />
+
+		<validator name="endDateValidatorForEvent"
+			methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			classname="com.metacube.ipathshala.view.validators.DateValidatorForEvent"
+			msg="errors.enddateinvalid" method="validateEndDateForEvent" />
+
+		<!-- <constant> <constant-name>userIdLength</constant-name> <constant-value>6</constant-value> 
+			</constant> -->
+
+		<validator name="isNumericScale"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="isNumericScale" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.required" />
+
+		<validator name="isNotNumericScale"
+			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			method="isNotNumericScale" methodParams="java.lang.Object,org.apache.commons.validator.Field"
+			msg="errors.required" />
+
+	</global>
+	<formset>
+		<form name="StudentForm">
+			<field property="enrollmentNumber" depends="required">
+				<msg name="required" key="studentForm.enrollmentNumber.required" />
+			</field>
+			<field property="firstName" depends="required">
+				<msg name="required" key="studentForm.firstname.required" />
+			</field>
+			<field property="primaryLandlineNumberCode" depends="int">
+				<msg name="int" key="studentForm.primaryLandlineNumberCode.intrequired" />
+			</field>
+			<field property="primaryLandlineNumber" depends="long">
+				<msg name="long" key="studentForm.primaryLandlineNumber.longrequired" />
+			</field>
+			<field property="primaryCellNumberCode" depends="int">
+				<msg name="int" key="studentForm.primaryCellNumberCode.intrequired" />
+			</field>
+			<field property="primaryCellNumber" depends="long">
+				<msg name="long" key="studentForm.primaryCellNumber.longrequired" />
+			</field>
+			<field property="presentAddressPincode" depends="long">
+				<msg name="long" key="studentForm.presentAddressPincode.longrequired" />
+			</field>
+			<field property="dateRelieved" depends="endDateValidator">
+				<msg name="endDateValidator" key="studentForm.dateRelieved.daterangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>enrollmentDate</var-value>
+				</var>
+			</field>
+			<field property="parentBusinessKey" depends="autocomplete">
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>parentBusinessKey</var-name>
+					<var-value>parentKeyString</var-value>
+				</var>
+			</field>
+
+			<!-- <field property="classBusinessKey" depends="autocomplete"> </field> 
+				<field property="classBusinessKey" depends="autocomplete"> <msg name="autocomplete" 
+				key="errors.autocomplete" /> <var> <var-name>classBusinessKey</var-name> 
+				<var-value>classKeyString</var-value> </var> </field> -->
+			<field property="userId" depends="required,userId">
+				<msg name="required" key="userId.required" />
+				<msg name="userId" key="validUserId" />
+			</field>
+		</form>
+
+		<form name="TeacherForm">
+			<field property="firstName" depends="required">
+				<msg name="required" key="teacherForm.firstName.required" />
+			</field>
+			<field property="landlineNumberCode" depends="int">
+				<msg name="int" key="teacherForm.landlineNumberCode.intrequired" />
+			</field>
+			<field property="landlineNumber" depends="long">
+				<msg name="long" key="teacherForm.landlineNumber.longrequired" />
+			</field>
+			<field property="cellNumberCode" depends="int">
+				<msg name="int" key="teacherForm.cellNumberCode.intrequired" />
+			</field>
+			<field property="cellNumber" depends="long">
+				<msg name="long" key="teacherForm.cellNumber.longrequired" />
+			</field>
+			<field property="presentAddressPincode" depends="long">
+				<msg name="long" key="teacherForm.presentAddressPincode.longrequired" />
+			</field>
+			<field property="permanentAddressPincode" depends="long">
+				<msg name="long" key="teacherForm.permanentAddressPincode.longrequired" />
+			</field>
+			<field property="employeeId" depends="required">
+				<msg name="required" key="teacherForm.employeeId.required" />
+			</field>
+			<field property="dateRelieved" depends="endDateValidator">
+				<msg name="endDateValidator" key="teacherForm.dateRelieved.daterangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>dateJoined</var-value>
+				</var>
+			</field>
+			<field property="userId" depends="required,userId">
+				<msg name="required" key="userId.required" />
+				<msg name="userId" key="validUserId" />
+			</field>
+		</form>
+
+		<form name="PeriodForm">
+			<field property="name" depends="required">
+				<msg name="required" key="periodForm.name.required" />
+			</field>
+			<field property="stFromHour" depends="required">
+				<msg name="required" key="periodForm.stFromHour.required" />
+				<msg name="int" key="periodForm.stFromHour.intrequired" />
+			</field>
+			<field property="stFromMin" depends="required,int">
+				<msg name="required" key="periodForm.stFromMin.required" />
+				<msg name="int" key="periodForm.stFromMin.intrequired" />
+			</field>
+			<field property="stToHour" depends="required,int">
+				<msg name="required" key="periodForm.stToHour.required" />
+				<msg name="int" key="periodForm.stToHour.intrequired" />
+			</field>
+			<field property="stToMin" depends="required,int">
+				<msg name="required" key="periodForm.stToMin.required" />
+				<msg name="int" key="periodForm.stToMin.intrequired" />
+			</field>
+			<field property="wtFromHour" depends="required,int">
+				<msg name="required" key="periodForm.wtFromHour.required" />
+				<msg name="int" key="periodForm.wtFromHour.intrequired" />
+			</field>
+			<field property="wtFromMin" depends="required,int">
+				<msg name="required" key="periodForm.wtFromMin.required" />
+				<msg name="int" key="periodForm.wtFromMin.intrequired" />
+			</field>
+			<field property="wtToHour" depends="required,int">
+				<msg name="required" key="periodForm.wtToHour.required" />
+				<msg name="int" key="periodForm.wtToHour.intrequired" />
+			</field>
+			<field property="wtToMin" depends="required,int">
+				<msg name="required" key="periodForm.wtToMin.required" />
+				<msg name="int" key="periodForm.wtToMin.intrequired" />
+			</field>
+
+		</form>
+
+		<form name="SubjectForm">
+			<field property="subjectName" depends="required">
+				<msg name="required" key="subjectForm.subjectName.required" />
+			</field>
+			<field property="subjectGroup" depends="required">
+				<msg name="required" key="subjectForm.subjectGroup.required" />
+			</field>
+			<field property="subjectLevelKey" depends="required">
+				<msg name="required" key="subjectForm.subjectLevelKey.required" />
+			</field>
+		</form>
+
+		<form name="LocationForm">
+			<field property="locationName" depends="required">
+				<msg name="required" key="locationForm.locationName.required" />
+			</field>
+			<field property="locationCapacity" depends="required,int">
+				<msg name="required" key="locationForm.locationCapacity.required" />
+				<msg name="int" key="locationForm.locationCapacity.intrequired" />
+			</field>
+			<field property="toDate" depends="endDateValidator">
+				<msg name="endDateValidator" key="locationForm.daterangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>fromDate</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="AcademicYearForm">
+			<field property="name" depends="required">
+				<msg name="required" key="academicyearForm.academicYearName.required" />
+			</field>
+			<field property="fromDate" depends="required,daterange">
+				<msg name="required" key="academicyearForm.academicYearFromDate.required" />
+				<msg name="daterange" key="errors.datesrangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>toDate</var-value>
+				</var>
+			</field>
+			<field property="toDate" depends="required">
+				<msg name="required" key="academicyearForm.academicYearToDate.required" />
+			</field>
+			<field property="isDefaultAcademicYear" depends="defaultAcademicYear">
+				<msg name="defaultAcademicYear" key="academicyearForm.invalidDefaultAcademicYear" />
+				<var>
+					<var-name>active</var-name>
+					<var-value>active</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="ParentForm">
+			<field property="fatherOfficeLandlineNumberCode" depends="int">
+				<msg name="int"
+					key="parentForm.fatherOfficeLandlineNumberCode.intrequired" />
+			</field>
+			<field property="fatherOfficeLandlineNumber" depends="long">
+				<msg name="long" key="parentForm.fatherOfficeLandlineNumber.longrequired" />
+			</field>
+			<field property="fatherCellphoneNumberCode" depends="int">
+				<msg name="int" key="parentForm.fatherCellphoneNumberCode.intrequired" />
+			</field>
+			<field property="fatherCellphoneNumber" depends="long">
+				<msg name="long" key="parentForm.fatherCellphoneNumber.longrequired" />
+			</field>
+			<field property="motherOfficeLandlineNumberCode" depends="int">
+				<msg name="int"
+					key="parentForm.motherOfficeLandlineNumberCode.intrequired" />
+			</field>
+			<field property="motherOfficeLandlineNumber" depends="long">
+				<msg name="long" key="parentForm.motherOfficeLandlineNumber.longrequired" />
+			</field>
+			<field property="motherCellphoneNumberCode" depends="int">
+				<msg name="int" key="parentForm.motherCellphoneNumberCode.intrequired" />
+			</field>
+			<field property="motherCellphoneNumber" depends="long">
+				<msg name="long" key="parentForm.motherCellphoneNumber.longrequired" />
+			</field>
+			<field property="fatherEmailAddress" depends="email">
+				<msg name="email" key="parentForm.fatherEmailAddress.emailrequired" />
+			</field>
+			<field property="motherEmailAddress" depends="email">
+				<msg name="email" key="parentForm.motherEmailAddress.emailrequired" />
+			</field>
+			<field property="userId" depends="required,userId">
+				<msg name="required" key="userId.required" />
+				<msg name="userId" key="validUserId" />
+			</field>
+			<field property="homeLandlineNumberCode" depends="int">
+				<msg name="int" key="parentForm.homeLandlineNumberCode.intrequired" />
+			</field>
+			<field property="homeLandlineNumber" depends="long">
+				<msg name="long" key="parentForm.homeLandlineNumber.longrequired" />
+			</field>
+			<field property="isFatherPrimaryContact" depends="primaryRequired">
+				<msg name="primaryRequired" key="parentForm.primaryContact.required" />
+				<var>
+					<var-name>fatherFirstName</var-name>
+					<var-value>fatherFirstName</var-value>
+				</var>
+				<var>
+					<var-name>fatherLastName</var-name>
+					<var-value>fatherLastName</var-value>
+				</var>
+				<var>
+					<var-name>motherFirstName</var-name>
+					<var-value>motherFirstName</var-value>
+				</var>
+				<var>
+					<var-name>motherLastName</var-name>
+					<var-value>motherLastName</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="MyClassForm">
+			<field property="name" depends="required">
+				<msg name="required" key="myclassForm.name.required" />
+			</field>
+			<field property="levelKey" depends="required">
+				<msg name="required" key="myclassForm.levelKey.required" />
+			</field>
+			<field property="academicYearBusinessKey" depends="autocomplete">
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>academicYearBusinessKey</var-name>
+					<var-value>academicYearKeyString</var-value>
+				</var>
+			</field>
+			<field property="locationBusinessKey" depends="autocomplete">
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>locationBusinessKey</var-name>
+					<var-value>locationKeyString</var-value>
+				</var>
+			</field>
+			<field property="classTeacherBusinessKey" depends="autocomplete">
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>classTeacherBusinessKey</var-name>
+					<var-value>classTeacherKeyString</var-value>
+				</var>
+			</field>
+		</form>
+		<form name="SetForm">
+			<field property="setName" depends="required">
+				<msg name="required" key="setForm.setName.required" />
+			</field>
+			<field property="parentSetBusinessKey" depends="autocomplete">
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>parentSetBusinessKey</var-name>
+					<var-value>parentSetKeyString</var-value>
+				</var>
+			</field>
+		</form>
+		<form name="ValueForm">
+			<field property="value" depends="required">
+				<msg name="required" key="valueForm.value.required" />
+			</field>
+			<field property="parentValueBusinessKey" depends="autocomplete">
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>parentValueBusinessKey</var-name>
+					<var-value>parentValueKeyString</var-value>
+				</var>
+			</field>
+			<field property="setBusinessKey" depends="required,autocomplete">
+				<msg name="required" key="valueFrom.setBusinessKey.required" />
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>setBusinessKey</var-name>
+					<var-value>setKeyString</var-value>
+				</var>
+			</field>
+			<field property="orderIndex" depends="int">
+				<msg name="int" key="valueForm.orderIndex.intrequired" />
+			</field>
+		</form>
+
+		<form name="EventForm">
+			<field property="title" depends="required">
+				<msg name="required" key="eventForm.title.required" />
+			</field>
+			<field property="fromDate" depends="required,daterange">
+				<msg name="required" key="eventForm.fromDate.required" />
+				<msg name="daterange" key="errors.datesrangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>toDate</var-value>
+				</var>
+			</field>
+
+			<field property="toDate" depends="required,endDateValidatorForEvent,alldayevent">
+				<msg name="required" key="eventForm.toDate.required" />
+				<msg name="alldayevent" key="eventForm.toDate.required" />
+				<msg name="endDateValidatorForEvent" key="eventForm.toDate.daterangeinvalid" />
+				<var>
+					<var-name>isAllDayEvent</var-name>
+					<var-value>isAllDayEvent</var-value>
+				</var>
+				<var>
+					<var-name>toDateField</var-name>
+					<var-value>toDate</var-value>
+				</var>
+				<var>
+					<var-name>fromDateField</var-name>
+					<var-value>fromDate</var-value>
+				</var>
+			</field>
+
+
+		</form>
+
+		<form name="ClassSubjectTeacherForm">
+			<field property="classBusinessKey" depends="required">
+				<msg name="required" key="classSubjectTeacher.class.required" />
+			</field>
+			<field property="subjectBusinessKey" depends="required">
+				<msg name="required" key="classSubjectTeacher.subject.required" />
+			</field>
+			<field property="teacherBusinessKey" depends="required">
+				<msg name="required" key="classSubjectTeacher.teacher.required" />
+			</field>
+
+		</form>
+
+		<form name="NoteForm">
+			<field property="studentKeyString" depends="required, autocomplete">
+				<msg name="required" key="noteForm.studentKeyString.required" />
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>studentBusinessKey</var-name>
+					<var-value>studentKeyString</var-value>
+				</var>
+			</field>
+			<field property="teacherKeyString" depends="required">
+				<msg name="required" key="noteForm.teacherKeyString.required" />
+			</field>
+			<field property="noteSubject" depends="required">
+				<msg name="required" key="noteForm.noteSubject.required" />
+			</field>
+
+			<field property="noteDescription" depends="required">
+				<msg name="required" key="noteForm.noteDescription.required" />
+			</field>
+			<!-- <field property="noteDate" depends="daterange"> <msg name="daterange" 
+				key="errors.datesrangeinvalid" /> <var> <var-name>beginDateField</var-name> 
+				<var-value>dueDate</var-value> </var> </field> -->
+
+			<field property="dueDate" depends="endDateValidator">
+				<msg name="endDateValidator" key="noteForm.daterangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>noteDate</var-value>
+				</var>
+			</field>
+
+		</form>
+
+		<form name="ClassStudentForm">
+			<field property="studentBusinessKey" depends="required, autocomplete">
+				<msg name="required" key="classStudentForm.studentKeyString.required" />
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>studentBusinessKey</var-name>
+					<var-value>studentKeyString</var-value>
+				</var>
+			</field>
+			<field property="classBusinessKey" depends="required, autocomplete">
+				<msg name="required" key="classStudentForm.classKeyString.required" />
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>classBusinessKey</var-name>
+					<var-value>classKeyString</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="AssignmentForm">
+			<field property="title" depends="required">
+				<msg name="required" key="assignmentForm.title.required" />
+			</field>
+			<field property="submissionDate" depends="required,endDateValidator">
+				<msg name="required" key="assignmentForm.submissionDate.required" />
+				<msg name="endDateValidator" key="assignmentForm.daterangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>postedDate</var-value>
+				</var>
+			</field>
+			<field property="myclassBusinessKey" depends="required, autocomplete">
+				<msg name="required" key="assignmentForm.myclassBusinessKey.required" />
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>myclassBusinessKey</var-name>
+					<var-value>myclassKeyString</var-value>
+				</var>
+			</field>
+			<field property="subjectBusinessKey" depends="required, autocomplete">
+				<msg name="required" key="assignmentForm.subject.required" />
+				<msg name="autocomplete" key="errors.autocomplete" />
+				<var>
+					<var-name>subjectBusinessKey</var-name>
+					<var-value>subjectKeyString</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="sendSMSForm">
+			<field property="messageText" depends="required">
+				<msg name="required" key="sendSMSForm.messageText.required" />
+			</field>
+		</form>
+
+		<form name="EvaluationSchemeForm">
+			<field property="name" depends="required">
+				<msg name="required" key="evaluationSchemeForm.name.required" />
+			</field>
+			<field property="schemeEvalTypeKey" depends="required">
+				<msg name="required" key="evaluationSchemeForm.schemeEvalTypeKey.required" />
+			</field>
+			<field property="gradingScaleKey" depends="isNotNumericScale">
+				<msg name="isNotNumericScale" key="evaluationSchemeForm.gradingScaleKey.required" />
+			</field>
+
+			<field property="terms" depends="required">
+				<msg name="required" key="evaluationSchemeForm.terms.required" />
+			</field>
+
+			<field property="stages" depends="required">
+				<msg name="required" key="evaluationSchemeForm.stages.required" />
+			</field>
+
+		</form>
+
+		<form name="EvaluationSubComponentForm">
+			<field property="subComponentName" depends="required">
+				<msg name="required" key="evaluationSubSchemeForm.name.required" />
+			</field>
+		</form>
+
+
+
+		<form name="EvaluationComponentForm">
+			<field property="componentName" depends="required">
+				<msg name="required" key="evaluationComponent.name.required" />
+			</field>
+			<!-- <field property="componentTypeKey" depends = "required"> <msg name 
+				= "required" key = "evaluationComponent.componentTypeKey.required"/> </field> -->
+
+			<field property="componentStructureKey" depends="required">
+				<msg name="required" key="evaluationComponent.componentStructureKey.required" />
+			</field>
+
+		</form>
+		<form name="EvaluationStageForm">
+			<field property="name" depends="required">
+				<msg name="required" key="EvaluationStageForm.name.required" />
+			</field>
+			<field property="stageSequenceKey" depends="required">
+				<msg name="required" key="EvaluationStageForm.sequenceKey.required" />
+			</field>
+			<field property="examStartDate" depends="daterange">
+				<msg name="daterange" key="EvaluationStageForm.datesrangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>examEndDate</var-value>
+				</var>
+			</field>
+			<field property="startDate" depends="daterange">
+				<msg name="daterange" key="EvaluationStageForm.datesrangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>endDate</var-value>
+				</var>
+			</field>
+			<field property="submitResultBy" depends="daterange">
+				<msg name="daterange" key="EvaluationStageForm.datesrangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>publishResultBy</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="TermForm">
+			<field property="name" depends="required">
+				<msg name="required" key="TermForm.name.required" />
+			</field>
+			<field property="fromDate" depends="required,daterange">
+				<msg name="required" key="TermForm.fromDate.required" />
+				<msg name="daterange" key="TermForm.datesrangeinvalid" />
+				<var>
+					<var-name>beginDateField</var-name>
+					<var-value>toDate</var-value>
+				</var>
+			</field>
+			<field property="toDate" depends="required">
+				<msg name="required" key="TermForm.toDate.required" />
+			</field>
+			<field property="sequenceKey" depends="required">
+				<msg name="required" key="TermForm.sequenceKey.required" />
+			</field>
+			<field property="workingDays" depends="workingDaysForTerm,int">
+				<msg name="workingDaysForTerm" key="errors.workingDaysinvalid" />
+				<msg name="int" key="errors.int" />
+				<var>
+					<var-name>fromDateField</var-name>
+					<var-value>fromDate</var-value>
+				</var>
+				<var>
+					<var-name>toDateField</var-name>
+					<var-value>toDate</var-value>
+				</var>
+				<var>
+					<var-name>workingDaysField</var-name>
+					<var-value>workingDays</var-value>
+				</var>
+			</field>
+
+		</form>
+
+		<form name="GradingScaleForm">
+			<field property="name" depends="required">
+				<msg name="required" key="GradingScaleForm.name.required" />
+			</field>
+			<field property="gradeScaleSteps" depends="required,int">
+				<msg name="required" key="GradingScaleForm.gradeScaleSteps.required" />
+				<msg name="int" key="GradingScaleForm.gradeScaleSteps.int.required" />
+			</field>
+		</form>
+
+		<form name="GradingScaleStepsForm">
+			<field property="stepDisplay" depends="required">
+				<msg name="required" key="GradingScaleStepsForm.stepDisplay.required" />
+			</field>
+			<field property="numericDisplay" depends="required">
+				<msg name="required" key="GradingScaleStepsForm.numericDisplay.required" />
+			</field>
+			<field property="minimum" depends="required">
+				<msg name="required" key="GradingScaleStepsForm.minimum.required" />
+			</field>
+			<field property="maximum" depends="required">
+				<msg name="required" key="GradingScaleStepsForm.maximum.required" />
+			</field>
+			<field property="stepWeight" depends="required,double">
+				<msg name="required" key="GradingScaleStepsForm.stepWeight.required" />
+				<msg name="double" key="GradingScaleStepsForm.stepWeight.double.required" />
+			</field>
+		</form>
+
+
+		<form name="academicYearStructureForm">
+			<field property="name" depends="required">
+				<msg name="required" key="academicYearStructureForm.name.required" />
+			</field>
+
+			<field property="fromLevelKey" depends="required">
+				<msg name="required" key="academicYearStructureForm.fromLevelKey.required" />
+			</field>
+
+			<field property="toLevelKey" depends="required">
+				<msg name="required" key="academicYearStructureForm.toLevelKey.required" />
+			</field>
+
+			<field property="terms" depends="required">
+				<msg name="required" key="academicYearStructureForm.terms.required" />
+			</field>
+
+			<field property="stages" depends="required">
+				<msg name="required" key="academicYearStructureForm.stages.required" />
+			</field>
+
+
+
+		</form>
+
+
+
+		<form name="ClassGroupForm">
+			<field property="classKey" depends="required">
+				<msg name="required" key="ClassGroupForm.classKey.required" />
+			</field>
+			<field property="groupKey" depends="required">
+				<msg name="required" key="ClassGroupForm.groupKey.required" />
+
+			</field>
+		</form>
+
+		<form name="reportCardForm">
+			<field property="name" depends="required">
+				<msg name="required" key="reportCardForm.name.required" />
+			</field>
+			<field property="fromLevelKey" depends="required">
+				<msg name="required" key="reportCardForm.fromLevelKey.required" />
+			</field>
+			<field property="toLevelKey" depends="required">
+				<msg name="required" key="reportCardForm.toLevelKey.required" />
+			</field>
+			<field property="academicYearKey" depends="required">
+				<msg name="required" key="reportCardForm.academicYearKey.required" />
+			</field>
+		</form>
+
+
+		<form name="StudentMiscellaneousForm">
+			<field property="rollNumber" depends="required">
+				<msg name="required" key="StudentMiscellaneousForm.rollNumber.required" />
+			</field>
+		</form>
+
+
+		<form name="AnnouncementForm">
+			<field property="title" depends="required">
+				<msg name="required" key="AnnouncementForm.title.required" />
+			</field>
+			<field property="detail" depends="required">
+				<msg name="required" key="AnnouncementForm.detail.required" />
+			</field>
+		</form>
+
+		<form name="ReportCardEventForm">
+			<field property="classKeyString" depends="required">
+				<msg name="required" key="ReportCardEventForm.class.required" />
+			</field>
+			<field property="name" depends="required">
+				<msg name="required" key="ReportCardEventForm.name.required" />
+			</field>
+			<field property="reportCardTypeKey" depends="required">
+				<msg name="required" key="ReportCardEventForm.recordtype.required" />
+			</field>
+		</form>
+
+
+		<form name="ContactForm">
+			<field property="fullName" depends="required">
+				<msg name="required" key="ContactForm.fullName.required" />
+			</field>
+			<field property="firstName" depends="required">
+				<msg name="required" key="ContactForm.firstName.required" />
+			</field>
+			<field property="workPhone" depends="int">
+				<msg name="int" key="ContactForm.workPhone.intrequired" />
+			</field>
+			<field property="workPhone" depends="long">
+				<msg name="long" key="ContactForm.workPhone.longrequired" />
+			</field>
+			<field property="homePhone" depends="int">
+				<msg name="int" key="ContactForm.homePhone.intrequired" />
+			</field>
+			<field property="homePhone" depends="long">
+				<msg name="long" key="ContactForm.homePhone.longrequired" />
+			</field>
+			<field property="mobileNumber" depends="int">
+				<msg name="int" key="ContactForm.mobileNumber.intrequired" />
+			</field>
+			<field property="workPhone" depends="long">
+				<msg name="long" key="ContactForm.mobileNumber.longrequired" />
+			</field>
+			<field property="workEmail" depends="email">
+				<msg name="email" key="ContactForm.workEmail.emailrequired" />
+			</field>
+
+			<field property="homeEmail" depends="email">
+				<msg name="email" key="ContactForm.homeEmail.emailrequired" />
+			</field>
+
+			<field property="otherEmail" depends="email">
+				<msg name="email" key="ContactForm.otherEmail.emailrequired" />
+			</field>
+
+
+		</form>
+
+		<!-- <form name="SubjectEvaluationEventForm"> <field property="eventName" 
+			depends="required"> <msg name="required" key="SubjectEvaluationEventForm.name.required" 
+			/> </field> </form> -->
+
+	</formset>
+</form-validation>
+

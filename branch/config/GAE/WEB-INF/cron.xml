@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+  <!-- template entry
+  <cron>
+    <url>/weeklyreport</url>
+    <description>Mail out a weekly report</description>
+    <schedule>every monday 08:30</schedule>
+    <timezone>America/New_York</timezone>
+  </cron> -->
+  <cron> 
+    <url>/_ah/sessioncleanup?clear</url> 
+    <description>Clean up _ah_sessions from GAE datastore</description> 
+    <schedule>every 2 hours</schedule> 
+  </cron> 
+</cronentries>

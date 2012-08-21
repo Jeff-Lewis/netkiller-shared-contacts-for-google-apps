@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" 
+  xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" 
+  jaxb:version="1.0" jaxb:extensionBindingPrefixes="xjc">
+    <xs:annotation>
+        <xs:appinfo>
+            <jaxb:globalBindings>
+                <xjc:serializable uid="12344"/>
+            </jaxb:globalBindings>
+        </xs:appinfo>
+    </xs:annotation>
+
+<!-- definition of simple elements -->
+<xs:element name="val" type="xs:string"/>
+<xs:element name="set" type="xs:string"/>
+<xs:element name="parent-value" type="xs:string"/>
+<xs:element name="order-index" type="xs:integer"/>
+
+<!-- definition of complex elements -->
+<xs:element name="valueElement">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="val"/>
+      <xs:element ref="set"/>
+      <xs:element ref="parent-value"/>
+      <xs:element ref="order-index" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="value-list">
+  <xs:complexType>
+    <xs:sequence>
+     <xs:element ref="valueElement" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>
