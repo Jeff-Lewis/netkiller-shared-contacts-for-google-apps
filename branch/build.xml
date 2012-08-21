@@ -1,0 +1,319 @@
+<project>
+
+	<!-- setting the appengine sdk home -->
+	<property environment="env" />
+	<property name="env.EXTERNAL_HOME" location="external" />
+	<property name="env.IPATSHALA_DEV_HOME" location="" />
+	<property name="EXT_HOME" location="${env.EXTERNAL_HOME}" />
+	<property name="GAE.HOME" location="${EXT_HOME}/tools/GAE1.5" />
+	<property name="POI.HOME" location="${EXT_HOME}/tools/poi" />
+	<property name="IPATSHALA.HOME" location="${env.IPATSHALA_DEV_HOME}" />
+	<property name="EXTERNAL.HOME.LIB" location="${env.EXTERNAL_HOME}/lib" />
+	<property name="BUILD.HOME" location="${env.IPATSHALA_DEV_HOME}/build" />
+	<property name="SRC.BUILD.HOME" location="${BUILD.HOME}/java" />
+	<property name="TEST.BUILD.HOME" location="${BUILD.HOME}/test" />
+	<property name="CONFIG.HOME" location="${IPATSHALA.HOME}/config" />
+	<property name="TEST.CONFIG.HOME" location="${CONFIG.HOME}/test" />
+	<property name="TEST.REPORTS.HOME" location="${env.IPATSHALA_DEV_HOME}/junitReports" />
+	<property name="DEV.DEPLOY.HOME" location="${env.IPATSHALA_DEV_HOME}/deploy/dev" />
+	<property name="QA.DEPLOY.HOME" location="${env.IPATSHALA_DEV_HOME}/deploy/qa" />
+
+	<import file="${GAE.HOME}/config/user/ant-macros.xml" />
+
+	<path id="project.classpath">
+		<!-- Commented out. Donno why we need this?? {a.c}
+		<pathelement path="${DEV.DEPLOY.HOME}/war/WEB-INF/classes" />
+		-->
+		<fileset dir="${EXTERNAL.HOME.LIB}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${GAE.HOME}/lib/shared">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${GAE.HOME}/lib/impl">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${GAE.HOME}/lib/tools/orm/">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${EXTERNAL.HOME.LIB}/spring/">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${POI.HOME}/">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="unit.test.classpath">
+		<path refid="project.classpath" />
+		<pathelement location="${SRC.BUILD.HOME}" />
+		<pathelement location="${GAE.HOME}/lib/testing/appengine-testing.jar" />
+		<pathelement location="${GAE.HOME}/lib/tools/orm/datanucleus-core-1.1.5.jar" />
+		<pathelement location="${GAE.HOME}/lib/tools/orm/datanucleus-jpa-1.1.5.jar" />
+		<pathelement location="${GAE.HOME}/lib/tools/orm/datanucleus-appengine.jar" />
+		<pathelement location="${GAE.HOME}/lib/user/orm/datanucleus-appengine-1.0.7.final.jar" />
+	</path>
+
+	<target name="compile">
+		<mkdir dir="${SRC.BUILD.HOME}" />
+		<antcall target="compileServer" />
+		<antcall target="compileUI" />
+	</target>
+	
+	<target name="createjaxb">
+ 		<antcall target="createsetjaxb" />
+ 		<antcall target="createvaluejaxb" />
+ 	</target>
+	
+	<target name="createsetjaxb">
+    <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+     <classpath refid="project.classpath" />
+    </taskdef>
+     <xjc
+      schema="${CONFIG.HOME}/GAE/WEB-INF/jaxb/setschema.xsd"
+      target="${IPATSHALA.HOME}/module/server/src/java"
+      package="com.metacube.ipathshala.core.jaxb.set"
+      removeOldOutput="yes"
+      extension="true"/>
+ 	</target>
+ 	
+ 	<target name="createvaluejaxb">
+    <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+     <classpath refid="project.classpath" />
+    </taskdef>
+     <xjc
+      schema="${CONFIG.HOME}/GAE/WEB-INF/jaxb/valueschema.xsd"
+      target="${IPATSHALA.HOME}/module/server/src/java"
+      package="com.metacube.ipathshala.core.jaxb.value"
+      removeOldOutput="yes"
+      extension="true"/>
+ 	</target>	
+
+	<target name="compileServer">
+		<property name="src.cp" refid="project.classpath" />
+		<antcall target="baseCompile">
+			<param name="src.dir" value="${IPATSHALA.HOME}/module/server/src/java" />
+			<param name="dest.dir" value="${SRC.BUILD.HOME}" />
+			<param name="classpath" value="${src.cp}" />
+		</antcall>
+	</target>
+
+	<target name="compileUI">
+		<property name="src.cp" refid="project.classpath" />
+		<antcall target="baseCompile">
+			<param name="src.dir" value="${IPATSHALA.HOME}/module/ui/src/java" />
+			<param name="dest.dir" value="${SRC.BUILD.HOME}" />
+			<param name="classpath" value="${src.cp}" />
+		</antcall>
+	</target>
+
+	<target name="compile.test">
+		<mkdir dir="${TEST.BUILD.HOME}" />
+		<property name="test.cp" refid="unit.test.classpath" />
+		<antcall target="baseCompile">
+			<param name="src.dir" value="${IPATSHALA.HOME}/module/server/src/test" />
+			<param name="dest.dir" value="${TEST.BUILD.HOME}" />
+			<param name="classpath" value="${test.cp}" />
+		</antcall>
+		<antcall target="baseCompile">
+			<param name="src.dir" value="${IPATSHALA.HOME}/module/ui/src/test" />
+			<param name="dest.dir" value="${TEST.BUILD.HOME}" />
+			<param name="classpath" value="${test.cp}" />
+		</antcall>
+	</target>
+
+	<target name="run.test">
+		<mkdir dir="${TEST.REPORTS.HOME}" />
+		<junit printsummary="yes" haltonfailure="no" haltonerror="no">
+			<classpath>
+				<pathelement location="${TEST.BUILD.HOME}" />
+				<pathelement location="${CONFIG.HOME}/GAE/WEB-INF/spring" />
+				<pathelement location="${TEST.CONFIG.HOME}" />
+				<path refid="unit.test.classpath" />
+			</classpath>
+
+			<formatter type="plain" />
+			<batchtest fork="yes" todir="${TEST.REPORTS.HOME}">
+				<fileset dir="${TEST.BUILD.HOME}">
+					<include name="**/*Test*.class" />
+					<include name="**/Test*.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="baseCompile">
+		<javac srcdir="${src.dir}" destdir="${dest.dir}" classpath="${classpath}" debug="on" />
+	</target>
+
+	<target name="clean">
+		<antcall target="copyData" />
+		<delete dir="${BUILD.HOME}" />
+		<delete dir="${env.IPATSHALA_DEV_HOME}/deploy" />
+	</target>
+	
+	<target name="copyData">
+	<copy todir="${IPATSHALA.HOME}/config/GAE/WEB-INF/data" preservelastmodified="true">
+	<fileset dir="${env.IPATSHALA_DEV_HOME}/deploy/dev/war/WEB-INF/appengine-generated">
+	<include name="**/*" />
+	</fileset>
+	</copy>
+	</target>
+	
+	<target name="uploaddata">
+		<copy todir="${env.IPATSHALA_DEV_HOME}/deploy/dev/war/WEB-INF/appengine-generated" preservelastmodified="true">
+		<fileset dir="${IPATSHALA.HOME}/config/GAE/WEB-INF/data">
+		<include name="**/*" />
+		</fileset>
+		</copy>
+		</target>
+
+	<target name="deploy" depends="compile" if="__internal__deploy__dir">
+			<antcall target="copyTemplate" />
+			<antcall target="copyClasses" />
+			<antcall target="copyjars" />
+			<antcall target="copyWebResources" />
+			<antcall target="copyJSP" />
+			<antcall target="copyMailTemplate" />
+			
+		</target>
+
+		<target name="copyTemplate">
+			<copy todir="${__internal__deploy__dir}/war/WEB-INF" preservelastmodified="true">
+				<fileset dir="${IPATSHALA.HOME}/config/GAE/WEB-INF">
+					<include name="**/*" />
+				</fileset>
+			</copy>
+		</target>
+
+		<target name="copyClasses">
+			<copy todir="${__internal__deploy__dir}/war/WEB-INF/classes" preservelastmodified="true">
+				<fileset dir="${SRC.BUILD.HOME}">
+					<include name="**/*" />
+				</fileset>
+			</copy>
+		</target>
+
+		<target name="copyjars">
+			<copy todir="${__internal__deploy__dir}/war/WEB-INF/lib" flatten="true" preservelastmodified="true">
+				<fileset dir="${GAE.HOME}/lib/user">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${EXTERNAL.HOME.LIB}">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${POI.HOME}/">
+					<include name="**/*.jar" />
+				</fileset>
+			</copy>
+		</target>
+
+		<target name="copyWebResources">
+			<copy todir="${__internal__deploy__dir}/war/" preservelastmodified="true">
+				<fileset dir="${IPATSHALA.HOME}/module/ui/resource">
+					<include name="css/**/*" />
+					<include name="images/**/*" />
+					<include name="js/**/*" />
+					<include name="fonts/**/*" />
+					<include name="SpryAssets/**/*" />
+					<include name="error/**/*" />
+					<include name="tld/**/*" />
+					<include name="gadgets/**/*" />
+					<exclude name="emailTemplate/**/*" />
+					<exclude name="jsp/**/*" />
+					
+				</fileset>
+			</copy>
+		</target>
+
+		<target name="copyMailTemplate">
+			<copy todir="${__internal__deploy__dir}/war/WEB-INF/classes/mailTemplate" preservelastmodified="true">
+				<fileset dir="${IPATSHALA.HOME}/module/ui/resource/emailTemplate">
+					<include name="**/*" />
+				</fileset>
+				
+			</copy>
+			<copy todir="${__internal__deploy__dir}/war/WEB-INF/classes/reportcardTemplate" preservelastmodified="true">
+			<fileset dir="${IPATSHALA.HOME}/module/ui/resource/reportcardTemplate">
+				<include name="**/*" />
+			</fileset>
+			</copy>
+		</target>
+
+	<target name="copyJSP">
+		<copy todir="${__internal__deploy__dir}/war/WEB-INF/jsp/" preservelastmodified="true">
+			<fileset dir="${IPATSHALA.HOME}/module/ui/resource/view">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="deploy.dev">
+		<property name="__internal__deploy__dir" value="${DEV.DEPLOY.HOME}" />
+		<antcall target="deploy" />
+		<copy todir="${__internal__deploy__dir}/war/WEB-INF" file="${IPATSHALA.HOME}/config/dev/appengine-web.xml" />
+		<antcall target="datanucleusenhance" />
+	</target>
+
+	<target name="deploy.qa" depends="datanucleusenhance" description="Uploads the application to App Engine.">
+		<property name="__internal__deploy__dir" value="${QA.DEPLOY.HOME}" />
+		<antcall target="deploy" />
+		<copy todir="${QA.DEPLOY.HOME}/war/WEB-INF" file="${IPATSHALA.HOME}/config/qa/appengine-web.xml" />
+		<antcall target="datanucleusenhance" />
+		<!-- <appcfg action="update" war="${QA.DEPLOY.HOME}/war"/>		
+		<exec executable="${GAE.HOME}/bin/appcfg.cmd">
+		  <arg value="-email=admin@xavierjaipur.org"/>
+		  <arg value="-passin"/>
+		   <arg value="update"/>
+		  <arg value="${QA.DEPLOY.HOME}/war"/>			
+		</exec> -->
+	</target>
+
+	<target name="datanucleusenhance" if="__internal__deploy__dir" description="Performs JDO enhancement on compiled data classes.">
+		<enhance_war war="${__internal__deploy__dir}/war" />
+	</target>
+
+	<target name="runserver" depends="deploy.dev" description="Starts the development server.">
+		<dev_appserver_2 port="8080" war="${DEV.DEPLOY.HOME}/war" />
+	</target>
+	
+	<target name="runserverupload" depends="deploy.dev" description="Starts the development server.">
+		<antcall target="uploaddata" />
+			<dev_appserver_2 port="8080" war="${DEV.DEPLOY.HOME}/war" />
+		</target>
+	
+
+	
+	
+
+	<target name="runServerDebugMode" depends="deploy.dev" description="Starts the development server.">
+		<dev_appserver port="8080" war="${DEV.DEPLOY.HOME}/war">
+
+			<options>
+				<arg value="--jvm_flag=-Xdebug" />
+				<arg value="--jvm_flag=-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9999" />
+			</options>
+		</dev_appserver>
+	</target>
+
+	<target name="update_indexes" depends="datanucleusenhance" description="Uploads just the datastore index configuration to App Engine.">
+		<appcfg action="update_indexes" war="deploy/war" />
+	</target>
+
+	<target name="rollback" depends="datanucleusenhance" description="Rolls back an interrupted application update.">
+		<appcfg action="rollback" war="war" />
+	</target>
+
+	<target name="request_logs" description="Downloads log data from App Engine for the application.">
+		<appcfg action="request_logs" war="war">
+			<options>
+				<arg value="--num_days=5" />
+			</options>
+			<args>
+				<arg value="logs.txt" />
+			</args>
+		</appcfg>
+	</target>
+
+</project>
