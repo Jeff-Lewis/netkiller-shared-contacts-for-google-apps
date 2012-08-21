@@ -1,0 +1,437 @@
+<html>
+	<head>
+		<style>
+
+	</style>
+	</head>
+<body style="margin:0px 10px 0 10px">
+<div style="height:1000px;">
+		
+		<table width="100%" style="width:100%;text-align:center;font-size:30px;line-height:16px;font-weight:bold"><tr><td>
+		INDIA </td></tr>
+                <tr><td style="margin-right:30px;font-size:20px;line-height:12px;">
+		 INTERNATIONAL </td></tr>
+                <tr><td>
+		 SCHOOL</td></tr>
+		</table>
+			<div style="text-align:center;">
+			<span > Affiliated to Central board of Secondary Education , Delhi </span></br>
+			<span> Affiliation No. CBSE/AFF/17355/1991(Old),CBSE/AFF/1730055/2004/22425(New) </span></br>
+			<span><u> Kshipra Path, Opp. V.T.Road, Mansarovar,Jaipur 302 020 INDIA</u>  </span>
+			</div>
+					<div style="text-align:center;">
+					<span> A Heritage of Vision A Legacy of Information </span>
+					</div>
+</br>
+<table align="center" width="100%" style="font-family:Times New Roman;width:100%;text-align:center;line-height:30px;font-size:20px;font-weight:bold"><tr><td>
+
+</td></tr>
+
+<tr><td style="width:100%;text-align:center"><div style="text-align:center;width:100%">
+<img style="margin:0 auto;width:100px;height:100px" src = "$reportCard.schoolLogoImageUrl" />
+</td></tr>
+<tr><td style="width:100%;text-align:center"><div style="text-align:center;width:100%">
+<img style="margin:0 auto;width:100px;height:100px" src = "$reportCard.studentImageUrl" />
+</td></tr>
+<tr><td style="">
+
+Report Book
+</td></tr>
+<tr><td style="">
+
+
+ Class 
+
+#if(${reportCard.myClass})
+${reportCard.myClass.name}
+#end
+
+
+</td></tr>
+<tr><td  style="">
+
+ Session 
+#if(${reportCard.academicYearSession})
+${reportCard.academicYearSession.name}
+#end
+
+
+</td></tr></table>
+
+							<table width="100%" border="0" align="center" style="width:100%;text-align:left;line-height:18px;font-size:15px;">
+
+								<tr>
+								<td style="font-weight:bold;width:50%">STUDENT PROFILE:</td>
+								<td></td>
+								</tr>
+
+								<tr>
+								<td style="font-weight:bold"> Name</td>
+								<td border="1"> 
+								<div >
+									#if($reportCard.student.firstName)
+										$reportCard.student.firstName
+									#end 
+									#if($reportCard.student.lastName)
+								 		$reportCard.student.lastName
+									#end
+									</div>
+									</td>
+								</tr>
+
+								<tr>
+								<td style="font-weight:bold"> Class $ Section</td>
+								<td> <u>
+								#if($reportCard.myClass.name)
+								 	$reportCard.myClass.name
+								#end
+								</u></td>
+								</tr>
+
+								<tr>
+								<td style="font-weight:bold"> Enrollment No:</td>
+								<td> <u>
+								#if($reportCard.student.enrollmentNumber)
+								 	$reportCard.student.enrollmentNumber
+								#end
+								</u></td>
+								</tr>
+
+								<tr>
+								<td style="font-weight:bold"> Date of Birth</td>
+								<td> <u>
+								#if($reportCard.student.dateOfBirth)
+								 	$dateTool.format('dd/MM/yyyy',${reportCard.student.dateOfBirth})
+								#end
+								</u></td>
+								</tr>
+
+								<tr>
+								<td style="font-weight:bold"> Mother's Name:</td>
+								<td><u> 
+								#if($reportCard.student.parent.motherFirstName)
+								 	$reportCard.student.parent.motherFirstName
+								#end
+								#if($reportCard.student.parent.motherLastName)
+								 	$reportCard.student.parent.motherLastName
+								#end
+								  </u></td>
+								</tr>
+
+								<tr>
+								<td style="font-weight:bold"> Father's Name:</td>
+								<td><u> 
+								#if($reportCard.student.parent.fatherFirstName)
+								 	 $reportCard.student.parent.fatherFirstName
+								#end
+								#if($reportCard.student.parent.fatherLastName)
+								 	$reportCard.student.parent.fatherLastName
+								#end
+								 </u></td>
+								</tr>
+
+								<tr>
+								<td style="font-weight:bold"> Residential Address:</td>
+								<td><u> 
+								#if($reportCard.student.presentAddressLine1)
+								 	$reportCard.student.presentAddressLine1
+								#end
+								#if($reportCard.student.presentAddressLine2)
+								 	$reportCard.student.presentAddressLine2
+								#end
+								#if($reportCard.student.presentAddressCityValue.value)
+								 	$reportCard.student.presentAddressCityValue.value
+								#end
+								  </u></td>
+								</tr>
+
+								<tr>
+								<td style="font-weight:bold"> Telephone:</td>
+								<td><u>
+								#if( $reportCard.student.primaryCellNumber)
+								 	  $reportCard.student.primaryCellNumber
+								#end
+								</u></td>
+								</tr>
+
+								</table>
+
+								
+								</br>
+								
+								
+	#set($attendanceTerms=["Term1", "Term2"])
+								
+	<table width="100%" style="width:100%;margin-top:20px;text-align:left" border="0" align="center">
+	<tr>
+	<td style="font-weight:bold"> Attendence:</td><td></td><td></td>
+	</tr>
+	
+	#foreach($term in $attendanceTerms)
+	<tr>
+		<td style="font-weight:bold"> $term :</td>
+		<td> <u>			
+			$reportCard.getTotalAttendanceForTerm($term)
+			</u>
+		</td>
+		<td> <u>			
+			$reportCard.getTotalWorkingDaysForTerm($term)
+			</u>
+		</td>
+	</tr>
+	#end
+	</table>
+
+</div>
+
+<br>
+<div style="page-break-inside: always;">
+<div>
+
+	<div align="center">
+		<big><b> Part1: Academic Performance: Scholastic Areas</b></big>	<br><tt>(to be assessed on a 9 point scale once in a session)</tt>	
+	</div>
+
+	
+	## $total should be the name of the stage for getting term level marks or academic year level marks
+	#set($total="Total")
+	#set($theoryName=$reportCard.getAttribTheory())
+	#set($practicalName=$reportCard.getAttribPractical())
+	
+	#set($stageLevel="STAGE_LEVEL")
+	#set($termLevel="TERM_LEVEL")
+	#set($academicYearLevel="ACADEMIC_YEAR_LEVEL")
+	#set($split="split")
+	
+	#set($scolasticSubjects =["Mash-Maths","Chemistry","Geography"])
+	#set($subjectArray = [])
+	#set($termStageMap = {"Term1":["Formative 1", "Formative 2", "Summative 1"],"Term 2" :["Formative 3", "Formative 4", "Summative 2"],"Term1+Term 2":["Term1_Formative 1+ Term1_Formative 2+Term 2_Formative 3+ Term 2_Formative 4","Term1_Summative 1+ Term 2_Summative 2"]})
+	#set($subjectTypeMap = {"c" : $split})
+	#set($subjectLevelInfoMap = {"Mash-Maths" : $stageLevel, "Chemistry" : $stageLevel,"Geography": $stageLevel,"Co-Scholastic Skills IV QA":$academicYearLevel, "New Age Life Skills" : $academicYearLevel,"Life Skills-I to V":$academicYearLevel})
+	#set($termInfoList = $reportCard.termInfoList)
+	#set($coScolasticSubjectArray=["Life Skills-I to V","Co-Scholastic Skills IV QA","New Age Life Skills"])
+	
+	#foreach($subjectName in $scolasticSubjects)
+		#if($subjectTypeMap.get($subjectName)==$split)
+			#set($dummyVar1= $subjectArray.add("$subjectName$theoryName"))
+			#set($dummyVar1= $subjectArray.add("$subjectName$practicalName"))
+			#if($subjectLevelInfoMap.get($subjectName)==$stageLevel)
+				#set($dummy1 = $subjectLevelInfoMap.put("$subjectName$theoryName",$stageLevel))
+				#set($dummy2 = $subjectLevelInfoMap.put("$subjectName$practicalName",$stageLevel))				
+			#elseif($subjectLevelInfoMap.get($subjectName)==$termLevel)
+				#set($dummy1 =$subjectLevelInfoMap.put("$subjectName$theoryName",$termLevel))
+				#set($dummy2 =$subjectLevelInfoMap.put("$subjectName$practicalName",$termLevel))
+			#elseif($subjectLevelInfoMap.get($subjectName)==$academicYearLevel)
+				#set($dummy1 = $subjectLevelInfoMap.put("$subjectName$theoryName",$academicYearLevel))
+				#set($dummy2 = $subjectLevelInfoMap.put("$subjectName$practicalName",$academicYearLevel))	
+			#end
+		#else
+			#set($dummyVar3 = $subjectArray.add($subjectName))
+		#end
+	#end
+	
+	<table cellpadding="1" cellspacing="0" style="margin-top:30px;width:100%;vertical-align:bottom;border:1px solid black;text-align:center"  border="1">
+			<tr>
+				<td rowspan="2" style="width:45px">S. No</td>
+				<td style="width:200px" colspan="2" rowspan="2" >Subjects</td>
+				#foreach( $term in $termStageMap.entrySet()  )
+					#set($stageLength = $term.value.size())
+					<td style="width:250px" >$term.key</td>
+				#end
+			</tr>
+			<tr>
+				
+				
+				
+				#foreach( $term in $termStageMap.entrySet()  )
+				<td>
+					#if($termStageMap.get($term.key))
+						#set($mapLength =  $term.value.size())
+						#set($tdWidthPercent= $math.div(100, $mapLength))
+						<table width="100%" style="width:100%"><tr>
+						
+						#foreach($stage in $term.value)
+							#set($formattedStageName = $reportCard.getFormattedStageName($stage))
+							<td style="width:$tdWidthPercent%;">$formattedStageName</td>
+						#end	
+						</tr></table>
+					#end
+				</td>
+				#end
+			</tr>
+			#foreach( $subject in $subjectArray  )
+			<tr>
+				
+					
+					#if($reportCard.isSubjectTheory($subject)==true)
+					<td rowspan="2">$velocityCount</td>
+					<td style="width:100" rowspan="2">$subject</td>	<td style="width:100">Theory</td>
+					#elseif($reportCard.isSubjectPractical($subject)==true)
+						<td>Practical</td>
+					#else
+					<td>$velocityCount</td>
+						<td colspan="2">$subject</td>			
+					#end
+								
+				
+				#foreach($termEntry in $termStageMap.entrySet() )
+				<td>
+					#if($termStageMap.get($termEntry.key))
+						<table width="100%" cellspacing="0" cellpadding="0" valign="top" style="vertical-align:top;height:100%;width:100%" ><tr>
+						#foreach($stage in $termEntry.value)
+							
+							#if($subjectLevelInfoMap.get($subject)==$stageLevel)
+							<td style="width:33%">$reportCard.getStageLevelMarks($termEntry.key,$stage,$subject)</td>
+							#elseif($subjectLevelInfoMap.get($subject)==$termLevel)
+
+		
+								#if($stage==$total)
+								<td style="width:33%">$reportCard.getTermLevelMarks($termEntry.key,$subject)</td>
+								#else
+								<td></td>
+								#end
+							#elseif($subjectLevelInfoMap.get($subject)==$academicYearLevel)
+								#if($stage==$total)
+								<td style="width:33%">$reportCard.getAcademicYearLevelMarks($subject)</td>
+								#else
+								<td style="width:33%"></td>
+								#end
+							
+							#end
+							
+						#end	
+						</tr></table>
+					#end
+				</td>
+				#end
+			</tr>
+			#end
+	</table>
+	
+</div>
+<br>
+	
+	
+	<div style="margin-top:40px;" align= center><br/><br/><br/>
+	
+		<Big><b> Part2: Co-Scholastic areas</b></big>	<tt>(to be assessed on a 5 point scale once in a session)</tt>	
+	</div>
+	
+	#foreach( $subject in $coScolasticSubjectArray  )
+	<div style="margin-top:20px;padding-top:20px" align= left>
+	<b>$subject</b>
+	
+	#set($componentMap = $reportCard.getCoScolasticMapForSubject($subject))
+	<table cellspacing="0" cellpadding="1" border="1" style="width:100%;" >
+		<tr>
+			<td style="width:45px">S.No</td>
+			<td>DESCRIPTIVE INDICATORS</td>
+			<td>GRADE</td>
+		</tr>
+		#foreach($mapEntry in $componentMap.entrySet())
+		<tr>
+			<td>$velocityCount</td>
+			#if($mapEntry.value.marksInfo)
+			<td><b>$mapEntry.value.name</b> <br> $mapEntry.value.marksInfo.remarks</td>
+			<td style="width:60px;">$mapEntry.value.marksInfo.grade</td>
+			#else
+			<td></td>
+			<td></td>
+			#end
+		</tr>
+		#end
+  	</table>
+  	</div>
+  	#end
+  	
+  <br><br><br>
+
+<div  style="margin-top:30px;" align= center>
+		<Big><b>Self Awareness</b></big>
+	</div>
+	<div>
+		<table cellspacing="0" cellpadding="1" border="1" style="width:100%;">
+			<tr>
+				<td><b>My Goals : </b>
+				
+				#if($reportCard.studentMiscellaneous && $reportCard.studentMiscellaneous.myGoals)
+					$reportCard.studentMiscellaneous.myGoals
+				#end				
+				</td>
+			</tr>
+			<tr>
+				<td><b>Strength : </b>
+				#if($reportCard.studentMiscellaneous && $reportCard.studentMiscellaneous.strengths)
+					$reportCard.studentMiscellaneous.strengths
+				#end
+				</td>
+			</tr>
+			<tr>
+				<td><b>My Interest and Hobbies : </b>
+				#if($reportCard.studentMiscellaneous && $reportCard.studentMiscellaneous.interestAndHobbies)
+					$reportCard.studentMiscellaneous.interestAndHobbies
+				#end
+				</td>
+			</tr>
+			<tr>
+				<td><b>Responsibilities Discharged /Exceptional Achievements : </b>
+				#if($reportCard.studentMiscellaneous && $reportCard.studentMiscellaneous.exceptionalAchievements)
+					$reportCard.studentMiscellaneous.exceptionalAchievements
+				#end
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div>
+		<table cellspacing="0" cellpadding="1" border="1" style="width:100%;margin-top:30px;">
+			<tr>
+				<td style="width:25%" >Height : </td> 
+				<td style="width:25%" >
+				#if($reportCard.studentMiscellaneous && $reportCard.studentMiscellaneous.height)
+					$reportCard.studentMiscellaneous.height
+				#end
+				</td>
+				<td style="width:25%" >Weight : </td> 
+				<td style="width:25%" >
+				#if($reportCard.studentMiscellaneous && $reportCard.studentMiscellaneous.weight)
+					$reportCard.studentMiscellaneous.weight
+				#end
+				</td>
+			</tr>
+			<tr>
+				<td style="width:25%" >Blood Group : </td> 
+				<td style="width:25%" >
+				#if($reportCard.studentMiscellaneous && $reportCard.studentMiscellaneous.bloodGroup)
+					$reportCard.studentMiscellaneous.bloodGroup
+				#end
+				</td>
+				<td style="width:25%" >Vision : </td> <td>
+				(L) #if($reportCard.studentMiscellaneous && $reportCard.studentMiscellaneous.leftVision)
+					$reportCard.studentMiscellaneous.leftVision
+				#end
+				    (R) 
+				     #if($reportCard.studentMiscellaneous && $reportCard.studentMiscellaneous.rightVision)
+					$reportCard.studentMiscellaneous.rightVision
+				#end
+				</td>
+			</tr>
+			<tr>
+				<td style="width:25%" >Dental hygine : </td> <td>
+				 #if($reportCard.studentMiscellaneous && $reportCard.studentMiscellaneous.dentalHygiene)
+					$reportCard.studentMiscellaneous.dentalHygiene
+				#end
+				</td>
+				<td style="width:25%" ></td><td></td>
+			</tr>
+			
+		</table>
+	<div>
+
+<div style="line-height: 100%; font-size: 12pt; page-break-before: always;">
+For more information please contact Ipathshala administrator.
+</div>
+</div>
+</body>
+
+</html>

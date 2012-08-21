@@ -1,0 +1,65 @@
+<Module>
+  <ModulePrefs title="Class Sites List"/>
+   <UserPref name="domainName" display_name="Domain Url" required="true"/>
+  <Content type="html">
+  <![CDATA[
+    <div id="content_div"></div>
+    <script type="text/javascript">
+
+       function gup( name )
+     {
+       name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+      var regexS = "[\\?&]"+name+"=([^&#]*)";
+     var regex = new RegExp( regexS );
+      var results = regex.exec( window.location.href );
+       if( results == null )
+        return "";
+          else
+         return results[1];
+         }
+
+function makeJSONRequest() {   
+
+var prefs = new gadgets.Prefs();
+var domainName =  prefs.getString("domainName");
+  var pare = gup('parent');
+  var temp = new Array();
+  temp = pare.split('/');
+   
+  var sitename = temp[5] ;
+  var postData = {};
+        var params = {};
+    params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+    params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+        // This URL returns a JSON-encoded string that represents a JavaScript object
+        var url = domainName+"/gadget/usersitelistgadget.do";
+
+        gadgets.io.makeRequest(url, response, params);
+};
+
+    function response(obj) {
+ var pare = gup('parent');
+  var temp = new Array();
+  temp = pare.split('/');
+   
+  var siteurl =pare.substring(0,pare.indexOf(temp[5]))  ;
+      var jsondata = obj.data;
+      // Process returned JS object as an associative array
+ 
+document.write('<form id="classSiteForm" method="POST" ><select onchange="this.options[this.selectedIndex].selected =\'selected\'" name="selectedSite" id="selectedSite">');
+  for(var value = 0 ; value < jsondata.length ; value ++) {
+document.write('<option value='+siteurl+jsondata[value]["siteName"]+'>'+jsondata[value]["siteDisplayValue"]+'</option>');
+}
+document.write('</select><input type="button" onclick="parent.window.location=document.getElementById(\'selectedSite\').value" class="btn" value=" Go! "style="font-size: 1.1em;"></form>');
+
+          
+          
+       
+     };
+     gadgets.util.registerOnLoadHandler(makeJSONRequest);
+
+     </script>
+  ]]>
+  </Content>
+</Module>

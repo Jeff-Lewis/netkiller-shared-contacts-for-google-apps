@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Event List" />
+  <UserPref name="domainName" display_name="Domain Url"
+    required="true" />
+  <Content type="html">
+  <![CDATA[
+<style type="text/css">
+.tableHeader	{
+    background:  url("/images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #DFEFFC;
+    font-weight: bold;
+    text-align: left;
+}
+.header{
+    color: inherit;
+    font-size: 1.2em;
+    padding-bottom: 0;
+    border: 1px solid #CCCCCC;
+     background : url("images/cleang1.jpg") repeat-x scroll left bottom transparent ;
+}
+
+.colValues {
+    list-style-image: none;
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+    padding-right: 3px;
+    border-bottom: 1px dotted #CCCCCC;
+    width: 100%;
+}
+
+.divStyle {
+	margin: 5px auto 5px 0pt; text-align: left; clear: both; display: block;
+}
+</style>  
+ <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script type='text/javascript'>
+  var pageSize=20;
+  var prefs = new gadgets.Prefs();
+  var domainName =  prefs.getString("domainName");
+   
+    google.load('visualization', '1', {packages:['table']});
+    
+    google.setOnLoadCallback(makeJSONRequest);
+    
+ 
+function gup( name )
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+  return "";
+  else
+  return results[1];
+}
+
+function makeJSONRequest() {   
+
+
+  var pare = gup('parent');
+  var temp = new Array();
+  temp = pare.split('/');
+   
+  var sitename = temp[5] ;
+        var params = {};
+         var postData = {data : sitename, field : "classSiteName"};
+       params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+       params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+        // This URL returns a JSON-encoded string that represents a JavaScript object
+        var url = domainName+"/gadget/eventgadget.do";
+        gadgets.io.makeRequest(url, response, params);
+};
+
+
+function response(obj) {
+    var jsondata = obj.data;
+    var data = new google.visualization.DataTable();
+     var totalRows = jsondata.length;
+     data.addColumn('string', "Title");
+        data.addColumn('string', "Teacher");
+        data.addColumn('string', "From");
+        data.addColumn('string', "To");
+        data.addColumn('number', "key");
+        data.addRows(totalRows);
+        
+        for(var row = 0 ; row < totalRows ; row++){
+            data.setCell(row,0,jsondata[row]['title']);
+           data.setCell(row,1,jsondata[row]['teacher']);
+            data.setCell(row,2,jsondata[row]['fromDate']);
+            data.setCell(row,3,jsondata[row]['toDate']);
+            data.setCell(row,4,jsondata[row]['key']);
+        }
+
+    var table = new google.visualization.Table(document.getElementById('table_div'));
+    var options = {allowHtml: true,showRowNumber: false, page:'enable',cssClassNames:{headerRow: 'tableHeader'}, pageSize:'10',pagingButtonsConfiguration:'auto'};
+    var titleFormatter = new google.visualization.PatternFormat('<a href='+'"javascript:parent.window.location=\''+domainName+'/event/showDetail.do?paramid={1}\'">{0}</a>');
+    titleFormatter.format(data, [0,4]);
+    var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2,3]);
+        table.draw( view, options);    
+     };
+
+
+ </script>
+
+
+    <div id='table_div'></div>
+    
+
+  
+  ]]>
+  </Content>
+</Module>

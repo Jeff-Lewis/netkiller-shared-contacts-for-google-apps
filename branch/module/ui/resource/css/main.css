@@ -1,0 +1,53 @@
+.ui-jqgrid tr.ui-row-ltr td {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th div {
+	font-size: 0.8em;
+}
+
+.ui-searchFilter table td select {
+	font-family:Arial,Helvetica,sans-serif;
+}
+
+.pbBody, .pbBody a, .pbBody td, .lbBody a, .lbBodyDescription, .list .headerRow .noRowsHeader {
+	color:#000000;
+}
+
+.ui-searchFilter table td input, .ui-searchFilter table td select {
+	margin:0.1em;
+	font-size: 0.8em;
+}
+
+.ui-searchFilter {
+	font-size:0.8em;
+}
+
+.ui-jqgrid .ui-pg-input {
+	height: 20px;
+}
+
+.ui-jqgrid .ui-pg-table td {
+	font-size: 0.7em;
+}
+
+.pbSubheader .pbSubExtra {
+	float:right;
+	margin-right:2em;
+}
+
+.multiColFormInput {
+	width: 185px;
+}
+
+.multiColFormInputSmall {
+	width: 60px;
+}
+
+.errorMessage {
+	color: red;
+	font-size: 14px;
+	margin-top: 40px;
+	margin-left: 10px;
+}

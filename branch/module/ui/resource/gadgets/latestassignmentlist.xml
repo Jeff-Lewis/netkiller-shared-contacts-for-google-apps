@@ -1,0 +1,223 @@
+<Module>
+  <ModulePrefs title="Assignments"/>
+  <UserPref name="domainName" display_name="Domain Url" required="true"/>
+  <Content type="html">
+  <![CDATA[
+
+  
+  <script type="text/javascript" src="/js/jquery-1.4.4.min.js"></script>
+<style type="text/css">
+
+a:link {text-decoration:none;}    /* unvisited link */
+a:visited {text-decoration:none;} /* visited link */
+a:hover {text-decoration:none;}   /* mouse over link */
+a:active {text-decoration:none;}  /* selected link */
+
+.anchorClass{
+color:#008cd4;
+text-decoration: none;
+}
+
+.tableHeader  {
+    background-color:#F5F5F5;
+    font-weight: bold;  
+}
+
+
+.divStyle {
+    margin: 5px auto 5px 0pt; text-align: left; clear: both; display: block;
+}
+
+div.tabArea {
+  margin-top:20px;
+  font-size: 90%;
+  font-weight: bold;
+}
+
+a.tab {
+  background-color: #f0f0f0;
+  border: 1px solid #000000;
+  border-bottom-width: 1px;
+  padding: 2px 1em 2px 1em;
+  text-decoration: none;
+color: #000000;
+}
+
+#tabArea a:visited{  color: #000000;}
+
+.activeTab{
+  background-color: #d0d0d0;
+  color: #000000;
+    border: 1px solid #000000;
+  border-bottom-width: 1px;
+  padding: 2px 1em 2px 1em;
+  text-decoration: none;
+}
+
+
+
+a.tab:hover {
+  cursor:default;
+  background-color: #d0d0d0;
+  color: #606060;
+}
+
+a.tab:visited{
+  color:#000000;
+}
+#firstLast,#choice{
+font-size:12px;
+}
+</style>  
+  
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+var prefs = new gadgets.Prefs();
+var domainName =  prefs.getString("domainName");
+      google.load('visualization', '1', {packages: ['table']});
+    </script>
+    <script type="text/javascript">
+
+var jsondata;
+var data1 = null;
+var controllerPath = "/gadget/assignmentgadget.do";
+var options = {};
+var totalPages = 0;
+
+function makeActive(element){
+element.className="activeTab";
+}
+function removeActive(element){
+var elem = document.getElementById(element);
+elem.className="tab";
+}
+    function getDueAssignments(dueAssignments){
+    // var AllAssId = document.getElementById('allAssgn');
+   //  var AllAssId = document.getElementById('dueAssgn');
+      if(dueAssignments){
+            controllerPath = "/gadget/dueassignmentgadget.do"
+        }else{        
+            controllerPath = "/gadget/assignmentgadget.do"
+        }   
+        document.getElementById('table').innerHTML="";
+        drawVisualization();       
+    }
+    
+    function makeColumns(){
+         data1 = new google.visualization.DataTable();
+      data1.addColumn('string', 'Title');        
+      data1.addColumn('number', 'Id');
+      data1.addColumn('date', 'Submission Date');
+      data1.addColumn('string', 'Subject');
+      data1.addColumn('string', 'Teacher');
+      data1.addColumn('string', 'Attachment');
+      data1.addColumn('string', 'Link');
+    }
+    
+    function drawVisualization() {
+      // Create and populate the data1 table.
+     makeColumns();
+    makeJSONRequest();
+ }
+
+</script>
+ <div id = "tabArea" align="left" style="margin-top:10px;">
+   <a href="#" class="activeTab" onclick ="getDueAssignments(false);makeActive(this);removeActive('dueAssgn');" id="allAssgn"> All Assignments </a>
+   <a href="#" class="tab" onclick ="getDueAssignments(true);makeActive(this);removeActive('allAssgn');" id="dueAssgn"> Due Assignments </a>
+ </div><br/>
+<div id="table"></div>
+ <script type="text/javascript">
+
+function gup( name )
+{
+    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+    var regexS = "[\\?&]"+name+"=([^&#]*)";
+    var regex = new RegExp( regexS );
+    var results = regex.exec( window.location.href );
+    if( results == null )
+    return "";
+    else
+    return results[1];
+}
+
+
+function makeJSONRequest() {   
+   
+  var pare = gup('parent');
+  var temp = new Array();
+  temp = pare.split('/');
+   
+  var sitename = temp[5] ;
+  var postData = {data : sitename, field : "classSiteName"};
+        var params = {};
+       params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+    params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+        // This URL returns a JSON-encoded string that represents a JavaScript object
+        var url = domainName+controllerPath+"?advSearchText=&_search=false&nd=1304942452832&rows=20&page=1&sidx=&sord=asc";
+        gadgets.io.makeRequest(url, response, params);
+};
+
+function response(obj) {
+    
+    
+         jsondata = obj.data;
+options['startPage'] = 0;
+  // Process returned JS object as an associative array
+        addDataToTable();
+        totalPages = parseInt(data1.getNumberOfRows()/10);
+       }
+       
+      function addDataToTable() {
+                       var entities = jsondata;
+                    data1.addRows(entities.length);
+                
+                    var row = 0;
+                    
+                    for(var i in entities){
+                        
+                        var dt = new Date(entities[i].submissionDate) ;    
+                        data1.setCell(row, 0,entities[i].title,undefined, {style: 'text-align:left;width:30%'});
+                        data1.setCell(row, 1,Number(entities[i].assignmentId));
+                        data1.setCell(row, 2,new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()),undefined, {style: 'text-align:left;width:14%'});
+                        data1.setCell(row, 3,entities[i].subjectName,undefined, {style: 'text-align:left;width:14%'});
+                        data1.setCell(row, 4,entities[i].teacherName,undefined, {style: 'text-align:left;width:14%'});
+                        data1.setCell(row, 5,"Download",undefined, {style: 'text-align:left;width:14%'});
+                        data1.setCell(row, 6,entities[i].link,undefined, {style: 'text-align:left;width:14%'});                    
+                    row++;
+                    }
+                        
+                     visualization = new google.visualization.Table(document.getElementById('table'));    
+                     var dateFormat = new google.visualization.DateFormat({pattern: "dd/MM/yyyy"});
+                          dateFormat.format(data1, 2);        
+                     var formatter = new google.visualization.PatternFormat('<a href='+'"javascript:parent.window.location=\''+domainName+'/assignment/showDetail.do?paramid={1}\'">{0}</a>');
+                     var downloadLinkFormatter = new google.visualization.PatternFormat('<a target="_blank" href=\'{1}\'>Download</a>');
+                     
+                // var downloadLinkFormatter =new google.visualization.PatternFormat('<a href="javascript:parent.window.location="+domainName\'/assignment/showDetail.do?paramid={1}\'">{0}</a>');
+                      formatter.format(data1, [0, 1]); // Apply formatter and set the formatted value of the first column.
+                      downloadLinkFormatter.format(data1, [5, 6]);
+                      var view = new google.visualization.DataView(data1);
+                      view.setColumns([0,2,3,4,5]); // Create a view with the first column only.
+
+    
+    options['allowHtml'] = true;
+    options['cssClassNames'] = {headerRow: 'tableHeader'};    
+                         options['sortColumn'] = 1;
+                         options['sortAscending'] = false;
+                      options['page'] = 'enable';
+                       options['pageSize'] = 10;
+                      //  options['pagingSymbols'] = {prev: 'prev', next: 'next'};
+                        options['pagingButtonsConfiguration'] = 'auto';
+                       visualization.draw( view, options);
+                       var dateFormat = new google.visualization.DateFormat({pattern: "dd/MM/yyyy"});
+                      dateFormat.format(data1, 2);
+                      //$(".google-visualization-table-table").attr('style','width:100%');
+       
+       }
+       
+     gadgets.util.registerOnLoadHandler(drawVisualization);
+
+     </script>
+  ]]>
+  </Content>
+</Module>

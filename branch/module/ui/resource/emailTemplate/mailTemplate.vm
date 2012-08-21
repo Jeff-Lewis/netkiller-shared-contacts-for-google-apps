@@ -1,0 +1,17 @@
+<html>
+<body>
+<h3>Hi ${firstName} ${lastName}, You have successfully registered On Ipathshala Domain</h3>
+<br>
+<div>
+<h4>Your Login Information:</h4><br>
+	UserID: ${userId}<br>
+	Password: ${password}<br>
+
+</div>
+<br>
+<div>
+For more information please contact Ipathshala administrator.
+</div>
+</body>
+
+</html>

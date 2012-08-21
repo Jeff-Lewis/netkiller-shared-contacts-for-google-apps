@@ -1,0 +1,496 @@
+/* -------------- */
+/* version: 20.0*/
+/* skin: Salesforce */
+/* cssSheet: dashboard */
+/* postfix:  */
+/* spritesEnabled: true */
+
+
+/**
+dashboard.css is css used in vf dashboard view, legacy dashboard view
+and in vf dashboard edit
+*/
+
+.mComponent .shadow {
+  background-color: #D5D5D5;
+}
+
+.mComponent .cBody {
+    background-color:#fff;
+    text-align:center;
+    background-image: url(/images/graphs/bgComponent.gif);
+    background-repeat: repeat-x;
+    background-position: left top;
+}
+
+.mComponent .cContent .dashboardRowValue {
+    float: right;
+    padding: 3px;
+    display: block;
+}
+
+.mComponent .cContent .dashboardRowLabel {
+    padding: 3px;
+    display: block;
+}
+
+/* ensure that tables and error msgs don't have a dark background */
+
+.dashPreview .cContent table,
+.cContent table.list,
+.cContent span.errorMsg {
+    background-color:#FFF;
+}
+
+/* correct padding around the 'table' for metrics */
+.firstMetric .cContent {
+  padding: 4px 4px 0;
+}
+.subsequentMetric .cContent {
+  padding: 0 4px ;
+}
+.lastMetric .cContent {
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 4px;
+}
+
+.containsAChart .cContent {
+  padding: 0;
+}
+
+.mComponent .cContent span.errorMsg {
+    display:block;
+}
+.mComponent .cContent table td{
+    padding: 0;
+}
+.mComponent .cContent table th {
+    padding:3px;
+    white-space: normal;
+}
+
+.mComponent .cContent .tableTitle {
+    border: none;
+    text-align: center;
+}
+
+.mComponent .cContent .tableTitle a {
+    font-weight: bold;
+}
+
+.mComponent .headerRow .drilldownLink {
+    text-decoration: none;
+}
+
+.mComponent .headerRow th {
+  vertical-align: bottom;
+  color: #000;
+}
+
+.mComponent .cContent .list {
+    cursor: pointer;
+    width: 100%;
+}
+
+.mComponent .cContent .list.noClick {
+    cursor: auto;
+}
+
+.mComponent .cContent .list tr.last td,
+.mComponent .cContent .last td  {
+  border-bottom-width:0;
+}
+
+.mComponent .cHeader {
+  padding:1px 0px 1px 0px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #C99C99;
+  margin-left:-2px;
+  margin-bottom:6px;
+}
+
+.mComponent .cHeader table {
+  width: 100%;
+}
+.mComponent .cHeader table td{
+  vertical-align: bottom;
+  padding-bottom:1px;
+}
+.mComponent .cHeader table td.btnMove {
+  text-align: right;
+}
+.mComponent .cHeader table td.btnMove a,
+.mComponent .cHeader table td.btnMove img {
+  padding: 0 2px;
+}
+.mComponent .cHeader table td.btnMove a img {
+  padding:0;
+}
+
+.mComponent .cHeader .title h2.moduleTitle{
+  font-weight:bold;
+  color:#9F4646;
+}
+.mComponent .btnMove {
+  font-size:0.91em;
+  vertical-align:middle;
+  text-align:right;
+}
+.mComponent .btnMove span {
+  vertical-align:middle;
+}
+.mComponent .btnMove img {
+  margin-right:1px;
+  position: relative;
+  top: 2px;
+}
+.mComponent .btnMove .btnLast {
+  margin-right:5px;
+}
+
+table.componentTable tr,
+table.componentTable td {
+  vertical-align:top;
+}
+
+.componentTable .col2,
+.componentTable .col3,
+.componentTable .col4 {
+  padding-left:5px;
+  vertical-align:top;
+}
+
+#homePage .bPageBlock .pbBody {
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+/* display an unordered list horizontally with spacer in the middle */
+.componentTable .columnSize ul {
+  display: inline;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.componentTable .columnSize li {
+  border-left: 1px solid #000;
+  margin-left: .5em;
+  padding-left: .5em;
+  display:inline;
+}
+
+.componentTable .columnSize li.first {
+  border-left: 0;
+  margin-left: 1em;
+  padding-left: 1em;
+}
+
+.componentTable .columnSize a.addComponent {
+  display: block;
+}
+
+.columnSize .active a {
+  font-weight: bold;
+}
+
+/* end unordered list */
+
+.componentDate {
+  font-size:0.91em;
+  margin-top:5px;
+}
+
+.columnSize {
+  font-size:0.91em;
+  margin-bottom:15px;
+}
+.columnSize .csActive{
+  font-weight:bold;
+}
+.mComponent .cFooter {
+  font-style:italic;
+}
+.mComponent .cFooter .cRight {
+  text-align:right;
+}
+
+.bPageBlock .pbHeader .pbButton label{
+  font-size: 1em;
+  vertical-align:bottom;
+}
+/*Q: why no just vertical-align: middle? */
+/*A: it's not working in IE */
+.bPageBlock .pbHeader .pbButton label {
+  position: relative;
+  top: -4px;
+}
+
+.metric {
+  width:100%;
+}
+.metric .value {
+  width: 1%;
+}
+.metric .value span {
+  white-space: nowrap;
+  display:block;
+}
+.metric a {
+  text-decoration: none;
+}
+
+.metricWrapper .even table.metric td,
+.mComponent .cContent .list tr.even td {
+  background-color: #eee;
+}
+
+.metricWrapper .cContent td {
+    border-bottom:1px solid #E3DEB8;
+}
+
+.metricWrapper .cHeader table {
+  padding-bottom: 2px;
+}
+
+.metricWrapper .last td {
+  border-bottom-width:0;
+}
+
+.lastMetric .mComponent{
+  margin-bottom: 10px;
+}
+
+.dashboard .bDescription {
+  padding-bottom: 0;
+}
+
+.dashWide img.chart {
+  width: 400px;
+}
+.dashMed img.chart {
+  width: 280px;
+}
+.dashNarrow img.chart {
+  width: 240px;
+}
+
+.tableTotalRow {
+    background-color: #818290;
+}
+
+.tableTotalCell {
+    color: #FFFFFF !important;
+    font-weight: bold;
+    vertical-align: middle !important;
+}
+.displayRasuDiv{
+    padding-left: 20px;
+    display: block;
+}
+.hideRasuDiv{
+    padding-left: 20px;
+    display: none;
+}
+.loading_user_lookup {
+    background-image: url(/images/loading.gif);
+    background-repeat: no-repeat;
+    padding-top: 2px;
+    padding-left: 20px;
+}
+div.loading_user_lookup {
+    height: 16px;
+}
+a.db_user_name {
+    padding: 3px 2px 3px 8px;
+    width: 216px;
+}
+#db_user_quickfindinput {
+    width: 188px;
+    height:16px;
+}
+#db_user_quickfindinput_dropdown {
+    width: 215px !important;
+}
+/* -------------- */
+/* version: 20.0*/
+/* skin: Theme3 */
+/* cssSheet: dashboard */
+/* postfix:  */
+/* spritesEnabled: true */
+
+
+/** ALOHA STYLES **/
+
+/** Dashboard **/
+body.dashboardTab .bPageBlock .pbBody{
+    padding: 0;
+}
+body.dashboardTab .bPageBlock .pbBody > p{
+    padding: 0 15px;
+}
+body.dashboardTab .pbBody > .dashboardNote{
+    margin-bottom: 0;
+}
+body.dashboardTab .bPageBlock .pbButton{
+    padding-left:15px;
+}
+body.dashboardTab .pbHeader .pbHelp{
+    padding-right: 15px;
+}
+
+.componentTable{
+    padding: 0 5px;
+}
+.col1,
+.col2,
+.col3,
+.col4 {
+    padding: 5px 10px;
+}
+
+.mComponent .cHeader{
+    border-width: 2px 0 0;
+    padding:3px 0 5px;
+}
+.mComponent .cHeader td{
+    vertical-align: middle;
+}
+.mComponent .cHeader .title h2.moduleTitle {
+    color: #000;
+    font-size: 1.2em;
+}
+
+.mComponent table.list{
+    border: 1px solid #cdcdcd;
+}
+body .pbBody .mComponent table.list tr th,
+body .pbBody .mComponent table.list tr td {
+    border:0;
+    border-bottom: 1px solid #ccc;
+}
+.mComponent table.list tr td.last {
+    border:0;
+}
+
+.metricWrapper.subsequentMetric .mComponent{
+    margin-top: 0;
+}
+.metricWrapper table.metric{
+    border: 1px solid #d4dadc;
+    border-bottom: 0;
+}
+.metricWrapper .last table.metric{
+    border-bottom: 1px solid #b1b1b1;
+}
+.metricWrapper .odd table.metric td{
+    background-color: #fff;
+}
+.metricWrapper table.metric .label{
+    padding-left: 2px;
+}
+.metricWrapper table.metric .value{
+    padding-right: 5px;
+    font-weight: bold;
+}
+.metricWrapper .cContent td{
+    border-bottom: 0;
+}
+
+/** Dashboard Edit **/
+.dashPreview .pbHeader{
+    border-bottom:1px solid #cecece;
+}
+.dashPreview .pbBody{
+    border-top:1px solid #fff;
+}
+.dashPreview table.componentTable .columnSize {
+    margin-bottom:10px;
+}
+.dashPreview table.componentTable .columnSize a,
+.dashPreview table.componentTable .mComponent .cHeader td.btnMove a{
+    color: #015BA7;
+    text-decoration: none;
+    font-weight:normal;
+}
+.dashPreview table.componentTable .columnSize .active a{
+    color: #000;
+    font-weight:bold;
+}
+.dashPreview table.componentTable .columnSize div{
+    padding: 2px 0;
+}
+.dashPreview table.componentTable .mComponent{
+    margin-top:0;
+}
+.dashPreview table.componentTable .mComponent .cHeader td.btnMove a img{
+    margin:0;
+}
+.dashPreview table.componentTable .mComponent .cHeader td.btnMove img{
+    padding:0;
+    margin:0 2px;
+}
+.dashPreview table.componentTable .cContent table.metric{
+    border: 1px solid #d4dadc;
+}
+.dashPreview table.componentTable .cContent table.metric td{
+    background-color: #eee;
+}
+.rptMoveLeft,
+.rptMoveRight,
+.rptMoveUp,
+.rptMoveDown,
+.rptMoveLeftOff,
+.rptMoveRightOff,
+.rptMoveUpOff,
+.rptMoveDownOff{
+    background: url(/images/alohaSkin/dashArrows_sprite.gif) top left no-repeat;
+    width:13px;
+    height:13px;
+}
+.rptMoveRight{
+    background-position: -13px top;
+}
+.rptMoveUp{
+    background-position: -26px top;
+}
+.rptMoveDown{
+    background-position: right top;
+}
+a:hover .rptMoveLeft{
+    background-position: left -13px;
+}
+a:hover .rptMoveRight{
+    background-position: -13px -13px;
+}
+a:hover .rptMoveUp{
+    background-position: -26px -13px;
+}
+a:hover .rptMoveDown{
+    background-position: right -13px;
+}
+a:active .rptMoveLeft{
+    background-position: left -26px;
+}
+a:active .rptMoveRight{
+    background-position: -13px -26px;
+}
+a:active .rptMoveUp{
+    background-position: -26px -26px;
+}
+a:active .rptMoveDown{
+    background-position: right -26px;
+}
+.rptMoveLeftOff{
+    background-position: left bottom;
+}
+.rptMoveRightOff{
+    background-position: -13px bottom;
+}
+.rptMoveUpOff{
+    background-position: -26px bottom;
+}
+.rptMoveDownOff{
+    background-position: right bottom;
+}

@@ -1,0 +1,76 @@
+.checkbox, .radio {
+	width: 19px;
+	height: 25px;
+	padding: 0 5px 0 0;
+	background: url(../images/checkbox.gif) no-repeat;
+	display: block;
+	clear: left;
+	float: left;
+}
+.radio {
+	background: url(../images/radio.gif) no-repeat;
+}
+.select {
+	position: absolute;
+	width: 80px; /* With the padding included, the width is 190 pixels: the actual width of the image. */
+	padding: 0px 10px 0 0px;
+	color:#9AB3BF;
+	font-size: 10px;
+	background: url(../images/droup-down.png) no-repeat 90% 4px ;
+	overflow: hidden;
+	text-align:center;
+}
+.select2 {
+	width: 150px; /* With the padding included, the width is 190 pixels: the actual width of the image. */
+	padding:0 10px 0 5px;
+	color:#000;
+	border:1px solid #dedede;
+	overflow: hidden;
+	opacity:0px;
+	z-index:-1;
+	display:block;
+	background:url(../images/text-box-bg.jpg) no-repeat right 0;
+	height:22px;
+
+}
+
+.select3 {
+	width:97px; /* With the padding included, the width is 190 pixels: the actual width of the image. */
+	height: 23px;
+	padding:4px 24px 0 4px;
+	color:#000;
+	font: 12px/21px arial,sans-serif;
+	background: url(../images/select97.jpg) no-repeat 0 4px;
+	overflow: hidden;
+	border:none;
+	display:block;
+	float:left;
+	position:absolute;
+}
+.select4 {
+	width:197px; /* With the padding included, the width is 190 pixels: the actual width of the image. */
+	height: 22px;
+	padding:5px 0px 0 4px;
+	color:#000;
+	font: 12px/21px arial,sans-serif;
+	background: url(../images/select2.jpg) no-repeat 0 4px;
+	overflow: hidden;
+	border:none;
+	display:block;
+}
+.select5{
+	width:166px; /* With the padding included, the width is 190 pixels: the actual width of the image. */
+	height: 22px;
+	padding:5px 0px 0 4px;
+	color:#000;
+	font: 12px/21px arial,sans-serif;
+	background: url(../images/login-ddl.jpg) no-repeat 0 4px;
+	overflow: hidden;
+	border:none;
+	display:block;
+	position:absolute;
+}
+
+.school-year{
+padding-left:100px;
+}

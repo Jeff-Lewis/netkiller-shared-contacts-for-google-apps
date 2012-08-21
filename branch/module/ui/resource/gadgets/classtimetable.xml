@@ -1,0 +1,225 @@
+<Module>
+  
+  <ModulePrefs title="Time Table"/>
+  <UserPref name="domainName" display_name="Domain Url" required="true"/>
+  <Content type="html">
+  <![CDATA[
+  <style type="text/css">
+
+a:link {text-decoration:none;}    /* unvisited link */
+a:visited {text-decoration:none;} /* visited link */
+a:hover {text-decoration:none;}   /* mouse over link */
+a:active {text-decoration:none;}  /* selected link */
+
+.anchorClass{
+color:#008cd4;
+text-decoration: none;
+}
+
+.tableHeader  {
+    background-color:#F5F5F5;
+    font-weight: bold;  
+}
+
+
+#firstLast,#choice{
+font-size:12px;
+}
+</style>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+var pageSize=5;
+var prefs = new gadgets.Prefs();
+var domainName =  prefs.getString("domainName");
+      google.load('visualization', '1', {packages: ['table']});
+    </script>
+    <script type="text/javascript">
+var data1 = null;
+    function drawVisualization() {
+      // Create and populate the data table.
+      data1 = new google.visualization.DataTable();
+      data1.addColumn('string', 'Name');
+      data1.addColumn('string', 'Enrollment Number');
+  
+      makeJSONRequest();
+
+
+      // Create and draw the visualization.
+      
+    }
+;
+    </script>
+<div id="table1"></div>
+    <script type="text/javascript">
+
+       function gup( name )
+     {
+       name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+      var regexS = "[\\?&]"+name+"=([^&#]*)";
+     var regex = new RegExp( regexS );
+      var results = regex.exec( window.location.href );
+       if( results == null )
+        return "";
+          else
+         return results[1];
+         }
+
+function makeJSONRequest() {   
+
+
+  var pare = gup('parent');
+  var temp = new Array();
+  temp = pare.split('/');
+   
+  var sitename = temp[5] ;
+  var postData = {data : sitename, field : "classSiteName"};
+        var params = {};
+       params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+    params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+        // This URL returns a JSON-encoded string that represents a JavaScript object
+        var url = domainName+"/gadget/classtimetablegadget.do";
+
+        gadgets.io.makeRequest(url, response, params);
+};
+
+    function response(obj) {
+     
+   
+ 
+      var jsondata = obj.data;
+      
+  
+      // Process returned JS object as an associative array
+
+ data1.addRows(jsondata.length);
+      for(var value = 0 ; value < jsondata.length ; value ++) {
+            for(var columnValue = 0 ; columnValue < jsondata[value].length ; columnValue ++) {
+          data1.setCell(value, columnValue, jsondata[value][columnValue]);
+            }
+       }
+    var options = {allowHtml: true, sort: 'disable'};
+    options['cssClassNames'] = {headerRow: 'tableHeader'}; 
+  options['page'] = 'enable';
+  options['pageSize'] = pageSize;
+  options['pagingSymbols'] = {prev: 'prev', next: 'next'};
+  options['pagingButtonsConfiguration'] = 'auto';
+visualization = new google.visualization.Table(document.getElementById('table'));
+      visualization.draw(data1, options);
+//      document.getElementById('content_div').innerHTML = html;
+     };
+     gadgets.util.registerOnLoadHandler(drawtimetable);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  var colN;
+    var options = {allowHtml: true, sort: 'disable'};
+    var data2 = new google.visualization.DataTable();
+function response1(obj){
+
+
+colN = obj.data.colNames;
+ for ( name in colN ) {          
+        if (colN.hasOwnProperty(name)) {
+          data2.addColumn('string',colN[name]);
+          }
+
+      }
+var postData = {};
+        var params = {};
+       params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+    params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+ var parent = gup('parent');
+  var temp = new Array();
+  temp = parent.split('/');
+   
+  var sitename = temp[5] ;
+        // This URL returns a JSON-encoded string that represents a JavaScript object
+        var url = domainName+"/gadget/classtimeTableview.do?&classSiteName="+sitename;
+
+        gadgets.io.makeRequest(url, response2, params);
+    
+
+}
+
+function addColumns(data){   
+
+ var postData = {};
+        var params = {};
+       params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+    params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+        // This URL returns a JSON-encoded string that represents a JavaScript object
+        var url = domainName+"/gadget/getTimeTableColumns.do";
+
+        gadgets.io.makeRequest(url, response1, params);
+  
+  return colN;
+}
+
+function response2(tableData){
+
+var html = "";
+            var p = tableData.data;
+            for (var key in p) {
+                if (p.hasOwnProperty("rows")&& key == "rows" ) {
+                var row = 0;
+                var length= p[key].length;
+                data2.addRows(length);
+
+                      for (var innerList in p[key]) {
+                  
+        //  alert("innerList"+p[key][innerList]);            
+                        for (var innerKey in p[key][innerList]) {
+// alert("innerKey"+p[key][innerList][innerKey]);
+                          var col=0;
+                            if (p[key][innerList].hasOwnProperty("cell")&& innerKey == "cell") {                   
+                          for (var element in p[key][innerList][innerKey]) {  
+                              if(p[key][innerList][innerKey][element] != null)
+                                  data2.setCell(row, col, p[key][innerList][innerKey][element].toString());  
+                              else  { data2.setCell(row, col, "");  
+}
+                                  col++;
+                              }
+                          row++
+                        }
+                      }
+                  }
+            }
+          }
+          visualization = new google.visualization.Table(document.getElementById('table1'));
+           visualization.draw(data2, options);
+        
+
+}
+
+function drawtimetable() {
+    // Create and populate the data table.
+
+    addColumns(data2);
+     
+   
+}  
+
+
+
+
+
+     </script>
+  ]]>
+  </Content>
+</Module>

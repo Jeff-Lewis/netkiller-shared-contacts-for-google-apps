@@ -1,0 +1,104 @@
+<Module>
+  <ModulePrefs title="Event Calendar"/>
+   <UserPref name="domainName" display_name="Domain Url" required="true"/>
+  <Content type="html">
+  <![CDATA[
+
+
+
+
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+var prefs = new gadgets.Prefs();
+var domainName =  prefs.getString("domainName");
+var domain;
+    </script>
+    <script type="text/javascript">
+
+function gup( name )
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+  return "";
+  else
+  return results[1];
+ }
+
+function getCurrentWindowWidth(){
+var winW = 630, winH = 460;
+if (document.body && document.body.offsetWidth) {
+ winW = document.body.offsetWidth;
+ winH = document.body.offsetHeight;
+}
+if (document.compatMode=='CSS1Compat' &&
+    document.documentElement &&
+    document.documentElement.offsetWidth ) {
+ winW = document.documentElement.offsetWidth;
+ winH = document.documentElement.offsetHeight;
+}
+if (window.innerWidth && window.innerHeight) {
+ winW = window.innerWidth;
+ winH = window.innerHeight;
+}
+
+
+return winW;
+
+}
+
+function makeJSONRequest() {   
+
+
+  var pare = gup('parent');
+  var temp = new Array();
+  temp = pare.split('/');
+ var sitename = temp[5] ;
+domain = temp[4]; 
+   var filt = '{"groupOp":"AND","rules":[ {"field" : "classSiteName",     "op" : "eq", "data" : "'
+                        + sitename
+                        + '"} ] }'
+
+  
+  var postData = { field : "eventCalendarId",
+                    Entity : "myClass",
+                    filters : filt
+
+
+
+
+};
+
+        var params = {};
+       params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+    params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+        // This URL returns a JSON-encoded string that represents a JavaScript object
+        var url = domainName+"/gadget/getSearchedEntityValues.do";
+        gadgets.io.makeRequest(url, response, params);
+};
+
+    function response(obj) {
+ 
+      var jsondata = obj.data;
+
+      // Process returned JS object as an associative array
+ //    data1.addRows(jsondata.length);
+      for(var value = 0 ; value < jsondata.length ; value ++) {
+    var innerList = jsondata[value].key ;
+calendarId=innerList.substring(innerList.lastIndexOf("/")+1);
+document.write('<iframe src="http://www.google.com/calendar/hosted/'+domain+'/embed?showTitle=0&src='+calendarId+'&ctz=Asia/Calcutta" style="border: 0" width="'+ getCurrentWindowWidth()    +'" height="600" frameborder="0" scrolling="no"></iframe>')
+ //   for(var i=0;i<innerList.length;i++) {
+ //     data1.setCell(value, i, innerList[i]);
+ //   }
+       }
+
+     };
+     gadgets.util.registerOnLoadHandler(makeJSONRequest);
+
+     </script>
+  ]]>
+  </Content>
+</Module>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib>
+<tlibversion>1.0</tlibversion>
+<jspversion>1.1</jspversion>
+<function>
+      <name>hasReadPermission</name>
+      <function-class>com.metacube.ipathshala.view.helper.SecurityViewHelper</function-class>
+      <function-signature>
+        java.lang.boolean hasReadPermission( com.metacube.ipathshala.security.AppUser , java.lang.String, com.metacube.ipathshala.core.DataContext )
+      </function-signature>
+</function>
+<function>
+      <name>hasWritePermission</name>
+      <function-class>com.metacube.ipathshala.view.helper.SecurityViewHelper</function-class>
+      <function-signature>
+        java.lang.boolean hasWritePermission( com.metacube.ipathshala.security.AppUser , java.lang.String, com.metacube.ipathshala.core.DataContext )
+      </function-signature>
+</function>
+<function>
+      <name>hasDeletePermission</name>
+      <function-class>com.metacube.ipathshala.view.helper.SecurityViewHelper</function-class>
+      <function-signature>
+        java.lang.boolean hasDeletePermission( com.metacube.ipathshala.security.AppUser , java.lang.String, com.metacube.ipathshala.core.DataContext)
+      </function-signature>
+</function>
+</taglib>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Class List" />
+  <UserPref name="domainName" display_name="Domain Url"
+    required="true" />
+  <Content type="html">
+  <![CDATA[
+<style type="text/css">
+
+a:link {text-decoration:none;}    /* unvisited link */
+a:visited {text-decoration:none;} /* visited link */
+a:hover {text-decoration:none;}   /* mouse over link */
+a:active {text-decoration:none;}  /* selected link */
+
+
+.anchorClass{
+color:#008cd4;
+text-decoration: none;
+}
+
+.tableHeader  {
+    background-color:#F5F5F5;
+    font-weight: bold;  
+}
+
+</style>  
+
+ <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script type='text/javascript'>
+
+  var prefs = new gadgets.Prefs();
+  var domainName =  prefs.getString("domainName");
+    var jsondata ;
+    google.load('visualization', '1', {packages:['table']});
+    
+    google.setOnLoadCallback(drawTable);
+    
+  var data;
+    function drawTable() {  
+ 
+        data = new google.visualization.DataTable();
+    makeJSONRequest();                
+      }
+
+function gup( name )
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+  return "";
+  else
+  return results[1];
+}
+
+function makeJSONRequest() {   
+
+
+  var pare = gup('parent');
+  var temp = new Array();
+  temp = pare.split('/');
+   
+  var sitename = temp[5] ;
+        var params = {};
+         var postData = {};
+       params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+       params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+        // This URL returns a JSON-encoded string that represents a JavaScript object
+        var url = domainName+"/gadget/classsitelistgadget.do";
+        gadgets.io.makeRequest(url, response, params);
+};
+
+function getColumnCount(jsondata, totalRows){
+var totalCols =0;
+var col = 0;
+for(var row =0; row <totalRows ; row ++){
+     for(var someData in jsondata[row]){
+     col++;
+     }
+     if(col>totalCols){
+     totalCols = col;     
+     }
+     col = 0;
+     }
+return totalCols;
+}
+
+function response(obj) {
+     var jsondata = obj.data;
+     var totalRows = jsondata.length;
+     var totalCols = getColumnCount(jsondata,totalRows) ;
+    data.addColumn('string', 'Level');
+    for(var col = 0; col <totalCols-1; col ++ ){
+    data.addColumn('string', '');
+    }      
+    
+  data.addRows(totalRows);        
+        
+        for (var row =0 ; row <totalRows; row++){
+      data.setCell(row, 0, jsondata[row]['levelName']);
+      for(var col = 1; col <totalCols; col ++ ){
+        data.setCell(row, col,jsondata[row]['sec'+col]);
+        }
+        
+     }
+        var  options = {allowHtml: true,showRowNumber: false,sort:'disable',cssClassNames:{headerRow: 'tableHeader'}};
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+        table.draw(data, options);
+     };
+
+
+ </script>
+
+
+    <div id='table_div'></div>
+    
+
+  
+  ]]>
+  </Content>
+</Module>

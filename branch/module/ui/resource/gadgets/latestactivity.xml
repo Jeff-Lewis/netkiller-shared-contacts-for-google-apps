@@ -1,0 +1,440 @@
+<Module>
+  <ModulePrefs title="Latest Activity"/>
+  <UserPref name="domainName" display_name="Domain Url" required="true"/>
+  <UserPref name="eventImage" display_name="Event Image Name" required="false"/>
+  <UserPref name="assignmentImage" display_name="Assignment Image Name" required="false"/>
+  <UserPref name="announcementImage" display_name="Announcement Image Name" required="false"/>
+  <Content type="html">
+  <![CDATA[
+<script type="text/javascript" src="/js/jquery-1.4.4.min.js"></script>
+<style type="text/css">
+ #left-div { float:left; width:690px; background:url(../images/h-divider.png) repeat-y right 0;}
+#left-div .home-filter { margin:20px 0px 0px 10px;}
+#left-div .home-filter ul { margin:0px; padding:0px}
+#left-div .home-filter ul li { list-style:none; float:left;}
+#left-div .home-filter ul li a { margin:0px 15px; text-decoration:none; color:#008cd4; font-size:14px;}
+#left-div .home-filter ul li a:hover { color:#000;border-bottom:1px dotted #000000; padding-bottom:2px;}
+#left-div .home-filter ul li a.selecttab { color:#000; border-bottom:1px dotted #000000; padding-bottom:2px;}
+#left-div .filter-result { width:99%; margin-top:20px; background:url(../images/v-divider.jpg) repeat-x 0 0;}
+#left-div .filter-result .filter-result-row { width:95%; margin-left:3%; margin-right:2%; border-bottom:1px dotted #ccc; padding-top:30px; padding-bottom:20px;}
+#left-div .filter-result .filter-icon-div { width:7%; float:left;}
+#left-div .filter-result .filter-desc-div { width:92%; float:right;}
+#left-div .filter-result .filter-desc-div .filter-desc{ width:87%; font-size:14px; margin-top:5px;}
+#left-div .filter-result .filter-desc-div .desc-auther { width:87%; font-size:13px; margin-top:5px; color:#666;}
+#left-div .filter-result .filter-title { float:left; font-size:16px; color:#008cd4; font-weight:bold;}
+#left-div .filter-result .filter-date { float:right; height:20px; font-size:11px; color:#666;-moz-border-radius: 10px 10px 0px 0px; -webkit-border-radius: 10px 10px 0px 0px; border-radius: 10px 10px 10px 10px; background-color:#f8f3cb; line-height:20px; padding:0px 10px; }
+#left-div .filter-result .announcement-icon { width:34px; height:29px; background:url(../images/icon1.jpg) no-repeat center 0;}
+#left-div .filter-result .assignments-icon { width:34px; height:29px; background:url(../images/icon2.jpg) no-repeat center 0;}
+#left-div .filter-result .notes-icon { width:34px; height:29px; background:url(../images/icon3.jpg) no-repeat center 0;}
+#left-div .filter-result .events-icon { width:34px; height:29px; background:url(../images/icon4.jpg) no-repeat center 0;}
+#left-div .filter-result .download-icon{ width:75px; height:20px; line-height:20px; margin-top:10px; font-size:12px; color:#999; background:url(../images/download-icon.jpg) no-repeat right center;}
+
+#left-div .view-older-post { padding-right:3%; font-size:14px; text-align:right;}
+#left-div .view-older-post a{  color:#008CD4; text-decoration:none;}
+.clear { clear:both; height:0px; overflow:hidden;}
+
+</style>
+
+<div id="left-div" style="width:100%" onLoad= "">
+          <div class="home-filter">
+            <ul>
+              <li><a href="#" class="selecttab" id="allActivity"
+                value="All"
+                onclick="setActivityType(this);makeActive(this);removeActive('allEvent','allAssignment','allAnnouncement');">All
+                  Posts</a></li>
+              <li><a href="#" class="tab" id="allAnnouncement"
+                value="Announcement"
+                onclick="setActivityType(this);makeActive(this);removeActive('allEvent','allAssignment','allActivity');">Latest
+                  Announcement</a></li>
+              <li><a href="#" class="tab" id="allAssignment"
+                value="Assignment"
+                onclick="setActivityType(this);makeActive(this);removeActive('allEvent','allActivity','allAnnouncement');">Assignments</a>
+              </li>
+              <li><a href="#" class="tab" id="allEvent" value="Event"
+                onclick="setActivityType(this);makeActive(this);removeActive('allActivity','allAssignment','allAnnouncement');">Events</a>
+              </li>
+              <div class="clear"></div>
+
+            </ul>
+            <div class="clear"></div>
+          </div>
+          <div class="filter-result" id ="filter-result" style="2px solid black"></div>
+          <div class="view-older-post">
+            <a href="#" id="hyperLink" onclick="makeJSONRequest()">view
+              older posts</a>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+var pageSize=20;
+var prefs = new gadgets.Prefs();
+var domainName = prefs.getString("domainName");
+var eventImage = prefs.getString("eventImage");
+var assignmentImage = prefs.getString("assignmentImage");
+var announcementImage = prefs.getString("announcementImage");
+if(eventImage == ""){
+eventImage = "event_icon.png";
+}
+if(assignmentImage == ""){
+assignmentImage = "assignment_icon.png";
+}
+if(announcementImage == ""){
+announcementImage = "icon1.jpg";
+}
+//alert(domainName);
+ //google.load('visualization', '1', {packages: ['table']});
+    
+function makeActive(element){
+     element.className="selecttab";
+}
+function removeActive(element1,element2,element3){
+var elem1 = document.getElementById(element1);
+var elem2 = document.getElementById(element2);
+var elem3 = document.getElementById(element3);
+elem1.className="tab";
+elem2.className="tab";
+elem3.className="tab";
+}    
+    
+   </script>
+<script type="text/javascript">
+ 
+   
+       
+//var data1 = null;
+var eventSize ;
+var assignmentSize ;
+var announcementSize  ;
+ var row = 0;
+ var postData  ;
+ var activityType ="all";
+//var options;
+   function drawVisualization() {
+    var pare = gup('parent');
+    var temp = new Array();
+    temp = pare.split('/');
+     
+    var sitename = temp[5] ;
+   // alert(sitename);
+     postData = {data : sitename,field : "classSiteName"};
+     initializeCounters();
+     makeJSONRequest();
+    // initializeTable();
+      //makeJSONRequest();
+ };
+
+ 
+  function moreHandle() {
+    var hLink =document.getElementById('hyperLink');
+     if(row%10 != 0){
+      hLink.className = "hidden";  
+      }
+else{
+hLink.className = "";
+}
+  }
+
+  function gup(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(window.location.href);
+
+    if (results == null)
+      return "";
+    else
+      return results[1];
+  }
+
+  function initializeCounters() {
+    eventSize = 0;
+    assignmentSize = 0;
+    announcementSize = 0;
+  }
+
+  /*  function initializeTable(){
+   options = {allowHtml: true};
+   data1 = new google.visualization.DataTable();
+   var myView = new google.visualization.DataView(data1)
+   data1.addColumn('string', '');
+   } */
+
+  function setActivityType(radioButton) {
+    if (radioButton == document.getElementById('allActivity')) {
+      activityType = "all";
+    } else if (radioButton == document.getElementById('allEvent')) {
+      activityType = "event";
+    } else if (radioButton == document.getElementById('allAssignment')) {
+      activityType = "assignment";
+    } else if (radioButton == document.getElementById('allAnnouncement')) {
+      activityType = "announcement";
+    }
+
+    // clear the row
+    //data1.removeRows(0,  data1.getNumberOfRows());
+    /*  row = 0 ;
+     initializeTable();
+     */
+    // clear the Counters
+    initializeCounters();
+
+    // If the activity type is changed then fetch records.
+    makeJSONRequest();
+
+  }
+
+  function getDateValue(date) {
+    var dt = new Date(date);
+    var month = "";
+    switch (dt.getMonth()) {
+    case 0:
+      month = "January";
+      break;
+    case 1:
+      month = "February";
+      break;
+    case 2:
+      month = "March";
+      break;
+    case 3:
+      month = "April";
+      break;
+    case 4:
+      month = "May";
+      break;
+    case 5:
+      month = "June";
+      break;
+    case 6:
+      month = "July";
+      break;
+    case 7:
+      month = "August";
+      break;
+    case 8:
+      month = "September";
+      break;
+    case 9:
+      month = "October";
+      break;
+    case 10:
+      month = "November";
+      break;
+    case 11:
+      month = "December";
+      break;
+    }
+    return dt.getDate() + " " + month + " " + dt.getUTCFullYear();
+  }
+
+  function makeJSONRequest() {
+     var params = {};
+    params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+    params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+     // This URL returns a JSON-encoded string that represents a JavaScript object
+     var url = domainName+"/gadget/latestactivitygadget.do?eventCount="+ eventSize+"&assignmentCount="+assignmentSize+"&announcementCount="+announcementSize+"&activityType="+activityType;
+     //alert(url);
+     gadgets.io.makeRequest(url, response, params);
+     
+    /*$.ajax({
+      url : "/gadget/latestactivitygadgetmodified.do?eventCount=" + eventSize
+          + "&assignmentCount=" + assignmentSize
+          + "&announcementCount=" + announcementSize
+          + "&activityType=" + activityType,
+      dataTypeString : "json",
+      //data : postData,
+      success : function(result) {
+        response(result);
+      },
+      error : function() {
+      }
+
+    });*/
+  };
+
+  function response(obj) {
+  //  alert('Response');
+    var jsondata = obj.data;
+    // Process returned JS object as an associative array
+    var entities = jsondata;
+    var strDiv = "";
+    // alert(entities.length);
+
+    for ( var i = 0; i < entities.length; i++) {
+      strDiv += "<div class='filter-result-row'>";
+      var dataM = entities[i];
+      
+      var date = dataM.date;
+      var data = eval(dataM.data);
+      var type = data.type;
+      //alert(type);
+      if (type == 'Event') {
+        var content = getEventContent(data, date);
+        strDiv += content;
+        eventSize++;
+        //alert("eventSize "+eventSize);
+      } else if (type == 'Assignment') {
+        var content = getAssignmentContent(data, date);
+        strDiv += content;
+        assignmentSize++;
+      //  alert("assignmentSize " + assignmentSize);
+      } else if (type == 'Announcement') {
+        var content = getAnnouncementContent(data, date);
+        strDiv += content;
+        announcementSize++;
+        //alert("announcementSize  "+announcementSize);
+      }
+      row++;
+      strDiv += "</div>";
+     
+    }
+    moreHandle();
+   document.getElementById("filter-result").innerHTML = strDiv;
+  }
+
+  
+   function getEventContent(data, date) {
+    var dt = new Date(date);
+    var toDate = new Date(data.toDate);
+    var content = getEventImage()
+        + "<div class='filter-desc-div'><div class='fullwidth'> <div class='filter-title'>"
+        + data.title
+        + "</div><div class='filter-date'>"
+        + getEventDateInfo(date, data)
+        + "</div> <div class='clear'></div></div><div class='filter-desc'>"
+        + data.description + "</div>" + "<div class='desc-auther'>"
+        + "By :" + data.teacher
+        + "</div></div><div class='clear'></div>";
+    //var content = "<div>"+getEventImage()+"<b>"+data.teacher+"</b> :  " +data.title + "<br />" +"<div style='padding-left: 45px;padding-bottom:5px;'>"+getEventDateInfo(date,data)+"</div><div style='padding-left: 45px;'>"+ data.description+"</div><br />"+getFooter(date)+"</div>";
+    return content;
+  }
+
+  function getAssignmentContent(data, date) {
+    var content = getAssignmentImage()
+        + "<div class='filter-desc-div'><div class='fullwidth'> <div class='filter-title'>"
+        + data.title
+        + "</div><div class='filter-date'>"
+        + getDateValue(data.submissionDate)
+        + "</div> <div class='clear'></div></div><div class='filter-desc'>"
+        + data.description
+        + "</div>"
+        + "<div class='desc-auther'>"
+        + "By :"
+        + data.teacher
+        + "</div><div class='download-icon'>Download</div></div><div class='clear'></div>";
+
+    //var content = "<div>"+getAssignmentImage()+ "<b>"+data.teacher+"</b> : " +data.subjectName +" : "+data.title +"<br />"+"<div style='padding-left: 45px;padding-bottom:5px;'>"+"Due on "+ getDateValue(data.submissionDate) + "</div><div style='padding-left: 45px;'>"+ data.description+" </div><br /> "+getFooter(date)+ "<div style='float:left;'> : " +"<a href='"+data.attachmentId+"'>Download</a></div>"+"</div>"
+    return content;
+  }
+
+  function getAnnouncementContent(data, date) {
+    var content = getAnnouncementImage()
+        + "<div class='filter-desc-div'><div class='fullwidth'> <div class='filter-title'>"
+        + data.title
+        + "</div><div class='filter-date'>"+getDateValue(date)
+        + "</div> <div class='clear'></div></div><div class='filter-desc'>"
+        + data.description + "</div>" + "<div class='desc-auther'>"
+        + "By :" + data.author
+        + "</div></div><div class='clear'></div>";
+    //var content = "<div>"+getAnnouncementImage()+"<b>"+data.author+"</b> : "+data.title + "<br />"+"<div style='padding-left: 45px;'>"+data.description+"</div><br />"+getFooter(date)+"</div>";
+    return content;
+  }
+
+  function getEventImage() {
+    return "<div class='filter-icon-div'><div class='events-icon'><img width='42' src='"+domainName+"/images/"+eventImage+"'></img></div></div>";
+  }
+
+  function getAssignmentImage() {
+    return "<div class='filter-icon-div'><div class='assignments-icon'><img width='42' src='"+domainName+"/images/"+assignmentImage+"'></img></div></div>";
+  }
+
+  function getAnnouncementImage() {
+    return "<div class='filter-icon-div'><div class='announcement-icon'><img width='42' src='"+domainName+"/images/"+announcementImage+"'></img></div></div>";
+  }
+
+  function getFooter(date) {
+    return "<div style='color:#A9A9A9; float:left'>." + getDateValue(date)
+        + "</div>";
+  }
+
+  function getEventDateInfo(date, data) {
+    // It is assumed that there are only two types of events, all day event and other type.
+    // This code may need some change if other type of events are added.
+
+    var dt = new Date(data.fromDate);
+    var toDate = new Date(data.toDate);
+    var eventDateInfo = "";
+    if (data.eventType == 'allDayEvent') {
+      if (data.fromDate == data.toDate) {
+        eventDateInfo = getDateValue(data.fromDate);
+      } else {
+        eventDateInfo = getDateValue(data.fromDate) + " to "
+            + getDateValue(data.toDate);
+      }
+    } else {
+      if (getDateValue(data.fromDate) == getDateValue(data.toDate)) {
+        eventDateInfo = getDateValue(data.fromDate) + "  "
+            + getHoursInAmOrPm(dt) + ":" + getMinutesValue(dt)
+            + " " + getAmOrPmTag(dt) + " to "
+            + getHoursInAmOrPm(toDate) + ":"
+            + getMinutesValue(toDate) + " " + getAmOrPmTag(toDate);
+      } else {
+        eventDateInfo = getDateValue(data.fromDate) + " "
+            + getHoursInAmOrPm(dt) + ":" + getMinutesValue(dt)
+            + " " + getAmOrPmTag(dt) + " to "
+            + getDateValue(data.toDate) + " "
+            + getHoursInAmOrPm(toDate) + ":"
+            + getMinutesValue(toDate) + " " + getAmOrPmTag(toDate);
+      }
+    }
+
+    return eventDateInfo;
+  }
+
+  function getMinutesValue(dt) {
+    var min = dt.getMinutes();
+    if (min < 10) {
+      min = "0" + min;
+    }
+
+    return min;
+  }
+
+  function getHoursInAmOrPm(dt) {
+    var hour = dt.getHours();
+    if (hour > 12) {
+      hour = 23 - 12;
+    }
+    if (hour < 10) {
+      hour = "0" + hour;
+    }
+    return hour;
+  }
+
+  function getAmOrPmTag(dt) {
+    var hour = dt.getHours();
+    if (hour < 12) {
+      return "AM";
+    } else {
+      return "PM";
+    }
+  }
+  
+  gadgets.util.registerOnLoadHandler(drawVisualization);
+</script>
+
+
+
+        
+        
+ ]]>
+  </Content>
+</Module>        

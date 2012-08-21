@@ -1,0 +1,109 @@
+<Module>
+  <ModulePrefs title="Subjects List"/>
+  <UserPref name="domainName" display_name="Domain Url" required="true"/>
+  <Content type="html">
+  <![CDATA[
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<style type="text/css">
+
+a:link {text-decoration:none;}    /* unvisited link */
+a:visited {text-decoration:none;} /* visited link */
+a:hover {text-decoration:none;}   /* mouse over link */
+a:active {text-decoration:none;}  /* selected link */
+
+.anchorClass{
+color:#008cd4;
+text-decoration: none;
+}
+
+.tableHeader  {
+    background-color:#F5F5F5;
+    font-weight: bold;  
+}
+
+#firstLast,#choice{
+font-size:12px;
+}
+</style>  
+    <script type="text/javascript">
+var pageSize=10;
+var prefs = new gadgets.Prefs();
+var domainName =  prefs.getString("domainName");
+      google.load('visualization', '1', {packages: ['table']});
+    </script>
+    <script type="text/javascript">
+    var data1 = null;
+    function drawVisualization() {
+      // Create and populate the data table.
+      data1 = new google.visualization.DataTable();
+      data1.addColumn('string', 'Subject');
+      data1.addColumn('string', 'Teacher');
+  
+      makeJSONRequest();
+
+
+      // Create and draw the visualization.
+     
+    }
+;
+    </script>
+<div id="table"></div>
+    <script type="text/javascript">
+
+function gup( name )
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+  return "";
+  else
+  return results[1];
+ }
+
+function makeJSONRequest() {   
+
+
+  var pare = gup('parent');
+  var temp = new Array();
+  temp = pare.split('/');
+   
+  var sitename = temp[5] ;  
+  var postData = {data : sitename, field : "classSiteName"};
+
+        var params = {};
+       params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+    params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postData);
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+        // This URL returns a JSON-encoded string that represents a JavaScript object
+        var url = domainName+"/gadget/subjectteachergadget.do?advSearchText=&_search=false&nd=1304942452832&rows=20&page=1&sidx=&sord=asc";
+        gadgets.io.makeRequest(url, response, params);
+};
+
+    function response(obj) { 
+ 
+      var jsondata = obj.data;
+     
+      // Process returned JS object as an associative array
+     data1.addRows(jsondata.length);
+      for(var value = 0 ; value < jsondata.length ; value ++) {
+    var innerList = jsondata[value] ;
+    for(var i=0;i<innerList.length;i++) {
+      data1.setCell(value, i, innerList[i]);
+    }
+       }
+var options = {'showRowNumber': true};
+options['cssClassNames'] = {headerRow: 'tableHeader'}; 
+  options['page'] = 'enable';
+  options['pageSize'] = pageSize;
+  options['pagingButtonsConfiguration'] = 'auto';
+visualization = new google.visualization.Table(document.getElementById('table'));
+      visualization.draw(data1, options);
+     };
+     gadgets.util.registerOnLoadHandler(drawVisualization);
+
+     </script>
+  ]]>
+  </Content>
+</Module>

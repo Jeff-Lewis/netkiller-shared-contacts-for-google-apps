@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <taglib>
+    <tlibversion>1.0</tlibversion>
+    <jspversion>1.1</jspversion>
+    <info>Generates URL for blob</info>
+    <tag>
+      <name>urlgenerator</name>
+      <tagclass>com.metacube.ipathshala.view.taglib.UrlGeneratorCustomTag</tagclass>
+      <bodycontent>empty</bodycontent>
+      <attribute>
+        <name>url</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+      </attribute>
+       </tag>
+  </taglib>
