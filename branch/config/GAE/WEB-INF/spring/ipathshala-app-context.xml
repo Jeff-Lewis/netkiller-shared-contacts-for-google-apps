@@ -207,19 +207,12 @@
 		<property name="maxUploadSize" value="5024000" />
 	</bean>
 
-	<!-- <bean id="SMSService" class="com.metacube.ipathshala.service.SMSService">
-		<property name="sender" ref="smsSender" />
-	</bean>
-
-	<bean id="smsSender"
-		class="com.metacube.ipathshala.service.sms.impl.SMSSenderSMSLaneImpl"
-		init-method="init">
-		<property name="user" value="${sms.sender.user}" />
-		<property name="password" value="${sms.sender.passwd}" />
-		<property name="senderID" value="${sms.sender.senderid}" />
-		<property name="flashInput" value="${sms.sender.flashInput}" />
-	</bean>
- -->
+	<!-- <bean id="SMSService" class="com.metacube.ipathshala.service.SMSService"> 
+		<property name="sender" ref="smsSender" /> </bean> <bean id="smsSender" class="com.metacube.ipathshala.service.sms.impl.SMSSenderSMSLaneImpl" 
+		init-method="init"> <property name="user" value="${sms.sender.user}" /> <property 
+		name="password" value="${sms.sender.passwd}" /> <property name="senderID" 
+		value="${sms.sender.senderid}" /> <property name="flashInput" value="${sms.sender.flashInput}" 
+		/> </bean> -->
 
 	<bean id="bulkContactDeleteTask" name="bulkContactDeleteTask"
 		class="com.metacube.ipathshala.workflow.impl.task.BulkContactDeleteTask"
@@ -236,6 +229,24 @@
 			</list>
 		</property>
 	</bean>
+
+	<bean id="addContactForAllDomainUsersTask" name="addContactForAllDomainUsersTask"
+		class="com.metacube.ipathshala.workflow.impl.task.AddContactForAllDomainUsersTask"
+		scope="prototype" lazy-init="true">
+		<property name="taskName" value="Add-ContactForAllDomainUsers-Task"></property>
+		<property name="retryCount" value="3"></property>
+	</bean>
+	<bean id="addContactForAllDomainUsersProcessor" name="addContactForAllDomainUsersProcessor"
+		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		scope="prototype" lazy-init="true">
+		<property name="workflowTasks">
+			<list>
+				<ref bean="addContactForAllDomainUsersTask" />
+			</list>
+		</property>
+	</bean>
+
+
 
 	<bean id="bulkContactDuplicateTask" name="bulkContactDuplicateTask"
 		class="com.metacube.ipathshala.workflow.impl.task.BulkContactDuplicateTask"

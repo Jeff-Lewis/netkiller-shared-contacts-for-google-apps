@@ -94,16 +94,7 @@ public class ContactsController extends AbstractController {
 	private EntityValidator validator;
 
 	@Autowired
-	private DomainAdminManager domainAdminManager;
-
-	@Autowired
 	private DomainGroupManager domainGroupManager;
-
-	@Autowired
-	private SetManager setManager;
-
-	@Autowired
-	private ValueManager valueManager;
 
 	public ContactsManager getContactsManager() {
 		return contactsManager;
@@ -121,11 +112,9 @@ public class ContactsController extends AbstractController {
 		this.validator = validator;
 	}
 
-	@Autowired
-	private AppUserEntityService appUserService;
-
 	@RequestMapping("/createGroupHome.do")
-	public String createGroupHome(HttpServletRequest request,
+	public @ResponseBody
+	String createGroupHome(HttpServletRequest request,
 			HttpServletResponse response, Model model) throws AppException {
 		return UICommonConstants.WELCOME_ADMIN_PAGE;
 	}
@@ -143,7 +132,7 @@ public class ContactsController extends AbstractController {
 			domainGroup.setDomainName(CommonWebUtil.getDomain(user.getEmail()));
 			domainGroup.setGroupName(groupName);
 			domainGroupManager.createDomainGroup(domainGroup);
-
+			/* contactsManager.addGroupToAllDomainUsers(); */
 			return showContacts(request, model);
 		}
 		return UICommonConstants.VIEW_INDEX;
@@ -196,9 +185,14 @@ public class ContactsController extends AbstractController {
 			 * UICommonConstants.CONTEXT_CONTACTS_HOME);
 			 */
 			try {
+				UserService userService = UserServiceFactory.getUserService();
+				User user = userService.getCurrentUser();
 
-				Contacts createdcontact = contactsManager.createContact(
-						contact);
+				Contacts createdcontact = contactsManager
+						.createContact(contact);
+				contactsManager.addContactForAllDomainUsers(
+						CommonWebUtil.getDomain(user.getEmail()),
+						createdcontact);
 				removeFromNavigationTrail(request);
 			} catch (UniqueValidationException exception) {
 				result.rejectValue(

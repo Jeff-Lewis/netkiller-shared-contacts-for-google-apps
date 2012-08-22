@@ -73,7 +73,9 @@ import com.metacube.ipathshala.util.CommonUtil;
 import com.metacube.ipathshala.util.CommonWebUtil;
 import com.metacube.ipathshala.vo.UserPermission;
 import com.metacube.ipathshala.vo.UserSync;
+import com.metacube.ipathshala.workflow.WorkflowContext;
 import com.metacube.ipathshala.workflow.WorkflowInfo;
+import com.metacube.ipathshala.workflow.impl.context.AddContactForAllDomainUsersContext;
 import com.metacube.ipathshala.workflow.impl.context.BulkContactDeleteWorkflowContext;
 import com.metacube.ipathshala.workflow.impl.context.BulkContactDuplicateWorkflowContext;
 import com.metacube.ipathshala.workflow.impl.processor.WorkflowStatusType;
@@ -207,13 +209,12 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
-	public Contacts createContact(Contacts contacts)
-			throws AppException {
+	public Contacts createContact(Contacts contacts) throws AppException {
 		try {
 
 			super.validate(contacts, entityMetaData, globalFilterSearchService,
 					null);
-			
+
 			return contactsDao.create(contacts);
 		} catch (DataAccessException dae) {
 			String message = "Unable to create contact:" + contacts;
@@ -221,13 +222,13 @@ public class ContactsService extends AbstractService {
 			throw new AppException(message, dae);
 		}
 	}
-	
-	/*public Contacts createContactForAllDomainUsers(){
-		
-	}
-*/
-	public Contacts updateContact(Contacts contacts)
-			throws AppException {
+
+	/*
+	 * public Contacts createContactForAllDomainUsers(){
+	 * 
+	 * }
+	 */
+	public Contacts updateContact(Contacts contacts) throws AppException {
 		try {
 
 			validate(contacts, entityMetaData, globalFilterSearchService, null);
@@ -407,6 +408,34 @@ public class ContactsService extends AbstractService {
 			workflowService.updateWorkflow(workflow);
 			workflowService.triggerWorkflow(workflow);
 		}
+	}
+
+	public void addContactForAllDomainUsers(String domain, Contacts contact)
+			throws AppException {
+		Workflow workflow = addContactForAllDomainUsersWorkflow(domain, contact);
+		if (workflow != null) {
+			workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS.toString());
+			workflowService.updateWorkflow(workflow);
+			workflowService.triggerWorkflow(workflow);
+		}
+	}
+
+	private Workflow addContactForAllDomainUsersWorkflow(String domain,
+			Contacts contact) throws AppException {
+		AddContactForAllDomainUsersContext context = new AddContactForAllDomainUsersContext();
+		context.setContactInfo(contact);
+		context.setDomain(domain);
+		WorkflowInfo info = new WorkflowInfo(
+				"addContactForAllDomainUsersProcessor");
+		info.setIsNewWorkflow(true);
+		context.setWorkflowInfo(info);
+		Workflow workflow = new Workflow();
+		workflow.setWorkflowName("Add Contact for all domain Users");
+		workflow.setWorkflowInstanceId(info.getWorkflowInstance());
+		workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
+		workflow.setContext((WorkflowContext) context);
+		workflowService.createWorkflow(workflow);
+		return workflow;
 	}
 
 	private com.google.gdata.client.contacts.ContactsService getContactsService()
@@ -765,19 +794,20 @@ public class ContactsService extends AbstractService {
 	public List<String> getAllDomainUsersWithReadAndWritePErmissionIncludingAdmin(
 			String domain) {
 		List<String> allDomainUsers = getAllDomainUsersIncludingAdmin(domain);
-		/*List<String> restrtictedUsers = getAllUserNamesWithNoPermissions(domain);
-		if (restrtictedUsers != null) {
-			allDomainUsers.removeAll(restrtictedUsers);
-		}*/
+		/*
+		 * List<String> restrtictedUsers =
+		 * getAllUserNamesWithNoPermissions(domain); if (restrtictedUsers !=
+		 * null) { allDomainUsers.removeAll(restrtictedUsers); }
+		 */
 		return allDomainUsers;
 	}
 
-	/*public void setGroupName(String domainName, String groupName) {
-		Entity entity = new Entity("DomainGroup");
-		entity.setProperty("domainName", domainName);
-		entity.setProperty("groupName", groupName);
-		datastore.put(entity);
-	}*/
+	/*
+	 * public void setGroupName(String domainName, String groupName) { Entity
+	 * entity = new Entity("DomainGroup"); entity.setProperty("domainName",
+	 * domainName); entity.setProperty("groupName", groupName);
+	 * datastore.put(entity); }
+	 */
 
 	@Autowired
 	private DomainGroupService domainGroupService;
@@ -1060,6 +1090,21 @@ public class ContactsService extends AbstractService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error("e.getMessage: " + e.getMessage());
+			throw new AppException(e.getMessage());
+		}
+	}
+
+	public void createUserContact(ContactEntry contact, String userEmail)
+			throws AppException {
+		try {
+			com.google.gdata.client.contacts.ContactsService service = getContactsService();
+			String feedurl = getUserFeedUrl(domainConfig.getFeedurl(),
+					userEmail);
+			URL postUrl = new URL(feedurl);
+			service.insert(postUrl, contact);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
 			throw new AppException(e.getMessage());
 		}
 	}

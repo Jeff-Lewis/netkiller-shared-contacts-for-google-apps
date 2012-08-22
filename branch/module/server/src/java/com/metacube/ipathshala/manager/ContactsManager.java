@@ -79,8 +79,7 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 		return service.getAllGlobalFilteredContacts(null);
 	}
 
-	public Contacts createContact(Contacts contacts)
-			throws AppException {
+	public Contacts createContact(Contacts contacts) throws AppException {
 		/*
 		 * super.setGlobalFilterProperties(contacts, dataContext,
 		 * this.getEntityMetaData());
@@ -116,6 +115,10 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 
 	}
 
+	public void addContactForAllDomainUsers(String domain, Contacts contact) throws AppException {
+		service.addContactForAllDomainUsers(domain, contact);
+	}
+
 	public Collection<Contacts> getByKeys(List<Key> contactsKeyList)
 			throws AppException {
 		return service.getByKeys(contactsKeyList);
@@ -127,8 +130,8 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 
 	}
 
-	public UserSync getUserSync(
-			String userEmail, Date date) throws AppException {
+	public UserSync getUserSync(String userEmail, Date date)
+			throws AppException {
 		return service.getUserSync(userEmail, date);
 	}
 
