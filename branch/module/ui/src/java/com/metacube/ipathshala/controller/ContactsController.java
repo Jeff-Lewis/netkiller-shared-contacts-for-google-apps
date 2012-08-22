@@ -113,7 +113,7 @@ public class ContactsController extends AbstractController {
 	}
 
 	@RequestMapping("/createGroupHome.do")
-	public @ResponseBody
+	public
 	String createGroupHome(HttpServletRequest request,
 			HttpServletResponse response, Model model) throws AppException {
 		return UICommonConstants.WELCOME_ADMIN_PAGE;
@@ -132,6 +132,9 @@ public class ContactsController extends AbstractController {
 			domainGroup.setDomainName(CommonWebUtil.getDomain(user.getEmail()));
 			domainGroup.setGroupName(groupName);
 			domainGroupManager.createDomainGroup(domainGroup);
+			contactsManager.addGroupToAllContactForDomain(CommonWebUtil
+					.getDomain(user.getEmail()),groupName,
+					user.getEmail());
 			/* contactsManager.addGroupToAllDomainUsers(); */
 			return showContacts(request, model);
 		}

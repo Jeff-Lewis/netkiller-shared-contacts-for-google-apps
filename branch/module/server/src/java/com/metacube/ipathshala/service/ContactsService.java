@@ -76,6 +76,7 @@ import com.metacube.ipathshala.vo.UserSync;
 import com.metacube.ipathshala.workflow.WorkflowContext;
 import com.metacube.ipathshala.workflow.WorkflowInfo;
 import com.metacube.ipathshala.workflow.impl.context.AddContactForAllDomainUsersContext;
+import com.metacube.ipathshala.workflow.impl.context.AddGroupToAllContactsForDomainContext;
 import com.metacube.ipathshala.workflow.impl.context.BulkContactDeleteWorkflowContext;
 import com.metacube.ipathshala.workflow.impl.context.BulkContactDuplicateWorkflowContext;
 import com.metacube.ipathshala.workflow.impl.processor.WorkflowStatusType;
@@ -431,6 +432,36 @@ public class ContactsService extends AbstractService {
 		context.setWorkflowInfo(info);
 		Workflow workflow = new Workflow();
 		workflow.setWorkflowName("Add Contact for all domain Users");
+		workflow.setWorkflowInstanceId(info.getWorkflowInstance());
+		workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
+		workflow.setContext((WorkflowContext) context);
+		workflowService.createWorkflow(workflow);
+		return workflow;
+	}
+
+	public void addGroupToAllContactForDomain(String domain, String group,
+			String email) throws AppException {
+		Workflow workflow = addGroupToAllContactForDomainWorkflow(domain,
+				group, email);
+		if (workflow != null) {
+			workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS.toString());
+			workflowService.updateWorkflow(workflow);
+			workflowService.triggerWorkflow(workflow);
+		}
+	}
+
+	private Workflow addGroupToAllContactForDomainWorkflow(String domain,
+			String group, String email) throws AppException {
+		AddGroupToAllContactsForDomainContext context = new AddGroupToAllContactsForDomainContext();
+		context.setDomainName(domain);
+		context.setGroupName(group);
+		context.setEmail(email);
+		WorkflowInfo info = new WorkflowInfo(
+				"addGroupToAllContactForDomainProcessor");
+		info.setIsNewWorkflow(true);
+		context.setWorkflowInfo(info);
+		Workflow workflow = new Workflow();
+		workflow.setWorkflowName("Add Group to all Contacts for domain");
 		workflow.setWorkflowInstanceId(info.getWorkflowInstance());
 		workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
 		workflow.setContext((WorkflowContext) context);

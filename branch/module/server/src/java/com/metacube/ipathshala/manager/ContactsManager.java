@@ -22,7 +22,6 @@ import com.metacube.ipathshala.entity.metadata.EntityMetaData;
 import com.metacube.ipathshala.search.SearchResult;
 import com.metacube.ipathshala.service.ContactsService;
 import com.metacube.ipathshala.util.AppLogger;
-import com.metacube.ipathshala.vo.Customer;
 import com.metacube.ipathshala.vo.UserSync;
 
 @Component
@@ -115,8 +114,18 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 
 	}
 
-	public void addContactForAllDomainUsers(String domain, Contacts contact) throws AppException {
+	public void addContactForAllDomainUsers(String domain, Contacts contact)
+			throws AppException {
 		service.addContactForAllDomainUsers(domain, contact);
+	}
+
+	public void addGroupToAllContactForDomain(String domain, String group,
+			String email) throws AppException {
+		service.addGroupToAllContactForDomain(domain, group, email);
+	}
+
+	public String getGroupName(String domainName) {
+		return service.getGroupName(domainName);
 	}
 
 	public Collection<Contacts> getByKeys(List<Key> contactsKeyList)
