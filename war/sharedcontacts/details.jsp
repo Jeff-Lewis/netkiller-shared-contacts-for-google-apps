@@ -315,7 +315,6 @@ function backToContacts(){
 	  							</tr>
 	  						</table>	  					
 					</div>			
-					
 
 				</div>
 				

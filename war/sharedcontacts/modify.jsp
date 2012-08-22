@@ -55,18 +55,18 @@ SharedContactsUtil util = SharedContactsUtil.getInstance();
 
 String id = contact.getEditLink().getHref();
 
-String fullName = util.getFullName(contact);
-String familyName = util.getFamilyName(contact);
-String givenName = util.getGivenName(contact);
-String orgName = util.getOrganization(contact, "work");
-String orgDept = util.getOrganizationDept(contact, "work");
-String orgTitle = util.getOrganizationTitle(contact, "work");
-String workEmail = util.getEmail(contact, "work");
-String homeEmail = util.getEmail(contact, "home");
-String otherEmail = util.getEmail(contact, "other");
-String workPhoneNumber = util.getPhoneNumber(contact, "work");
-String homePhoneNumber = util.getPhoneNumber(contact, "home");
-String mobilePhoneNumber = util.getPhoneNumber(contact, "mobile");
+String fullName = util.getFullName(contact).equals("-")?" ":util.getFullName(contact);
+String familyName = util.getFamilyName(contact).equals("-")?" ":util.getFamilyName(contact);
+String givenName = util.getGivenName(contact).equals("-")?" ":util.getGivenName(contact);
+String orgName = util.getOrganization(contact, "work").equals("-")?" ":util.getOrganization(contact, "work");
+String orgDept = util.getOrganizationDept(contact, "work").equals("-")?" ":util.getOrganizationDept(contact, "work");
+String orgTitle = util.getOrganizationTitle(contact, "work").equals("-")?" ":util.getOrganizationTitle(contact, "work");
+String workEmail = util.getEmail(contact, "work").equals("-")?" ":util.getEmail(contact, "work");
+String homeEmail = util.getEmail(contact, "home").equals("-")?" ":util.getEmail(contact, "home");
+String otherEmail = util.getEmail(contact, "other").equals("-")?" ":util.getEmail(contact, "other");
+String workPhoneNumber = util.getPhoneNumber(contact, "work").equals("-")?" ":util.getPhoneNumber(contact, "work");
+String homePhoneNumber = util.getPhoneNumber(contact, "home").equals("-")?" ":util.getPhoneNumber(contact, "home");
+String mobilePhoneNumber = util.getPhoneNumber(contact, "mobile").equals("-")?" ":util.getPhoneNumber(contact, "mobile");
 //String workAddress = util.getAddress(contact, "work");
 //String homeAddress = util.getAddress(contact, "home");
 //String otherAddress = util.getAddress(contact, "other");
@@ -74,7 +74,7 @@ String mobilePhoneNumber = util.getPhoneNumber(contact, "mobile");
 //String homeAddress = util.getExtendedProperty(contact, "homeAddress");
 //String otherAddress = util.getExtendedProperty(contact, "otherAddress");
 
-String notes = util.getNotes(contact);
+String notes = util.getNotes(contact).equals("-")?" ":util.getNotes(contact);
 
 String homeRel = "http://schemas.google.com/g/2005#home";
 String workRel = "http://schemas.google.com/g/2005#work";
@@ -374,7 +374,7 @@ function backToContacts(){
 			<tr>
 			<td valign="middle" style="font-family:Arial;font-size:13px;">
 				<a href="javascript:backToContacts();" style="color:#3B5323;text-decoration: none;"><< &nbsp; Back to contacts</a>
-			<span class="required">* </span><span style="color:red">Required Field</span></td>
+			<span class="required">* </span><span style="color:red;font-size:14px;">Required Field</span></td>
 			<td align="right">
 				<table border="0">
 				<tr><td>
