@@ -851,7 +851,7 @@ function getCellValue(rowId, cellId) {
 
 		
 			-->
-			Open <a href="/sample.csv" target="_blank"><b>this</b> </a>  doc and copy it into your google account: Go to File > Make A Copy, and then fill in the document with your contacts. Then, go to File > Download as a CSV file, and upload the file here. Upload time depends on the number of contacts, but normally takes between a few seconds and a few minutes.
+			Open <a href="https://docs.google.com/a/netkiller.com/spreadsheet/ccc?key=0ApQQqEHZz9C9dElmWTNFOHIzc3VDQk5XZE5vUDZiMUE" target="_blank"><b>this</b> </a>  doc and copy it into your google account: Go to File > Make A Copy, and then fill in the document with your contacts. Then, go to File > Download as a CSV file, and upload the file here. Upload time depends on the number of contacts, but normally takes between a few seconds and a few minutes.
 			<br /> <br /> Please select an CSV file(.csv) to upload: <br />
 		<form id="uploadForm" method="post"
 			action="/sharedcontacts/fileupload.do" enctype="multipart/form-data"
