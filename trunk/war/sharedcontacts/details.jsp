@@ -299,11 +299,11 @@ function backToContacts(){
 	  						<table width="100%">
 	  							<tr>
 	  								<td width="174px" style="float:left;text-align: right;font-weight:bold;">Home:&nbsp;</td>
-	  								<td><%= CommonUtil.getMapLink(homeAddress) %></td>
+	  								<td style="float:left;"><%= CommonUtil.getMapLink(homeAddress) %></td>
 	  							</tr>
 	  							<tr>
 	  								<td width="174px" style="float:left;text-align: right;font-weight:bold;">Other:&nbsp;</td>
-	  								<td><%= CommonUtil.getMapLink(otherAddress) %></td>
+	  								<td style="float:left;"><%= CommonUtil.getMapLink(otherAddress) %></td>
 	  							</tr>
 	  						</table>
 					</div>
