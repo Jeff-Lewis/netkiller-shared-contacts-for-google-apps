@@ -112,8 +112,8 @@ String otherRel = "http://schemas.google.com/g/2005#other";
 String mobileRel = "http://schemas.google.com/g/2005#mobile";
 
 String workAddress = util.getFormattedAddress(contact, workRel);
-String homeAddress = util.getFormattedAddress(contact, homeRel);
-String otherAddress = util.getFormattedAddress(contact, otherRel);
+String homeAddress = util.getFormattedAddress(contact, homeRel).equals("-")?" ":util.getFormattedAddress(contact, homeRel);
+String otherAddress = util.getFormattedAddress(contact, otherRel).equals("-")?" ":util.getFormattedAddress(contact, otherRel);
 %>
 
 
@@ -293,17 +293,22 @@ function backToContacts(){
 	  						<table width="86%">
 	  							<tr>
 	  								<td width="36px" style="padding-left:15px;float:left;font-weight:bold;">Work:&nbsp;</td>
-	  								<td style="float:left;"><%= CommonUtil.getMapLink(workAddress) %></td>
+	  								<td style="float:left;"><%=workAddress.equals("-")?" ":CommonUtil.getMapLink(workAddress)%></td>
 	  							</tr>
 	  						</table>
+	  			
 	  						<table width="100%">
 	  							<tr>
 	  								<td width="174px" style="float:left;text-align: right;font-weight:bold;">Home:&nbsp;</td>
-	  								<td style="float:left;"><%= CommonUtil.getMapLink(homeAddress) %></td>
+
+	  								<td style="float:left;"><%= CommonUtil.getMapLink(homeAddress).equals("-")?" ":CommonUtil.getMapLink(homeAddress) %></td>
+
 	  							</tr>
 	  							<tr>
 	  								<td width="174px" style="float:left;text-align: right;font-weight:bold;">Other:&nbsp;</td>
-	  								<td style="float:left;"><%= CommonUtil.getMapLink(otherAddress) %></td>
+
+	  								<td  style="float:left;"><%= CommonUtil.getMapLink(otherAddress).equals("-")?" ":CommonUtil.getMapLink(otherAddress) %></td>
+
 	  							</tr>
 	  						</table>
 					</div>
