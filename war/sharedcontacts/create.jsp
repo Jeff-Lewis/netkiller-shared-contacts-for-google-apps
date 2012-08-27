@@ -17,6 +17,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<style>
+span.required{
+color:red;
+font-size: 15px;
+}
+</style>
 <title>Netkiller Shared Contacts</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel='stylesheet' type='text/css' href='/css/main.css'/>
@@ -125,9 +131,6 @@ $(document).ready ( function () {
 			$("#familyname").focus();
 			return;
 		}
-		
-		
-		
 		
 		var $companyname = $("#companyname").val();
 		var $companydept = $("#companydept").val();
@@ -355,7 +358,7 @@ function backToContacts(){
 				<tr>
 					<td valign="middle" style="font-family:Arial;font-size:13px;">
 						<a href="javascript:backToContacts();" style="color:#3B5323;text-decoration: none;"><< &nbsp; Back to contacts</a>
-					</td>
+				<span class="required">* </span><span style="color:red;font-size:14px;">Required Field</span></td>
 					<td align="right">
 						<table border="0">
 							<tr>
@@ -377,8 +380,8 @@ function backToContacts(){
 	  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
 	  							<tr>
 	  								
-	  								<td width="33%"><b>First Name:</b> <input id="givenname"  type="text" class="txtBox" value="" style="margin-left:5px;"/></td>
-	  								<td width="33%"><b>Last Name:</b> <input id="familyname" type="text" class="txtBox" value=""/></td>
+	  								<td width="33%"><b>First Name<span class="required">*&nbsp</span>:</b> <input id="givenname"  type="text" class="txtBox" value="" style="margin-left:5px;"/></td>
+	  								<td width="33%"><b>Last Name<span class="required">*&nbsp</span>:</b> <input id="familyname" type="text" class="txtBox" value=""/></td>
 									<td width="33%"><b>Full Name:</b> <input readonly="readonly" id="fullname" type="text" class="txtBox" value=""/></td>	  						
 	  							</tr>
 	  						</table>
@@ -397,7 +400,7 @@ function backToContacts(){
 						<div style="float:left;"><h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Email</h5></div><div style="float:left;">&nbsp;<input class='row_bt' type='button' value='Check Duplicates' onclick='checkDuplicateEmail();'  style="margin-left:32px;"/></div>
 	  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
 	  							<tr>
-	  								<td width="33%"><b>Work:</b> <input id="workemail" type="text" class="txtBox" value="" style="margin-left:25px"/></td>
+	  								<td width="33%"><b>Work<span class="required">*&nbsp</span>:</b> <input id="workemail" type="text" class="txtBox" value="" style="margin-left:25px"/></td>
 	  								<td width="33%"><b>Home:</b> <input id="homeemail" type="text" class="txtBox" value="" style="margin-left:32px;"/></td>
 	  								<td width="33%"><b>Other:</b> <input id="otheremail" type="text" class="txtBox" value="" style="margin-left:32px;"/></td>
 	  								
@@ -408,7 +411,7 @@ function backToContacts(){
 						<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Phone</h5>
 	  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
 	  							<tr>
-	  								<td width="33%"><b>Work:</b> <input id="workphone" type="text" class="txtBox" value="" style="margin-left:25px"/></td>
+	  								<td width="33%"><b>Work<span class="required">*&nbsp</span>:</b> <input id="workphone" type="text" class="txtBox" value="" style="margin-left:25px"/></td>
 	  								<td width="33%"><b>Home:</b> <input id="homephone" type="text" class="txtBox" value="" style="margin-left:32px;"/></td>
 	  								<td width="33%"><b>Mobile:</b> <input id="mobilephone" type="text" class="txtBox" value="" style="margin-left:28px;"/></td>
 	  							</tr>
