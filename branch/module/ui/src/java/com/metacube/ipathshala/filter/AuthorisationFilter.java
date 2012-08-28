@@ -14,7 +14,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
@@ -32,6 +34,7 @@ import com.metacube.ipathshala.entity.Value;
 import com.metacube.ipathshala.manager.DomainAdminManager;
 import com.metacube.ipathshala.manager.SetManager;
 import com.metacube.ipathshala.manager.ValueManager;
+import com.metacube.ipathshala.security.AppUserService;
 import com.metacube.ipathshala.service.AppUserEntityService;
 import com.metacube.ipathshala.service.ContactsService;
 import com.metacube.ipathshala.util.AppLogger;
@@ -77,10 +80,11 @@ public class AuthorisationFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-System.out.println("in filter ============");
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
-		if (user == null) {			
+		if (StringUtils.indexOfAny(req.getRequestURI(), skipResources) >= 0) {
+			chain.doFilter(request, response);
+		}else if (user == null) {			
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
 		} else {
 			AppUserEntity appUser = appUserEntityService.getAppUserByEmail(user
@@ -148,27 +152,15 @@ System.out.println("in filter ============");
 		return null;
 	}
 
-	private boolean checkAuthorisation(HttpServletRequest httpRequest,
-			HttpServletResponse response) {
-		/*
-		 * HttpSession currentSession = httpRequest.getSession(false); if
-		 * (currentSession != null) { AppUser currentLoggedInUser = (AppUser)
-		 * currentSession .getAttribute(AppUser.APPUSER_SESSION_VAR); String
-		 * targetUrl = httpRequest.getRequestURI(); String[] tokenizedUrl =
-		 * StringUtils.split(targetUrl, "/"); if (tokenizedUrl.length == 0 ||
-		 * tokenizedUrl[0].equals("index.do") || currentLoggedInUser == null) {
-		 * return true; } else if (resourceSecurityConfig
-		 * .doesResourceExist(tokenizedUrl[0]) &&
-		 * (!currentLoggedInUser.hasAccess(resourceSecurityConfig
-		 * .getMappedEntityNameForResource(tokenizedUrl[0]),
-		 * Permission.PermissionType.READ))) { return false; } } return true;
-		 */
-		return false;
-	}
 
+	private FilterConfig filterConfig;
+
+	private String[] skipResources;
+	
 	@Override
 	public void init(FilterConfig config) throws ServletException {
-
+		filterConfig = config;
+		skipResources = StringUtils.split(filterConfig.getInitParameter("skipResources"), ",");
 		ServletContext servletContext = config.getServletContext();
 		WebApplicationContext webApplicationContext = WebApplicationContextUtils
 				.getWebApplicationContext(servletContext);
