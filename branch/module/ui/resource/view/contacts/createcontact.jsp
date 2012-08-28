@@ -63,7 +63,7 @@
 
 						<div class="rightdiv">
 							<form:input cssClass="student-edit-textbox" id="fullName"
-								path="fullName" />
+								readonly="true" path="fullName" />
 						</div>
 						<div class="clear"></div>
 						<span class="error"> <form:errors path="fullName"
@@ -357,11 +357,22 @@
 </form:form>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("#menu-contaner a").removeClass("selectmenu");
-		$("#contactTab").addClass("selectmenu");
+	$(document).ready(
+			function() {
+				$('#firstName').change(
+						function() {
+							$('#fullName').val(
+									$('#firstName').val() + " "
+											+ $('#lastName').val());
+						});
+				$('#lastName').change(
+						function() {
+							$('#fullName').val(
+									$('#firstName').val() + " "
+											+ $('#lastName').val());
 
-	});
+						});
+			});
 
 	function updateContact(generatedUrl, elm) {
 		singleClickDisabled(elm);
@@ -427,9 +438,9 @@
 		$("#mobileNumber").val('');
 		$("#homePhone").val('');
 		if (!$("#addressDataCheckBoxId").attr('checked')) {
-			
+
 			$("#contactCreateForm  #workAddress").val('');
-			
+
 			$("#contactCreateForm #homeAddress").val('');
 			$("#contactCreateForm #otherAddress").val('');
 		}

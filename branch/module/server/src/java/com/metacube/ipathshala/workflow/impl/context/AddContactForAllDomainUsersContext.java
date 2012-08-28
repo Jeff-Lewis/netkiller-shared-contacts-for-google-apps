@@ -1,9 +1,13 @@
 package com.metacube.ipathshala.workflow.impl.context;
 
+import java.io.Serializable;
+
 import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.workflow.WorkflowContext;
 import com.metacube.ipathshala.workflow.WorkflowInfo;
 
-public class AddContactForAllDomainUsersContext {
+public class AddContactForAllDomainUsersContext implements WorkflowContext,
+		Serializable {
 
 	/**
 	 * 

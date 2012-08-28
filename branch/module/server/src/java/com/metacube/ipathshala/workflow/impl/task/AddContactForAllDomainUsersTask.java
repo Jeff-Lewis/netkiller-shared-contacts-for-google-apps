@@ -59,7 +59,7 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 			}
 		}
 
-		return (WorkflowContext) userContext;
+		return userContext;
 	}
 
 	private ContactEntry makeContact(Contacts contactInfo) {

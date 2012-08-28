@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -34,6 +35,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.mail.MailService;
 import com.google.appengine.api.mail.MailService.Message;
@@ -58,6 +60,7 @@ import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.google.gdata.data.contacts.ContactGroupFeed;
 import com.google.gdata.data.contacts.GroupMembershipInfo;
 import com.google.gdata.util.ServiceException;
+import com.metacube.ipathshala.GridRequest;
 import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.core.DataContext;
 import com.metacube.ipathshala.dao.ContactsDao;
@@ -434,7 +437,7 @@ public class ContactsService extends AbstractService {
 		workflow.setWorkflowName("Add Contact for all domain Users");
 		workflow.setWorkflowInstanceId(info.getWorkflowInstance());
 		workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
-		workflow.setContext((WorkflowContext) context);
+		workflow.setContext(context);
 		workflowService.createWorkflow(workflow);
 		return workflow;
 	}
@@ -831,6 +834,63 @@ public class ContactsService extends AbstractService {
 		 * null) { allDomainUsers.removeAll(restrtictedUsers); }
 		 */
 		return allDomainUsers;
+	}
+
+	public List<ContactEntry> getContacts(int start, int limit, String groupId,
+			boolean isUseForSharedContacts, GridRequest gridRequest)
+			throws AppException {
+		List<ContactEntry> contactVOs = null;
+		try {
+
+			com.google.gdata.client.contacts.ContactsService service = getContactsService();
+
+			log.info("start ==> " + start);
+			String feedurl = domainConfig.getFeedurl();
+			feedurl = feedurl + CommonWebUtil.getDomain(userEmail) + "/full";
+			URL feedUrl = new URL(feedurl); // Contacts
+			Query query = new Query(feedUrl);
+			if (limit != -1 || start != -1) {
+				query.setMaxResults(limit); // paging
+				query.setStartIndex(start); // paging
+			}
+			query.setStringCustomParameter("orderby", "lastModifiedDate");
+			query.setStringCustomParameter("sortorder", "descending"); // "ascending"
+																		// or
+																		// "descending"
+			query.setStringCustomParameter("isDeleted", "false");
+			query.setStringCustomParameter("xoauth_requestor_id", userEmail);
+			if (isUseForSharedContacts) {
+				query.setStringCustomParameter("group", groupId);
+			}
+			ContactFeed resultFeed = service.query(query, ContactFeed.class);
+
+			contactVOs = resultFeed.getEntries();
+			System.out.println("Total size contactsVO" + contactVOs.size());
+			DomainAdmin domainAdmin = domainAdminService
+					.getDomainAdminByDomainName(CommonWebUtil
+							.getDomain(userEmail));
+			if (domainAdmin != null
+					&& contactVOs.size() != domainAdmin.getTotalCounts()) {
+				updateTotalContacts(domainAdmin.getKey(), contactVOs.size());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return contactVOs;
+	}
+
+	public Boolean updateTotalContacts(Key domainAdminKey, Integer contacts) {
+		try {
+			DomainAdmin domainAdmin = domainAdminService
+					.getById(domainAdminKey);
+			domainAdmin.setTotalCounts(contacts);
+			domainAdminService.updateDomainAdmin(domainAdmin);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage(), e);
+			return false;
+		}
 	}
 
 	/*

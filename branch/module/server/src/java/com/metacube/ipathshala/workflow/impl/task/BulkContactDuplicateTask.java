@@ -7,11 +7,15 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.core.DataContext;
 import com.metacube.ipathshala.entity.Contacts;
 import com.metacube.ipathshala.manager.ContactsManager;
 import com.metacube.ipathshala.util.AppLogger;
+import com.metacube.ipathshala.util.CommonWebUtil;
 import com.metacube.ipathshala.workflow.AbstractWorkflowTask;
 import com.metacube.ipathshala.workflow.WorkflowContext;
 import com.metacube.ipathshala.workflow.WorkflowExecutionException;
@@ -34,6 +38,7 @@ public class BulkContactDuplicateTask extends AbstractWorkflowTask {
 				.getContacts();
 		DataContext dataContext = bulkContactDplicateWorkflowContext
 				.getDataContext();
+
 		if (contactKeyList == null || contactKeyList.isEmpty()) {
 			throw new WorkflowExecutionException("NO contacts to be duplicated");
 		}
@@ -41,6 +46,9 @@ public class BulkContactDuplicateTask extends AbstractWorkflowTask {
 		try {
 			List<Contacts> contactList = (List<Contacts>) contactsManager
 					.getByKeys(contactKeyList);
+			/*UserService userService = UserServiceFactory.getUserService();
+			User user = userService.getCurrentUser();
+			String domain = CommonWebUtil.getDomain(user.getEmail());*/
 			for (Contacts contacts : contactList) {
 				try {
 					contacts = (Contacts) BeanUtils.cloneBean(contacts);
@@ -60,6 +68,7 @@ public class BulkContactDuplicateTask extends AbstractWorkflowTask {
 				contacts.setKey(null);
 				contacts.setFirstName(contacts.getFirstName() + "-copy");
 				contactsManager.createContact(contacts);
+				//contactsManager.addContactForAllDomainUsers(domain, contacts);
 
 			}
 		} catch (AppException e) {

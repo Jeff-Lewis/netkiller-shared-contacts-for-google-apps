@@ -113,8 +113,7 @@ public class ContactsController extends AbstractController {
 	}
 
 	@RequestMapping("/createGroupHome.do")
-	public
-	String createGroupHome(HttpServletRequest request,
+	public String createGroupHome(HttpServletRequest request,
 			HttpServletResponse response, Model model) throws AppException {
 		return UICommonConstants.WELCOME_ADMIN_PAGE;
 	}
@@ -132,8 +131,8 @@ public class ContactsController extends AbstractController {
 			domainGroup.setDomainName(CommonWebUtil.getDomain(user.getEmail()));
 			domainGroup.setGroupName(groupName);
 			domainGroupManager.createDomainGroup(domainGroup);
-			contactsManager.addGroupToAllContactForDomain(CommonWebUtil
-					.getDomain(user.getEmail()),groupName,
+			contactsManager.addGroupToAllContactForDomain(
+					CommonWebUtil.getDomain(user.getEmail()), groupName,
 					user.getEmail());
 			/* contactsManager.addGroupToAllDomainUsers(); */
 			return showContacts(request, model);
@@ -182,7 +181,6 @@ public class ContactsController extends AbstractController {
 			return UICommonConstants.CONTEXT_CREATE_CONTACT;
 		} else {
 			log.debug("New contact creation request processing.");
-
 			/*
 			 * model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
 			 * UICommonConstants.CONTEXT_CONTACTS_HOME);
@@ -664,16 +662,11 @@ public class ContactsController extends AbstractController {
 					.getRequestURI());
 			response.sendRedirect(loginURL);
 		}
-		if (contactsManager.isAdmin(getCurrentUser(request).getEmail())) {
-			syncContacts(request, response);
-			model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
-					UICommonConstants.CONTEXT_CONTACTS_HOME);
-			return UICommonConstants.VIEW_INDEX;
 
-		} else {
-			return UICommonConstants.NOT_AUTHORISED_ERROR_HOME;
-		}
-
+		syncContacts(request, response);
+		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
+				UICommonConstants.CONTEXT_CONTACTS_HOME);
+		return UICommonConstants.VIEW_INDEX;
 	}
 
 	public WorkflowManager getWorkflowManager() {
@@ -720,13 +713,18 @@ public class ContactsController extends AbstractController {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		String dateString = formatter.format(date);
 		String email = getCurrentUser(request).getEmail();
-		UserSync userSync = /*
-							 * contactsManager.getUserSync(getCurrentUser(request
-							 * ) .getEmail(), dateString);
-							 */null;
+		com.metacube.ipathshala.entity.UserSync userSync = /*
+															 * contactsManager.
+															 * getUserSync
+															 * (getCurrentUser
+															 * (request )
+															 * .getEmail(),
+															 * dateString);
+															 */null;
 		String message = null;
 		if (userSync == null
-				|| (userSync != null && !userSync.getDate().equals(dateString))) {
+				|| (userSync != null && !userSync.getSyncDate().equals(
+						dateString))) {
 			SyncUserContactsContext syncUserContactsContext = new SyncUserContactsContext();
 			syncUserContactsContext.setUserEmail(getCurrentUser(request)
 					.getEmail());
