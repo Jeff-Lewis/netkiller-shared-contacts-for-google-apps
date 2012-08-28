@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/tld/breadcrumb-taglib.tld" prefix="brc"%>
 <%@ taglib uri="/tld/security-taglib.tld" prefix="sec"%>
+<%@page import="com.google.appengine.api.blobstore.BlobstoreService,com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
+<%BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(); %>
 <input type="hidden" id="advSeachParam"
 	value="<c:out value="${advSearchText}" />
 " />
@@ -152,12 +154,19 @@
 	var grid;
 	var prmSearch;
 	$(function() {
+		
+		$('#ImportDialog').hide();
 		$("#menu-contaner a").removeClass("selectmenu");
 		$("#contacts").addClass("selectmenu");
 		//showMap();
 		$('#mapDiv').hide();
 	});
 	$(function() {
+		
+		$('#ImportDialog').dialog({
+			autoOpen: false,
+			width: 520,
+		});	
 
 		grid = $('#list4');
 		jQuery.jgrid.no_legacy_api = true;
@@ -467,8 +476,9 @@
 		var optionValue = $("#selectBoxId option:selected").val();
 		var contactIdList = getSelectedContactsIdList();
 		if (optionValue == 'import') {
-			$('#uploadDiv').show();
-
+			//$('#uploadDiv').show();
+			$('#ImportDialog').dialog('open');
+			return false;
 		} else {
 			$('#uploadDiv').hide();
 			document.getElementById("formId").action = "/contact/"
@@ -669,7 +679,29 @@
 	<div id="pnewapi"></div>
 
 	<div class="clear"></div>
-
+	<div id="ImportDialog" title="Import contacts"
+		style="font-family: Arial; font-size: 12px;display:none;background:white;">
+		<p>
+			Open <a href="https://docs.google.com/a/netkiller.com/spreadsheet/ccc?key=0ApQQqEHZz9C9dElmWTNFOHIzc3VDQk5XZE5vUDZiMUE" target="_blank"><b>this</b> </a>  doc and copy it into your google account: Go to File > Make A Copy, and then fill in the document with your contacts. Then, go to File > Download as a CSV file, and upload the file here. Upload time depends on the number of contacts, but normally takes between a few seconds and a few minutes.
+			<br /> <br /> Please select an CSV file(.csv) to upload: <br />
+		<form id="uploadForm" method="post"
+			action="<%= blobstoreService.createUploadUrl("/contact/import.do") %>" enctype="multipart/form-data"
+			target="resultFrm">
+			<div style="font-size: 12px; width: 480px; text-align: middle;">
+				<table width="100%" border="0">
+					<tr>
+						<td width="50%"><input id="file" type="file" name="file" />
+						</td>
+						<td align="center"><input id="SubmitFile" type="submit"
+							name="Submit" value="Submit" />
+						</td>
+					</tr>
+				</table>
+			</div>
+		</form>
+		
+		<iframe id="resultFrm" name="resultFrm" width="0px" height="00px"></iframe>
+	</div>
 	<div id="uploadDiv" style="display: none;">
 		<form id="contactUploadForm" action="/contact/import.do" method="post"
 			enctype="multipart/form-data">

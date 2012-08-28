@@ -275,12 +275,12 @@
 	</target>
 
 	<target name="runserver" depends="deploy.dev" description="Starts the development server.">
-		<dev_appserver_2 port="8080" war="${DEV.DEPLOY.HOME}/war" />
+		<dev_appserver_2 port="6060" war="${DEV.DEPLOY.HOME}/war" />
 	</target>
 	
 	<target name="runserverupload" depends="deploy.dev" description="Starts the development server.">
 		<antcall target="uploaddata" />
-			<dev_appserver_2 port="8080" war="${DEV.DEPLOY.HOME}/war" />
+			<dev_appserver_2 port="6060" war="${DEV.DEPLOY.HOME}/war" />
 		</target>
 	
 
@@ -288,7 +288,7 @@
 	
 
 	<target name="runServerDebugMode" depends="deploy.dev" description="Starts the development server.">
-		<dev_appserver port="8080" war="${DEV.DEPLOY.HOME}/war">
+		<dev_appserver port="6060" war="${DEV.DEPLOY.HOME}/war">
 
 			<options>
 				<arg value="--jvm_flag=-Xdebug" />

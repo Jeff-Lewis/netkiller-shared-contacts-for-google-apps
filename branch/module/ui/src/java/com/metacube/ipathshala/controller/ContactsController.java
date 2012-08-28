@@ -1,9 +1,7 @@
 package com.metacube.ipathshala.controller;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -17,7 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -30,11 +27,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.files.AppEngineFile;
@@ -55,30 +52,26 @@ import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.core.DataContext;
 import com.metacube.ipathshala.core.UniqueValidationException;
 import com.metacube.ipathshala.core.UserIdConflictException;
-import com.metacube.ipathshala.entity.AppUserEntity;
 import com.metacube.ipathshala.entity.Contacts;
 import com.metacube.ipathshala.entity.DomainAdmin;
 import com.metacube.ipathshala.entity.DomainGroup;
-import com.metacube.ipathshala.entity.Set;
-import com.metacube.ipathshala.entity.Value;
 import com.metacube.ipathshala.entity.Workflow;
 import com.metacube.ipathshala.manager.ContactsManager;
-import com.metacube.ipathshala.manager.DomainAdminManager;
 import com.metacube.ipathshala.manager.DomainGroupManager;
-import com.metacube.ipathshala.manager.SetManager;
-import com.metacube.ipathshala.manager.ValueManager;
 import com.metacube.ipathshala.manager.WorkflowManager;
 import com.metacube.ipathshala.search.SearchResult;
 import com.metacube.ipathshala.search.property.operator.InputOrderByOperatorType;
-import com.metacube.ipathshala.service.AppUserEntityService;
+import com.metacube.ipathshala.service.IPathshalaQueueService;
+import com.metacube.ipathshala.service.WorkflowService;
 import com.metacube.ipathshala.util.AppLogger;
-import com.metacube.ipathshala.util.CSVFileReader;
 import com.metacube.ipathshala.util.CommonWebUtil;
 import com.metacube.ipathshala.util.GridRequestParser;
+import com.metacube.ipathshala.util.UserUtil;
 import com.metacube.ipathshala.view.validators.EntityValidator;
 import com.metacube.ipathshala.vo.UserInfo;
 import com.metacube.ipathshala.vo.UserSync;
 import com.metacube.ipathshala.workflow.WorkflowInfo;
+import com.metacube.ipathshala.workflow.impl.context.ContactImportContext;
 import com.metacube.ipathshala.workflow.impl.context.SyncUserContactsContext;
 import com.metacube.ipathshala.workflow.impl.processor.WorkflowStatusType;
 
@@ -95,6 +88,10 @@ public class ContactsController extends AbstractController {
 
 	@Autowired
 	private DomainGroupManager domainGroupManager;
+	
+	
+	@Autowired
+	private WorkflowService workflowService;
 
 	public ContactsManager getContactsManager() {
 		return contactsManager;
@@ -112,7 +109,7 @@ public class ContactsController extends AbstractController {
 		this.validator = validator;
 	}
 
-	@RequestMapping("/createGroupHome.do")
+	@RequestMapping("/resource/createGroupHome.do")
 	public String createGroupHome(HttpServletRequest request,
 			HttpServletResponse response, Model model) throws AppException {
 		return UICommonConstants.WELCOME_ADMIN_PAGE;
@@ -120,7 +117,8 @@ public class ContactsController extends AbstractController {
 
 	@RequestMapping("/contacts/createGroup.do")
 	public String createGroup(HttpServletRequest request, Model model,
-			HttpServletResponse response) throws AppException {
+			HttpServletResponse response) throws AppException, IOException {
+		System.out.println("in create group");
 		String groupName = request.getParameter("groupName");
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
@@ -135,15 +133,20 @@ public class ContactsController extends AbstractController {
 					CommonWebUtil.getDomain(user.getEmail()), groupName,
 					user.getEmail());
 			/* contactsManager.addGroupToAllDomainUsers(); */
-			return showContacts(request, model);
+			return showContacts(request, model,response);
 		}
 		return UICommonConstants.VIEW_INDEX;
 	}
 
 	@RequestMapping("/contacts.do")
-	public String showContacts(HttpServletRequest request, Model model) {
+	public String showContacts(HttpServletRequest request, Model model, HttpServletResponse resp) throws IOException {
 		log.debug("Presenting Contacts View");
-
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		if (user == null) {			
+			resp.sendRedirect(userService.createLoginURL(request.getRequestURI()));
+		}
+		
 		addToNavigationTrail("Contact", true, request, false, false);
 		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
 				UICommonConstants.CONTEXT_CONTACTS_HOME);
@@ -466,43 +469,45 @@ public class ContactsController extends AbstractController {
 	 * contactsManager.createGroup(entry, userEmail); }
 	 */
 
+	@Autowired
+	IPathshalaQueueService iPathshalaQueueService;
+	
 	@RequestMapping("/contact/import.do")
-	public Map<String, String> importContacts(
-			HttpServletRequest request,
-			Model model,
-			HttpServletResponse response,
-			@RequestParam(value = "contactCreationFile") MultipartFile importFile)
-			throws AppException, ServletException {
+	public String importContacts(HttpServletRequest request, Model model, HttpServletResponse response)
+			throws AppException, IOException {
+		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+		 Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(request);		 
+		BlobKey blobKey = blobs.get("file");
+		/*Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
+		BlobKey blobKey = blobs.get("file").get(0);*/
+		String blobKeyStr ;
+		
+		if (blobKey != null) {
+			blobKeyStr = blobKey.getKeyString();
+			String email = UserServiceFactory.getUserService().getCurrentUser().getEmail();
+			ContactImportContext workflowContext = new ContactImportContext();
+			workflowContext.setBlobKeyStr(blobKeyStr);
+			workflowContext.setEmail(email);
+			WorkflowInfo info = new WorkflowInfo("contactImportWorkflowProcessor");
 
-		Map<String, String> result = new HashMap<String, String>();
-		// String fileName = request.getParameter("");
-		try {
-			// ServletFileUpload upload = new ServletFileUpload();
-			response.setContentType("text/plain");
-			// FileItemIterator itemIterator = upload.getItemIterator(request);
-			DomainAdmin currentCustomer = null;
-			try {
-				currentCustomer = contactsManager.verifyUser(getCurrentUser(
-						request).getEmail());
-				// sharedContactsService.setUserEamil(getCurrentUser(request).getEmail());
-			} catch (Exception e) {
+			info.setIsNewWorkflow(true);
+			workflowContext.setWorkflowInfo(info);
+			Workflow workflow = new Workflow();
+			workflow.setWorkflowName("ContactsUplaod");
+			workflow.setWorkflowInstanceId(info.getWorkflowInstance());
+			workflow.setContext(workflowContext);
+			workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
+			workflow = workflowService.createWorkflow(workflow);
+			System.out.println(workflow.getWorkflowInstanceId());
+			if (workflow != null) {
+				workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS.toString());
+				workflowService.updateWorkflow(workflow);
+				workflowService.triggerWorkflow(workflow);
 			}
-			/* while (itemIterator.hasNext()) { */
-			/* FileItemStream stream = itemIterator.next(); */
-			InputStream inputStream = new ByteArrayInputStream(
-					importFile.getBytes());
-			CSVFileReader csv = new CSVFileReader(inputStream);
-			csv.ReadFile();
-			doSomeThing(csv.getStoreValuesList());
-			/* } */
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		String message = "SuccessFullly imported contacts";
-		result.put("code", "success");
-		result.put("message", message);
-		return result;
+		
+		
+		return showContacts(request, model, response);
 
 	}
 

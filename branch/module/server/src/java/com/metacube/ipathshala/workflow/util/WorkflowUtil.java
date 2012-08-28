@@ -42,6 +42,7 @@ public class WorkflowUtil {
 			return new Blob(bytearrayoutputstream.toByteArray());
 		} catch (java.io.IOException ioe) {
 			log.error("Cannot Convert WorkflowContext to Blob " + context.getWorkflowInfo().getWorkflowInstance());
+		ioe.printStackTrace();
 			throw new AppException("Cannot convert WorkflowContext to Blob", ioe);
 		}
 	}

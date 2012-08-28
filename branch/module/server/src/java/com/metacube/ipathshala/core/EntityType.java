@@ -1,7 +1,7 @@
 package com.metacube.ipathshala.core;
 
 public enum EntityType {
-	SET, VALUE , DATA;
+	SET, VALUE , DATA,CONTACT;
 
 	@Override
 	public String toString() {
@@ -12,6 +12,8 @@ public enum EntityType {
 			return "Value";
 		case DATA:
 			return "Data";
+		case CONTACT:
+			return "Contact";
 
 		default:
 			return null;

@@ -3,35 +3,36 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="iPathshala" version="2.5">
+	
 	<context-param>
     	<param-name>contextConfigLocation</param-name>
     	<param-value>
           /WEB-INF/spring/ipathshala-db.xml /WEB-INF/spring/ipathshala-app-context.xml /WEB-INF/spring/ipathshala-gadgets.xml /WEB-INF/spring/ipathshala-security.xml 
       	</param-value>
   	</context-param>
-  	<listener>
-    	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  	</listener>  	
-	  	 <listener>
+    <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>	
+<!-- 	  	 <listener>
 	    <description>sessionListener</description>
 	    <listener-class>
 	       com.metacube.ipathshala.listener.SessionListener
 	    </listener-class>
-	</listener>
+	</listener> -->
 	<!-- Authenticate the request for ipathshala resources -->
-	<filter>
+	<!-- <filter>
 		<filter-name>authenticationFilter</filter-name>
 		<filter-class>com.metacube.ipathshala.filter.AuthenticationFilter</filter-class>
 		<init-param>
 			<param-name>skipResources</param-name>
-			<!-- /async/task is temporarly skiped. -->
+			/async/task is temporarly skiped.
 			<param-value>/_ah/logout,/_ah/login,/error/,/async/task,/gadget/,/resource/,/appstats/</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>authenticationFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
 	
 	<!--<filter>
         <filter-name>appstats</filter-name>
@@ -50,7 +51,7 @@
 	--><!-- This will pass control to filter managed by spring -->
 	<filter>
     	<filter-name>authorisationFilter</filter-name>
-    	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    	<filter-class>com.metacube.ipathshala.filter.AuthorisationFilter</filter-class>
   	</filter>
 
   	<filter-mapping>
@@ -58,7 +59,7 @@
     	<url-pattern>*.do</url-pattern>
   	</filter-mapping>
   	
-  	<filter>
+  <!-- 	<filter>
     	<filter-name>initializationFilter</filter-name>
     	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
   	</filter>
@@ -66,7 +67,7 @@
   	<filter-mapping>
     	<filter-name>initializationFilter</filter-name>
     	<url-pattern>*.do</url-pattern>
-  	</filter-mapping>
+  	</filter-mapping>  -->
 	
 	<!-- Reads request input using UTF-8 encoding -->
 	<filter>

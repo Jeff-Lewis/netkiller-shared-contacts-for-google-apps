@@ -57,7 +57,7 @@ public class WorkflowController extends AbstractController {
 	@Resource
 	GridRequestParser gridRequestParser;
 
-	@RequestMapping("async/task/performworkflowtasks.do")
+	@RequestMapping("/async/task/performworkflowtasks.do")
 	public void performWorkflow(Model model, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String workflowinstance = request.getParameter("workflowinstanceid");

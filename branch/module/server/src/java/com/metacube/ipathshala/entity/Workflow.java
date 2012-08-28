@@ -12,7 +12,6 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
-import com.google.gdata.data.DateTime;
 import com.metacube.ipathshala.workflow.WorkflowContext;
 
 /**

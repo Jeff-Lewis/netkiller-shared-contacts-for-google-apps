@@ -272,7 +272,7 @@
 
 
 	<bean id="syncUserContactsTask" name="syncUserContactsTask"
-		class="com.metacube.ipathshala.workflow.impl.task.SyncUserContactsTask.java"
+		class="com.metacube.ipathshala.workflow.impl.task.SyncUserContactsTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="Sync-UserContacts-Task"></property>
 		<property name="retryCount" value="3"></property>

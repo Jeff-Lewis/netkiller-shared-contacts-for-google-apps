@@ -36,7 +36,7 @@
 	href="/css/themes/base/jquery.ui.datepicker.css" />
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Meta Campus</title>
+<title>NSC</title>
 <link href="/css/style.css" rel="stylesheet" type="text/css">
 <link href="/css/form.css" rel="stylesheet" type="text/css" />
 <link href="/css/ie-css3.htc" rel="stylesheet" type="text/x-component">

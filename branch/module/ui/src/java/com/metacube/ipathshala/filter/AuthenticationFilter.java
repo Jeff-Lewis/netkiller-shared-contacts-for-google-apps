@@ -105,18 +105,18 @@ public class AuthenticationFilter implements Filter {
 					session.invalidate();
 				}
 
-			} else {
-				if (StringUtils.indexOfAny(requestURI, skipResources) < 0) {
-					log.debug("User is not logged in.");
-					String loginURL = appUserService.createLoginURL(requestURI);
-					requestOk = false;
-					((HttpServletResponse) resp).sendRedirect(loginURL);
-				}
+			} 
+			if (StringUtils.indexOfAny(requestURI, skipResources) < 0) {
+				log.debug("User is not logged in.");
+				String loginURL = appUserService.createLoginURL(requestURI);
+				requestOk = false;
+				((HttpServletResponse) resp).sendRedirect(loginURL);
+			}
+			else if (requestOk) {
+				chain.doFilter(req, resp);
 			}
 		}
-		if (requestOk) {
-			chain.doFilter(req, resp);
-		}
+		
 	}
 
 	private Long getSessionInactiveTimeOut() {

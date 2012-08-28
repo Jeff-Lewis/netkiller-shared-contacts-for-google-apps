@@ -32,7 +32,6 @@ import com.metacube.ipathshala.entity.Value;
 import com.metacube.ipathshala.manager.DomainAdminManager;
 import com.metacube.ipathshala.manager.SetManager;
 import com.metacube.ipathshala.manager.ValueManager;
-import com.metacube.ipathshala.security.ResourceSecurityConfig;
 import com.metacube.ipathshala.service.AppUserEntityService;
 import com.metacube.ipathshala.service.ContactsService;
 import com.metacube.ipathshala.util.AppLogger;
@@ -59,9 +58,6 @@ public class AuthorisationFilter implements Filter {
 	private ContactsService contactsService;
 
 	@Autowired
-	private ResourceSecurityConfig resourceSecurityConfig;
-
-	@Autowired
 	private SetManager setManager;
 
 	@Autowired
@@ -77,39 +73,25 @@ public class AuthorisationFilter implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest req, ServletResponse resp,
+	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		HttpServletResponse response = (HttpServletResponse) resp;
-		HttpServletRequest request = (HttpServletRequest) req;
-		/*
-		 * log.debug("Inside authentication filter..."); boolean requestOk =
-		 * true;
-		 * 
-		 * requestOk = checkAuthorisation((HttpServletRequest) req,
-		 * (HttpServletResponse) resp);
-		 * 
-		 * if (requestOk) { chain.doFilter(req, resp); } else {
-		 * HttpServletResponse httpResponse = (HttpServletResponse) resp;
-		 * httpResponse
-		 * .sendRedirect(UICommonConstants.AUTHORIZATION_ERROR_URL); }
-		 */
-
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		if (user != null) {
+System.out.println("in filter ============");
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse resp = (HttpServletResponse) response;
+		if (user == null) {			
+			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
+		} else {
 			AppUserEntity appUser = appUserEntityService.getAppUserByEmail(user
 					.getEmail());
-
-			if (appUser != null) {
-				chain.doFilter(req, resp);
-				// response.sendRedirect(UICommonConstants.CONTEXT_CONTACTS_HOME);
-			} else {
-				Boolean isAdmin = contactsService.isAdmin(user.getEmail());
+			if (appUser == null) {				
 				DomainAdmin domainAdmin = domainAdminManager
 						.getDomainAdminByDomainName(CommonWebUtil
 								.getDomain(user.getEmail()));
 				if (domainAdmin == null) {
-					if (isAdmin) {
+					Boolean isAdmin = contactsService.isAdmin(user.getEmail());
+					if(isAdmin){
 						AppUserEntity appUserEntity = new AppUserEntity(
 								user.getUserId(), user.getEmail(), "", "",
 								user.getNickname(),
@@ -129,23 +111,26 @@ public class AuthorisationFilter implements Filter {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						response.sendRedirect("/createGroupHome.do");
-					} else {
-						response.getWriter().print(
-								"Admin must login first time");
+						resp.sendRedirect("/resource/createGroupHome.do");
+						
+					}else{
+						resp.getWriter().print("An admin must log in the first time from a new domain");
 					}
-				} else {
+					
+				}else{
 					AppUserEntity appUserEntity = new AppUserEntity(
 							user.getUserId(), user.getEmail(), "", "",
-							user.getNickname(), CommonWebUtil.getDomain(user
-									.getEmail()));
+							user.getNickname(),
+							CommonWebUtil.getDomain(user.getEmail()));
 					appUserEntityService.createAppUser(appUserEntity);
-					response.sendRedirect("/contacts.do");
+					chain.doFilter(request, response);
 				}
+				
+				
+			}else{
+				chain.doFilter(request, response);
 			}
-		} else {
-			response.sendRedirect(userService.createLoginURL(request
-					.getRequestURI()));
+			
 		}
 	}
 
@@ -193,8 +178,6 @@ public class AuthorisationFilter implements Filter {
 
 		autowireCapableBeanFactory.configureBean(this, "appUserEntityService");
 
-		autowireCapableBeanFactory
-				.configureBean(this, "resourceSecurityConfig");
 
 		autowireCapableBeanFactory.configureBean(this, "contactsService");
 
