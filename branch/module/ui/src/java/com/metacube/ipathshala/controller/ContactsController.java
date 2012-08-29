@@ -45,6 +45,8 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.metacube.ipathshala.FilterInfo;
+import com.metacube.ipathshala.FilterInfo.Rule;
 import com.metacube.ipathshala.GridRequest;
 import com.metacube.ipathshala.SortInfo;
 import com.metacube.ipathshala.UICommonConstants;
@@ -56,10 +58,13 @@ import com.metacube.ipathshala.entity.Contacts;
 import com.metacube.ipathshala.entity.DomainAdmin;
 import com.metacube.ipathshala.entity.DomainGroup;
 import com.metacube.ipathshala.entity.Workflow;
+import com.metacube.ipathshala.entity.metadata.impl.ContactsMetaData;
 import com.metacube.ipathshala.manager.ContactsManager;
 import com.metacube.ipathshala.manager.DomainGroupManager;
 import com.metacube.ipathshala.manager.WorkflowManager;
 import com.metacube.ipathshala.search.SearchResult;
+import com.metacube.ipathshala.search.property.operator.InputFilterGroupOperatorType;
+import com.metacube.ipathshala.search.property.operator.InputFilterOperatorType;
 import com.metacube.ipathshala.search.property.operator.InputOrderByOperatorType;
 import com.metacube.ipathshala.service.IPathshalaQueueService;
 import com.metacube.ipathshala.service.WorkflowService;
@@ -834,7 +839,7 @@ public class ContactsController extends AbstractController {
 
 		Map<String, Object> modalMap = new HashMap<String, Object>();
 		GridRequest gridRequest = gridRequestParser.parseDataCriteria(request);
-
+		gridRequest = addIsDeletedChecktoGridRequest(gridRequest,false);
 		if (gridRequest.getSortInfo() == null) {
 			SortInfo sortInfo = new SortInfo();
 			sortInfo.setSortField("key");
@@ -901,6 +906,25 @@ public class ContactsController extends AbstractController {
 		modalMap.put("records", totalRecords);
 
 		return modalMap;
+	}
+
+	private GridRequest addIsDeletedChecktoGridRequest(GridRequest gridRequest,
+			boolean showDeleted) {
+		if (!showDeleted) {
+			FilterInfo filterInfo = gridRequest.getFilterInfo();
+			if (filterInfo == null) {
+				filterInfo = new FilterInfo();
+				gridRequest.setAdvancedSearchTerm(true);
+				gridRequest.setFilterInfo(filterInfo);
+			}
+			List<Rule> rules = filterInfo.getRules();
+			FilterInfo.Rule rule = new FilterInfo.Rule();
+			rule.setField(ContactsMetaData.COL_IS_DELETED);
+			rule.setOp(InputFilterOperatorType.EQUAL);
+			rule.setData("n");
+			rules.add(rule);
+		}
+		return gridRequest;
 	}
 
 	@ModelAttribute

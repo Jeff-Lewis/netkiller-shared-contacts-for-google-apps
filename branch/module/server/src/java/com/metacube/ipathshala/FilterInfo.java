@@ -3,6 +3,8 @@ package com.metacube.ipathshala;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.metacube.ipathshala.search.property.operator.InputFilterGroupOperatorType;
+
 /**
  * A class whose object hold the filter data from a UI Component/UI Layer.
  * 
@@ -42,7 +44,7 @@ public class FilterInfo {
 		return true;
 	}
 
-	private String groupOp;
+	private String groupOp = InputFilterGroupOperatorType.AND;
 
 	private List<Rule> rules = new ArrayList<Rule>();
 
