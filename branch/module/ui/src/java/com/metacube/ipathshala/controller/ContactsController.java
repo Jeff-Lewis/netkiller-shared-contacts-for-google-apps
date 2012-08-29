@@ -693,7 +693,7 @@ public class ContactsController extends AbstractController {
 	}
 
 	private Map<String, Object> syncContacts(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws AppException {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		/*
 		 * int total_pages = 0; double start = 0;
@@ -759,7 +759,7 @@ public class ContactsController extends AbstractController {
 			workflow.setWorkflowName(workflowInfo.getWorkflowName());
 			workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
 			workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
-
+			workflow = workflowService.createWorkflow(workflow);
 			syncUserContactsContext.setWorkflowInfo(workflowInfo);
 			workflowManager.triggerWorkflow(workflow);
 			// sharedContactsService.syncUserContacts(getCurrentUser(request).getEmail(),
