@@ -88,8 +88,7 @@ public class ContactsController extends AbstractController {
 
 	@Autowired
 	private DomainGroupManager domainGroupManager;
-	
-	
+
 	@Autowired
 	private WorkflowService workflowService;
 
@@ -133,20 +132,22 @@ public class ContactsController extends AbstractController {
 					CommonWebUtil.getDomain(user.getEmail()), groupName,
 					user.getEmail());
 			/* contactsManager.addGroupToAllDomainUsers(); */
-			return showContacts(request, model,response);
+			return showContacts(request, model, response);
 		}
 		return UICommonConstants.VIEW_INDEX;
 	}
 
 	@RequestMapping("/contacts.do")
-	public String showContacts(HttpServletRequest request, Model model, HttpServletResponse resp) throws IOException {
+	public String showContacts(HttpServletRequest request, Model model,
+			HttpServletResponse resp) throws IOException {
 		log.debug("Presenting Contacts View");
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		if (user == null) {			
-			resp.sendRedirect(userService.createLoginURL(request.getRequestURI()));
+		if (user == null) {
+			resp.sendRedirect(userService.createLoginURL(request
+					.getRequestURI()));
 		}
-		
+
 		addToNavigationTrail("Contact", true, request, false, false);
 		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
 				UICommonConstants.CONTEXT_CONTACTS_HOME);
@@ -400,11 +401,14 @@ public class ContactsController extends AbstractController {
 			HttpServletResponse response) throws AppException, IOException {
 		String id = request.getParameter("contactIdList");
 		List<Key> contactKeyList = getContactKeyList(request);
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		String domain = CommonWebUtil.getDomain(user.getEmail());
 		if (contactKeyList != null && !contactKeyList.isEmpty()) {
 			contactsManager.duplicateContactandExecuteWorkflow(
 					contactKeyList,
 					(DataContext) request.getSession().getAttribute(
-							UICommonConstants.DATA_CONTEXT));
+							UICommonConstants.DATA_CONTEXT),domain);
 		}
 
 		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
@@ -471,24 +475,30 @@ public class ContactsController extends AbstractController {
 
 	@Autowired
 	IPathshalaQueueService iPathshalaQueueService;
-	
+
 	@RequestMapping("/contact/import.do")
-	public String importContacts(HttpServletRequest request, Model model, HttpServletResponse response)
-			throws AppException, IOException {
-		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-		 Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(request);		 
+	public String importContacts(HttpServletRequest request, Model model,
+			HttpServletResponse response) throws AppException, IOException {
+		BlobstoreService blobstoreService = BlobstoreServiceFactory
+				.getBlobstoreService();
+		Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(request);
 		BlobKey blobKey = blobs.get("file");
-		/*Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
-		BlobKey blobKey = blobs.get("file").get(0);*/
-		String blobKeyStr ;
-		
+		/*
+		 * Map<String, List<BlobKey>> blobs =
+		 * blobstoreService.getUploads(request); BlobKey blobKey =
+		 * blobs.get("file").get(0);
+		 */
+		String blobKeyStr;
+
 		if (blobKey != null) {
 			blobKeyStr = blobKey.getKeyString();
-			String email = UserServiceFactory.getUserService().getCurrentUser().getEmail();
+			String email = UserServiceFactory.getUserService().getCurrentUser()
+					.getEmail();
 			ContactImportContext workflowContext = new ContactImportContext();
 			workflowContext.setBlobKeyStr(blobKeyStr);
 			workflowContext.setEmail(email);
-			WorkflowInfo info = new WorkflowInfo("contactImportWorkflowProcessor");
+			WorkflowInfo info = new WorkflowInfo(
+					"contactImportWorkflowProcessor");
 
 			info.setIsNewWorkflow(true);
 			workflowContext.setWorkflowInfo(info);
@@ -500,13 +510,13 @@ public class ContactsController extends AbstractController {
 			workflow = workflowService.createWorkflow(workflow);
 			System.out.println(workflow.getWorkflowInstanceId());
 			if (workflow != null) {
-				workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS.toString());
+				workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS
+						.toString());
 				workflowService.updateWorkflow(workflow);
 				workflowService.triggerWorkflow(workflow);
 			}
 		}
-		
-		
+
 		return showContacts(request, model, response);
 
 	}

@@ -39,6 +39,8 @@ public class BulkContactDuplicateTask extends AbstractWorkflowTask {
 		DataContext dataContext = bulkContactDplicateWorkflowContext
 				.getDataContext();
 
+		String domain = bulkContactDplicateWorkflowContext.getDomain();
+
 		if (contactKeyList == null || contactKeyList.isEmpty()) {
 			throw new WorkflowExecutionException("NO contacts to be duplicated");
 		}
@@ -46,9 +48,6 @@ public class BulkContactDuplicateTask extends AbstractWorkflowTask {
 		try {
 			List<Contacts> contactList = (List<Contacts>) contactsManager
 					.getByKeys(contactKeyList);
-			/*UserService userService = UserServiceFactory.getUserService();
-			User user = userService.getCurrentUser();
-			String domain = CommonWebUtil.getDomain(user.getEmail());*/
 			for (Contacts contacts : contactList) {
 				try {
 					contacts = (Contacts) BeanUtils.cloneBean(contacts);
@@ -68,7 +67,7 @@ public class BulkContactDuplicateTask extends AbstractWorkflowTask {
 				contacts.setKey(null);
 				contacts.setFirstName(contacts.getFirstName() + "-copy");
 				contactsManager.createContact(contacts);
-				//contactsManager.addContactForAllDomainUsers(domain, contacts);
+				contactsManager.addContactForAllDomainUsers(domain, contacts);
 
 			}
 		} catch (AppException e) {

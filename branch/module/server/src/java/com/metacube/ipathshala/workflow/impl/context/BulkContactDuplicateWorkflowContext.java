@@ -17,6 +17,23 @@ public class BulkContactDuplicateWorkflowContext implements WorkflowContext,
 	List<Key> contacts;
 
 	DataContext dataContext;
+	
+	String domain;
+
+	@Override
+	public String toString() {
+		return "BulkContactDuplicateWorkflowContext [workflowInfo="
+				+ workflowInfo + ", contacts=" + contacts + ", dataContext="
+				+ dataContext + ", domain=" + domain + "]";
+	}
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 
 	public DataContext getDataContext() {
 		return dataContext;

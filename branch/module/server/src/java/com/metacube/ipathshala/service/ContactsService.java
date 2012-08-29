@@ -385,10 +385,11 @@ public class ContactsService extends AbstractService {
 	}
 
 	public Workflow duplicateContactWorkflow(List<Key> contactKeyList,
-			DataContext dataContext) throws AppException {
+			DataContext dataContext,String domain) throws AppException {
 		BulkContactDuplicateWorkflowContext context = new BulkContactDuplicateWorkflowContext();
 		context.setContacts(contactKeyList);
 		context.setDataContext(dataContext);
+		context.setDomain(domain);
 		WorkflowInfo info = new WorkflowInfo(
 				"bulkduplicateContactWorkflowProcessor");
 		info.setIsNewWorkflow(true);
@@ -404,9 +405,9 @@ public class ContactsService extends AbstractService {
 	}
 
 	public void duplicateContactandExecuteWorkflow(List<Key> contactKeyList,
-			DataContext dataContext) throws AppException {
+			DataContext dataContext,String domain) throws AppException {
 		Workflow workflow = duplicateContactWorkflow(contactKeyList,
-				dataContext);
+				dataContext,domain);
 		if (workflow != null) {
 			workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS.toString());
 			workflowService.updateWorkflow(workflow);

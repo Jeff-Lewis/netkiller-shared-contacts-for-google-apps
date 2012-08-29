@@ -100,7 +100,7 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 	public SearchResult doSearch(GridRequest gridRequest,
 			DataContext dataContext) throws AppException {
 		return searchManager.doSearch(Contacts.class,
-				service.getEntityMetaData(), gridRequest, null);
+				service.getEntityMetaData(), gridRequest, dataContext);
 	}
 
 	public void exportContacts(DataContext dataContext,
@@ -134,8 +134,8 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 	}
 
 	public void duplicateContactandExecuteWorkflow(List<Key> contactKeyList,
-			DataContext dataContext) throws AppException {
-		service.duplicateContactandExecuteWorkflow(contactKeyList, null);
+			DataContext dataContext,String domain) throws AppException {
+		service.duplicateContactandExecuteWorkflow(contactKeyList, null,domain);
 
 	}
 
