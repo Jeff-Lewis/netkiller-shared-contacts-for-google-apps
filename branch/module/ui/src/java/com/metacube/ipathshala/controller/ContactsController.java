@@ -236,6 +236,30 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.SUCCESS_PAGE;
 	}
 
+	@RequestMapping("/contact/gridUpdate.do")
+	@ResponseBody
+	public Boolean updateContactFromGrid(HttpServletRequest request) throws AppException{
+		String keyLong = request.getParameter("keyLong");
+		if(!StringUtils.isBlank(keyLong)){
+			String lastName = request.getParameter("lastName");
+			String companyName = request.getParameter("cmpnyName");
+			String workEmail = request.getParameter("workEmail");
+			String workPhone = request.getParameter("workPhone");
+			String workAddress = request.getParameter("workAddress");
+			
+			Key key = KeyFactory.createKey(Contacts.class.getSimpleName(), Long.parseLong(keyLong));
+			Contacts contact = (Contacts) contactsManager.getById(key);		
+			contact.setLastName(lastName);
+			contact.setCmpnyName(companyName);
+			contact.setWorkEmail(workEmail);
+			contact.setWorkPhone(workPhone);
+			contact.setWorkAddress(workAddress);
+			
+			contactsManager.createContact(contact);
+		
+		}
+		return true;
+	}
 	@RequestMapping("/contact/update.do")
 	public String updateContact(
 			@ModelAttribute(value = UICommonConstants.ATTRIB_CONTACTS) Contacts contact,
@@ -860,6 +884,7 @@ public class ContactsController extends AbstractController {
 			data.put("key", ++id);
 
 			ArrayList<Object> row = new ArrayList<Object>();
+			row.add(contact.getKey().getId());
 			row.add(contact.getKey().getId());
 			row.add(contact.getFirstName());
 			if (contact.getLastName() != null) {

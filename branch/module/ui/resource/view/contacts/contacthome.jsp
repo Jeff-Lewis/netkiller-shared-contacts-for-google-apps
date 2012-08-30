@@ -182,7 +182,7 @@
 										root : "rows"
 									},
 									pager : '#pnewapi',
-									colNames : [ 'Id', 'FirstName', 'LastName',
+									colNames : [ 'Id','key', 'FirstName', 'LastName',
 											'Company', 'Email', 'Phone',
 											'Address', 'Action' ],
 									colModel : [ {
@@ -193,6 +193,14 @@
 										sortable : true,
 										hidden : false,
 										viewable : true
+									},{
+										name : 'keyLong',
+										index : 'keyLong',
+										align : 'left',
+										search : false,
+										sortable : false,
+										hidden : true,
+										editable:true,
 									}, {
 										name : 'firstName',
 										formatter : editLinkFormatter,
@@ -252,7 +260,9 @@
 										width : 150,
 										sortable : false,
 										search : false,
-									} ],
+									}									
+									
+									],
 
 									mtype : 'POST',
 									caption : "Contacts",
@@ -317,8 +327,8 @@
 
 														});
 									},
-								/*  editurl: "/contact/update.do",
-								 	jsonReader:{
+								 editurl: "/contact/gridUpdate.do",
+								 /* 	jsonReader:{
 								   	  root: "rows",
 								   	  page: "page",
 								   	  total: "total",

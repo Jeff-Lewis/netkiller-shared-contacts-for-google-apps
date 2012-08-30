@@ -80,6 +80,7 @@ public class ContactImportTask extends AbstractWorkflowTask {
 			e.printStackTrace();
 		}
 		System.out.println("contacts imported");
+		blobstoreService.delete(blobKey);
 		return workflowContext;
 	}
 
