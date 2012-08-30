@@ -32,6 +32,8 @@ import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.data.TextConstruct;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.google.gdata.data.contacts.ContactGroupFeed;
+import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.manager.ContactsManager;
 import com.metacube.ipathshala.security.DomainConfig;
 import com.metacube.ipathshala.util.AppLogger;
 import com.metacube.ipathshala.util.CSVFileReader;
@@ -48,14 +50,18 @@ public class ContactImportTask extends AbstractWorkflowTask {
 
 	@Autowired
 	com.metacube.ipathshala.service.ContactsService contactsService;
-	
-	@Autowired DomainConfig appProperties;
+
+	@Autowired
+	DomainConfig appProperties;
+
+	@Autowired
+	private ContactsManager contactsManager;
 
 	@Override
 	public WorkflowContext execute(WorkflowContext context) {
 		System.out.println("inside workflow");
 		ContactImportContext workflowContext = (ContactImportContext) context;
-		/*String blobKeyStr = workflowContext.getBlobKeyStr();
+		String blobKeyStr = workflowContext.getBlobKeyStr();
 		String email = workflowContext.getEmail();
 		BlobstoreService blobstoreService = BlobstoreServiceFactory
 				.getBlobstoreService();
@@ -70,182 +76,67 @@ public class ContactImportTask extends AbstractWorkflowTask {
 			doSomething(x.getStoreValuesList(), email);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			System.out.println("contacts import failed");
 			e.printStackTrace();
-		}*/
+		}
+		System.out.println("contacts imported");
 		return workflowContext;
 	}
 
 	private void doSomething(ArrayList<ArrayList<String>> storedValueList,
 			String email) throws Exception {
-		// Get a file service
-		FileService fileService = FileServiceFactory.getFileService();
-
-		// Create a new Blob file with mime-type "text/plain"
-		AppEngineFile file = fileService.createNewBlobFile("text/csv");
-
-		// Open a channel to write to it
-		boolean lock = false;
-		FileWriteChannel writeChannel = fileService
-				.openWriteChannel(file, lock);
-
-		// Different standard Java ways of writing to the channel
-		// are possible. Here we use a PrintWriter:
-		PrintWriter out = new PrintWriter(Channels.newWriter(writeChannel,
-				"UTF8"));
 		StringBuffer sb = new StringBuffer();
-		System.out.println("Size of list" + storedValueList.size());
 		for (int i = 0; i < storedValueList.size(); i++) {
 			ArrayList<String> row = storedValueList.get(i);
-			// System.out.println("Size of row is" + row.size());
-			String firstname = row.get(0);
-			if (firstname.equals("&&&&")) {
-				break;
-			}
-			if (i != 0) {
-				for (int j = 0; j < 16; j++) {
-
-					if (row.size() > j && !StringUtils.isEmpty(row.get(j))) {
-						sb.append((row.get(j)));
-					} else {
-						sb.append("-");
-					}
-
-					if (j + 1 != 16) {
-						sb.append("\t");
-					}
-				}
-
-				sb.append("\n");
+			Contacts contact = createNewContact(row);
+			if (contact != null) {
+				contact = contactsManager.createContact(contact);
+				contactsManager.addContactForAllDomainUsers(
+						CommonWebUtil.getDomain(email), contact);
 			}
 		}
-
-		// Close without finalizing and save the file path for writing later
-		out.close();
-		String path = file.getFullPath();
-
-		// Write more to the file in a separate request:
-		file = new AppEngineFile(path);
-
-		// This time lock because we intend to finalize
-		lock = true;
-		writeChannel = fileService.openWriteChannel(file, lock);
-
-		// This time we write to the channel using standard Java
-		writeChannel.write(ByteBuffer.wrap(sb.toString().getBytes("UTF-8")));
-
-		// Now finalize
-		writeChannel.closeFinally();
-
-		// Later, read from the file using the file API
-		lock = false; // Let other people read at the same time
-		FileReadChannel readChannel = fileService.openReadChannel(file, false);
-
-		// Again, different standard Java ways of reading from the channel.
-		BufferedReader reader = new BufferedReader(Channels.newReader(
-				readChannel, "UTF-8"));
-		reader.readLine();
-		// line = "The woods are lovely dark and deep."
-
-		readChannel.close();
-
-		// Now read from the file using the Blobstore API
-		BlobKey blobKey = fileService.getBlobKey(file);
-		System.out.println("" + blobKey);
-		// BlobstoreService blobStoreService =
-		// BlobstoreServiceFactory.getBlobstoreService();
-		importData(blobKey.getKeyString(), email);
-		// String segment = new String(blobStoreService.fetchData(blobKey, 30,
-		// 40));
-		// System.out.println(segment);
 	}
 
-	private void importData(String blobKey, String email) {
+	private Contacts createNewContact(ArrayList<String> row) {
+		String fullName = StringUtils.isBlank(row.get(0)) ? "-" : row.get(0);
+		String firstName = StringUtils.isBlank(row.get(1)) ? "-" : row.get(1);
+		String lastName = StringUtils.isBlank(row.get(2)) ? "-" : row.get(2);
+		String company = StringUtils.isBlank(row.get(3)) ? "-" : row.get(3);
+		String jobTitle = StringUtils.isBlank(row.get(4)) ? "-" : row.get(4);
+		String department = StringUtils.isBlank(row.get(5)) ? "-" : row.get(5);
+		String emailWork = StringUtils.isBlank(row.get(6)) ? "-" : row.get(6);
+		String emailHome = StringUtils.isBlank(row.get(7)) ? "-" : row.get(7);
+		String emailOther = StringUtils.isBlank(row.get(8)) ? "-" : row.get(8);
+		String phoneWork = StringUtils.isBlank(row.get(9)) ? "-" : row.get(9);
+		String phoneHome = StringUtils.isBlank(row.get(10)) ? "-" : row.get(10);
+		String phoneMobile = StringUtils.isBlank(row.get(11)) ? "-" : row
+				.get(11);
+		String addressWork = StringUtils.isBlank(row.get(12)) ? "-" : row
+				.get(12);
+		String addressHome = StringUtils.isBlank(row.get(13)) ? "-" : row
+				.get(13);
+		String addressOther = StringUtils.isBlank(row.get(14)) ? "-" : row
+				.get(14);
+		String notes = StringUtils.isBlank(row.get(15)) ? "-" : row.get(15);
 
-		TaskOptions task = buildStartJob("Import Shared Contacts");
-		addJobParam(task,
-				"mapreduce.mapper.inputformat.blobstoreinputformat.blobkeys",
-				blobKey);
-		String groupName = contactsService.getGroupName(CommonWebUtil.getDomain(email));
-		String id = getSharedContactsGroupId(groupName,email);
-		addJobParam(task,
-				"mapreduce.mapper.inputformat.datastoreinputformat.entitykind",
-				id);
-		addJobParam(task,
-				"mapreduce.mapper.inputformat.datastoreinputformat.useremail",
-
-				email);
-
-		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(task);
-	}
-
-	private String getFeedUrl(String url, String userEmail) {
-		url = url + CommonWebUtil.getDomain(userEmail)
-				+ "/full?xoauth_requestor_id=" + userEmail;
-		// url = url + userEmail + "/full?xoauth_requestor_id=" + userEmail;
-		System.out.println("url == " + url);
-		return url;
-	}
-	
-	private ContactsService getContactsService() throws Exception {
-		ContactsService	service = new ContactsService("ykko-test");
-		String consumerKey = appProperties.getConsumerkey();
-		String consumerSecret = appProperties.getConsumerKeySecret();
-
-		GoogleOAuthParameters oauthParameters = new GoogleOAuthParameters();
-		oauthParameters.setOAuthConsumerKey(consumerKey);
-		oauthParameters.setOAuthConsumerSecret(consumerSecret);
-
-		service.setOAuthCredentials(oauthParameters,
-				new OAuthHmacSha1Signer());
-		service.setReadTimeout(20000);
-		service.setConnectTimeout(20000);
-
-		return service;
-	}
-	
-	public String getSharedContactsGroupId(String name, String email) {
-		String result = null;
-		try {
-			String feedurl = getFeedUrl(appProperties.getGroupFeedUrl(), email);
-			String scGrpName = name;
-			ContactsService service = getContactsService();
-			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-					ContactGroupFeed.class);
-			if (resultFeed != null) {
-				String titleTmp = null;
-				TextConstruct tc = null;
-				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-					ContactGroupEntry groupEntry = resultFeed.getEntries().get(
-							i);
-					tc = groupEntry.getTitle();
-					if (tc != null) {
-						titleTmp = tc.getPlainText();
-						// logger.info("Id: " + groupEntry.getId());
-						if (titleTmp.equals(scGrpName)) {
-							result = groupEntry.getId();
-							break;
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			// e.printStackTrace();
-			// logger.severe("e.getMessage: " + e.getMessage());
-		}
-		return result;
-	}
-
-	private static TaskOptions buildStartJob(String jobName) {
-		return TaskOptions.Builder.withUrl("/mapreduce/command/start_job")
-				// .method(Method.POST)
-				.header("X-Requested-With", "XMLHttpRequest")
-				.param("name", jobName);
-	}
-
-	private static void addJobParam(TaskOptions task, String paramName,
-			String paramValue) {
-		task.param("mapper_params." + paramName, paramValue);
+		Contacts contact = new Contacts();
+		contact.setFullName(fullName);
+		contact.setFirstName(firstName);
+		contact.setLastName(lastName);
+		contact.setCmpnyName(company);
+		contact.setCmpnyTitle(jobTitle);
+		contact.setCmpnyDepartment(department);
+		contact.setWorkEmail(emailWork);
+		contact.setHomeEmail(emailHome);
+		contact.setOtherEmail(emailOther);
+		contact.setWorkPhone(phoneWork);
+		contact.setHomePhone(phoneHome);
+		contact.setMobileNumber(phoneMobile);
+		contact.setWorkAddress(addressWork);
+		contact.setHomeAddress(addressHome);
+		contact.setOtherAddress(addressOther);
+		contact.setNotes(notes);
+		return contact;
 	}
 
 }
