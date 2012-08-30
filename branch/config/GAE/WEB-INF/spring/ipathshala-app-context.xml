@@ -247,6 +247,22 @@
 	</bean>
 
 
+<bean id="contactImportTask" name="contactImportTask"
+		class="com.metacube.ipathshala.workflow.impl.task.ContactImportTask"
+		scope="prototype" lazy-init="true">
+		<property name="taskName" value="Contact-Import"></property>
+		<property name="retryCount" value="3"></property>
+	</bean>
+	
+	<bean id="contactImportWorkflowProcessor" name="contactImportWorkflowProcessor"
+		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		scope="prototype" lazy-init="true">
+		<property name="workflowTasks">
+			<list>
+				<ref bean="contactImportTask" />
+			</list>
+		</property>
+	</bean>
 
 
 

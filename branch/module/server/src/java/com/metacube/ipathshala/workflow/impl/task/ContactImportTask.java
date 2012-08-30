@@ -86,7 +86,7 @@ public class ContactImportTask extends AbstractWorkflowTask {
 	private void doSomething(ArrayList<ArrayList<String>> storedValueList,
 			String email) throws Exception {
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < storedValueList.size(); i++) {
+		for (int i = 1; i < storedValueList.size(); i++) {
 			ArrayList<String> row = storedValueList.get(i);
 			Contacts contact = createNewContact(row);
 			if (contact != null) {
@@ -98,26 +98,26 @@ public class ContactImportTask extends AbstractWorkflowTask {
 	}
 
 	private Contacts createNewContact(ArrayList<String> row) {
-		String fullName = StringUtils.isBlank(row.get(0)) ? "-" : row.get(0);
-		String firstName = StringUtils.isBlank(row.get(1)) ? "-" : row.get(1);
-		String lastName = StringUtils.isBlank(row.get(2)) ? "-" : row.get(2);
-		String company = StringUtils.isBlank(row.get(3)) ? "-" : row.get(3);
-		String jobTitle = StringUtils.isBlank(row.get(4)) ? "-" : row.get(4);
-		String department = StringUtils.isBlank(row.get(5)) ? "-" : row.get(5);
-		String emailWork = StringUtils.isBlank(row.get(6)) ? "-" : row.get(6);
-		String emailHome = StringUtils.isBlank(row.get(7)) ? "-" : row.get(7);
-		String emailOther = StringUtils.isBlank(row.get(8)) ? "-" : row.get(8);
-		String phoneWork = StringUtils.isBlank(row.get(9)) ? "-" : row.get(9);
-		String phoneHome = StringUtils.isBlank(row.get(10)) ? "-" : row.get(10);
-		String phoneMobile = StringUtils.isBlank(row.get(11)) ? "-" : row
+		String fullName = StringUtils.isBlank(row.get(0)) ? "" : row.get(0);
+		String firstName = StringUtils.isBlank(row.get(1)) ? "" : row.get(1);
+		String lastName = StringUtils.isBlank(row.get(2)) ? "" : row.get(2);
+		String company = StringUtils.isBlank(row.get(3)) ? "" : row.get(3);
+		String jobTitle = StringUtils.isBlank(row.get(4)) ? "" : row.get(4);
+		String department = StringUtils.isBlank(row.get(5)) ? "" : row.get(5);
+		String emailWork = StringUtils.isBlank(row.get(6)) ? "" : row.get(6);
+		String emailHome = StringUtils.isBlank(row.get(7)) ? "" : row.get(7);
+		String emailOther = StringUtils.isBlank(row.get(8)) ? "" : row.get(8);
+		String phoneWork = StringUtils.isBlank(row.get(9)) ? "" : row.get(9);
+		String phoneHome = StringUtils.isBlank(row.get(10)) ? "" : row.get(10);
+		String phoneMobile = StringUtils.isBlank(row.get(11)) ? "" : row
 				.get(11);
-		String addressWork = StringUtils.isBlank(row.get(12)) ? "-" : row
+		String addressWork = StringUtils.isBlank(row.get(12)) ? "" : row
 				.get(12);
-		String addressHome = StringUtils.isBlank(row.get(13)) ? "-" : row
+		String addressHome = StringUtils.isBlank(row.get(13)) ? "" : row
 				.get(13);
-		String addressOther = StringUtils.isBlank(row.get(14)) ? "-" : row
+		String addressOther = StringUtils.isBlank(row.get(14)) ? "" : row
 				.get(14);
-		String notes = StringUtils.isBlank(row.get(15)) ? "-" : row.get(15);
+		String notes = StringUtils.isBlank(row.get(15)) ? "" : row.get(15);
 
 		Contacts contact = new Contacts();
 		contact.setFullName(fullName);
