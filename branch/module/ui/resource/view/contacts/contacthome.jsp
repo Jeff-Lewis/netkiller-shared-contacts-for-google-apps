@@ -10,9 +10,12 @@
 " />
 <!-- <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script> -->
-<script
+<!-- <script
 	src="http://maps.google.com/maps?file=api&v=2.52&key=ABQIAAAAnAZyA34zDlQmFYfWlw6JqBS5ZecFzz0-rytgJXQ0WWFbp2mDUBSm0aq1TjDhjaENKiolezSGMeNzyQ"
-	type="text/javascript"></script>
+	type="text/javascript"></script> -->
+	
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
 
 <style type="text/css">
 <!--
@@ -61,7 +64,7 @@
 	}
 
 	// set up a new marker
-	function addMarker(lat, lon) {
+/* 	function addMarker(lat, lon) {
 		//alert(html);
 		var marker = new GMarker(new GLatLng(lat, lon));
 		GEvent.addListener(marker, "click", function() {
@@ -70,7 +73,7 @@
 		gmarkers.push(marker);
 		//htmls.push(html);
 		return marker;
-	}
+	} */
 
 	function formatHtml(blurb, address) {
 		return '<div class="blurb">' + blurb + '</div>\n<div class="address">'
@@ -111,9 +114,91 @@
 		}
 	}
 
-	function showMap() {
-		geocoder = new GClientGeocoder();
-		var addressList = getSelectedAddressList();
+	var myLatlng= new google.maps.LatLng(-25.363882,131.044922);
+	// Check for geolocation support
+
+	    var markers = [];
+	
+	    function showAddressOnMap( address,name) {
+	        if (geocoder) {
+	        	geocoder.geocode({'address':address},function(results, status){
+	                 if (status == google.maps.GeocoderStatus.OK) {
+	                   var latlng =  results[0].geometry.location;
+	                   markers = new Array();
+	                   addMarkers(latlng.lat(),latlng.lng(),name);
+	                 } 
+
+	          });
+	        }
+	    }
+	    
+	    function addMarkers(x,y,placeTitle){
+	    	var latlng = new google.maps.LatLng(x, y);
+	    	var m1= new google.maps.Marker({
+	    	            position: latlng,
+	    	            title: placeTitle,
+	    	            map: map 
+	    	            });
+	    				   markers.push(m1);
+	    				     autoCenter(map, markers);
+	    	}
+
+
+	    	function autoCenter(map, markers)
+	    	{
+	    	//  Create a new viewpoint bound
+	    	var bounds = new google.maps.LatLngBounds();
+	    	//  Go through each marker...
+	    	for(var marker in markers){
+	    	bounds.extend(markers[marker].getPosition());
+	    	}    
+	    	//  Fit these bounds to the map
+
+	    	map.fitBounds(bounds);
+	    	map.setZoom(12);
+	    	}
+	    	var geocoder;
+	    	var map;
+	    	
+	    	function initListCheckBox(){
+				$(".cbox").click(function(){
+					
+					if($(this).is(':checked')){		
+						var elemIndex = $("#list4 input").index($('#list4 input:checked'))/3 +1;
+						console.log(elemIndex)
+						var address = $('#list4').getCell(5, 'workAddress');
+						var name = $('#list4').getCell(5, 'firstName');
+						showAddressOnMap(address,name);
+					}
+				});
+	    	}
+	    	
+	function showMap() {		
+		
+		if($("#canvas_map").is(':hidden')){
+			initListCheckBox();
+			$("#showMapButton").html("<span class='add-student-icon'></span>Hide");		
+			$('#list4').jqGrid('hideCol', 'workPhone').jqGrid('hideCol', 'workAddress').jqGrid('hideCol', 'act');
+			$("#gbox_list4").css('float','left')
+			$(".grid-result").append($("#canvas_map"))
+			$("#canvas_map").show();
+			
+		 var myOptions = {
+	    zoom: 12,
+	    center: myLatlng,
+	    mapTypeId: google.maps.MapTypeId.ROADMAP
+	  };
+	  map = new google.maps.Map(document.getElementById('canvas_map'),
+	      myOptions); 
+		}else{
+			$("#showMapButton").html("<span class='add-student-icon'></span>Map");		
+		$("body").append($("#canvas_map"))	;
+		$("#canvas_map").hide();
+		$('#list4').jqGrid('showCol', 'workPhone').jqGrid('showCol', 'workAddress').jqGrid('showCol', 'act');
+		}
+		
+  /*geocoder = new GClientGeocoder();
+	 	var addressList = getSelectedAddressList();
 		var add = [];
 		add = addressList.split('$')
 		if (geocoder) {
@@ -139,7 +224,7 @@
 			}
 		}
 
-		load();
+		load(); */
 	}
 </script>
 <script src="http://www.google-analytics.com/urchin.js"
@@ -158,10 +243,9 @@
 		$('#ImportDialog').hide();
 		$("#menu-contaner a").removeClass("selectmenu");
 		$("#contacts").addClass("selectmenu");
-		//showMap();
-		$('#mapDiv').hide();
-	});
-	$(function() {
+		
+		geocoder = new google.maps.Geocoder();
+		
 		
 		$('#ImportDialog').dialog({
 			autoOpen: false,
@@ -274,6 +358,8 @@
 									sortname : 'firstName',
 									sortorder : 'asc',
 									beforeRequest : function() {
+										$('.cbox').unbind('click');
+									
 										var searchParam = $("#advSeachParam")
 												.val();
 										if (searchParam != null) {
@@ -326,6 +412,11 @@
 															}
 
 														});
+										if($("#canvas_map").is(':visible')){
+											
+										initListCheckBox();
+							
+										}
 									},
 								 editurl: "/contact/gridUpdate.do",
 								 /* 	jsonReader:{
@@ -660,7 +751,7 @@
 
 		<div class="add-student" style="width: 70px;">
 
-			<a href="#" onClick="showMap();$('#mapDiv').show();"><span
+			<a href="#" onClick="showMap();" id="showMapButton"><span
 				class="add-student-icon"></span>Map</a>
 
 		</div>
@@ -740,12 +831,12 @@
 		</form>
 	</div>
 
-	<div style="display: none; margin-left: 150px; margin-top: 30px;"
+<%-- 	<div style="display: none; margin-left: 150px; margin-top: 30px;"
 		id="mapDiv">
 		<form action="#">
 			<div id="map_canvas"></div>
 		</form>
-	</div>
+	</div> --%>
 
 	<div style="display: none; height: 570px; width: 740px;"
 		id="massUpdateDiv">
@@ -927,7 +1018,7 @@
 
 </div>
 <div class="clear"></div>
-
+<div id="canvas_map" style="display:none;width:400px;margin:0 auto;margin-left:5px;height:469px;float:left;"></div>
 
 <style>
 <!--
@@ -975,21 +1066,14 @@
 	text-align: left;
 }
 
-#map_canvas {
-	position: absolute;
-	border: 1px solid black;
-	z-index: 1000;
+#map_canvas {		
 	background: #ffffff;
-	width: 600px;
-	height: 400px;
-	left: 90%;
-	top: 85%;
-	margin-left: -600px;
-	margin-top: -150px;
-	border: 3px outset;
+	width: 100%;
+	height: 100%;
+position: static;		
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
-	line-height: 21px;
+	
 	/* text-align: left; */
 }
 
