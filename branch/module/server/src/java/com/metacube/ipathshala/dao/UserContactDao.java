@@ -17,5 +17,7 @@ public interface UserContactDao {
 	public UserContact update(UserContact student);
 
 	public void remove(Object id);
+	
+	public List<UserContact> getUserContactListForDomain(String domain);
 
 }

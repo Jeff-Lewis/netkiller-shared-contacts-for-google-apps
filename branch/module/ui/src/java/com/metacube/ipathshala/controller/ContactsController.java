@@ -57,13 +57,13 @@ import com.metacube.ipathshala.core.UserIdConflictException;
 import com.metacube.ipathshala.entity.Contacts;
 import com.metacube.ipathshala.entity.DomainAdmin;
 import com.metacube.ipathshala.entity.DomainGroup;
+import com.metacube.ipathshala.entity.UserContact;
 import com.metacube.ipathshala.entity.Workflow;
 import com.metacube.ipathshala.entity.metadata.impl.ContactsMetaData;
 import com.metacube.ipathshala.manager.ContactsManager;
 import com.metacube.ipathshala.manager.DomainGroupManager;
 import com.metacube.ipathshala.manager.WorkflowManager;
 import com.metacube.ipathshala.search.SearchResult;
-import com.metacube.ipathshala.search.property.operator.InputFilterGroupOperatorType;
 import com.metacube.ipathshala.search.property.operator.InputFilterOperatorType;
 import com.metacube.ipathshala.search.property.operator.InputOrderByOperatorType;
 import com.metacube.ipathshala.service.IPathshalaQueueService;
@@ -71,10 +71,8 @@ import com.metacube.ipathshala.service.WorkflowService;
 import com.metacube.ipathshala.util.AppLogger;
 import com.metacube.ipathshala.util.CommonWebUtil;
 import com.metacube.ipathshala.util.GridRequestParser;
-import com.metacube.ipathshala.util.UserUtil;
 import com.metacube.ipathshala.view.validators.EntityValidator;
 import com.metacube.ipathshala.vo.UserInfo;
-import com.metacube.ipathshala.vo.UserSync;
 import com.metacube.ipathshala.workflow.WorkflowInfo;
 import com.metacube.ipathshala.workflow.impl.context.ContactImportContext;
 import com.metacube.ipathshala.workflow.impl.context.SyncUserContactsContext;
@@ -200,6 +198,7 @@ public class ContactsController extends AbstractController {
 
 				Contacts createdcontact = contactsManager
 						.createContact(contact);
+
 				contactsManager.addContactForAllDomainUsers(
 						CommonWebUtil.getDomain(user.getEmail()),
 						createdcontact);
@@ -238,28 +237,31 @@ public class ContactsController extends AbstractController {
 
 	@RequestMapping("/contact/gridUpdate.do")
 	@ResponseBody
-	public Boolean updateContactFromGrid(HttpServletRequest request) throws AppException{
+	public Boolean updateContactFromGrid(HttpServletRequest request)
+			throws AppException {
 		String keyLong = request.getParameter("keyLong");
-		if(!StringUtils.isBlank(keyLong)){
+		if (!StringUtils.isBlank(keyLong)) {
 			String lastName = request.getParameter("lastName");
 			String companyName = request.getParameter("cmpnyName");
 			String workEmail = request.getParameter("workEmail");
 			String workPhone = request.getParameter("workPhone");
 			String workAddress = request.getParameter("workAddress");
-			
-			Key key = KeyFactory.createKey(Contacts.class.getSimpleName(), Long.parseLong(keyLong));
-			Contacts contact = (Contacts) contactsManager.getById(key);		
+
+			Key key = KeyFactory.createKey(Contacts.class.getSimpleName(),
+					Long.parseLong(keyLong));
+			Contacts contact = (Contacts) contactsManager.getById(key);
 			contact.setLastName(lastName);
 			contact.setCmpnyName(companyName);
 			contact.setWorkEmail(workEmail);
 			contact.setWorkPhone(workPhone);
 			contact.setWorkAddress(workAddress);
-			
+
 			contactsManager.createContact(contact);
-		
+
 		}
 		return true;
 	}
+
 	@RequestMapping("/contact/update.do")
 	public String updateContact(
 			@ModelAttribute(value = UICommonConstants.ATTRIB_CONTACTS) Contacts contact,
@@ -351,7 +353,8 @@ public class ContactsController extends AbstractController {
 					con.setOtherAddress(otherAddress);
 				if (!StringUtils.isBlank(notes))
 					con.setNotes(notes);
-				contactsManager.updateContact(con, dataContext);
+				contactsManager.updateContactAndExecuteWorkflow(con,
+						dataContext);
 			}
 
 		}
@@ -437,7 +440,7 @@ public class ContactsController extends AbstractController {
 			contactsManager.duplicateContactandExecuteWorkflow(
 					contactKeyList,
 					(DataContext) request.getSession().getAttribute(
-							UICommonConstants.DATA_CONTEXT),domain);
+							UICommonConstants.DATA_CONTEXT), domain);
 		}
 
 		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
@@ -699,6 +702,7 @@ public class ContactsController extends AbstractController {
 			currentCustomer = contactsManager
 					.verifyUser(getCurrentUser(request).getEmail());
 		} catch (Exception e) {
+			e.printStackTrace();
 
 		}
 		if (user == null) {
@@ -724,10 +728,6 @@ public class ContactsController extends AbstractController {
 	private Map<String, Object> syncContacts(HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		/*
-		 * int total_pages = 0; double start = 0;
-		 */
-		String groupId = null;
 		int totalLimit = 100;
 		/*
 		 * try {
@@ -757,14 +757,10 @@ public class ContactsController extends AbstractController {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		String dateString = formatter.format(date);
 		String email = getCurrentUser(request).getEmail();
-		com.metacube.ipathshala.entity.UserSync userSync = /*
-															 * contactsManager.
-															 * getUserSync
-															 * (getCurrentUser
-															 * (request )
-															 * .getEmail(),
-															 * dateString);
-															 */null;
+		DomainGroup domainGroup = domainGroupManager
+				.getDomainGroupByDomainName(CommonWebUtil.getDomain(email));
+		com.metacube.ipathshala.entity.UserSync userSync = contactsManager
+				.getUserSync(email, date);
 		String message = null;
 		if (userSync == null
 				|| (userSync != null && !userSync.getSyncDate().equals(
@@ -772,7 +768,7 @@ public class ContactsController extends AbstractController {
 			SyncUserContactsContext syncUserContactsContext = new SyncUserContactsContext();
 			syncUserContactsContext.setUserEmail(getCurrentUser(request)
 					.getEmail());
-			syncUserContactsContext.setGroupId(groupId);
+			syncUserContactsContext.setGroupId(domainGroup.getGroupName());
 			/*
 			 * syncUserContactsContext
 			 * .setIsUseForSharedContacts(isUseForSharedContacts);
@@ -790,19 +786,23 @@ public class ContactsController extends AbstractController {
 			workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
 			workflow = workflowService.createWorkflow(workflow);
 			syncUserContactsContext.setWorkflowInfo(workflowInfo);
+			workflowManager.updateWorkflow(workflow);
 			workflowManager.triggerWorkflow(workflow);
-			// sharedContactsService.syncUserContacts(getCurrentUser(request).getEmail(),
+			// service.syncUserContacts(getCurrentUser(request).getEmail(),
 			// entries);
 			message = "User Contacts will get syncronized within 10 minutes";
 		} else {
 			message = "Cannot sync. User limit crossed for the day ";
 		}
-		/*
-		 * if (userSync == null) { contactsManager.createUserSync(email,
-		 * CommonWebUtil.getDomain(email), dateString); } else {
-		 * contactsManager.createUserSync(email, CommonWebUtil.getDomain(email),
-		 * dateString); }
-		 */
+
+		if (userSync == null) {
+			contactsManager.createUserSync(email,
+					CommonWebUtil.getDomain(email), date);
+		} else {
+			contactsManager.createUserSync(email,
+					CommonWebUtil.getDomain(email), date);
+		}
+
 		modelMap.put("code", "success");
 		modelMap.put("message", message);
 		return modelMap;
@@ -863,7 +863,7 @@ public class ContactsController extends AbstractController {
 
 		Map<String, Object> modalMap = new HashMap<String, Object>();
 		GridRequest gridRequest = gridRequestParser.parseDataCriteria(request);
-		gridRequest = addIsDeletedChecktoGridRequest(gridRequest,false);
+		gridRequest = addIsDeletedChecktoGridRequest(gridRequest, false);
 		if (gridRequest.getSortInfo() == null) {
 			SortInfo sortInfo = new SortInfo();
 			sortInfo.setSortField("key");

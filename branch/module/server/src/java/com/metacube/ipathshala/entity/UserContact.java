@@ -20,6 +20,17 @@ public class UserContact {
 	private String userEmail;
 
 	@Persistent
+	private String domainName;
+	
+	public String getDomainName() {
+		return domainName;
+	}
+
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
+	}
+
+	@Persistent
 	private Key contactKey;
 
 	@NotPersistent
@@ -82,8 +93,9 @@ public class UserContact {
 	@Override
 	public String toString() {
 		return "UserContact [key=" + key + ", userEmail=" + userEmail
-				+ ", contactKey=" + contactKey + ", contacts=" + contacts
-				+ ", contactId=" + contactId + ", groupName=" + groupName + "]";
+				+ ", domainName=" + domainName + ", contactKey=" + contactKey
+				+ ", contacts=" + contacts + ", contactId=" + contactId
+				+ ", groupName=" + groupName + "]";
 	}
 
 }

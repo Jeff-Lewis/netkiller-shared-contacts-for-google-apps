@@ -22,7 +22,6 @@ import com.metacube.ipathshala.entity.metadata.EntityMetaData;
 import com.metacube.ipathshala.search.SearchResult;
 import com.metacube.ipathshala.service.ContactsService;
 import com.metacube.ipathshala.util.AppLogger;
-import com.metacube.ipathshala.vo.UserSync;
 
 @Component
 public class ContactsManager extends AbstractManager implements EntityManager {
@@ -90,6 +89,11 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 		// super.updateGlobalFilterProperties(contacts, this);
 		return service.updateContact(contacts);
 	}
+	
+	
+	public void updateContactAndExecuteWorkflow(Contacts contacts, DataContext dataContext){
+		service.updateContactAndExecuteWorkflow(contacts,dataContext);
+	}
 
 	public void deleteContact(Contacts contacts, DataContext dataContext)
 			throws AppException {
@@ -139,7 +143,7 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 
 	}
 
-	public UserSync getUserSync(String userEmail, Date date)
+	public com.metacube.ipathshala.entity.UserSync getUserSync(String userEmail, Date date)
 			throws AppException {
 		return service.getUserSync(userEmail, date);
 	}

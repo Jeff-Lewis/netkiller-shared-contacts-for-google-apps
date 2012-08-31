@@ -2,6 +2,7 @@ package com.metacube.ipathshala.workflow.impl.context;
 
 import java.io.Serializable;
 
+import com.metacube.ipathshala.core.DataContext;
 import com.metacube.ipathshala.workflow.WorkflowContext;
 import com.metacube.ipathshala.workflow.WorkflowInfo;
 
@@ -21,6 +22,16 @@ public class SyncUserContactsContext implements WorkflowContext, Serializable {
 	private String groupId;
 
 	private Boolean isUseForSharedContacts;
+
+	private DataContext dataContext;
+
+	public DataContext getDataContext() {
+		return dataContext;
+	}
+
+	public void setDataContext(DataContext dataContext) {
+		this.dataContext = dataContext;
+	}
 
 	@Override
 	public WorkflowInfo getWorkflowInfo() {
@@ -70,9 +81,7 @@ public class SyncUserContactsContext implements WorkflowContext, Serializable {
 		return "SyncUserContactsContext [workflowInfo=" + workflowInfo
 				+ ", userEmail=" + userEmail + ", totalLimit=" + totalLimit
 				+ ", groupId=" + groupId + ", isUseForSharedContacts="
-				+ isUseForSharedContacts + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + ", toString()="
-				+ super.toString() + "]";
+				+ isUseForSharedContacts + ", dataContext=" + dataContext + "]";
 	}
 
 }

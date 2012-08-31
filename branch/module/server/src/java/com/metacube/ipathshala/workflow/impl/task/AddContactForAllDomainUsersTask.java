@@ -20,7 +20,11 @@ import com.google.gdata.data.extensions.PhoneNumber;
 import com.google.gdata.data.extensions.StructuredPostalAddress;
 import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.DomainGroup;
+import com.metacube.ipathshala.entity.UserContact;
 import com.metacube.ipathshala.service.ContactsService;
+import com.metacube.ipathshala.service.DomainGroupService;
+import com.metacube.ipathshala.service.UserContactService;
 import com.metacube.ipathshala.util.AppLogger;
 import com.metacube.ipathshala.vo.StaticProperties;
 import com.metacube.ipathshala.workflow.AbstractWorkflowTask;
@@ -36,6 +40,12 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 	@Autowired
 	private ContactsService service;
 
+	@Autowired
+	private UserContactService userContactService;
+
+	@Autowired
+	private DomainGroupService domainGroupService;
+
 	@Override
 	public WorkflowContext execute(WorkflowContext context)
 			throws WorkflowExecutionException {
@@ -48,7 +58,20 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 			System.out.println("contacts creation  user id  = " + userId);
 			ContactEntry newentry = makeContact(contacts);
 			String userGroupId = getUserGroupId(userId + "@" + domain, domain); // added
-
+			UserContact userContact = new UserContact();
+			userContact.setContactKey(contacts.getKey());
+			userContact.setUserEmail(userId);
+			userContact.setContactId(newentry.getId());
+			userContact.setContacts(contacts);
+			userContact.setDomainName(domain);
+			DomainGroup domainGroup = domainGroupService
+					.getDomainGroupByDomainName(domain);
+			userContact.setGroupName(domainGroup.getGroupName());
+			try {
+				userContactService.createUserContact(userContact);
+			} catch (AppException e1) {
+				e1.printStackTrace();
+			}
 			GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
 			userGmInfo.setHref(userGroupId); // added
 			newentry.addGroupMembershipInfo(userGmInfo);

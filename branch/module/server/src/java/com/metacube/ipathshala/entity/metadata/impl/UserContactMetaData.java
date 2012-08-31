@@ -19,6 +19,7 @@ public class UserContactMetaData extends AbstractMetaData {
 	public static final String COL_CONTACT_KEY = "contactKey";
 	public static final String COL_GOOGLE_CONTACT_ID = "contactId";
 	public static final String COL_GROUP_NAME = "groupName";
+	public static final String COL_DOMAIN_NAME = "domainName";
 
 	public UserContactMetaData() {
 		super(ENTITY_NAME, new String[] { COL_USER_EMAIL }, COL_USER_EMAIL,
@@ -38,6 +39,7 @@ public class UserContactMetaData extends AbstractMetaData {
 		addColumnMetaData(COL_GOOGLE_CONTACT_ID,
 				ColumnMetaData.ColumnType.STRING);
 		addColumnMetaData(COL_GROUP_NAME, ColumnMetaData.ColumnType.STRING);
+		addColumnMetaData(COL_DOMAIN_NAME, ColumnMetaData.ColumnType.STRING);
 
 	}
 }

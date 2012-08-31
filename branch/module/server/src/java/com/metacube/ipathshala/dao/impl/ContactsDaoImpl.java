@@ -1,9 +1,12 @@
 package com.metacube.ipathshala.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,6 +17,7 @@ import com.google.appengine.api.datastore.Key;
 import com.metacube.ipathshala.dao.AbstractDao;
 import com.metacube.ipathshala.dao.ContactsDao;
 import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.UserSync;
 
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)
@@ -57,5 +61,6 @@ public class ContactsDaoImpl extends AbstractDao<Contacts> implements
 		super.remove(Contacts.class, id);
 
 	}
+
 
 }

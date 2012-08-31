@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -35,7 +34,6 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.mail.MailService;
 import com.google.appengine.api.mail.MailService.Message;
@@ -64,9 +62,11 @@ import com.metacube.ipathshala.GridRequest;
 import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.core.DataContext;
 import com.metacube.ipathshala.dao.ContactsDao;
+import com.metacube.ipathshala.dao.UserContactDao;
 import com.metacube.ipathshala.entity.Contacts;
 import com.metacube.ipathshala.entity.DomainAdmin;
 import com.metacube.ipathshala.entity.DomainGroup;
+import com.metacube.ipathshala.entity.UserContact;
 import com.metacube.ipathshala.entity.Workflow;
 import com.metacube.ipathshala.entity.metadata.EntityMetaData;
 import com.metacube.ipathshala.security.DomainConfig;
@@ -99,6 +99,9 @@ public class ContactsService extends AbstractService {
 
 	@Autowired
 	private ContactsDao contactsDao;
+
+	@Autowired
+	private UserContactDao userContactDao;
 
 	public void setContactsService(
 			com.google.gdata.client.contacts.ContactsService contactsService) {
@@ -163,25 +166,23 @@ public class ContactsService extends AbstractService {
 		userSyncService.createUserSync(userSync);
 	}
 
-	public UserSync getUserSync(String userEmail, Date date)
-			throws AppException {
+	public com.metacube.ipathshala.entity.UserSync getUserSync(
+			String userEmail, Date date) throws AppException {
 
-		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
-				"UserSync");
-		query.addFilter("userEmail",
-				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
-				userEmail);
-		query.addFilter("date",
-				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
-				date);
-
-		PreparedQuery preparedQuery = datastore.prepare(query);
-		List<Entity> userSyncs = preparedQuery.asList(FetchOptions.Builder
-				.withDefaults());
-		UserSync userSync = null;
-		if (userSyncs != null && !userSyncs.isEmpty())
-			userSync = getUserSync(userSyncs.get(0));
-		return userSync;
+		/*
+		 * com.google.appengine.api.datastore.Query query = new
+		 * com.google.appengine.api.datastore.Query( "UserSync");
+		 * query.addFilter("userEmail",
+		 * com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
+		 * userEmail); query.addFilter("date",
+		 * com.google.appengine.api.datastore.Query.FilterOperator.EQUAL, date);
+		 * 
+		 * PreparedQuery preparedQuery = datastore.prepare(query); List<Entity>
+		 * userSyncs = preparedQuery.asList(FetchOptions.Builder
+		 * .withDefaults()); UserSync userSync = null; if (userSyncs != null &&
+		 * !userSyncs.isEmpty()) userSync = getUserSync(userSyncs.get(0));
+		 */
+		return userSyncService.getUserSyncByEmailAndDate(userEmail, date);
 
 		// return userSyncService.getUserSyncByEmailAndDate(userEmail, date);
 	}
@@ -227,6 +228,10 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
+	public List<UserContact> getUserContactForDomain(String domain) {
+		return userContactDao.getUserContactListForDomain(domain);
+	}
+
 	/*
 	 * public Contacts createContactForAllDomainUsers(){
 	 * 
@@ -244,6 +249,12 @@ public class ContactsService extends AbstractService {
 			log.error(message, dae);
 			throw new AppException(message, dae);
 		}
+	}
+
+	public void updateContactAndExecuteWorkflow(Contacts contacts,
+			DataContext dataContext) {
+		// TODO: create a work flow for update the contacts.
+
 	}
 
 	public void deleteContact(Contacts contacts, DataContext dataContext)
@@ -385,7 +396,7 @@ public class ContactsService extends AbstractService {
 	}
 
 	public Workflow duplicateContactWorkflow(List<Key> contactKeyList,
-			DataContext dataContext,String domain) throws AppException {
+			DataContext dataContext, String domain) throws AppException {
 		BulkContactDuplicateWorkflowContext context = new BulkContactDuplicateWorkflowContext();
 		context.setContacts(contactKeyList);
 		context.setDataContext(dataContext);
@@ -405,9 +416,9 @@ public class ContactsService extends AbstractService {
 	}
 
 	public void duplicateContactandExecuteWorkflow(List<Key> contactKeyList,
-			DataContext dataContext,String domain) throws AppException {
+			DataContext dataContext, String domain) throws AppException {
 		Workflow workflow = duplicateContactWorkflow(contactKeyList,
-				dataContext,domain);
+				dataContext, domain);
 		if (workflow != null) {
 			workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS.toString());
 			workflowService.updateWorkflow(workflow);
@@ -1019,7 +1030,7 @@ public class ContactsService extends AbstractService {
 			for (ContactEntry entry : entries) {
 				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
 				gmInfo.setHref(groupId); // added
-				entry.getGroupMembershipInfos().remove(0);
+				//entry.getGroupMembershipInfos().remove(0);
 
 				entry.addGroupMembershipInfo(gmInfo);
 
@@ -1219,7 +1230,7 @@ public class ContactsService extends AbstractService {
 				query.setStartIndex(start); // paging
 			}
 			query.setStartIndex(1); // paging
-			query.setStringCustomParameter("showdeleted", "false");
+			query.setStringCustomParameter("isDeleted", "false");
 			query.setStringCustomParameter("xoauth_requestor_id", userEmail);
 
 			query.setStringCustomParameter("group", groupId);

@@ -10,14 +10,12 @@ import javax.jdo.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.appengine.api.datastore.Key;
+import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.dao.AbstractDao;
 import com.metacube.ipathshala.dao.UserSyncDao;
-import com.metacube.ipathshala.entity.Student;
 import com.metacube.ipathshala.entity.UserSync;
 
 @Component
@@ -58,13 +56,21 @@ public class UserSyncDaoImpl extends AbstractDao<UserSync> implements
 		try {
 			pm = getPersistenceManager();
 			Query query = pm.newQuery(UserSync.class);
-			query.setFilter("date == date1 && userEmail == email");
-			query.declareParameters("String email");
-			query.declareParameters("Date date1");
-			return pm.detachCopy((UserSync) query.execute(email, date));
-		} finally {
+			query.setFilter("syncDate == date1 && userEmail == email");
+			query.declareImports("import java.util.Date");
+			query.declareParameters("Date date1,String email");
+			// query.declareParameters("");
+			Collection<UserSync> users = (Collection<UserSync>) query.execute(
+					date, email);
+			UserSync userSync = null;
+			if (users != null && !users.isEmpty()) {
+				List<UserSync> userSyncList = (List<UserSync>) pm
+						.detachCopyAll(users);
+				userSync = userSyncList.get(0);
+			}
+			return userSync;
+		}finally {
 			releasePersistenceManager(pm);
 		}
 	}
-
 }
