@@ -36,19 +36,12 @@
 }
 -->
 </style>
-<script type="text/javascript">
-	$(document).ready(function() {
-		//showMap();
-		//load();
-		//$("#createFormDiv").hide();
-	});
-</script>
 
 <script type="text/javascript">
 	/* var isCmpnyUpdated = false;
 	var isAddressUpdated = false;
 	var isNotesUpdated = false; */
-	var gmarkers = [];
+	/* var gmarkers = [];
 	var map;
 	var minLa = 90;
 	var minLo = 180;
@@ -61,7 +54,7 @@
 	// handle clicks from the listing:
 	function click(i) {
 		gmarkers[i].openInfoWindowHtml(htmls[i]);
-	}
+	} */
 
 	// set up a new marker
 /* 	function addMarker(lat, lon) {
@@ -119,20 +112,37 @@
 
 	    var markers = [];
 	
-	    function showAddressOnMap( address,name) {
+	    function showAddressOnMap( lastElemIndex) {
 	        if (geocoder) {
-	        	geocoder.geocode({'address':address},function(results, status){
-	                 if (status == google.maps.GeocoderStatus.OK) {
-	                   var latlng =  results[0].geometry.location;
-	                   markers = new Array();
-	                   addMarkers(latlng.lat(),latlng.lng(),name);
-	                 } 
-
-	          });
+	        	
+	        	$(".cbox:checked").each(function(){
+	        		var elemIndex = parseInt($("#list4 input").index($(this)))/3 +1;
+					var address = $('#list4').getCell(elemIndex, 'workAddress');
+					var name = $('#list4').getCell(elemIndex, 'firstName');
+					if(lastElemIndex == elemIndex){
+			        	geocoder.geocode({'address':address},function(results, status){
+			                 if (status == google.maps.GeocoderStatus.OK) {
+			                   var latlng =  results[0].geometry.location;
+			                   addYellowMarker(latlng.lat(),latlng.lng(),name);
+			                 } 
+			          });
+					}else{
+		        	geocoder.geocode({'address':address},function(results, status){
+		                 if (status == google.maps.GeocoderStatus.OK) {
+		                   var latlng =  results[0].geometry.location;
+		                   addMarkers(latlng.lat(),latlng.lng(),name);
+		                 } 
+		          });
+					}
+	        	});
+	        	
+ 
+	        	
 	        }
 	    }
 	    
-	    function addMarkers(x,y,placeTitle){
+
+ function addMarkers(x,y,placeTitle){
 	    	var latlng = new google.maps.LatLng(x, y);
 	    	var m1= new google.maps.Marker({
 	    	            position: latlng,
@@ -141,8 +151,30 @@
 	    	            });
 	    				   markers.push(m1);
 	    				     autoCenter(map, markers);
-	    	}
+	    	} 
 
+	    
+	    function addYellowMarker(x,y,placeTitle){
+	    	var latlng = new google.maps.LatLng(x, y);
+	    	var m1= new google.maps.Marker({
+	    	            position: latlng,
+	    	            title: placeTitle,
+	    	            icon:new google.maps.MarkerImage(
+	    	            	    'http://www.gettyicons.com/free-icons/108/gis-gps/png/24/needle_left_yellow_2_24.png',
+	    	            	    new google.maps.Size(24, 24),
+	    	            	    new google.maps.Point(0, 0),
+	    	            	    new google.maps.Point(0, 24)
+	    	            	  ),
+	    	            map: map 
+	    	            });
+	    				   markers.push(m1);
+	    				   for(var i=0;i< markers.length-1 ; i++){
+	    					   console.log(markers[i]['icon'])	    				   
+	    		        		delete  markers[i]['icon'];
+	    					   console.log(markers[i]['icon'])
+	    		        	}
+	    				     autoCenter(map, markers);
+	    	}
 
 	    	function autoCenter(map, markers)
 	    	{
@@ -164,11 +196,8 @@
 				$(".cbox").click(function(){
 					
 					if($(this).is(':checked')){		
-						var elemIndex = $("#list4 input").index($('#list4 input:checked'))/3 +1;
-						console.log(elemIndex)
-						var address = $('#list4').getCell(5, 'workAddress');
-						var name = $('#list4').getCell(5, 'firstName');
-						showAddressOnMap(address,name);
+						var elemIndex = parseInt($("#list4 input").index($(this)))/3 +1;
+						showAddressOnMap(elemIndex);
 					}
 				});
 	    	}
