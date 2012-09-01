@@ -112,14 +112,20 @@
 
 	    var markers = [];
 	
-	    function showAddressOnMap( lastElemIndex) {
+	    function showAddressOnMap( lastElemIndex) {	    	
+	    	clearOverlays();
+	    	markers = new Array();
+	    	console.log(lastElemIndex)
 	        if (geocoder) {
 	        	
 	        	$(".cbox:checked").each(function(){
 	        		var elemIndex = parseInt($("#list4 input").index($(this)))/3 +1;
 					var address = $('#list4').getCell(elemIndex, 'workAddress');
 					var name = $('#list4').getCell(elemIndex, 'firstName');
+					
 					if(lastElemIndex == elemIndex){
+						
+						console.log("yellow marker for :" + address)
 			        	geocoder.geocode({'address':address},function(results, status){
 			                 if (status == google.maps.GeocoderStatus.OK) {
 			                   var latlng =  results[0].geometry.location;
@@ -127,6 +133,8 @@
 			                 } 
 			          });
 					}else{
+						console.log("normal  marker for :" + address)
+					
 		        	geocoder.geocode({'address':address},function(results, status){
 		                 if (status == google.maps.GeocoderStatus.OK) {
 		                   var latlng =  results[0].geometry.location;
@@ -175,7 +183,16 @@
 	    		        	}
 	    				     autoCenter(map, markers);
 	    	}
+	    function clearOverlays() {
+	    	  if (markers) {
+	    	    for (var i = 0; i < markers.length; i++ ) {
+	    	    	markers[i].setMap(null);
+	    	    }
+	    	  }
+	    	}
 
+
+	    
 	    	function autoCenter(map, markers)
 	    	{
 	    	//  Create a new viewpoint bound
@@ -187,7 +204,7 @@
 	    	//  Fit these bounds to the map
 
 	    	map.fitBounds(bounds);
-	    	map.setZoom(12);
+	    	map.setZoom(8);
 	    	}
 	    	var geocoder;
 	    	var map;
