@@ -863,4 +863,7 @@ public class UICommonConstants {
 	public static final String NOT_AUTHORISED_ERROR_HOME = "contacts/error";
 
 	public static final String WELCOME_ADMIN_PAGE = "contacts/welcome";
+	
+	public static final String CONNECT_HOME = "contacts/connect.jsp";
+
 }

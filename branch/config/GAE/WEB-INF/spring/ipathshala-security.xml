@@ -15,6 +15,7 @@
 		<property name="consumerKeySecret" value="${consumerKeySecret}"></property>
 		<property name="groupFeedUrl" value = "${groupFeedUrl}"></property>
 		<property name="feedurl" value ="${feedurl}"></property>
+		<property name="applicationUrl" value ="${applicationUrl}"></property>
 	</bean>
 	<!--  ACL info -->
 	<bean id="adminAcl" class="com.metacube.ipathshala.security.acl.Acl">

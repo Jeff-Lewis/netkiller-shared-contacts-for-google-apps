@@ -1,0 +1,30 @@
+<html>
+<body>
+<h3>Dear ${fullName}.</h3>
+<br>
+<div>
+You are invited to login ${domain}'s Shared Contact to see your contacts records for better communication. There are also your friends contacts to see those information are right.
+</div>
+<br>
+<div>
+
+Just Access this secure URL ${randomUrl} and bookmark it. When It's url are regenerated for security purpose then you automatically get information to access your shared contacts.
+
+</div>
+<br>
+<div>
+You can also add your friends and update contacts information for ${domain} to serve you better.
+</div>
+
+<br>
+
+<div>
+Thank you.<br>
+
+Best regards,<br>
+
+${domain}'s Shared Contacts Teams.
+</div>
+</body>
+
+</html>

@@ -265,7 +265,22 @@
 	</bean>
 
 
-
+<bean id="connectContactTask" name="connectContactTask"
+		class="com.metacube.ipathshala.workflow.impl.task.ConnectContactTask"
+		scope="prototype" lazy-init="true">
+		<property name="taskName" value="Connect-Contact"></property>
+		<property name="retryCount" value="3"></property>
+	</bean>
+	
+	<bean id="connectContactWorkflowProcessor" name="connectContactWorkflowProcessor"
+		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		scope="prototype" lazy-init="true">
+		<property name="workflowTasks">
+			<list>
+				<ref bean="connectContactTask" />
+			</list>
+		</property>
+	</bean>
 
 
 

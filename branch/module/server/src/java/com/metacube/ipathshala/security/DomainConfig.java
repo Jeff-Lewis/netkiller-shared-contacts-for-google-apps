@@ -25,6 +25,18 @@ public class DomainConfig {
 	private String groupFeedUrl;
 
 	private String feedurl;
+	
+	private String applicationUrl;
+	
+	
+
+	public String getApplicationUrl() {
+		return applicationUrl;
+	}
+
+	public void setApplicationUrl(String applicationUrl) {
+		this.applicationUrl = applicationUrl;
+	}
 
 	public String getGroupFeedUrl() {
 		return groupFeedUrl;

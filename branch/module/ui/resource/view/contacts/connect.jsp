@@ -37,242 +37,6 @@
 -->
 </style>
 
-<script type="text/javascript">
-	/* var isCmpnyUpdated = false;
-	var isAddressUpdated = false;
-	var isNotesUpdated = false; */
-	/* var gmarkers = [];
-	var map;
-	var minLa = 90;
-	var minLo = 180;
-	var maxLa = 0;
-	var maxLo = 0;
-	var meanLa = 0;
-	var meanLo = 0;
-	//var htmls = [];
-
-	// handle clicks from the listing:
-	function click(i) {
-		gmarkers[i].openInfoWindowHtml(htmls[i]);
-	} */
-
-	// set up a new marker
-/* 	function addMarker(lat, lon) {
-		//alert(html);
-		var marker = new GMarker(new GLatLng(lat, lon));
-		GEvent.addListener(marker, "click", function() {
-			//marker.openInfoWindowHtml(html);
-		});
-		gmarkers.push(marker);
-		//htmls.push(html);
-		return marker;
-	} */
-
-	function formatHtml(blurb, address) {
-		return '<div class="blurb">' + blurb + '</div>\n<div class="address">'
-				+ address + '</div>';
-	}
-
-	function showAxis() {
-		geocoder = new GClientGeocoder();
-		var addressList = getSelectedAddressList();
-		var add = [];
-		add = addressList.split('$')
-		if (geocoder) {
-			for ( var i = 0; i < add.length; i++) {
-				geocoder.getLatLng(add[i], function(point) {
-					if (point) {
-						//var html = formatHtml("", add[i]);
-						marker = addMarker(point.Vd, point.Ha);
-						map.addOverlay(marker);
-					}
-				});
-			}
-		}
-	}
-
-	//function load(meanLa,meanLo,minLa,maxLa,minLo,maxLo) {
-	function load() {
-		meanLa = (parseFloat(minLa) + parseFloat(maxLa)) / 2;
-		meanLo = (parseFloat(minLo) + parseFloat(maxLo)) / 2
-		if (GBrowserIsCompatible()) {
-			map = new GMap2(document.getElementById("map_canvas"));
-			map.addControl(new GLargeMapControl());
-			map.addControl(new GMapTypeControl());
-			map.setCenter(new GLatLng(meanLa, meanLo), 0);
-			var bounds = new GLatLngBounds(new GLatLng(maxLa, minLo),
-					new GLatLng(minLa, maxLo));
-			showAxis();
-			map.setZoom(map.getBoundsZoomLevel(bounds));
-		}
-	}
-
-	var myLatlng= new google.maps.LatLng(-25.363882,131.044922);
-	// Check for geolocation support
-
-	    var markers = [];
-	
-	    function showAddressOnMap( lastElemIndex) {	    	
-	    	clearOverlays();
-	    	markers = new Array();
-	    	console.log(lastElemIndex)
-	        if (geocoder) {
-	        	
-	        	$(".cbox:checked").each(function(){
-	        		var elemIndex = parseInt($("#list4 input").index($(this)))/3 +1;
-					var address = $('#list4').getCell(elemIndex, 'workAddress');
-					var name = $('#list4').getCell(elemIndex, 'firstName');
-					
-					if(lastElemIndex == elemIndex){
-						
-						console.log("yellow marker for :" + address)
-			        	geocoder.geocode({'address':address},function(results, status){
-			                 if (status == google.maps.GeocoderStatus.OK) {
-			                   var latlng =  results[0].geometry.location;
-			                   addYellowMarker(latlng.lat(),latlng.lng(),name);
-			                 } 
-			          });
-					}else{
-						console.log("normal  marker for :" + address)
-					
-		        	geocoder.geocode({'address':address},function(results, status){
-		                 if (status == google.maps.GeocoderStatus.OK) {
-		                   var latlng =  results[0].geometry.location;
-		                   addMarkers(latlng.lat(),latlng.lng(),name);
-		                 } 
-		          });
-					}
-	        	});
-	        	
- 
-	        	
-	        }
-	    }
-	    
-
- function addMarkers(x,y,placeTitle){
-	    	var latlng = new google.maps.LatLng(x, y);
-	    	var m1= new google.maps.Marker({
-	    	            position: latlng,
-	    	            title: placeTitle,
-	    	            map: map 
-	    	            });
-	    				   markers.push(m1);
-	    				     autoCenter(map, markers);
-	    	} 
-
-	    
-	    function addYellowMarker(x,y,placeTitle){
-	    	var latlng = new google.maps.LatLng(x, y);
-	    	var m1= new google.maps.Marker({
-	    	            position: latlng,
-	    	            title: placeTitle,
-	    	            icon:new google.maps.MarkerImage(
-	    	            	    'http://www.gettyicons.com/free-icons/108/gis-gps/png/24/needle_left_yellow_2_24.png',
-	    	            	    new google.maps.Size(24, 24),
-	    	            	    new google.maps.Point(0, 0),
-	    	            	    new google.maps.Point(0, 24)
-	    	            	  ),
-	    	            map: map 
-	    	            });
-	    				   markers.push(m1);
-	    				   for(var i=0;i< markers.length-1 ; i++){
-	    					   console.log(markers[i]['icon'])	    				   
-	    		        		delete  markers[i]['icon'];
-	    					   console.log(markers[i]['icon'])
-	    		        	}
-	    				     autoCenter(map, markers);
-	    	}
-	    function clearOverlays() {
-	    	  if (markers) {
-	    	    for (var i = 0; i < markers.length; i++ ) {
-	    	    	markers[i].setMap(null);
-	    	    }
-	    	  }
-	    	}
-
-
-	    
-	    	function autoCenter(map, markers)
-	    	{
-	    	//  Create a new viewpoint bound
-	    	var bounds = new google.maps.LatLngBounds();
-	    	//  Go through each marker...
-	    	for(var marker in markers){
-	    	bounds.extend(markers[marker].getPosition());
-	    	}    
-	    	//  Fit these bounds to the map
-
-	    	map.fitBounds(bounds);
-	    	map.setZoom(8);
-	    	}
-	    	var geocoder;
-	    	var map;
-	    	
-	    	function initListCheckBox(){
-				$(".cbox").click(function(){
-					
-					if($(this).is(':checked')){		
-						var elemIndex = parseInt($("#list4 input").index($(this)))/3 +1;
-						showAddressOnMap(elemIndex);
-					}
-				});
-	    	}
-	    	
-	function showMap() {		
-		
-		if($("#canvas_map").is(':hidden')){
-			initListCheckBox();
-			$("#showMapButton").html("<span class='add-student-icon'></span>Hide");		
-			$('#list4').jqGrid('hideCol', 'workPhone').jqGrid('hideCol', 'workAddress').jqGrid('hideCol', 'act');
-			$("#gbox_list4").css('float','left')
-			$(".grid-result").append($("#canvas_map"))
-			$("#canvas_map").show();
-			
-		 var myOptions = {
-	    zoom: 12,
-	    center: myLatlng,
-	    mapTypeId: google.maps.MapTypeId.ROADMAP
-	  };
-	  map = new google.maps.Map(document.getElementById('canvas_map'),
-	      myOptions); 
-		}else{
-			$("#showMapButton").html("<span class='add-student-icon'></span>Map");		
-		$("body").append($("#canvas_map"))	;
-		$("#canvas_map").hide();
-		$('#list4').jqGrid('showCol', 'workPhone').jqGrid('showCol', 'workAddress').jqGrid('showCol', 'act');
-		}
-		
-  /*geocoder = new GClientGeocoder();
-	 	var addressList = getSelectedAddressList();
-		var add = [];
-		add = addressList.split('$')
-		if (geocoder) {
-			for ( var i = 0; i < add.length; i++) {
-				geocoder.getLatLng(add[i], function(point) {
-					if (point) {
-
-						if (point.Vd < minLa) {
-							minLa = point.Vd
-						}
-						if (point.Ha < minLo) {
-							minLo = point.Ha
-						}
-						if (point.Ha > maxLo) {
-							maxLo = point.Ha
-						}
-						if (point.Vd > maxLa) {
-							maxLa = point.Vd
-						}
-
-					}
-				});
-			}
-		}
-
-		load(); */
-	}
-</script>
 <script src="http://www.google-analytics.com/urchin.js"
 	type="text/javascript"></script>
 
@@ -285,12 +49,11 @@
 	var grid;
 	var prmSearch;
 	$(function() {
-		
+		$("#search").remove();
 		$('#ImportDialog').hide();
 		$("#menu-contaner a").removeClass("selectmenu");
 		$("#contacts").addClass("selectmenu");
 		
-		geocoder = new google.maps.Geocoder();
 		
 		
 		$('#ImportDialog').dialog({
@@ -306,7 +69,7 @@
 						.jqGrid(
 								{
 									datatype : "json",
-									url : '/contact/data.do',
+									url : '/connect/data.do?randomUrl=${randomUrl}',
 									autowidth : true,
 									jsonReader : {
 										root : "rows"
@@ -401,7 +164,7 @@
 									rownumbers : true,
 									rowNum : 15,
 									rowList : [ 5, 10, 15, 30, 50, 100 ],
-									sortname : 'firstName',
+									sortname : 'key',
 									sortorder : 'asc',
 									beforeRequest : function() {
 										$('.cbox').unbind('click');
@@ -413,7 +176,7 @@
 													.jqGrid(
 															'setGridParam',
 															{
-																url : '/contact/data.do?advSearchText='
+																url : '/connect/data.do?randomUrl=${randomUrl}&advSearchText='
 																		+ searchParam
 															});
 										}
@@ -533,7 +296,7 @@
 			multipleSearch : false,
 			closeAfterReset : true
 		}, prmSearch);
-		createSearchDialog();
+		//createSearchDialog();
 
 	});
 
@@ -615,7 +378,7 @@
 
 	}
 
-	function connectContacts(){
+	function getSelectedContactKeys(){
 		var selectedContacts ="";
 	
 		$(".cbox:checked").each(function(){
@@ -820,25 +583,6 @@
 
 		</div>
 
-		<div class="add-student" style="width: 70px;">
-
-			<a href="#" onClick="showMap();" id="showMapButton"><span
-				class="add-student-icon"></span>Map</a>
-
-		</div>
-
-		<div class="add-student" style="width: 90px;">
-
-			<a href="#" onClick="sendMail()"><span class="add-student-icon"></span>Mail
-				To</a>
-
-		</div>
-
-		<div class="add-student" style="width: 100px;">
-
-			<a href="#" onClick="connectContacts()"><span class="add-student-icon"></span>Connect</a>
-
-		</div>
 
 
 		<div class="clear"></div>

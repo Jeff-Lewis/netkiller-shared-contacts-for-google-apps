@@ -68,7 +68,7 @@ public class MailUtil {
 	}
 
 	public static String getQualifiedName(String templateName) {
-		return "emailTemplate/" + templateName;
+		return "mailTemplate/" + templateName;
 	}
 
 }

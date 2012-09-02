@@ -53,7 +53,7 @@
     	<filter-name>authorisationFilter</filter-name>
     	<init-param>
 			<param-name>skipResources</param-name>
-			<param-value>/_ah/logout,/_ah/login,/error/,/async/task,/gadget/,/resource/,/appstats/</param-value>
+			<param-value>/_ah/logout,/_ah/login,/error/,/async/task,/gadget/,/resource/,/connect/,/appstats/</param-value>
 		</init-param>
     	<filter-class>com.metacube.ipathshala.filter.AuthorisationFilter</filter-class>
   	</filter>

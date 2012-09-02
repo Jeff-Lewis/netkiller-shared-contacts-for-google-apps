@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.appengine.api.blobstore.BlobKey;
@@ -59,7 +61,9 @@ import com.metacube.ipathshala.entity.DomainAdmin;
 import com.metacube.ipathshala.entity.DomainGroup;
 import com.metacube.ipathshala.entity.UserContact;
 import com.metacube.ipathshala.entity.Workflow;
+import com.metacube.ipathshala.entity.metadata.impl.ConnectContactMetaData;
 import com.metacube.ipathshala.entity.metadata.impl.ContactsMetaData;
+import com.metacube.ipathshala.manager.ConnectContactManager;
 import com.metacube.ipathshala.manager.ContactsManager;
 import com.metacube.ipathshala.manager.DomainGroupManager;
 import com.metacube.ipathshala.manager.WorkflowManager;
@@ -95,6 +99,9 @@ public class ContactsController extends AbstractController {
 	@Autowired
 	private WorkflowService workflowService;
 
+	@Autowired
+	private ConnectContactManager connectContactManager;
+
 	public ContactsManager getContactsManager() {
 		return contactsManager;
 	}
@@ -109,6 +116,118 @@ public class ContactsController extends AbstractController {
 
 	public void setValidator(EntityValidator validator) {
 		this.validator = validator;
+	}
+
+	// @RequestParam("toName") String toName,@RequestParam("toEmail") String
+	// toEmail,
+	@RequestMapping("contacts/connect.do")
+	@ResponseBody
+	public String connectContacts(@RequestParam("contacts") String contactKeys,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) throws AppException {
+		connectContactManager
+				.createAndExecuteConnectContactWorkflow(contactKeys);
+
+		return "success";
+		/*
+		 * model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
+		 * UICommonConstants.CONNECT_PAGE); return UICommonConstants.VIEW_INDEX;
+		 */
+	}
+
+	@RequestMapping("/connect/connect.do")
+	public String showConnectContacts(@RequestParam("id") String randomUrl,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) throws AppException {
+		model.addAttribute("randomUrl", randomUrl);
+		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
+				UICommonConstants.CONNECT_HOME);
+		return UICommonConstants.VIEW_INDEX;
+	}
+
+	@RequestMapping("/connect/data.do")
+	public @ResponseBody
+	Map<String, Object> connectData(
+			@RequestParam("randomUrl") String randomUrl,
+			HttpServletRequest request, HttpSession session)
+			throws AppException {
+
+		Map<String, Object> modalMap = new HashMap<String, Object>();
+		GridRequest gridRequest = gridRequestParser.parseDataCriteria(request);
+		gridRequest.setSort(false);
+		gridRequest.setSortInfo(null);
+		FilterInfo filterInfo = gridRequest.getFilterInfo();
+		if (filterInfo == null) {
+			filterInfo = new FilterInfo();
+			gridRequest.setAdvancedSearchTerm(true);
+			gridRequest.setFilterInfo(filterInfo);
+		}
+		List<Rule> rules = filterInfo.getRules();
+		FilterInfo.Rule rule = new FilterInfo.Rule();
+		rule.setField(ConnectContactMetaData.COL_RANDOM_URL);
+		rule.setOp(InputFilterOperatorType.EQUAL);
+		rule.setData(randomUrl);
+		rules.add(rule);
+		SearchResult searchResult = connectContactManager.doSearch(gridRequest);
+		List<Object> contactsList = searchResult.getResultObjects();
+		int totalRecords = Integer.parseInt(String.valueOf(searchResult
+				.getTotalRecordSize()));
+		ArrayList<HashMap<String, Object>> rows = new ArrayList<HashMap<String, Object>>();
+		int id = 0;
+		String activeValue;
+		for (Iterator iterator = contactsList.iterator(); iterator.hasNext();) {
+			Contacts contact = (Contacts) iterator.next();
+			HashMap<String, Object> data = new HashMap<String, Object>();
+			data.put("key", ++id);
+
+			ArrayList<Object> row = new ArrayList<Object>();
+			row.add(contact.getKey().getId());
+			row.add(contact.getKey().getId());
+			row.add(contact.getFirstName());
+			if (contact.getLastName() != null) {
+				row.add(contact.getLastName());
+			} else {
+				row.add("");
+			}
+			if (contact.getCmpnyName() != null) {
+				row.add(contact.getCmpnyName());
+			} else {
+				row.add("");
+			}
+			if (contact.getWorkEmail() != null) {
+				row.add(contact.getWorkEmail());
+			} else {
+				row.add("");
+			}
+
+			if (contact.getWorkPhone() != null) {
+				row.add(contact.getWorkPhone());
+			} else {
+				row.add("");
+			}
+
+			if (contact.getWorkAddress() != null) {
+				row.add(contact.getWorkAddress());
+			} else {
+				row.add("");
+			}
+
+			data.put("cell", row);
+			rows.add(data);
+		}
+
+		int page = gridRequest.getPaginationInfo().getPageNumber();
+		int recordsPerPage = gridRequest.getPaginationInfo()
+				.getRecordsPerPage();
+
+		modalMap.put("rows", rows);
+		modalMap.put("page", rows.size() == 0 ? 0 : page);
+		modalMap.put("total",
+				(int) Math.ceil(totalRecords / (recordsPerPage + 0d)));
+
+		modalMap.put("records", totalRecords);
+
+		return modalMap;
 	}
 
 	@RequestMapping("/resource/createGroupHome.do")
