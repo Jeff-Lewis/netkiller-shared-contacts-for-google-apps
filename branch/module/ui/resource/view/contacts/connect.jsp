@@ -552,7 +552,6 @@
 						<td><select id="selectBoxId">
 								<option selected="selected" value="import">Import</option>
 								<option value="export">Export</option>
-								<option value="syncContacts">Sync</option>
 								<option value="delete">Delete</option>
 						</select></td>
 						<td><input type="button" value="Action" name="Action"
