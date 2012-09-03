@@ -57,7 +57,7 @@ public class ConnectContactTask extends AbstractWorkflowTask {
 
 		Scanner sc = new Scanner(contactKeys).useDelimiter(",");
 		String randomUrl = CommonWebUtil.getDomain(email);
-
+		String domain = CommonWebUtil.getDomain(email);
 		StringBuffer sb = new StringBuffer();
 		for (int x = 0; x < 8; x++) {
 			sb.append((char) ((int) (Math.random() * 26) + 97));
@@ -73,6 +73,7 @@ public class ConnectContactTask extends AbstractWorkflowTask {
 			connectContact.setContactKey(key);
 			connectContact.setCreatedBy(email);			
 			connectContact.setCreatedDate(date);
+			connectContact.setDomainName(domain);
 			connectContactManager.create(connectContact);			
 			contactKeyList.add(key);
 		}

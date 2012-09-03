@@ -30,6 +30,9 @@ public class ConnectContact implements Serializable{
 	private String randomUrl;
 	
 	@Persistent
+	private String domainName;
+	
+	@Persistent
 	private Date lastModifiedDate;
 
 	@Persistent
@@ -55,6 +58,16 @@ public class ConnectContact implements Serializable{
 
 	public void setLastModifiedBy(String lastModifiedBy) {
 		this.lastModifiedBy = lastModifiedBy;
+	}
+	
+	
+
+	public String getDomainName() {
+		return domainName;
+	}
+
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
 	}
 
 	public Key getKey() {

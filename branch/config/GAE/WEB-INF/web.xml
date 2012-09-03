@@ -196,4 +196,25 @@
 	<welcome-file-list>
 		<welcome-file>contacts.do</welcome-file>
 	</welcome-file-list>
+	
+	  <servlet>
+	  	<servlet-name>OpenIdServlet</servlet-name>
+	    <servlet-class>com.metacube.ipathshala.servlets.OpenIdServlet</servlet-class>
+	    <init-param>
+	    	<param-name>realm</param-name>
+	        <param-value></param-value>
+		</init-param>
+	    <init-param>
+	    	<param-name>return_to_path</param-name>
+	        <param-value>/openid</param-value>
+		</init-param>
+	    <init-param>
+	    	<param-name>home_path</param-name>
+	        <param-value>/</param-value>
+		</init-param>
+  	</servlet>
+	<servlet-mapping>
+    	<servlet-name>OpenIdServlet</servlet-name>
+		<url-pattern>/openid</url-pattern>
+	</servlet-mapping>
 </web-app>

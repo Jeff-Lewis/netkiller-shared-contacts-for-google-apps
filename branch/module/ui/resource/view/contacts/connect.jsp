@@ -227,7 +227,7 @@
 							
 										}
 									},
-								 editurl: "/contact/gridUpdate.do",
+								 editurl: "/connect/gridUpdate.do",
 								 /* 	jsonReader:{
 								   	  root: "rows",
 								   	  page: "page",
@@ -348,7 +348,7 @@
 				str += '&notes=' + $("#notes").val();
 			}
 			$.ajax({
-				url : 'contact/contactMassUpdate.do?contactIdList='
+				url : 'connect/contactMassUpdate.do?contactIdList='
 						+ contactKeyList,
 				data : str,
 				success : function(result) {
@@ -416,7 +416,7 @@
 			return false;
 		} else {
 			$('#uploadDiv').hide();
-			document.getElementById("formId").action = "/contact/"
+			document.getElementById("formId").action = "/connect/"
 					+ optionValue + ".do?contactIdList=" + contactIdList;
 			document.getElementById("formId").submit();
 		}
@@ -424,7 +424,7 @@
 	}
 
 	function openCreateWindow() {
-		$("#createFormDiv").load('/contact/createForm.do').show();
+		$("#createFormDiv").load('/connect/createForm.do').show();
 		//document.getElementById("")
 		//window.location.href = '/contact/createForm.do';
 	}
@@ -448,7 +448,7 @@
 	function massUpdate() {
 		var contactKeyList = getSelectedContactsIdList();
 		$.ajax({
-			url : '/contact/getSelectedContactData.do',
+			url : '/connect/getSelectedContactData.do',
 			data : {
 				contactIdList : contactKeyList,
 			},
@@ -470,7 +470,7 @@
 				$("#massUpdateDiv").show();
 			},
 			error : function() {
-
+				alert("Error Retreiving contact data. Please try again later.")
 			}
 
 		});
@@ -479,8 +479,18 @@
 
 	function makeDuplicate() {
 		var contactIdList = getSelectedContactsIdList();
-		window.location.href = '/contact/duplicate.do?contactIdList='
-				+ contactIdList;
+		if(contactIdList){
+		$.ajax({
+			url:'/connect/duplicate.do?domainName=${domainName}&contactIdList='
+				+ contactIdList,
+				success:function(){
+					alert("Contacts will be duplicated. Please refresh screen after some time.")
+				},
+				error:function(){
+					alert("Unable to duplicate. Please try again later.")
+				}
+		});
+		}
 	}
 
 	function getSelectedAddressList() {

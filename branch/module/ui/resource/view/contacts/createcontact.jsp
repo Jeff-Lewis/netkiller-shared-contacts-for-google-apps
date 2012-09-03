@@ -11,7 +11,7 @@
 <!-- <div class="breadcrumb"></div>
  -->
 <div class="clear"></div>
-<form:form id="contactCreateForm" action="/contact/create.do"
+<form:form id="contactCreateForm" action="/connect/create.do"
 	modelAttribute="contact" method="post">
 
 
@@ -374,6 +374,7 @@
 						});
 			});
 
+	/* UNCOMMENT IF NEEDED 
 	function updateContact(generatedUrl, elm) {
 		singleClickDisabled(elm);
 		$.ajax({
@@ -393,12 +394,12 @@
 			}
 		});
 
-	}
+	} */
 
 	function createContact(isSaveAndNew, elm) {
 		singleClickDisabled(elm);
 		$.ajax({
-			url : '/contact/create.do?isSaveAndNew=' + isSaveAndNew,
+			url : '/connect/create.do?isSaveAndNew=' + isSaveAndNew,
 			data : $('#contactCreateForm').serialize(),
 			success : function(result) {
 				if (result == 'success') {

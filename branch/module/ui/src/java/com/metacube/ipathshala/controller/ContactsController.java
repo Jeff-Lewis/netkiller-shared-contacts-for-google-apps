@@ -126,6 +126,7 @@ public class ContactsController extends AbstractController {
 			HttpServletRequest request, HttpServletResponse response,
 			Model model) throws AppException {
 		model.addAttribute("randomUrl", randomUrl);
+		model.addAttribute("domainName",connectContactManager.getDomainName(randomUrl));
 		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
 				UICommonConstants.CONNECT_HOME);
 		return UICommonConstants.VIEW_INDEX;
@@ -262,7 +263,7 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.VIEW_INDEX;
 	}
 
-	@RequestMapping("/contact/createForm.do")
+	@RequestMapping({"/contact/createForm.do","/connect/createForm.do"})
 	public String getCreateForm(HttpServletRequest request, Model model) {
 		log.debug("Presenting create-Contact form view.");
 		addToNavigationTrail("Create", false, request, false, false);
@@ -276,7 +277,7 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.CONTEXT_CREATE_CONTACT;
 	}
 
-	@RequestMapping("/contact/create.do")
+	@RequestMapping("/connect/create.do")
 	public String create(
 			@ModelAttribute(value = UICommonConstants.ATTRIB_CONTACTS) Contact contact,
 			BindingResult result, Model model, HttpServletRequest request,
@@ -339,7 +340,7 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.SUCCESS_PAGE;
 	}
 
-	@RequestMapping("/contact/gridUpdate.do")
+	@RequestMapping({"/contact/gridUpdate.do","/connect/gridUpdate.do"})
 	@ResponseBody
 	public Boolean updateContactFromGrid(HttpServletRequest request)
 			throws AppException {
@@ -431,7 +432,7 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.VIEW_INDEX;
 	}
 
-	@RequestMapping("/contact/contactMassUpdate.do")
+	@RequestMapping("/connect/contactMassUpdate.do")
 	public @ResponseBody
 	String contactMassUpdate(HttpServletRequest request) throws AppException {
 		DataContext dataContext = (DataContext) request.getSession()
@@ -478,7 +479,7 @@ public class ContactsController extends AbstractController {
 		contactsManager.sendMailToSelectedContacts();
 	}
 
-	@RequestMapping("/contact/delete.do")
+	@RequestMapping({"/contact/delete.do","/connect/delete.do"})
 	public void delete(Model model, HttpServletRequest request,
 			HttpServletResponse response) throws AppException, IOException {
 		log.debug("Processing detete contact request.");
@@ -506,7 +507,7 @@ public class ContactsController extends AbstractController {
 						UICommonConstants.DATA_CONTEXT));
 		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
 				UICommonConstants.CONTEXT_CONTACTS_HOME);
-		response.sendRedirect("/contacts.do");
+		response.sendRedirect(request.getRequestURI());
 	}
 
 	@RequestMapping("/contact/close.do")
@@ -535,28 +536,45 @@ public class ContactsController extends AbstractController {
 	}
 
 	@RequestMapping("/contact/duplicate.do")
-	public void makeDuplicateContact(HttpServletRequest request, Model model,
+	public String makeDuplicateContact(HttpServletRequest request, Model model,
 			HttpServletResponse response) throws AppException, IOException {
 		//String id = request.getParameter("contactIdList");
-		List<Key> contactKeyList = getContactKeyList(request);
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		String domain = CommonWebUtil.getDomain(user.getEmail());
+		DataContext dataContext = (DataContext) request.getSession().getAttribute(
+				UICommonConstants.DATA_CONTEXT);
+		String redirectPage = "/contacts.do";
+		 doDuplicate(request, response, model, domain, dataContext, redirectPage);
+
+		 return showContacts(request, model, response);
+	}
+
+	@RequestMapping("/connect/duplicate.do")
+	@ResponseBody
+	public String makeDuplicateConnectContact(HttpServletRequest request, Model model,
+			HttpServletResponse response) throws AppException, IOException {
+		String domain = request.getParameter("domainName");
+		DataContext dataContext = (DataContext) request.getSession().getAttribute(
+				UICommonConstants.DATA_CONTEXT);
+		String redirectPage = "/contacts.do";
+		doDuplicate(request, response, model, domain, null, redirectPage);
+return "success";
+	}
+	
+	private void doDuplicate(HttpServletRequest request,
+			HttpServletResponse response,Model model, String domain,
+			DataContext dataContext, String redirectPage) throws AppException,
+			IOException {
+		List<Key> contactKeyList = getContactKeyList(request);		
 		if (contactKeyList != null && !contactKeyList.isEmpty()) {
+			
 			contactsManager.duplicateContactandExecuteWorkflow(
 					contactKeyList,
-					(DataContext) request.getSession().getAttribute(
-							UICommonConstants.DATA_CONTEXT), domain);
+					dataContext , domain);
 		}
 
-		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
-				UICommonConstants.CONTEXT_CONTACTS_HOME);
-		response.sendRedirect("/contacts.do");
-		/*
-		 * removeFromNavigationTrail(request);
-		 * redirectToPreviousBreadcrumb(request, response);
-		 */
-
+		
 	}
 
 	private List<Key> getContactKeyList(HttpServletRequest request) {
@@ -580,7 +598,7 @@ public class ContactsController extends AbstractController {
 		return contactKeyList;
 	}
 
-	@RequestMapping("/contact/export.do")
+	@RequestMapping({"/contact/export.do","/connect/export.do"})
 	public void exportContacts(Model model, HttpServletRequest request,
 			HttpServletResponse response) throws AppException, IOException {
 		log.debug("Presenting Student Form view.");
@@ -614,7 +632,7 @@ public class ContactsController extends AbstractController {
 	@Autowired
 	IPathshalaQueueService iPathshalaQueueService;
 
-	@RequestMapping("/contact/import.do")
+	@RequestMapping({"/contact/import.do","/connect/import.do"})
 	public String importContacts(HttpServletRequest request, Model model,
 			HttpServletResponse response) throws AppException, IOException {
 		BlobstoreService blobstoreService = BlobstoreServiceFactory
@@ -926,7 +944,7 @@ public class ContactsController extends AbstractController {
 		return user;
 	}
 
-	@RequestMapping("/contact/getSelectedContactData.do")
+	@RequestMapping({"/contact/getSelectedContactData.do","/connect/getSelectedContactData.do"})
 	public @ResponseBody
 	List<Map<String, Object>> getMapOfSelectedContacts(
 			HttpServletRequest request, Model model) throws AppException {

@@ -126,4 +126,9 @@ public class ConnectContactManager extends AbstractManager implements
 		
 		return result;
 	}
+
+	public String getDomainName(String randomUrl) throws AppException {
+		// TODO Auto-generated method stub
+		return service.getDomainName( randomUrl);
+	}
 }
