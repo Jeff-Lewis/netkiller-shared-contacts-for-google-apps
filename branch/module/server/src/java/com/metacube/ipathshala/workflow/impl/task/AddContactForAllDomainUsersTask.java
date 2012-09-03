@@ -19,7 +19,7 @@ import com.google.gdata.data.extensions.Organization;
 import com.google.gdata.data.extensions.PhoneNumber;
 import com.google.gdata.data.extensions.StructuredPostalAddress;
 import com.metacube.ipathshala.core.AppException;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.entity.DomainGroup;
 import com.metacube.ipathshala.entity.UserContact;
 import com.metacube.ipathshala.service.ContactsService;
@@ -51,7 +51,7 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 			throws WorkflowExecutionException {
 		AddContactForAllDomainUsersContext userContext = (AddContactForAllDomainUsersContext) context;
 		String domain = userContext.getDomain();
-		Contacts contacts = userContext.getContactInfo();
+		Contact contacts = userContext.getContactInfo();
 
 		for (String userId : service
 				.getAllDomainUsersWithReadAndWritePErmissionIncludingAdmin(domain)) {
@@ -60,23 +60,29 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 			String userGroupId = getUserGroupId(userId + "@" + domain, domain); // added
 			UserContact userContact = new UserContact();
 			userContact.setContactKey(contacts.getKey());
-			userContact.setUserEmail(userId);
-			userContact.setContactId(newentry.getId());
+			userContact.setUserEmail(userId+"@"+domain);
+			// userContact.setContactId(newentry.getId());
 			userContact.setContacts(contacts);
 			userContact.setDomainName(domain);
 			DomainGroup domainGroup = domainGroupService
 					.getDomainGroupByDomainName(domain);
 			userContact.setGroupName(domainGroup.getGroupName());
-			try {
-				userContactService.createUserContact(userContact);
-			} catch (AppException e1) {
-				e1.printStackTrace();
-			}
+
 			GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
 			userGmInfo.setHref(userGroupId); // added
 			newentry.addGroupMembershipInfo(userGmInfo);
 			try {
-				service.createUserContact(newentry, userId + "@" + domain);
+				ContactEntry contactEntry = service.createUserContact(newentry,
+						userId + "@" + domain);
+				System.out
+						.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Contact ID or EditLINK = "
+								+ contactEntry.getEditLink().getHref());
+				userContact.setContactId(contactEntry.getEditLink().getHref());
+				try {
+					userContactService.createUserContact(userContact);
+				} catch (AppException e1) {
+					e1.printStackTrace();
+				}
 			} catch (AppException e) {
 				log.error("Unable to Create user in workflow");
 			}
@@ -85,7 +91,7 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 		return userContext;
 	}
 
-	private ContactEntry makeContact(Contacts contactInfo) {
+	private ContactEntry makeContact(Contact contactInfo) {
 		String fullname = contactInfo.getFullName();
 		String lastName = contactInfo.getLastName();
 		String companyname = contactInfo.getCmpnyName();

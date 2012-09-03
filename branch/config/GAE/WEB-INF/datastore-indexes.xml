@@ -1,1368 +1,1519 @@
 <?xml version="1.0"?>
 <datastore-indexes autoGenerate="false">
-    <datastore-index kind="MapLocation" ancestor="false" source="auto">
-        <property name="domainName" direction="asc"/>
-        <property name="type" direction="asc"/>
-    </datastore-index>
-          <datastore-index kind="Contacts" ancestor="false" source="manual">
-              <property name="isDeleted" direction="asc"/>
-              <property name="firstName" direction="asc"/>
-          </datastore-index>
+	<datastore-index kind="MapLocation" ancestor="false"
+		source="auto">
+		<property name="domainName" direction="asc" />
+		<property name="type" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="Contacts" ancestor="false"
+		source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="firstName" direction="asc" />
+	</datastore-index>
 	<datastore-index kind="GradingScale" ancestor="true">
 		<property name="nameUpperCase" direction="asc" />
 	</datastore-index>
-	
-    <!-- Used 93 times in query history -->
-    <datastore-index kind="Value" ancestor="false" source="auto">
-        <property name="setKey" direction="asc"/>
-        <property name="value" direction="asc"/>
-    </datastore-index>
 
-
-    <!-- Used 52 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 5 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="enrollmentNumber" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 27 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 12 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="enrollmentNumber" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 22 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="enrollmentNumber" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-        <property name="enrollmentNumber" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 15 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="enrollmentNumber" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-        <property name="enrollmentNumber" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 15 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="enrollmentNumber" direction="asc"/>
-        <property name="firstNameUpperCase" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="enrollmentNumber" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="enrollmentNumber" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-        <property name="enrollmentNumber" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 12 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="enrollmentNumber" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-        <property name="enrollmentNumber" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 12 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="enrollmentNumber" direction="asc"/>
-        <property name="firstNameUpperCase" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Parent" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="fatherFirstName" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Parent" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="motherFirstName" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Parent" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="fatherEmailAddress" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="Parent" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fatherEmailAddress" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Parent" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fatherFirstName" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Parent" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="motherFirstName" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 12 times in query history -->
-    <datastore-index kind="Teacher" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="Teacher" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Teacher" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 9 times in query history -->
-    <datastore-index kind="Teacher" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="firstNameUpperCase" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Teacher" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="firstNameUpperCase" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 32 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectLevelKey" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectNameUpperCase" direction="asc"/>
-        <property name="subjectLevelKey" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 7 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectLevelKey" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectLevelKey" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 13 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectLevelKey" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectNameUpperCase" direction="asc"/>
-        <property name="subjectLevelKey" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectLevelKey" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 22 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 12 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectNameUpperCase" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 6 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectLevelKey" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 5 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectNameUpperCase" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Location" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 7 times in query history -->
-    <datastore-index kind="Location" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="locationCapacity" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 6 times in query history -->
-    <datastore-index kind="Location" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="locationCapacity" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Value" ancestor="false" source="auto">
-        <property name="setKey" direction="asc"/>
-        <property name="value" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Teacher" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 8 times in query history -->
-    <datastore-index kind="Assignment" ancestor="false" source="auto">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="teacherKey" direction="asc"/>
-        <property name="titleUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 11 times in query history -->
-    <datastore-index kind="Event" ancestor="false" source="auto">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="teacherKey" direction="asc"/>
-        <property name="titleUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 12 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 8 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="sender" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteSubjectUpperCase" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="mustRespond" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="sender" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteSubjectUpperCase" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="mustRespond" direction="asc"/>
-        <property name="sender" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="sender" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteSubjectUpperCase" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="mustRespond" direction="asc"/>
-        <property name="sender" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="sender" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteSubjectUpperCase" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="academicSessionId" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="mustRespond" direction="asc"/>
-        <property name="teacherId" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectLevelKey" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectNameUpperCase" direction="desc"/>
-    </datastore-index>
-
- <!-- Used 2 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="noteSubjectUpperCase" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="mustRespond" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="noteSubjectUpperCase" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="mustRespond" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-    
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="noteSubjectUpperCase" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="mustRespond" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-     <!-- Used 5 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="sender" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="sender" direction="asc"/>
-        <property name="noteSubjectUpperCase" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="mustRespond" direction="asc"/>
-        <property name="sender" direction="asc"/>
-        <property name="noteDate" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="sender" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="sender" direction="asc"/>
-        <property name="noteSubjectUpperCase" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Note" ancestor="false" source="auto">
-        <property name="mustRespond" direction="asc"/>
-        <property name="sender" direction="asc"/>
-        <property name="noteDate" direction="asc"/>
-    </datastore-index>
-    
-     <!-- Used 19 times in query history -->
-    <datastore-index kind="Value" ancestor="false" source="auto">
-        <property name="setKey" direction="asc"/>
-        <property name="value" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Teacher" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 9 times in query history -->
-    <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Teacher" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectLevelKey" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Location" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-    </datastore-index>
-    
-     <datastore-index kind="Subject" ancestor="false" source="manual">
-       <property name="isDeleted" direction="asc"/>
-       <property name="fromDate" direction="asc"/>
-       <property name="subjectLevelKey" direction="asc"/>
-   </datastore-index>
-   
-      <datastore-index kind="Student" ancestor="false" source="auto">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Teacher" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Location" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 18 times in query history -->
-    <datastore-index kind="Value" ancestor="false" source="auto">
-        <property name="setKey" direction="asc"/>
-        <property name="value" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectName" direction="asc"/>
-        <property name="fromDate" direction="asc"/>
-    </datastore-index>
-    
-     <datastore-index kind="Parent" ancestor="false" source="manual">
-        <property name="isDeleted" direction="asc"/>
-        <property name="fatherFirstNameUpperCase" direction="asc"/>
-    </datastore-index>
-  
-   <datastore-index kind="Value" ancestor="false" source="manual">
-       <property name="parentValueKey" direction="asc"/>
-       <property name="setKey" direction="asc"/>
-       <property name="value" direction="asc"/>
-   </datastore-index>
-   
-   <datastore-index kind="Teacher" ancestor="false" source="auto">
-       <property name="fromDate" direction="asc"/>
-       <property name="firstNameUpperCase" direction="asc"/>
-   </datastore-index>
-   
-   <datastore-index kind="Student" ancestor="false" source="auto">
-       <property name="active" direction="asc"/>
-       <property name="firstNameUpperCase" direction="asc"/>
-   </datastore-index>
- 
- 
- <!-- Used 10 times in query history -->
-   <datastore-index kind="Subject" ancestor="false" source="auto">
-       <property name="isDeleted" direction="asc"/>
-       <property name="fromDate" direction="asc"/>
-   </datastore-index>
-
-   <!-- Used 1 time in query history -->
-   <datastore-index kind="Subject" ancestor="false" source="auto">
-       <property name="isDeleted" direction="asc"/>
-       <property name="subjectName" direction="asc"/>
-       <property name="fromDate" direction="asc"/>
-   </datastore-index>
-
-   <!-- Used 1 time in query history -->
-   <datastore-index kind="Subject" ancestor="false" source="auto">
-       <property name="subjectName" direction="asc"/>
-       <property name="fromDate" direction="asc"/>
-   </datastore-index>
-   
-   
-    <datastore-index kind="Subject" ancestor="false" source="auto">
-       <property name="fromDate" direction="asc"/>
-       <property name="subjectLevelKey" direction="asc"/>
-   </datastore-index>
-   
-   <datastore-index kind="Subject" ancestor="false" source="manual">
-        <property name="fromDate" direction="asc"/>
-        <property name="subjectLevelKey" direction="asc"/>
-    </datastore-index>
-   
-	 <datastore-index kind="Event" ancestor="false" source="manual">
-	<property name="myclassKey" direction="asc"/>
-	<property name="fromDate" direction="desc"/>
+	<!-- Used 93 times in query history -->
+	<datastore-index kind="Value" ancestor="false" source="auto">
+		<property name="setKey" direction="asc" />
+		<property name="value" direction="asc" />
 	</datastore-index>
 
-	<datastore-index kind="Subject" ancestor="false" source="manual">
-	<property name="fromDate" direction="asc"/>
-	<property name="subjectLevelKey" direction="asc"/>
+	<datastore-index kind="Contact" ancestor="false"
+		source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="firstName" direction="asc" />
 	</datastore-index>
 
-    <datastore-index kind="Teacher" ancestor="false" source="manual">
-	<property name="fromDate" direction="asc"/>
-	<property name="firstNameUpperCase" direction="asc"/>
+
+	<!-- Used 52 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
 	</datastore-index>
-    
-     <datastore-index kind="Teacher" ancestor="false" source="manual">
-<property name="isDeleted" direction="asc"/>
-<property name="teachingLevelKey" direction="asc"/>
-<property name="fromDate" direction="asc"/>
-<property name="firstNameUpperCase" direction="asc"/>
-</datastore-index>
-     
-<datastore-index kind="Subject" ancestor="false" source="manual">
-<property name="isDeleted" direction="asc"/>
-<property name="subjectNameUpperCase" direction="asc"/>
-<property name="fromDate" direction="asc"/>
-<property name="subjectLevelKey" direction="asc"/>
-</datastore-index>
 
-<datastore-index kind="Subject" ancestor="false" source="manual">
-<property name="subjectNameUpperCase" direction="asc"/>
-<property name="fromDate" direction="asc"/>
-<property name="subjectLevelKey" direction="asc"/>
-</datastore-index>
+	<!-- Used 5 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="enrollmentNumber" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
 
- 
-    <datastore-index kind="Event" ancestor="false" source="manual">
-<property name="myclassKey" direction="asc"/>
-<property name="fromDate" direction="desc"/>
-</datastore-index>
-    
-     <datastore-index kind="MyClass" ancestor="false" source="manual">
-       <property name="name" direction="asc"/>
-       <property name="academicYearKey" direction="asc"/>
-   </datastore-index>
-   
-   <datastore-index kind="AcademicYearStructure" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-     </datastore-index>
-   
-    <!-- Used 10 times in query history -->
-   <datastore-index kind="Value" ancestor="false" source="auto">
-       <property name="setKey" direction="asc"/>
-       <property name="value" direction="asc"/>
-   </datastore-index>
+	<!-- Used 27 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
 
-   <!-- Used 1 time in query history -->
-   <datastore-index kind="Value" ancestor="false" source="auto">
-       <property name="setKey" direction="asc"/>
-       <property name="orderIndex" direction="asc"/>
-   </datastore-index>
-    
-    <datastore-index kind="Assignment" ancestor="false" source="manual">
-<property name="myclassKey" direction="asc"/>
-<property name="postedDate" direction="desc"/>
-</datastore-index>
-    
+	<!-- Used 12 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="enrollmentNumber" direction="asc" />
+	</datastore-index>
 
-    <datastore-index kind="Event" ancestor="false" source="manual">
-    <property name="academicYearKey" direction="asc"/>
-    <property name="isDeleted" direction="asc"/>
-    <property name="myclassKey" direction="asc"/>
-    <property name="titleUpperCase" direction="asc"/>
-</datastore-index>
+	<!-- Used 22 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="enrollmentNumber" direction="asc" />
+	</datastore-index>
 
-     <!-- Used 3 times in query history -->
-    <datastore-index kind="EvaluationScheme" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="nameUpperCase" direction="asc"/>
-    </datastore-index>
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+		<property name="enrollmentNumber" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 15 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="enrollmentNumber" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+		<property name="enrollmentNumber" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 15 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="enrollmentNumber" direction="asc" />
+		<property name="firstNameUpperCase" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="enrollmentNumber" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="enrollmentNumber" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+		<property name="enrollmentNumber" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 12 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="enrollmentNumber" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+		<property name="enrollmentNumber" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 12 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="enrollmentNumber" direction="asc" />
+		<property name="firstNameUpperCase" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Parent" ancestor="false" source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="fatherFirstName" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Parent" ancestor="false" source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="motherFirstName" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Parent" ancestor="false" source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="fatherEmailAddress" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 4 times in query history -->
+	<datastore-index kind="Parent" ancestor="false" source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fatherEmailAddress" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Parent" ancestor="false" source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fatherFirstName" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Parent" ancestor="false" source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="motherFirstName" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 12 times in query history -->
+	<datastore-index kind="Teacher" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 4 times in query history -->
+	<datastore-index kind="Teacher" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Teacher" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 9 times in query history -->
+	<datastore-index kind="Teacher" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="firstNameUpperCase" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Teacher" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="firstNameUpperCase" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 32 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 4 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectNameUpperCase" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 7 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+		<property name="fromDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 4 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 13 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectNameUpperCase" direction="asc" />
+		<property name="subjectLevelKey" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 22 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 12 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectNameUpperCase" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 6 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 4 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 5 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectNameUpperCase" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Location" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 7 times in query history -->
+	<datastore-index kind="Location" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="locationCapacity" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 6 times in query history -->
+	<datastore-index kind="Location" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="locationCapacity" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Value" ancestor="false" source="auto">
+		<property name="setKey" direction="asc" />
+		<property name="value" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Teacher" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 8 times in query history -->
+	<datastore-index kind="Assignment" ancestor="false"
+		source="auto">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="teacherKey" direction="asc" />
+		<property name="titleUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 11 times in query history -->
+	<datastore-index kind="Event" ancestor="false" source="auto">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="teacherKey" direction="asc" />
+		<property name="titleUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 12 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 8 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="sender" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteSubjectUpperCase" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="mustRespond" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="sender" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteSubjectUpperCase" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="mustRespond" direction="asc" />
+		<property name="sender" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 4 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="sender" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteSubjectUpperCase" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 4 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="mustRespond" direction="asc" />
+		<property name="sender" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 4 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="sender" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteSubjectUpperCase" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="mustRespond" direction="asc" />
+		<property name="teacherId" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectNameUpperCase" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="noteSubjectUpperCase" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="mustRespond" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="noteSubjectUpperCase" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="mustRespond" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="noteSubjectUpperCase" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="mustRespond" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 5 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="sender" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="sender" direction="asc" />
+		<property name="noteSubjectUpperCase" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="mustRespond" direction="asc" />
+		<property name="sender" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="sender" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="sender" direction="asc" />
+		<property name="noteSubjectUpperCase" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Note" ancestor="false" source="auto">
+		<property name="mustRespond" direction="asc" />
+		<property name="sender" direction="asc" />
+		<property name="noteDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 19 times in query history -->
+	<datastore-index kind="Value" ancestor="false" source="auto">
+		<property name="setKey" direction="asc" />
+		<property name="value" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Teacher" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 9 times in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Teacher" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Location" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Subject" ancestor="false"
+		source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Teacher" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Location" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 18 times in query history -->
+	<datastore-index kind="Value" ancestor="false" source="auto">
+		<property name="setKey" direction="asc" />
+		<property name="value" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectName" direction="asc" />
+		<property name="fromDate" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Parent" ancestor="false" source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="fatherFirstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Value" ancestor="false" source="manual">
+		<property name="parentValueKey" direction="asc" />
+		<property name="setKey" direction="asc" />
+		<property name="value" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Teacher" ancestor="false"
+		source="auto">
+		<property name="fromDate" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Student" ancestor="false"
+		source="auto">
+		<property name="active" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
 
 
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="EvaluationScheme" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="nameUpperCase" direction="desc"/>
-    </datastore-index>
+	<!-- Used 10 times in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="fromDate" direction="asc" />
+	</datastore-index>
 
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="EvaluationScheme" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="terms" direction="asc"/>
-    </datastore-index>
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectName" direction="asc" />
+		<property name="fromDate" direction="asc" />
+	</datastore-index>
 
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="EvaluationScheme" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="terms" direction="desc"/>
-    </datastore-index>
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="subjectName" direction="asc" />
+		<property name="fromDate" direction="asc" />
+	</datastore-index>
 
-    <!-- Used 3 times in query history -->
-    <datastore-index kind="EvaluationScheme" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="stages" direction="asc"/>
-    </datastore-index>
 
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="EvaluationScheme" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="stages" direction="desc"/>
-    </datastore-index>
+	<datastore-index kind="Subject" ancestor="false"
+		source="auto">
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+	</datastore-index>
 
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="EvaluationScheme" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="active" direction="asc"/>
-    </datastore-index>
+	<datastore-index kind="Subject" ancestor="false"
+		source="manual">
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+	</datastore-index>
 
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="EvaluationScheme" ancestor="false" source="auto">
-        <property name="isDeleted" direction="asc"/>
-        <property name="active" direction="desc"/>
-    </datastore-index>
-    
-      <datastore-index kind="EvaluationScheme" ancestor="false" source="manual">
-      <property name="isDeleted" direction="asc"/>
-      <property name="schemeEvalTypeKey" direction="desc"/>
-  </datastore-index>
-  
-     <datastore-index kind="EvaluationScheme" ancestor="false" source="manual">
-       <property name="isDeleted" direction="asc"/>
-       <property name="schemeEvalTypeKey" direction="asc"/>
-   </datastore-index>
-  
-  <datastore-index kind="Note" ancestor="false" source="manual">
-      <property name="academicSessionId" direction="asc"/>
-      <property name="isDeleted" direction="asc"/>
-      <property name="parentId" direction="asc"/>
-      <property name="sender" direction="asc"/>
-      <property name="noteDate" direction="desc"/>
-  </datastore-index>
-  
-   <datastore-index kind="Note" ancestor="false" source="manual">
-     <property name="academicSessionId" direction="asc"/>
-     <property name="isDeleted" direction="asc"/>
-     <property name="parentId" direction="asc"/>
-     <property name="noteDate" direction="desc"/>
- </datastore-index>
+	<datastore-index kind="Event" ancestor="false" source="manual">
+		<property name="myclassKey" direction="asc" />
+		<property name="fromDate" direction="desc" />
+	</datastore-index>
 
- <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="subjectKey" direction="asc"/>
-       <property name="eventName" direction="asc"/>
-   </datastore-index>
-   
-    <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="subjectKey" direction="asc"/>
-       <property name="eventName" direction="asc"/>
-   </datastore-index>
-   
-    <datastore-index kind="Value" ancestor="false" source="auto">
-        <property name="setKey" direction="asc"/>
-        <property name="orderIndex" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="School" ancestor="false" source="manual">
-    <property name="isDeleted" direction="asc"/>
-    <property name="schoolName" direction="asc"/>
-</datastore-index>
+	<datastore-index kind="Subject" ancestor="false"
+		source="manual">
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+	</datastore-index>
 
- <datastore-index kind="School" ancestor="false" source="manual">
+	<datastore-index kind="Teacher" ancestor="false"
+		source="manual">
+		<property name="fromDate" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
 
-     <property name="isDeleted" direction="asc"/>
-     <property name="schoolNameUpperCase" direction="asc"/>
- </datastore-index>
- 
-   <datastore-index kind="School" ancestor="false" source="manual">
+	<datastore-index kind="Teacher" ancestor="false"
+		source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="teachingLevelKey" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
 
-      <property name="isDeleted" direction="asc"/>
-      <property name="address" direction="asc"/>
-      <property name="schoolNameUpperCase" direction="asc"/>
-  </datastore-index>
-  
-   <datastore-index kind="School" ancestor="false" source="manual">
-     <property name="isDeleted" direction="asc"/>
-     <property name="websiteName" direction="asc"/>
-     <property name="schoolNameUpperCase" direction="asc"/>
- </datastore-index>
- 
-  <datastore-index kind="School" ancestor="false" source="manual">
-        <property name="isDeleted" direction="asc"/>
-       <property name="affiliationNo" direction="asc"/>
-       <property name="schoolNameUpperCase" direction="asc"/>
-   </datastore-index>
- 
-     <datastore-index kind="School" ancestor="false" source="manual">
+	<datastore-index kind="Subject" ancestor="false"
+		source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectNameUpperCase" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+	</datastore-index>
 
-        <property name="faxNo" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="schoolNameUpperCase" direction="asc"/>
-    </datastore-index>
- 
-     <datastore-index kind="School" ancestor="false" source="manual">
+	<datastore-index kind="Subject" ancestor="false"
+		source="manual">
+		<property name="subjectNameUpperCase" direction="asc" />
+		<property name="fromDate" direction="asc" />
+		<property name="subjectLevelKey" direction="asc" />
+	</datastore-index>
 
-        <property name="isDeleted" direction="asc"/>
-        <property name="email" direction="asc"/>
-        <property name="schoolNameUpperCase" direction="asc"/>
-    </datastore-index>
-    
-   <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
 
-	<datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="lastModifiedBy" direction="asc"/>
-        <property name="classKey" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectKey" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectKey" direction="desc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="title" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="lastModifiedBy" direction="asc"/>
-        <property name="title" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="lastModifiedBy" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="classKey" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectKey" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="lastModifiedBy" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="lastModifiedBy" direction="desc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="title" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectKey" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="classKey" direction="desc"/>
-    </datastore-index>
-	
-	
-	<datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="lastModifiedDate" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="lastModifiedBy" direction="asc"/>
-    </datastore-index>
-	
-	 <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="isPublished" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Student" ancestor="false" source="manual">
-        <property name="active" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="parentKey" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
+	<datastore-index kind="Event" ancestor="false" source="manual">
+		<property name="myclassKey" direction="asc" />
+		<property name="fromDate" direction="desc" />
+	</datastore-index>
 
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Student" ancestor="false" source="manual">
-        <property name="isDeleted" direction="asc"/>
-        <property name="parentKey" direction="asc"/>
-        <property name="firstNameUpperCase" direction="asc"/>
-    </datastore-index>
-     <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="lastModifiedDate" direction="desc"/>
-   </datastore-index>
-   
-   <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="status" direction="asc"/>
-   </datastore-index>
-   
-   <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="status" direction="asc"/>
-        <property name="lastModifiedBy" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="status" direction="asc"/>
-        <property name="lastModifiedBy" direction="desc"/>
-    </datastore-index>
-   
-   <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="status" direction="desc"/>
-   </datastore-index>
-   
-   <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="reportCardTypeKey" direction="asc"/>
+	<datastore-index kind="MyClass" ancestor="false"
+		source="manual">
+		<property name="name" direction="asc" />
+		<property name="academicYearKey" direction="asc" />
+	</datastore-index>
 
-   </datastore-index>
-   
-   <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="reportCardTypeKey" direction="desc"/>
+	<datastore-index kind="AcademicYearStructure" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+	</datastore-index>
 
-   </datastore-index>
-   
-   <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="lastModifiedDate" direction="asc"/>
+	<!-- Used 10 times in query history -->
+	<datastore-index kind="Value" ancestor="false" source="auto">
+		<property name="setKey" direction="asc" />
+		<property name="value" direction="asc" />
+	</datastore-index>
 
-   </datastore-index>
-   
-   <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="lastModifiedDate" direction="desc"/>
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Value" ancestor="false" source="auto">
+		<property name="setKey" direction="asc" />
+		<property name="orderIndex" direction="asc" />
+	</datastore-index>
 
-   </datastore-index>
-   
-    <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="lastModifiedBy" direction="asc"/>
+	<datastore-index kind="Assignment" ancestor="false"
+		source="manual">
+		<property name="myclassKey" direction="asc" />
+		<property name="postedDate" direction="desc" />
+	</datastore-index>
 
-   </datastore-index>
-   
-    <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="lastModifiedBy" direction="desc"/>
 
-   </datastore-index>
-   
-   <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="reportCardTypeKey" direction="asc"/>
-       <property name="lastModifiedBy" direction="asc"/>
-   </datastore-index>
-   
-   <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-       <property name="academicYearKey" direction="asc"/>
-       <property name="classKey" direction="asc"/>
-       <property name="isDeleted" direction="asc"/>
-       <property name="lastModifiedBy" direction="asc"/>
-    </datastore-index>
-     
-   <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="status" direction="asc"/>
-        <property name="lastModifiedBy" direction="desc"/>
-   </datastore-index>
-   
-    <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardTypeKey" direction="asc"/>
-        <property name="lastModifiedBy" direction="desc"/>
-    </datastore-index>
-   
-   <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="studentKey" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="status" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="status" direction="desc"/>
-    </datastore-index>
-    
-     <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="reportCardPath" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="reportCardPath" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="studentKey" direction="asc"/>
-        <property name="reportCardPath" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="status" direction="asc"/>
-        <property name="studentKey" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="reportCardPath" direction="asc"/>
-        <property name="studentKey" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="studentKey" direction="asc"/>
-        <property name="reportCardPath" direction="desc"/>
-    </datastore-index>
-    
-     <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="subjectKey" direction="asc"/>
-        <property name="eventName" direction="desc"/>
-    </datastore-index>
-    
-   	 <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="studentKey" direction="asc"/>
-        <property name="reportCardPath" direction="asc"/>
-    </datastore-index>
-    
-     <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="status" direction="asc"/>
-        <property name="reportCardPath" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="isSubmitMarks" direction="asc"/>
-        <property name="subjectKey" direction="asc"/>
-        <property name="eventName" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="isSubmitMarks" direction="asc"/>
-        <property name="subjectKey" direction="asc"/>
-        <property name="eventName" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="isSubmitMarks" direction="asc"/>
-        <property name="subjectKey" direction="desc"/>
-        <property name="eventName" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="isSubmitMarks" direction="asc"/>
-        <property name="subjectKey" direction="desc"/>
-        <property name="eventName" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="stageKey" direction="asc"/>
-        <property name="subjectKey" direction="asc"/>
-        <property name="termKey" direction="asc"/>
-        <property name="eventName" direction="desc"/>
-    </datastore-index>
-      <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardTypeKey" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="status" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    
-     <datastore-index kind="ReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="lastModifiedBy" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-    
-     <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="remarks" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="remarks" direction="asc"/>
-        <property name="studentKey" direction="asc"/>
-    </datastore-index>
-    
-     <datastore-index kind="StudentReportCardEvent" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="reportCardEventKey" direction="asc"/>
-        <property name="studentKey" direction="asc"/>
-        <property name="status" direction="asc"/>
-    </datastore-index>
-    
-     <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="eventName" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="stageKey" direction="asc"/>
-        <property name="termKey" direction="asc"/>
-        <property name="eventName" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Announcement" ancestor="false" source="manual">
-        <property name="academicYearKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="type" direction="asc"/>
-        <property name="lastModifiedDate" direction="desc"/>
-    </datastore-index>
-     <datastore-index kind="SubjectEvaluationEvent" ancestor="false" source="manual">
-        <property name="classKey" direction="asc"/>
-        <property name="isDeleted" direction="asc"/>
-        <property name="isSubmitMarks" direction="asc"/>
-        <property name="eventName" direction="desc"/>
-    </datastore-index>
+	<datastore-index kind="Event" ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="myclassKey" direction="asc" />
+		<property name="titleUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="EvaluationScheme" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="nameUpperCase" direction="asc" />
+	</datastore-index>
+
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="EvaluationScheme" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="nameUpperCase" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 4 times in query history -->
+	<datastore-index kind="EvaluationScheme" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="terms" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="EvaluationScheme" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="terms" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 3 times in query history -->
+	<datastore-index kind="EvaluationScheme" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="stages" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="EvaluationScheme" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="stages" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="EvaluationScheme" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="active" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="EvaluationScheme" ancestor="false"
+		source="auto">
+		<property name="isDeleted" direction="asc" />
+		<property name="active" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="EvaluationScheme" ancestor="false"
+		source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="schemeEvalTypeKey" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="EvaluationScheme" ancestor="false"
+		source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="schemeEvalTypeKey" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Note" ancestor="false" source="manual">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="parentId" direction="asc" />
+		<property name="sender" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Note" ancestor="false" source="manual">
+		<property name="academicSessionId" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="parentId" direction="asc" />
+		<property name="noteDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectKey" direction="asc" />
+		<property name="eventName" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectKey" direction="asc" />
+		<property name="eventName" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Value" ancestor="false" source="auto">
+		<property name="setKey" direction="asc" />
+		<property name="orderIndex" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="School" ancestor="false" source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="schoolName" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="School" ancestor="false" source="manual">
+
+		<property name="isDeleted" direction="asc" />
+		<property name="schoolNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="School" ancestor="false" source="manual">
+
+		<property name="isDeleted" direction="asc" />
+		<property name="address" direction="asc" />
+		<property name="schoolNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="School" ancestor="false" source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="websiteName" direction="asc" />
+		<property name="schoolNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="School" ancestor="false" source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="affiliationNo" direction="asc" />
+		<property name="schoolNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="School" ancestor="false" source="manual">
+
+		<property name="faxNo" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="schoolNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="School" ancestor="false" source="manual">
+
+		<property name="isDeleted" direction="asc" />
+		<property name="email" direction="asc" />
+		<property name="schoolNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedBy" direction="asc" />
+		<property name="classKey" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectKey" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectKey" direction="desc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="title" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedBy" direction="asc" />
+		<property name="title" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedBy" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="classKey" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectKey" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedBy" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedBy" direction="desc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="title" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectKey" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="classKey" direction="desc" />
+	</datastore-index>
+
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedDate" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedBy" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="isPublished" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Student" ancestor="false"
+		source="manual">
+		<property name="active" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="parentKey" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Student" ancestor="false"
+		source="manual">
+		<property name="isDeleted" direction="asc" />
+		<property name="parentKey" direction="asc" />
+		<property name="firstNameUpperCase" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="status" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="status" direction="asc" />
+		<property name="lastModifiedBy" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="status" direction="asc" />
+		<property name="lastModifiedBy" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="status" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardTypeKey" direction="asc" />
+
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardTypeKey" direction="desc" />
+
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedDate" direction="asc" />
+
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedBy" direction="asc" />
+
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedBy" direction="desc" />
+
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardTypeKey" direction="asc" />
+		<property name="lastModifiedBy" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedBy" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="status" direction="asc" />
+		<property name="lastModifiedBy" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardTypeKey" direction="asc" />
+		<property name="lastModifiedBy" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="studentKey" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="status" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="status" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="reportCardPath" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="reportCardPath" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="studentKey" direction="asc" />
+		<property name="reportCardPath" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="status" direction="asc" />
+		<property name="studentKey" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="reportCardPath" direction="asc" />
+		<property name="studentKey" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="studentKey" direction="asc" />
+		<property name="reportCardPath" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="subjectKey" direction="asc" />
+		<property name="eventName" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="studentKey" direction="asc" />
+		<property name="reportCardPath" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="status" direction="asc" />
+		<property name="reportCardPath" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="isSubmitMarks" direction="asc" />
+		<property name="subjectKey" direction="asc" />
+		<property name="eventName" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="isSubmitMarks" direction="asc" />
+		<property name="subjectKey" direction="asc" />
+		<property name="eventName" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="isSubmitMarks" direction="asc" />
+		<property name="subjectKey" direction="desc" />
+		<property name="eventName" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="isSubmitMarks" direction="asc" />
+		<property name="subjectKey" direction="desc" />
+		<property name="eventName" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="stageKey" direction="asc" />
+		<property name="subjectKey" direction="asc" />
+		<property name="termKey" direction="asc" />
+		<property name="eventName" direction="desc" />
+	</datastore-index>
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardTypeKey" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="status" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="ReportCardEvent" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="lastModifiedBy" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="remarks" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="remarks" direction="asc" />
+		<property name="studentKey" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="StudentReportCardEvent"
+		ancestor="false" source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="reportCardEventKey" direction="asc" />
+		<property name="studentKey" direction="asc" />
+		<property name="status" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="eventName" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="stageKey" direction="asc" />
+		<property name="termKey" direction="asc" />
+		<property name="eventName" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Announcement" ancestor="false"
+		source="manual">
+		<property name="academicYearKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="type" direction="asc" />
+		<property name="lastModifiedDate" direction="desc" />
+	</datastore-index>
+	<datastore-index kind="SubjectEvaluationEvent"
+		ancestor="false" source="manual">
+		<property name="classKey" direction="asc" />
+		<property name="isDeleted" direction="asc" />
+		<property name="isSubmitMarks" direction="asc" />
+		<property name="eventName" direction="desc" />
+	</datastore-index>
 </datastore-indexes>

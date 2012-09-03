@@ -245,6 +245,23 @@
 			</list>
 		</property>
 	</bean>
+	
+	
+	<bean id="bulkContactUpdateWorkflowTask" name="bulkContactUpdateWorkflowTask"
+		class="com.metacube.ipathshala.workflow.impl.task.BulkContactUpdateWorkflowTask"
+		scope="prototype" lazy-init="true">
+		<property name="taskName" value="Add-ContactForAllDomainUsers-Task"></property>
+		<property name="retryCount" value="3"></property>
+	</bean>
+	<bean id="bulkUpdateContactWorkflowProcessor" name="bulkUpdateContactWorkflowProcessor"
+		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		scope="prototype" lazy-init="true">
+		<property name="workflowTasks">
+			<list>
+				<ref bean="bulkContactUpdateWorkflowTask" />
+			</list>
+		</property>
+	</bean>
 
 
 <bean id="contactImportTask" name="contactImportTask"

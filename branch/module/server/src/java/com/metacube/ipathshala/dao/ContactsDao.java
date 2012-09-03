@@ -4,19 +4,19 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.appengine.api.datastore.Key;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 
 public interface ContactsDao {
 
-	public Contacts create(Contacts object);
+	public Contact create(Contact object);
 
-	public Contacts get(Object id);
+	public Contact get(Object id);
 
-	public Collection<Contacts> getAll();
+	public Collection<Contact> getAll();
 
-	public Collection<Contacts> getByKeys(List<Key> ContactsKeyList);
+	public Collection<Contact> getByKeys(List<Key> ContactsKeyList);
 
-	public Contacts update(Contacts student);
+	public Contact update(Contact student);
 
 	public void remove(Object id);
 

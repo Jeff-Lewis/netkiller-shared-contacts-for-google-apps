@@ -2,7 +2,7 @@ package com.metacube.ipathshala.workflow.impl.context;
 
 import java.io.Serializable;
 
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.workflow.WorkflowContext;
 import com.metacube.ipathshala.workflow.WorkflowInfo;
 
@@ -15,7 +15,7 @@ public class AddContactForAllDomainUsersContext implements WorkflowContext,
 	private static final long serialVersionUID = 8187108278263548021L;
 	private WorkflowInfo workflowInfo;
 	private String domain;
-	private Contacts contacts;
+	private Contact contacts;
 
 	public String getDomain() {
 		return domain;
@@ -25,11 +25,11 @@ public class AddContactForAllDomainUsersContext implements WorkflowContext,
 		this.domain = domain;
 	}
 
-	public Contacts getContactInfo() {
+	public Contact getContactInfo() {
 		return contacts;
 	}
 
-	public void setContactInfo(Contacts contactInfo) {
+	public void setContactInfo(Contact contactInfo) {
 		this.contacts = contactInfo;
 	}
 

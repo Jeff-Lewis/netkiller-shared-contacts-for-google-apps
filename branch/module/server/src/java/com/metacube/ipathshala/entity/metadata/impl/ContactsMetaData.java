@@ -4,14 +4,14 @@ import java.util.HashMap;
 
 import org.springframework.stereotype.Component;
 
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.entity.metadata.ColumnMetaData;
 import com.metacube.ipathshala.entity.metadata.FilterMetaData;
 
 @Component("ContactsMetaData")
 public class ContactsMetaData extends AbstractMetaData {
 	public static final String ENTITY_NAME = "Contacts";
-	public static final Class<?> entityClass = Contacts.class;
+	public static final Class<?> entityClass = Contact.class;
 	public static final String COL_CONTACTS_KEY = "key";
 	public static final String COL_FIRST_NAME = "firstName";
 	public static final String COL_LAST_NAME = "lastName";

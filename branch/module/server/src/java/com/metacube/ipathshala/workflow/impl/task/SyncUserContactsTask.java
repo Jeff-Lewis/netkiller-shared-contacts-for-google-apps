@@ -20,7 +20,7 @@ import com.google.gdata.data.extensions.Organization;
 import com.google.gdata.data.extensions.PhoneNumber;
 import com.google.gdata.data.extensions.StructuredPostalAddress;
 import com.metacube.ipathshala.core.AppException;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.entity.UserContact;
 import com.metacube.ipathshala.service.ContactsService;
 import com.metacube.ipathshala.util.AppLogger;
@@ -46,7 +46,7 @@ public class SyncUserContactsTask extends AbstractWorkflowTask {
 		String usermail = syncUserContactsContext.getUserEmail();
 		List<ContactEntry> entries = new ArrayList<ContactEntry>();
 		List<Key> contactKeyList = new ArrayList<Key>();
-		List<Contacts> contactList = new ArrayList<Contacts>();
+		List<Contact> contactList = new ArrayList<Contact>();
 		List<UserContact> userContactList = service
 				.getUserContactForDomain(CommonWebUtil.getDomain(usermail));
 		for (UserContact userContact : userContactList) {
@@ -56,10 +56,10 @@ public class SyncUserContactsTask extends AbstractWorkflowTask {
 		}
 		try {
 			if (contactKeyList != null && !contactKeyList.isEmpty()) {
-				contactList = (List<Contacts>) service
+				contactList = (List<Contact>) service
 						.getByKeys(contactKeyList);
 			}
-			for (Contacts contacts : contactList) {
+			for (Contact contacts : contactList) {
 				ContactEntry newEntry = makeContact(contacts);
 				entries.add(newEntry);
 			}
@@ -76,7 +76,7 @@ public class SyncUserContactsTask extends AbstractWorkflowTask {
 		return context;
 	}
 
-	private ContactEntry makeContact(Contacts contactInfo) {
+	private ContactEntry makeContact(Contact contactInfo) {
 		String fullname = contactInfo.getFullName();
 		String lastName = contactInfo.getLastName();
 		String companyname = contactInfo.getCmpnyName();

@@ -57,13 +57,14 @@ import com.google.gdata.data.contacts.ContactFeed;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.google.gdata.data.contacts.ContactGroupFeed;
 import com.google.gdata.data.contacts.GroupMembershipInfo;
+import com.google.gdata.util.PreconditionFailedException;
 import com.google.gdata.util.ServiceException;
 import com.metacube.ipathshala.GridRequest;
 import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.core.DataContext;
 import com.metacube.ipathshala.dao.ContactsDao;
 import com.metacube.ipathshala.dao.UserContactDao;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.entity.DomainAdmin;
 import com.metacube.ipathshala.entity.DomainGroup;
 import com.metacube.ipathshala.entity.UserContact;
@@ -82,6 +83,7 @@ import com.metacube.ipathshala.workflow.impl.context.AddContactForAllDomainUsers
 import com.metacube.ipathshala.workflow.impl.context.AddGroupToAllContactsForDomainContext;
 import com.metacube.ipathshala.workflow.impl.context.BulkContactDeleteWorkflowContext;
 import com.metacube.ipathshala.workflow.impl.context.BulkContactDuplicateWorkflowContext;
+import com.metacube.ipathshala.workflow.impl.context.BulkContactUpdateWorkflowContext;
 import com.metacube.ipathshala.workflow.impl.processor.WorkflowStatusType;
 
 @Service
@@ -122,7 +124,7 @@ public class ContactsService extends AbstractService {
 	@Autowired
 	private UserSyncService userSyncService;
 
-	private String userEmail;
+	//private String userEmail;
 
 	private boolean isUserAdmin;
 
@@ -134,19 +136,19 @@ public class ContactsService extends AbstractService {
 		this.isUserAdmin = isUserAdmin;
 	}
 
-	public void setUserEamil(String email) {
+	/*public void setUserEamil(String email) {
 		this.userEmail = email;
 	}
 
 	public String getUserEamil() {
 		return this.userEmail;
-	}
+	}*/
 
 	public EntityMetaData getEntityMetaData() {
 		return entityMetaData;
 	}
 
-	public Collection<Contacts> getAll() throws AppException {
+	public Collection<Contact> getAll() throws AppException {
 		try {
 			return contactsDao.getAll();
 
@@ -197,14 +199,14 @@ public class ContactsService extends AbstractService {
 
 	}
 
-	public Collection<Contacts> getAllGlobalFilteredContacts(
+	public Collection<Contact> getAllGlobalFilteredContacts(
 			DataContext dataContext) throws AppException {
 		try {
-			Collection<Contacts> contacts = new ArrayList<Contacts>();
+			Collection<Contact> contacts = new ArrayList<Contact>();
 			Collection<Object> searchedObjects = globalFilterSearchService
 					.doSearch(dataContext, entityMetaData).getResultObjects();
 			for (Object contact : searchedObjects) {
-				contacts.add((Contacts) contact);
+				contacts.add((Contact) contact);
 			}
 			return contacts;
 		} catch (DataAccessException dae) {
@@ -214,7 +216,7 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
-	public Contacts createContact(Contacts contacts) throws AppException {
+	public Contact createContact(Contact contacts) throws AppException {
 		try {
 
 			super.validate(contacts, entityMetaData, globalFilterSearchService,
@@ -237,11 +239,11 @@ public class ContactsService extends AbstractService {
 	 * 
 	 * }
 	 */
-	public Contacts updateContact(Contacts contacts) throws AppException {
+	public Contact updateContact(Contact contacts) throws AppException {
 		try {
 
 			validate(contacts, entityMetaData, globalFilterSearchService, null);
-			Contacts currentContact = contactsDao.update(contacts);
+			Contact currentContact = contactsDao.update(contacts);
 			return currentContact;
 
 		} catch (DataAccessException dae) {
@@ -251,13 +253,110 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
-	public void updateContactAndExecuteWorkflow(Contacts contacts,
-			DataContext dataContext) {
-		// TODO: create a work flow for update the contacts.
+	public void updateContactAndExecuteWorkflow(Contact contact,
+			String userEmail, DataContext dataContext) throws AppException {
+		Workflow workflow = updateContactWorkflow(contact, userEmail,
+				dataContext);
+		if (workflow != null) {
+			workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS.toString());
+			workflowService.updateWorkflow(workflow);
+			workflowService.triggerWorkflow(workflow);
+		}
 
 	}
 
-	public void deleteContact(Contacts contacts, DataContext dataContext)
+	public Workflow updateContactWorkflow(Contact contact, String userEmail,
+			DataContext dataContext) throws AppException {
+		BulkContactUpdateWorkflowContext context = new BulkContactUpdateWorkflowContext();
+		context.setContact(contact);
+		context.setUserEmail(userEmail);
+		WorkflowInfo info = new WorkflowInfo(
+				"bulkUpdateContactWorkflowProcessor");
+		info.setIsNewWorkflow(true);
+		context.setWorkflowInfo(info);
+		Workflow workflow = new Workflow();
+		workflow.setWorkflowName("Bulk Contacts Update");
+		workflow.setWorkflowInstanceId(info.getWorkflowInstance());
+		workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
+		workflow.setContext(context);
+		workflowService.createWorkflow(workflow);
+		return workflow;
+	}
+
+	public ContactEntry update(ContactEntry contact,String userEmail) throws AppException {
+		try {
+			com.google.gdata.client.contacts.ContactsService service = getContactsService();
+			URL editUrl = new URL(contact.getEditLink().getHref()
+					+ "?xoauth_requestor_id=" + userEmail);
+			ContactEntry contactEntry = service.update(editUrl, contact);
+			return contactEntry;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			throw new AppException("Update Failed");
+		}
+
+	}
+
+	public ContactEntry getContact(String urlStr, String userEmail) throws AppException {
+
+		ContactEntry entry = null;
+		try {
+			log.info(" ========= " + urlStr);
+			System.out.println(" ========= " + urlStr);
+			if (urlStr.indexOf("?") != -1) {
+				urlStr = urlStr + "&xoauth_requestor_id=" + userEmail;
+			} else {
+				urlStr = urlStr + "?xoauth_requestor_id=" + userEmail;
+			}
+			URL url = new URL(urlStr);
+			com.google.gdata.client.contacts.ContactsService service = getContactsService();
+			entry = service.getEntry(url, ContactEntry.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage() + " ========= " + urlStr, e);
+			throw new AppException(e.getMessage());
+		}
+		return entry;
+	}
+
+	/**
+	 * Method to delete a contact from google account.
+	 * 
+	 * @param contactEntry
+	 * @throws AppException
+	 */
+	public void delete(ContactEntry contactEntry,String userEmail) throws AppException {
+		try {
+			com.google.gdata.client.contacts.ContactsService service = getContactsService();
+			URL url = new URL(contactEntry.getEditLink().getHref()
+					+ "?xoauth_requestor_id=" + userEmail);
+			ContactEntry toBeDeletedContactEntry = service.getEntry(url,
+					ContactEntry.class);
+			try {
+				toBeDeletedContactEntry.delete();
+			} catch (PreconditionFailedException pfe) {
+				log.error("Etags not match for delte the contact Entry: "
+						+ toBeDeletedContactEntry);
+				throw new AppException(
+						"Cannot delete the contact Entry as Etags are not matched for: "
+								+ toBeDeletedContactEntry);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			throw new AppException("Cannot Delete" + contactEntry);
+		}
+	}
+
+	/**
+	 * Methos to delete a contact from DataBase of application.
+	 * 
+	 * @param contacts
+	 * @param dataContext
+	 * @throws AppException
+	 */
+	public void deleteContact(Contact contacts, DataContext dataContext)
 			throws AppException {
 		log.debug("Calling delete Contact for contact id: " + contacts.getKey());
 		try {
@@ -270,10 +369,10 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
-	public Collection<Contacts> getByKeys(List<Key> contactsKeyList)
+	public Collection<Contact> getByKeys(List<Key> contactsKeyList)
 			throws AppException {
 		try {
-			return keyListService.getByKeys(contactsKeyList, Contacts.class);
+			return keyListService.getByKeys(contactsKeyList, Contact.class);
 		} catch (DataAccessException dae) {
 			String message = "Unable to retrieve contact fronm given key list";
 			log.error(message, dae);
@@ -282,7 +381,7 @@ public class ContactsService extends AbstractService {
 	}
 
 	public Object restoreEntity(Object object) {
-		Contacts contact = (Contacts) object;
+		Contact contact = (Contact) object;
 		contact.setIsDeleted(false);
 		return contactsDao.update(contact);
 	}
@@ -293,7 +392,7 @@ public class ContactsService extends AbstractService {
 
 	public void exportContacts(DataContext dataContext,
 			ServletOutputStream outputStream) throws AppException {
-		List<Contacts> contacts = (List<Contacts>) getAllGlobalFilteredContacts(dataContext);
+		List<Contact> contacts = (List<Contact>) getAllGlobalFilteredContacts(dataContext);
 		WritableWorkbook workbook = null;
 		try {
 			workbook = Workbook.createWorkbook(outputStream);
@@ -316,7 +415,7 @@ public class ContactsService extends AbstractService {
 		cellList.add(new Label(6, 0, "WorkAddress", times16format));
 		int rowNumber = 1;
 
-		for (Contacts entry : contacts) {
+		for (Contact entry : contacts) {
 			cellList.add(new Label(0, rowNumber, String.valueOf(entry.getKey()
 					.getId())));
 			cellList.add(new Label(1, rowNumber, entry.getFirstName(),
@@ -426,7 +525,7 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
-	public void addContactForAllDomainUsers(String domain, Contacts contact)
+	public void addContactForAllDomainUsers(String domain, Contact contact)
 			throws AppException {
 		Workflow workflow = addContactForAllDomainUsersWorkflow(domain, contact);
 		if (workflow != null) {
@@ -437,7 +536,7 @@ public class ContactsService extends AbstractService {
 	}
 
 	private Workflow addContactForAllDomainUsersWorkflow(String domain,
-			Contacts contact) throws AppException {
+			Contact contact) throws AppException {
 		AddContactForAllDomainUsersContext context = new AddContactForAllDomainUsersContext();
 		context.setContactInfo(contact);
 		context.setDomain(domain);
@@ -524,7 +623,7 @@ public class ContactsService extends AbstractService {
 			service.getFeed(new URL(feedurl), ContactGroupFeed.class);
 			// success,,, so its admin user
 			this.isUserAdmin = true;
-			setUserEamil(userEmail);
+			//setUserEamil(userEmail);
 			result = getDomainAdminByDomainName(CommonWebUtil
 					.getDomain(userEmail));
 			if (result == null) {
@@ -535,7 +634,7 @@ public class ContactsService extends AbstractService {
 			System.out.println("******************** not admin user");
 			result = getDomainAdminByDomainName(CommonWebUtil
 					.getDomain(userEmail));
-			setUserEamil(result.getAdminEmail());
+			//setUserEamil(result.getAdminEmail());
 		}
 		return result;
 	}
@@ -849,7 +948,7 @@ public class ContactsService extends AbstractService {
 	}
 
 	public List<ContactEntry> getContacts(int start, int limit, String groupId,
-			boolean isUseForSharedContacts, GridRequest gridRequest)
+			boolean isUseForSharedContacts, GridRequest gridRequest,String userEmail)
 			throws AppException {
 		List<ContactEntry> contactVOs = null;
 		try {
@@ -1030,7 +1129,7 @@ public class ContactsService extends AbstractService {
 			for (ContactEntry entry : entries) {
 				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
 				gmInfo.setHref(groupId); // added
-				//entry.getGroupMembershipInfos().remove(0);
+				// entry.getGroupMembershipInfos().remove(0);
 
 				entry.addGroupMembershipInfo(gmInfo);
 
@@ -1197,14 +1296,15 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
-	public void createUserContact(ContactEntry contact, String userEmail)
+	public ContactEntry createUserContact(ContactEntry contact, String userEmail)
 			throws AppException {
 		try {
 			com.google.gdata.client.contacts.ContactsService service = getContactsService();
 			String feedurl = getUserFeedUrl(domainConfig.getFeedurl(),
 					userEmail);
 			URL postUrl = new URL(feedurl);
-			service.insert(postUrl, contact);
+			ContactEntry contactEntry = service.insert(postUrl, contact);
+			return contactEntry;
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());

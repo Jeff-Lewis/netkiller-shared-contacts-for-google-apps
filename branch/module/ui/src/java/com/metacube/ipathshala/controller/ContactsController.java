@@ -1,10 +1,6 @@
 package com.metacube.ipathshala.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,14 +31,6 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.files.AppEngineFile;
-import com.google.appengine.api.files.FileReadChannel;
-import com.google.appengine.api.files.FileService;
-import com.google.appengine.api.files.FileServiceFactory;
-import com.google.appengine.api.files.FileWriteChannel;
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -56,10 +43,9 @@ import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.core.DataContext;
 import com.metacube.ipathshala.core.UniqueValidationException;
 import com.metacube.ipathshala.core.UserIdConflictException;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.entity.DomainAdmin;
 import com.metacube.ipathshala.entity.DomainGroup;
-import com.metacube.ipathshala.entity.UserContact;
 import com.metacube.ipathshala.entity.Workflow;
 import com.metacube.ipathshala.entity.metadata.impl.ConnectContactMetaData;
 import com.metacube.ipathshala.entity.metadata.impl.ContactsMetaData;
@@ -176,7 +162,7 @@ public class ContactsController extends AbstractController {
 		int id = 0;
 		String activeValue;
 		for (Iterator iterator = contactsList.iterator(); iterator.hasNext();) {
-			Contacts contact = (Contacts) iterator.next();
+			Contact contact = (Contact) iterator.next();
 			HashMap<String, Object> data = new HashMap<String, Object>();
 			data.put("key", ++id);
 
@@ -280,7 +266,7 @@ public class ContactsController extends AbstractController {
 	public String getCreateForm(HttpServletRequest request, Model model) {
 		log.debug("Presenting create-Contact form view.");
 		addToNavigationTrail("Create", false, request, false, false);
-		model.addAttribute(UICommonConstants.ATTRIB_CONTACTS, new Contacts());
+		model.addAttribute(UICommonConstants.ATTRIB_CONTACTS, new Contact());
 		model.addAttribute(UICommonConstants.ATTRIB_OPER,
 				UICommonConstants.OPER_CREATE);
 		/*
@@ -292,7 +278,7 @@ public class ContactsController extends AbstractController {
 
 	@RequestMapping("/contact/create.do")
 	public String create(
-			@ModelAttribute(value = UICommonConstants.ATTRIB_CONTACTS) Contacts contact,
+			@ModelAttribute(value = UICommonConstants.ATTRIB_CONTACTS) Contact contact,
 			BindingResult result, Model model, HttpServletRequest request,
 			HttpSession session) throws AppException {
 		validator.validate(contact, result, "ContactForm");
@@ -315,8 +301,7 @@ public class ContactsController extends AbstractController {
 				UserService userService = UserServiceFactory.getUserService();
 				User user = userService.getCurrentUser();
 
-				Contacts createdcontact = contactsManager
-						.createContact(contact);
+				Contact createdcontact = contactsManager.createContact(contact);
 
 				contactsManager.addContactForAllDomainUsers(
 						CommonWebUtil.getDomain(user.getEmail()),
@@ -366,9 +351,9 @@ public class ContactsController extends AbstractController {
 			String workPhone = request.getParameter("workPhone");
 			String workAddress = request.getParameter("workAddress");
 
-			Key key = KeyFactory.createKey(Contacts.class.getSimpleName(),
+			Key key = KeyFactory.createKey(Contact.class.getSimpleName(),
 					Long.parseLong(keyLong));
-			Contacts contact = (Contacts) contactsManager.getById(key);
+			Contact contact = (Contact) contactsManager.getById(key);
 			contact.setLastName(lastName);
 			contact.setCmpnyName(companyName);
 			contact.setWorkEmail(workEmail);
@@ -383,7 +368,7 @@ public class ContactsController extends AbstractController {
 
 	@RequestMapping("/contact/update.do")
 	public String updateContact(
-			@ModelAttribute(value = UICommonConstants.ATTRIB_CONTACTS) Contacts contact,
+			@ModelAttribute(value = UICommonConstants.ATTRIB_CONTACTS) Contact contact,
 			BindingResult result, Model model, HttpServletRequest request)
 			throws AppException {
 		validator.validate(contact, result, UICommonConstants.FORM_CONTACT);
@@ -432,10 +417,9 @@ public class ContactsController extends AbstractController {
 			throws NumberFormatException, AppException {
 		String contactId = request
 				.getParameter(UICommonConstants.PARAM_ENTITY_ID);
-		Key contactKey = KeyFactory.createKey(Contacts.class.getSimpleName(),
+		Key contactKey = KeyFactory.createKey(Contact.class.getSimpleName(),
 				Long.parseLong(contactId));
-		Contacts currentContact = (Contacts) contactsManager
-				.getById(contactKey);
+		Contact currentContact = (Contact) contactsManager.getById(contactKey);
 
 		model.addAttribute(UICommonConstants.ATTRIB_CONTACTS, currentContact);
 		model.addAttribute(UICommonConstants.ATTRIB_OPER,
@@ -452,6 +436,9 @@ public class ContactsController extends AbstractController {
 	String contactMassUpdate(HttpServletRequest request) throws AppException {
 		DataContext dataContext = (DataContext) request.getSession()
 				.getAttribute(UICommonConstants.DATA_CONTEXT);
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		String userEmail = user.getEmail();
 		String cmpanyName = request.getParameter("name");
 		String cmpnyDept = request.getParameter("dept");
 		String wrkAddress = request.getParameter("workAddr");
@@ -459,9 +446,9 @@ public class ContactsController extends AbstractController {
 		String notes = request.getParameter("notes");
 		List<Key> contactKeyList = getContactKeyList(request);
 		if (!contactKeyList.isEmpty() && contactKeyList != null) {
-			List<Contacts> contactsList = (List<Contacts>) contactsManager
+			List<Contact> contactsList = (List<Contact>) contactsManager
 					.getByKeys(contactKeyList);
-			for (Contacts con : contactsList) {
+			for (Contact con : contactsList) {
 				if (!StringUtils.isBlank(cmpanyName))
 					con.setCmpnyName(cmpanyName);
 				if (!StringUtils.isBlank(cmpnyDept))
@@ -472,7 +459,8 @@ public class ContactsController extends AbstractController {
 					con.setOtherAddress(otherAddress);
 				if (!StringUtils.isBlank(notes))
 					con.setNotes(notes);
-				contactsManager.updateContactAndExecuteWorkflow(con,
+				contactsManager.updateContact(con,dataContext);
+				contactsManager.updateContactAndExecuteWorkflow(con, userEmail,
 						dataContext);
 			}
 
@@ -485,7 +473,7 @@ public class ContactsController extends AbstractController {
 	public @ResponseBody
 	void mailToSelectedContacts(HttpServletRequest request)
 			throws AppException, IOException {
-		List<Key> contactKeyList = getContactKeyList(request);
+		//List<Key> contactKeyList = getContactKeyList(request);
 
 		contactsManager.sendMailToSelectedContacts();
 	}
@@ -506,7 +494,7 @@ public class ContactsController extends AbstractController {
 			}
 			for (String contactId : ids) {
 				Key contactKey = KeyFactory.createKey(
-						Contacts.class.getSimpleName(),
+						Contact.class.getSimpleName(),
 						Long.parseLong(contactId));
 				contactKeyList.add(contactKey);
 			}
@@ -533,10 +521,9 @@ public class ContactsController extends AbstractController {
 			throws NumberFormatException, AppException {
 		String contactId = request
 				.getParameter(UICommonConstants.PARAM_ENTITY_ID);
-		Key contactKey = KeyFactory.createKey(Contacts.class.getSimpleName(),
+		Key contactKey = KeyFactory.createKey(Contact.class.getSimpleName(),
 				Long.parseLong(contactId));
-		Contacts currentContact = (Contacts) contactsManager
-				.getById(contactKey);
+		Contact currentContact = (Contact) contactsManager.getById(contactKey);
 		model.addAttribute(UICommonConstants.ATTRIB_CONTACTS, currentContact);
 		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
 				UICommonConstants.CONTEXT_CONTACT_DETAIL);
@@ -550,7 +537,7 @@ public class ContactsController extends AbstractController {
 	@RequestMapping("/contact/duplicate.do")
 	public void makeDuplicateContact(HttpServletRequest request, Model model,
 			HttpServletResponse response) throws AppException, IOException {
-		String id = request.getParameter("contactIdList");
+		//String id = request.getParameter("contactIdList");
 		List<Key> contactKeyList = getContactKeyList(request);
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
@@ -585,7 +572,7 @@ public class ContactsController extends AbstractController {
 			}
 			for (String contactId : ids) {
 				Key contactKey = KeyFactory.createKey(
-						Contacts.class.getSimpleName(),
+						Contact.class.getSimpleName(),
 						Long.parseLong(contactId));
 				contactKeyList.add(contactKey);
 			}
@@ -672,7 +659,7 @@ public class ContactsController extends AbstractController {
 
 	}
 
-	private void doSomeThing(ArrayList<ArrayList<String>> storedValueList)
+	/*private void doSomeThing(ArrayList<ArrayList<String>> storedValueList)
 			throws IOException {
 		FileService fileService = FileServiceFactory.getFileService();
 		AppEngineFile file = fileService.createNewBlobFile("text/csv");
@@ -727,15 +714,15 @@ public class ContactsController extends AbstractController {
 		// Now read from the file using the Blobstore API
 		BlobKey blobKey = fileService.getBlobKey(file);
 		importData(blobKey.getKeyString());
-	}
+	}*/
 
-	private void importData(String blobKey) {
+	/*private void importData(String blobKey) {
 		TaskOptions task = buildStartJob("Import Shared Contacts");
 		addJobParam(task,
 				"mapreduce.mapper.inputformat.blobstoreinputformat.blobkeys",
 				blobKey);
 
-		/*
+		
 		 * String id = getGroupId(); addJobParam(task,
 		 * "mapreduce.mapper.inputformat.datastoreinputformat.entitykind", id);
 		 * 
@@ -744,11 +731,11 @@ public class ContactsController extends AbstractController {
 		 * "mapreduce.mapper.inputformat.datastoreinputformat.useremail",
 		 * 
 		 * // contactsManager.getUserEamil());
-		 */
+		 
 
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(task);
-	}
+	}*/
 
 	/*
 	 * private String getGroupId() {
@@ -776,7 +763,7 @@ public class ContactsController extends AbstractController {
 	 * return groupId; }
 	 */
 
-	private static TaskOptions buildStartJob(String jobName) {
+/*	private static TaskOptions buildStartJob(String jobName) {
 		return TaskOptions.Builder.withUrl("/mapreduce/command/start_job")
 				// .method(Method.POST)
 				.header("X-Requested-With", "XMLHttpRequest")
@@ -797,7 +784,7 @@ public class ContactsController extends AbstractController {
 			}
 		}
 		return result;
-	}
+	}*/
 
 	@Autowired
 	private WorkflowManager workflowManager;
@@ -946,9 +933,9 @@ public class ContactsController extends AbstractController {
 		List<Map<String, Object>> modelMapList = new ArrayList<Map<String, Object>>();
 		List<Key> contactKeyList = getContactKeyList(request);
 		if (contactKeyList != null && !contactKeyList.isEmpty()) {
-			List<Contacts> contactList = (List<Contacts>) contactsManager
+			List<Contact> contactList = (List<Contact>) contactsManager
 					.getByKeys(contactKeyList);
-			for (Contacts contacts : contactList) {
+			for (Contact contacts : contactList) {
 				Map<String, Object> dataMap = new LinkedHashMap<String, Object>();
 				dataMap.put("fullName", contacts.getFullName());
 				dataMap.put("companyName", contacts.getCmpnyName());
@@ -998,7 +985,7 @@ public class ContactsController extends AbstractController {
 		int id = 0;
 		String activeValue;
 		for (Iterator iterator = contactsList.iterator(); iterator.hasNext();) {
-			Contacts contact = (Contacts) iterator.next();
+			Contact contact = (Contact) iterator.next();
 			HashMap<String, Object> data = new HashMap<String, Object>();
 			data.put("key", ++id);
 
@@ -1073,14 +1060,14 @@ public class ContactsController extends AbstractController {
 
 	@ModelAttribute
 	public void preprocessContact(
-			@ModelAttribute(value = UICommonConstants.ATTRIB_CONTACTS) Contacts contacts,
+			@ModelAttribute(value = UICommonConstants.ATTRIB_CONTACTS) Contact contacts,
 			HttpServletRequest request) throws AppException {
 		Key key = null;
 
 		if (request.getParameterMap().containsKey(
 				UICommonConstants.PARAM_ENTITY_ID)
 				&& request.getParameter(UICommonConstants.PARAM_ENTITY_ID) != null) {
-			key = KeyFactory.createKey(Contacts.class.getSimpleName(), Long
+			key = KeyFactory.createKey(Contact.class.getSimpleName(), Long
 					.parseLong(request
 							.getParameter(UICommonConstants.PARAM_ENTITY_ID)));
 			contacts.setKey(key);

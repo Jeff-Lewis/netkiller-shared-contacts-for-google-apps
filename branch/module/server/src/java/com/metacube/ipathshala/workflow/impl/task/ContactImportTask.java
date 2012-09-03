@@ -1,12 +1,7 @@
 package com.metacube.ipathshala.workflow.impl.task;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.util.ArrayList;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,27 +13,11 @@ import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.files.AppEngineFile;
-import com.google.appengine.api.files.FileReadChannel;
-import com.google.appengine.api.files.FileService;
-import com.google.appengine.api.files.FileServiceFactory;
-import com.google.appengine.api.files.FileWriteChannel;
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskOptions;
-import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
-import com.google.gdata.client.authn.oauth.OAuthHmacSha1Signer;
-import com.google.gdata.client.contacts.ContactsService;
-import com.google.gdata.data.TextConstruct;
-import com.google.gdata.data.contacts.ContactGroupEntry;
-import com.google.gdata.data.contacts.ContactGroupFeed;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.manager.ContactsManager;
 import com.metacube.ipathshala.security.DomainConfig;
-import com.metacube.ipathshala.util.AppLogger;
 import com.metacube.ipathshala.util.CSVFileReader;
 import com.metacube.ipathshala.util.CommonWebUtil;
-import com.metacube.ipathshala.vo.AppProperties;
 import com.metacube.ipathshala.workflow.AbstractWorkflowTask;
 import com.metacube.ipathshala.workflow.WorkflowContext;
 import com.metacube.ipathshala.workflow.impl.context.ContactImportContext;
@@ -46,7 +25,8 @@ import com.metacube.ipathshala.workflow.impl.context.ContactImportContext;
 @Component
 public class ContactImportTask extends AbstractWorkflowTask {
 
-	private static AppLogger log = AppLogger.getLogger(ContactImportTask.class);
+	// private static AppLogger log =
+	// AppLogger.getLogger(ContactImportTask.class);
 
 	@Autowired
 	com.metacube.ipathshala.service.ContactsService contactsService;
@@ -86,10 +66,10 @@ public class ContactImportTask extends AbstractWorkflowTask {
 
 	private void doSomething(ArrayList<ArrayList<String>> storedValueList,
 			String email) throws Exception {
-		StringBuffer sb = new StringBuffer();
+		// StringBuffer sb = new StringBuffer();
 		for (int i = 1; i < storedValueList.size(); i++) {
 			ArrayList<String> row = storedValueList.get(i);
-			Contacts contact = createNewContact(row);
+			Contact contact = createNewContact(row);
 			if (contact != null) {
 				contact = contactsManager.createContact(contact);
 				contactsManager.addContactForAllDomainUsers(
@@ -98,7 +78,7 @@ public class ContactImportTask extends AbstractWorkflowTask {
 		}
 	}
 
-	private Contacts createNewContact(ArrayList<String> row) {
+	private Contact createNewContact(ArrayList<String> row) {
 		String fullName = StringUtils.isBlank(row.get(0)) ? "" : row.get(0);
 		String firstName = StringUtils.isBlank(row.get(1)) ? "" : row.get(1);
 		String lastName = StringUtils.isBlank(row.get(2)) ? "" : row.get(2);
@@ -120,7 +100,7 @@ public class ContactImportTask extends AbstractWorkflowTask {
 				.get(14);
 		String notes = StringUtils.isBlank(row.get(15)) ? "" : row.get(15);
 
-		Contacts contact = new Contacts();
+		Contact contact = new Contact();
 		contact.setFullName(fullName);
 		contact.setFirstName(firstName);
 		contact.setLastName(lastName);

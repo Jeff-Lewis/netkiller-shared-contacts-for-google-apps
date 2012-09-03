@@ -41,7 +41,7 @@ public class UserContact implements Serializable{
 	private Key contactKey;
 
 	@NotPersistent
-	private Contacts contacts;
+	private Contact contacts;
 
 	@Persistent
 	private String contactId;
@@ -73,11 +73,11 @@ public class UserContact implements Serializable{
 		this.contactKey = contactKey;
 	}
 
-	public Contacts getContacts() {
+	public Contact getContacts() {
 		return contacts;
 	}
 
-	public void setContacts(Contacts contacts) {
+	public void setContacts(Contact contacts) {
 		this.contacts = contacts;
 	}
 

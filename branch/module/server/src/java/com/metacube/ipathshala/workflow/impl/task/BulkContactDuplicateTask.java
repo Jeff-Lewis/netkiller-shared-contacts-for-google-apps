@@ -12,7 +12,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.core.DataContext;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.manager.ContactsManager;
 import com.metacube.ipathshala.util.AppLogger;
 import com.metacube.ipathshala.util.CommonWebUtil;
@@ -46,11 +46,11 @@ public class BulkContactDuplicateTask extends AbstractWorkflowTask {
 		}
 
 		try {
-			List<Contacts> contactList = (List<Contacts>) contactsManager
+			List<Contact> contactList = (List<Contact>) contactsManager
 					.getByKeys(contactKeyList);
-			for (Contacts contacts : contactList) {
+			for (Contact contacts : contactList) {
 				try {
-					contacts = (Contacts) BeanUtils.cloneBean(contacts);
+					contacts = (Contact) BeanUtils.cloneBean(contacts);
 				} catch (IllegalAccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

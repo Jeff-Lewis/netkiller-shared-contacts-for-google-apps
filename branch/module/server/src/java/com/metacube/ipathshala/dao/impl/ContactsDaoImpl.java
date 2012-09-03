@@ -16,12 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.appengine.api.datastore.Key;
 import com.metacube.ipathshala.dao.AbstractDao;
 import com.metacube.ipathshala.dao.ContactsDao;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.entity.UserSync;
 
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)
-public class ContactsDaoImpl extends AbstractDao<Contacts> implements
+public class ContactsDaoImpl extends AbstractDao<Contact> implements
 		ContactsDao {
 
 	@Autowired
@@ -30,35 +30,35 @@ public class ContactsDaoImpl extends AbstractDao<Contacts> implements
 	}
 
 	@Override
-	public Contacts create(Contacts object) {
+	public Contact create(Contact object) {
 		return super.create(object);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Contacts get(Object id) {
-		return super.get(Contacts.class, id);
+	public Contact get(Object id) {
+		return super.get(Contact.class, id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<Contacts> getAll() {
-		return super.getAll(Contacts.class);
+	public Collection<Contact> getAll() {
+		return super.getAll(Contact.class);
 	}
 
 	@Override
-	public Collection<Contacts> getByKeys(List<Key> ContactsKeyList) {
-		return super.getByKeys(Contacts.class, ContactsKeyList);
+	public Collection<Contact> getByKeys(List<Key> ContactsKeyList) {
+		return super.getByKeys(Contact.class, ContactsKeyList);
 	}
 
 	@Override
-	public Contacts update(Contacts contact) {
+	public Contact update(Contact contact) {
 		return super.update(contact);
 	}
 
 	@Override
 	public void remove(Object id) {
-		super.remove(Contacts.class, id);
+		super.remove(Contact.class, id);
 
 	}
 

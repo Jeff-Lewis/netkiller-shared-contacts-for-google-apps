@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.appengine.api.datastore.Key;
 import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.core.DataContext;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.manager.ContactsManager;
 import com.metacube.ipathshala.util.AppLogger;
 import com.metacube.ipathshala.workflow.AbstractWorkflowTask;
@@ -36,9 +36,9 @@ public class BulkContactDeleteTask extends AbstractWorkflowTask {
 		}
 
 		try {
-			List<Contacts> contactList = (List<Contacts>) contactsManager
+			List<Contact> contactList = (List<Contact>) contactsManager
 					.getByKeys(contactKeyList);
-			for (Contacts contacts : contactList) {
+			for (Contact contacts : contactList) {
 				contactsManager.deleteContact(contacts, dataContext);
 			}
 		} catch (AppException e) {
@@ -53,10 +53,10 @@ public class BulkContactDeleteTask extends AbstractWorkflowTask {
 	 * 
 	 * @param deletedStudents
 	 */
-	private void rollbackDelete(List<Contacts> deletedcontacts,
+	private void rollbackDelete(List<Contact> deletedcontacts,
 			DataContext dataContext) {
 		try {
-			for (Contacts deletedContact : deletedcontacts) {
+			for (Contact deletedContact : deletedcontacts) {
 				// nullify existing key in the object
 				deletedContact.setKey(null);
 				contactsManager.createContact(deletedContact);

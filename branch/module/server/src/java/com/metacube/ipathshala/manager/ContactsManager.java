@@ -16,18 +16,15 @@ import com.metacube.ipathshala.FilterInfo;
 import com.metacube.ipathshala.GridRequest;
 import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.core.DataContext;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.entity.DomainAdmin;
 import com.metacube.ipathshala.entity.metadata.EntityMetaData;
 import com.metacube.ipathshala.search.SearchResult;
 import com.metacube.ipathshala.service.ContactsService;
-import com.metacube.ipathshala.util.AppLogger;
 
 @Component
 public class ContactsManager extends AbstractManager implements EntityManager {
 
-	private static final AppLogger log = AppLogger
-			.getLogger(ContactsManager.class);
 
 	@Autowired
 	private ContactsService service;
@@ -51,7 +48,7 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 	public SearchResult doSearch(FilterInfo filterInfo, DataContext dataContext)
 			throws AppException {
 
-		SearchResult searchResult = searchManager.doSearch(Contacts.class,
+		SearchResult searchResult = searchManager.doSearch(Contact.class,
 				service.getEntityMetaData(), filterInfo, null);
 		return searchResult;
 	}
@@ -68,34 +65,34 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 
 	}
 
-	public Collection<Contacts> getAll() throws AppException {
+	public Collection<Contact> getAll() throws AppException {
 		return service.getAll();
 	}
 
-	public Collection<Contacts> getAllGlobalFilteredContacts(
+	public Collection<Contact> getAllGlobalFilteredContacts(
 			DataContext dataContext) throws AppException {
 		return service.getAllGlobalFilteredContacts(null);
 	}
 
-	public Contacts createContact(Contacts contacts) throws AppException {
+	public Contact createContact(Contact contacts) throws AppException {
 		/*
 		 * super.setGlobalFilterProperties(contacts, dataContext,
 		 * this.getEntityMetaData());
 		 */return service.createContact(contacts);
 	}
 
-	public Contacts updateContact(Contacts contacts, DataContext dataContext)
+	public Contact updateContact(Contact contacts, DataContext dataContext)
 			throws AppException {
 		// super.updateGlobalFilterProperties(contacts, this);
 		return service.updateContact(contacts);
 	}
 	
 	
-	public void updateContactAndExecuteWorkflow(Contacts contacts, DataContext dataContext){
-		service.updateContactAndExecuteWorkflow(contacts,dataContext);
+	public void updateContactAndExecuteWorkflow(Contact contacts,String userEmail, DataContext dataContext) throws AppException{
+		service.updateContactAndExecuteWorkflow(contacts,userEmail,dataContext);
 	}
 
-	public void deleteContact(Contacts contacts, DataContext dataContext)
+	public void deleteContact(Contact contacts, DataContext dataContext)
 			throws AppException {
 
 		service.deleteContact(contacts, null);
@@ -103,7 +100,7 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 
 	public SearchResult doSearch(GridRequest gridRequest,
 			DataContext dataContext) throws AppException {
-		return searchManager.doSearch(Contacts.class,
+		return searchManager.doSearch(Contact.class,
 				service.getEntityMetaData(), gridRequest, dataContext);
 	}
 
@@ -118,7 +115,7 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 
 	}
 
-	public void addContactForAllDomainUsers(String domain, Contacts contact)
+	public void addContactForAllDomainUsers(String domain, Contact contact)
 			throws AppException {
 		service.addContactForAllDomainUsers(domain, contact);
 	}
@@ -132,7 +129,7 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 		return service.getGroupName(domainName);
 	}
 
-	public Collection<Contacts> getByKeys(List<Key> contactsKeyList)
+	public Collection<Contact> getByKeys(List<Key> contactsKeyList)
 			throws AppException {
 		return service.getByKeys(contactsKeyList);
 	}

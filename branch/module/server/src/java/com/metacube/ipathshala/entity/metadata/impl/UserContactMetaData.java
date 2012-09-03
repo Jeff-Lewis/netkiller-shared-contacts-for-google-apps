@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.springframework.stereotype.Component;
 
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.entity.UserContact;
 import com.metacube.ipathshala.entity.metadata.ColumnMetaData;
 import com.metacube.ipathshala.entity.metadata.ColumnRelationShipMetaData;
@@ -35,7 +35,7 @@ public class UserContactMetaData extends AbstractMetaData {
 				COL_CONTACT_KEY,
 				ColumnMetaData.ColumnType.Key,
 				new ColumnRelationShipMetaData(relatedEntityTypesMap
-						.get(Contacts.class), RelationshipType.MANY_TO_MANY));
+						.get(Contact.class), RelationshipType.MANY_TO_MANY));
 		addColumnMetaData(COL_GOOGLE_CONTACT_ID,
 				ColumnMetaData.ColumnType.STRING);
 		addColumnMetaData(COL_GROUP_NAME, ColumnMetaData.ColumnType.STRING);
