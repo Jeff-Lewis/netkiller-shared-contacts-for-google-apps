@@ -14,7 +14,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.entity.ConnectContact;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.mail.MailAddress;
 import com.metacube.ipathshala.mail.MailMessage;
 import com.metacube.ipathshala.mail.Recipient;
@@ -66,7 +66,7 @@ public class ConnectContactTask extends AbstractWorkflowTask {
 		List<Key> contactKeyList = new ArrayList<Key>();
 		Date date = new Date();
 		while (sc.hasNextLong()) {
-			Key key = KeyFactory.createKey(Contacts.class.getSimpleName(),
+			Key key = KeyFactory.createKey(Contact.class.getSimpleName(),
 					sc.nextLong());
 			ConnectContact connectContact = new ConnectContact();
 			connectContact.setRandomUrl(randomUrl);
@@ -84,14 +84,14 @@ public class ConnectContactTask extends AbstractWorkflowTask {
 	}
 
 	private void sendMailsToContact(List<Key> contactKeyList, String ownerEmail, String randomUrl) {
-		Collection<Contacts> contacts = keyListService.getByKeys(contactKeyList, Contacts.class);
-		for(Contacts contact : contacts){
+		Collection<Contact> contacts = keyListService.getByKeys(contactKeyList, Contact.class);
+		for(Contact contact : contacts){
 			sendUrlMailToContact(contact,randomUrl,ownerEmail);
 		}
 		
 	}
 
-	private void sendUrlMailToContact(Contacts contact, String randomUrl, String ownerEmail) {
+	private void sendUrlMailToContact(Contact contact, String randomUrl, String ownerEmail) {
 		String domain = CommonWebUtil.getDomain(ownerEmail);
 		MailMessage mailMessage = new MailMessage();
 		List<Recipient> recipients = new ArrayList<Recipient>();

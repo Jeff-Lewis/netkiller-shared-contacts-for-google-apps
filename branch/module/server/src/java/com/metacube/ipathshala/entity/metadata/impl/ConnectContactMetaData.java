@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.metacube.ipathshala.entity.ConnectContact;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.entity.metadata.ColumnMetaData;
 import com.metacube.ipathshala.entity.metadata.EntityMetaData;
 
@@ -34,7 +34,7 @@ public class ConnectContactMetaData extends AbstractMetaData{
 	
 	private static Map<Class,EntityMetaData> getRelatedEntitiesMap(ContactsMetaData contactsMetaData){
 		Map<Class,EntityMetaData> relatedEntitiesMap= new HashMap();
-		relatedEntitiesMap.put(Contacts.class, contactsMetaData);
+		relatedEntitiesMap.put(Contact.class, contactsMetaData);
 		return relatedEntitiesMap;
 	}
 

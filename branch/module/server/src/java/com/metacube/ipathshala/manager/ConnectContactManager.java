@@ -15,7 +15,7 @@ import com.metacube.ipathshala.GridRequest;
 import com.metacube.ipathshala.core.AppException;
 import com.metacube.ipathshala.core.DataContext;
 import com.metacube.ipathshala.entity.ConnectContact;
-import com.metacube.ipathshala.entity.Contacts;
+import com.metacube.ipathshala.entity.Contact;
 import com.metacube.ipathshala.entity.Workflow;
 import com.metacube.ipathshala.entity.metadata.EntityMetaData;
 import com.metacube.ipathshala.search.SearchResult;
@@ -117,7 +117,7 @@ public class ConnectContactManager extends AbstractManager implements
 			for(ConnectContact c : connectContacts){
 				keys.add(c.getContactKey());
 			}
-			Collection<Contacts> contacts = keyListService.getByKeys(keys, Contacts.class);
+			Collection<Contact> contacts = keyListService.getByKeys(keys, Contact.class);
 			List<Object> contactObjectList = EntityUtil.getObjectList(contacts);
 			result.setResultObjects(contactObjectList);
 		
