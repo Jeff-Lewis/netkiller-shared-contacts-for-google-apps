@@ -361,7 +361,7 @@ public class ContactsService extends AbstractService {
 		log.debug("Calling delete Contact for contact id: " + contacts.getKey());
 		try {
 
-			contactsDao.remove(contacts.getKey());
+			contactsDao.remove(contacts);
 		} catch (DataAccessException dae) {
 			String message = "Unable to delete contact:" + contacts;
 			log.error(message, dae);

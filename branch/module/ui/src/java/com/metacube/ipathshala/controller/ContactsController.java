@@ -104,15 +104,14 @@ public class ContactsController extends AbstractController {
 		this.validator = validator;
 	}
 
-	// @RequestParam("toName") String toName,@RequestParam("toEmail") String
-	// toEmail,
 	@RequestMapping("contacts/connect.do")
 	@ResponseBody
-	public String connectContacts(@RequestParam("contacts") String contactKeys,
+	public String connectContacts(@RequestParam("contacts") String contactKeys,@RequestParam("toName") String toName,@RequestParam("toEmail") String
+			 toEmail,
 			HttpServletRequest request, HttpServletResponse response,
 			Model model) throws AppException {
 		connectContactManager
-				.createAndExecuteConnectContactWorkflow(contactKeys);
+				.createAndExecuteConnectContactWorkflow(contactKeys, toName, toEmail);
 
 		return "success";
 		/*
@@ -479,9 +478,23 @@ public class ContactsController extends AbstractController {
 		contactsManager.sendMailToSelectedContacts();
 	}
 
-	@RequestMapping({"/contact/delete.do","/connect/delete.do"})
+	@RequestMapping({"/contact/delete.do"})
 	public void delete(Model model, HttpServletRequest request,
 			HttpServletResponse response) throws AppException, IOException {
+		deleteContacts(model, request);
+		response.sendRedirect("/contacts.do");
+	}
+	
+	@RequestMapping({"/connect/delete.do"})
+	@ResponseBody
+	public String deleteConnect(Model model, HttpServletRequest request,
+			HttpServletResponse response) throws AppException, IOException {
+		deleteContacts(model, request);
+		return "success";
+	}
+
+	private void deleteContacts(Model model, HttpServletRequest request)
+			throws AppException {
 		log.debug("Processing detete contact request.");
 		String id = request.getParameter("contactIdList");
 		List<Key> contactKeyList = new ArrayList<Key>();
@@ -507,7 +520,6 @@ public class ContactsController extends AbstractController {
 						UICommonConstants.DATA_CONTEXT));
 		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
 				UICommonConstants.CONTEXT_CONTACTS_HOME);
-		response.sendRedirect(request.getRequestURI());
 	}
 
 	@RequestMapping("/contact/close.do")

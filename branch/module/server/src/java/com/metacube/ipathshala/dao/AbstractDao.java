@@ -101,55 +101,7 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 	 * @param object to remove.
 	 */
 	public void remove(Class<E> type, Object id) {
-		log.debug("Remove Method started");
-		//JdoTemplate template = getJdoTemplate();
-		E object = this.get(type, id);
-		if (object == null) {
-			log.warn("Unable to delete" + type + "of id:" + id + ", unable to find it.");
-		} else {
-			
-			//template.deletePersistent(object);
-			String propertyName = "isDeleted";
-			try {
-				E newObject = (E) BeanUtils.cloneBean(object);
-				Field field = type
-						.getDeclaredField(propertyName);
-				field.setAccessible(true);
-				field.set(newObject,true);
-				field.setAccessible(false);
-				object  = this.update(newObject);
-			} catch (SecurityException e) {
-				String message = "Security related Exception";
-				log.error(message, e);
-				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
-				String message = "Unable to fetch property from currently set Global Filter";
-				log.error(message, e);
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				String message = "Illegal Argument Exception";
-				log.error(message, e);
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				String message = "Illegal Access Exception";
-				log.error(message, e);
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				String message = "Instantiation Exception";
-				log.error(message, e);
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				String message = "Invocation Target Exception";
-				log.error(message, e);
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				String message = "No Such Method Exception";
-				log.error(message, e);
-				e.printStackTrace();
-			}
-			
-			
-		}
+		getJdoTemplate().deletePersistent(id);
 
 		log.debug("Remove Method ended");
 	}

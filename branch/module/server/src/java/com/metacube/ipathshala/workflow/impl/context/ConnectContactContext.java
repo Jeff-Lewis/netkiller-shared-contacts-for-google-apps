@@ -46,6 +46,22 @@ Serializable {
 		this.ownerEmail = ownerEmail;
 	}
 
+	public String getToName() {
+		return toName;
+	}
+
+	public void setToName(String toName) {
+		this.toName = toName;
+	}
+
+	public String getToEmail() {
+		return toEmail;
+	}
+
+	public void setToEmail(String toEmail) {
+		this.toEmail = toEmail;
+	}
+
 	
 	
 }

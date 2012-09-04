@@ -84,13 +84,13 @@ public class ConnectContactManager extends AbstractManager implements
 		return service.getByUrl(url);
 	}
 
-	//, String toName , String toEmail
-	public void createAndExecuteConnectContactWorkflow(String keyList) throws AppException {
+	public void createAndExecuteConnectContactWorkflow(String keyList,String toName , String toEmail) throws AppException {
 		ConnectContactContext connectContactContext = new ConnectContactContext();
 		connectContactContext.setContactKeysCSV(keyList);
 		connectContactContext.setOwnerEmail(UserServiceFactory.getUserService()
 				.getCurrentUser().getEmail());
-
+		connectContactContext.setToEmail(toEmail);
+		connectContactContext.setToName(toName);
 		WorkflowInfo info = new WorkflowInfo("connectContactWorkflowProcessor");
 		info.setIsNewWorkflow(true);
 		connectContactContext.setWorkflowInfo(info);

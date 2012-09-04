@@ -78,32 +78,28 @@ public class ConnectContactTask extends AbstractWorkflowTask {
 			contactKeyList.add(key);
 		}
 
-		sendMailsToContact(contactKeyList,email,randomUrl);
+		sendUrlMailToContact(connectContactContext.getToName(), connectContactContext.getToEmail(), randomUrl, email);
 		
 		System.out.println("connect contacts complete");
 		return context;
 	}
 
-	private void sendMailsToContact(List<Key> contactKeyList, String ownerEmail, String randomUrl) {
+	/*private void sendMailsToContact(List<Key> contactKeyList, String ownerEmail, String randomUrl) {
 		Collection<Contact> contacts = keyListService.getByKeys(contactKeyList, Contact.class);
 		for(Contact contact : contacts){
 			sendUrlMailToContact(contact,randomUrl,ownerEmail);
 		}
 		
-	}
+	}*/
 
-	private void sendUrlMailToContact(Contact contact, String randomUrl, String ownerEmail) {
+	private void sendUrlMailToContact(String toName,String toEmail, String randomUrl, String ownerEmail) {
 		String domain = CommonWebUtil.getDomain(ownerEmail);
 		MailMessage mailMessage = new MailMessage();
 		List<Recipient> recipients = new ArrayList<Recipient>();
 		randomUrl = domainConfig.getApplicationUrl() + "/connect/connect.do?id=" + randomUrl;		
 		/* contact as recipient in to */
 		Recipient recipient = new Recipient();
-		String email = contact.getWorkEmail();
-		if(!email.contains("@")){
-			email = email + "@" + domain;
-		}
-		MailAddress recipientMailAddress = new MailAddress(contact.getFullName(), email);
+		MailAddress recipientMailAddress = new MailAddress(toName, toEmail);
 		recipient.setMailAddress(recipientMailAddress );
 		recipient.setRecipientType(RecipientType.TO);
 		recipients.add(recipient);
@@ -118,11 +114,11 @@ public class ConnectContactTask extends AbstractWorkflowTask {
 		mailMessage.setRecipients(recipients );
 		
 		mailMessage.setSender(ownerMailAddress);
-		String subject = contact.getFullName() + " are invited to login " + domain + " Shared Contacts.";
+		String subject =toName + " are invited to login " + domain + " Shared Contacts.";
 		mailMessage.setSubject(subject );
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("fullName", contact.getFullName());
+		map.put("fullName", toName);
 		map.put("randomUrl", randomUrl);
 		try {
 			mailService.sendMailTemplate(mailMessage, "connectContactTemplate.vm", map);

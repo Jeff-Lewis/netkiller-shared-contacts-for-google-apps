@@ -414,6 +414,16 @@
 			//$('#uploadDiv').show();
 			$('#ImportDialog').dialog('open');
 			return false;
+		} else if (optionValue == 'delete') {
+			$.ajax({url:'/connect/delete.do?contactIdList=' + contactIdList,
+					success:function(){
+						alert("deletion process started")
+					},
+					error:function(){
+						alert("Error deleting")
+					}
+				});
+			return false;
 		} else {
 			$('#uploadDiv').hide();
 			document.getElementById("formId").action = "/connect/"
@@ -560,7 +570,7 @@
 				<table>
 					<tr>
 						<td><select id="selectBoxId">
-								<option selected="selected" value="import">Import</option>
+								<!-- <option selected="selected" value="import">Import</option> -->
 								<option value="export">Export</option>
 								<option value="delete">Delete</option>
 						</select></td>
