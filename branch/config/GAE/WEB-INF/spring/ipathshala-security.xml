@@ -5,9 +5,9 @@
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">	
 	<context:annotation-config />	
-	<context:component-scan base-package="com.metacube.ipathshala.security" />
+	<context:component-scan base-package="com.netkiller.security" />
 	
-	<bean name="domainConfig" class="com.metacube.ipathshala.security.DomainConfig" init-method="init">
+	<bean name="domainConfig" class="com.netkiller.security.DomainConfig" init-method="init">
 		<property name="domainName" value="${google.app.domain}"/>
 		<property name="domainAdminEmail" value="${google.app.domain.admin}"/>
 		<property name="domainAdminPassword" value="${google.app.domain.admin.passwd}"/>
@@ -18,7 +18,7 @@
 		<property name="applicationUrl" value ="${applicationUrl}"></property>
 	</bean>
 	<!--  ACL info -->
-	<bean id="adminAcl" class="com.metacube.ipathshala.security.acl.Acl">
+	<bean id="adminAcl" class="com.netkiller.security.acl.Acl">
 	<property name="groupName" value="ipath_app_group_admin"/>
 	 <property name="defaultGroup" value="true" />
 	 <property name="permissionList">	 
@@ -69,7 +69,7 @@
 	</property>
 	</bean>
 	
-	<bean id="teacherAcl" class="com.metacube.ipathshala.security.acl.Acl">
+	<bean id="teacherAcl" class="com.netkiller.security.acl.Acl">
 	<property name="groupName" value="ipath_app_group_teacher"/>
 	 <property name="defaultGroup" value="true" />
 	 <property name="permissionList">	 
@@ -105,7 +105,7 @@
 	</property>
 	</bean>
 	
-	<bean id="studentAcl" class="com.metacube.ipathshala.security.acl.Acl">
+	<bean id="studentAcl" class="com.netkiller.security.acl.Acl">
 	<property name="groupName" value="ipath_app_group_student"/>
 	 <property name="defaultGroup" value="true" />
 	 <property name="permissionList">	 
@@ -121,7 +121,7 @@
 	</property>
 	</bean>
 	
-	<bean id="parentAcl" class="com.metacube.ipathshala.security.acl.Acl">
+	<bean id="parentAcl" class="com.netkiller.security.acl.Acl">
 	<property name="groupName" value="ipath_app_group_parent"/>
 	 <property name="defaultGroup" value="true" />
 	 <property name="permissionList">	 
@@ -138,7 +138,7 @@
 	</property>
 	</bean>
 	
-	<bean id="domainAcl" class="com.metacube.ipathshala.security.acl.Acl">
+	<bean id="domainAcl" class="com.netkiller.security.acl.Acl">
 	<property name="groupName" value="ipath_app_group_domain"/>
 	 <property name="defaultGroup" value="true" />
 	 <property name="permissionList">	 
@@ -160,217 +160,217 @@
 	
 	
 	<!-- Entity Permission beans -->
-	<bean id="academicYearEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="academicYearEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="AcademicYear" />    	
 	</bean>
 	
-	<bean id="academicYearEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="academicYearEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="AcademicYear" />
     	
 	</bean>
-	<bean id="evaluationStageEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="evaluationStageEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
         	<constructor-arg value="EvaluationStage" />
 	</bean>
-	<bean id="classEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="classEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="MyClass" />
 	</bean>
-	<bean id="eventEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="eventEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Event" />
 	</bean>
-	<bean id="locationEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="locationEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Location" />
 	</bean>
 	
-	<bean id="locationEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="locationEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Location" />
 	</bean>
 	
-	<bean id="parentEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="parentEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Parent" />
 	</bean>
 	
-	<bean id="parentEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="parentEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Parent" />
 	</bean>
-	<bean id="periodEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="periodEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Period" />
 	</bean>
 	
-	<bean id="periodEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="periodEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Period" />
 	</bean>
 	
-	<bean id="studentEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="studentEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Student" />
 	</bean>
 	
-	<bean id="studentEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="studentEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Student" />
 	</bean>
-	<bean id="setEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="setEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Set" />
 	</bean>
-	<bean id="setEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="setEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Set" />
 	</bean>
-	<bean id="teacherEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="teacherEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Teacher" />
 	</bean>
 	
-	<bean id="evaluationComponentDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="evaluationComponentDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="EvaluationComponent" />
 	</bean>
-	<bean id="teacherEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="teacherEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Teacher" />
 	</bean>
-	<bean id="valueEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="valueEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Value" />
 	</bean>   
-	<bean id="valueEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="valueEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Value" />
 	</bean>
-	<bean id="valueEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="valueEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="Value" />
 	</bean> 
-	<bean id="workflowEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="workflowEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Workflow" />
     </bean>
-    <bean id="datauploadEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+    <bean id="datauploadEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Dataupload" />
     </bean>
-     <bean id="sendsmsEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+     <bean id="sendsmsEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="SendSMS" />
     </bean>
-    <bean id="timeTableEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+    <bean id="timeTableEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="TimeTable" />
     </bean> 
-    <bean id="timeTableEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+    <bean id="timeTableEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="TimeTable" />
     </bean>    
-    <bean id="subjectEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+    <bean id="subjectEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Subject"/>	
 	</bean>
 	
-	<bean id="subjectEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="subjectEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Subject"/>	
 	</bean>
-	<bean id="classStudentEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="classStudentEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="ClassStudent" />
 	</bean>
-	<bean id="classSubjectTeacherEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="classSubjectTeacherEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="ClassSubjectTeacher" />
 	</bean>
-	<bean id="classSubjectTeacherEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="classSubjectTeacherEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="ClassSubjectTeacher" />
 	</bean>
-	<bean id="timeTableEntryEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="timeTableEntryEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="TimeTableEntry" />
 	</bean>
-		<bean id="timeTableEntryEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+		<bean id="timeTableEntryEntityReadPermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="TimeTableEntry" />
 	</bean>
-	<bean id="classEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="classEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="MyClass" />
 	</bean>
 	
-	<bean id="classEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="classEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="MyClass" />
 	</bean>
 	
-	<bean id="periodEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="periodEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="Period" />
 	</bean>
-	<bean id="studentEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="studentEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="Student" />
 	</bean>
-	<bean id="parentEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="parentEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="Parent" />
 	</bean>
-	<bean id="subjectEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="subjectEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="Subject" />
 	</bean>
-	<bean id="noteEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="noteEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="Note" />
 	</bean>
-	<bean id="noteEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="noteEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Note" />
 	</bean>
-	<bean id="eventEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="eventEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="Event" />
 	</bean>
-	<bean id="eventEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="eventEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Event" />
 	</bean>
-	<bean id="classStudentEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="classStudentEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="ClassStudent" />
 	</bean>
-	<bean id="classStudentEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="classStudentEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="ClassStudent" />
 	</bean>
-		<bean id="classSubjectTeacherEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+		<bean id="classSubjectTeacherEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="ClassSubjectTeacher" />
 	</bean>
-	<bean id="assignmentEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="assignmentEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="Assignment" />
 	</bean>
-	<bean id="assignmentEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="assignmentEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Assignment" />
 	</bean>
-	<bean id="assignmentEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="assignmentEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Assignment" />
 	</bean>
-	<bean id="cacheEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="cacheEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Cache" /> 	
 	</bean>
-	<bean id="termEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="termEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Term" />
     	
 	</bean>
-	<bean id="recycleBinEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="recycleBinEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="RecycleBin" /> 	
 	</bean>
-	<bean id="reportCardEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="reportCardEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="ReportCard" /> 	
 	</bean>
-	<bean id="gradingScaleEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="gradingScaleEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="GradingScale" /> 	
 	</bean>
-	<bean id="subjectEvaluationEventDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="subjectEvaluationEventDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="SubjectEvaluationEvent" /> 	
 	</bean>
-	<bean id="subjectEvaluationEventWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="subjectEvaluationEventWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="SubjectEvaluationEvent" />
 	</bean>
 	
-	<bean id="gradingScaleStepsDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="gradingScaleStepsDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="GradingScaleSteps" /> 	
 	</bean>
 	
 	
-	<bean id="announcementEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="announcementEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="Announcement" />
 	</bean>
-	<bean id="announcementEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="announcementEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="Announcement" />
 	</bean>
-	<bean id="announcementEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="announcementEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Announcement" />
 	</bean>
 	
-	<bean id="reportCardEventEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="reportCardEventEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="ReportCardEvent" />
 	</bean>
-	<bean id="reportCardEventEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="reportCardEventEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="ReportCardEvent" />
 	</bean>
-	<bean id="reportCardEventEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="reportCardEventEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="ReportCardEvent" />
 	</bean>
 	
 	
 	
 	
-	<bean id="resourceSecurityConfig" class="com.metacube.ipathshala.security.ResourceSecurityConfig"> 
+	<bean id="resourceSecurityConfig" class="com.netkiller.security.ResourceSecurityConfig"> 
        <property name="resourceEntityMap">
                 <map> 
                 
@@ -589,53 +589,53 @@
          </bean>
          
 	
-	<bean id="evaluationSchemeDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="evaluationSchemeDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="EvaluationScheme" />
 	</bean>
 
-	<bean id="evaluationSchemeReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="evaluationSchemeReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="EvaluationScheme" />
 	</bean>
-	<bean id="evaluationSubComponentDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="evaluationSubComponentDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="EvaluationSubComponent" />
 	</bean>
-	<bean id="evaluationSchemeWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="evaluationSchemeWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="EvaluationScheme" />
 	</bean>
 
-	<bean id="evaluationStructureWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="evaluationStructureWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="EvaluationStructure" />
 	</bean>
 	
-	<bean id="evaluationStructureReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="evaluationStructureReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="EvaluationStructure" />
 	</bean>
 	
-	<bean id="evaluationReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+	<bean id="evaluationReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="Evaluation" />
 	</bean>
 
-	<bean id="evaluationWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="evaluationWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="Evaluation" />
 	</bean>
-		<bean id="academicYearStructureEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+		<bean id="academicYearStructureEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
     	<constructor-arg value="AcademicYearStructure" />
     	</bean>
     	
-    	<bean id="academicYearStructureEntityWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+    	<bean id="academicYearStructureEntityWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
     	<constructor-arg value="AcademicYearStructure" />    	
     	</bean>
     	
-    	<bean id="academicYearStructureEntityReadPermission" class="com.metacube.ipathshala.security.acl.EntityReadPermission">
+    	<bean id="academicYearStructureEntityReadPermission" class="com.netkiller.security.acl.EntityReadPermission">
     	<constructor-arg value="AcademicYearStructure" />   	
 	</bean>
-	<bean id="attendanceWritePermission" class="com.metacube.ipathshala.security.acl.EntityWritePermission">
+	<bean id="attendanceWritePermission" class="com.netkiller.security.acl.EntityWritePermission">
 		<constructor-arg value="Attendance" />
 	</bean>
-	<bean id="attendanceDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="attendanceDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
 		<constructor-arg value="Attendance" />
 	</bean>
-	<bean id="studentMiscellaneousEntityDeletePermission" class="com.metacube.ipathshala.security.acl.EntityDeletePermission">
+	<bean id="studentMiscellaneousEntityDeletePermission" class="com.netkiller.security.acl.EntityDeletePermission">
 		<constructor-arg value="StudentMiscellaneous" />
 	</bean>
 </beans>

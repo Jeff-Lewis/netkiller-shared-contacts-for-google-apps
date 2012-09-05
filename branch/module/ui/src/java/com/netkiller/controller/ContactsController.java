@@ -31,6 +31,9 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -106,12 +109,13 @@ public class ContactsController extends AbstractController {
 
 	@RequestMapping("contacts/connect.do")
 	@ResponseBody
-	public String connectContacts(@RequestParam("contacts") String contactKeys,@RequestParam("toName") String toName,@RequestParam("toEmail") String
-			 toEmail,
+	public String connectContacts(@RequestParam("contacts") String contactKeys,
+			@RequestParam("toName") String toName,
+			@RequestParam("toEmail") String toEmail,
 			HttpServletRequest request, HttpServletResponse response,
 			Model model) throws AppException {
-		connectContactManager
-				.createAndExecuteConnectContactWorkflow(contactKeys, toName, toEmail);
+		connectContactManager.createAndExecuteConnectContactWorkflow(
+				contactKeys, toName, toEmail);
 
 		return "success";
 		/*
@@ -125,10 +129,37 @@ public class ContactsController extends AbstractController {
 			HttpServletRequest request, HttpServletResponse response,
 			Model model) throws AppException {
 		model.addAttribute("randomUrl", randomUrl);
-		model.addAttribute("domainName",connectContactManager.getDomainName(randomUrl));
+		model.addAttribute("domainName",
+				connectContactManager.getDomainName(randomUrl));
 		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
 				UICommonConstants.CONNECT_HOME);
 		return UICommonConstants.VIEW_INDEX;
+	}
+
+	@RequestMapping("/contact/triggercsvmail.do")
+	@ResponseBody
+	public String triggerExport(HttpServletRequest request) {
+		Map<String, Object> params = request.getParameterMap();
+		Queue queue = QueueFactory.getQueue("default");
+		User user = UserServiceFactory.getUserService().getCurrentUser();
+		TaskOptions options = TaskOptions.Builder.withUrl("/resource/csvmail.do").param(
+				"toEmail", user.getEmail());
+		for (String key : params.keySet()) {
+			options.param(key, CommonWebUtil.getParameter(request, key));
+		}
+		options.param("toName", user.getNickname());
+		DataContext dataContext = (DataContext) request.getSession()
+		.getAttribute(UICommonConstants.DATA_CONTEXT);		
+		queue.add(options);
+		return user.getEmail();
+	}
+
+	@RequestMapping("/resource/csvmail.do")
+	@ResponseBody
+	public void getCSV(HttpServletRequest request) throws IOException, AppException {
+		String toName = CommonWebUtil.getParameter(request, "toName");
+		String toEmail = CommonWebUtil.getParameter(request, "toEmail");
+		contactsManager.generateCSVMail(toEmail, toName);	
 	}
 
 	@RequestMapping("/connect/data.do")
@@ -262,7 +293,7 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.VIEW_INDEX;
 	}
 
-	@RequestMapping({"/contact/createForm.do","/connect/createForm.do"})
+	@RequestMapping({ "/contact/createForm.do", "/connect/createForm.do" })
 	public String getCreateForm(HttpServletRequest request, Model model) {
 		log.debug("Presenting create-Contact form view.");
 		addToNavigationTrail("Create", false, request, false, false);
@@ -339,7 +370,7 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.SUCCESS_PAGE;
 	}
 
-	@RequestMapping({"/contact/gridUpdate.do","/connect/gridUpdate.do"})
+	@RequestMapping({ "/contact/gridUpdate.do", "/connect/gridUpdate.do" })
 	@ResponseBody
 	public Boolean updateContactFromGrid(HttpServletRequest request)
 			throws AppException {
@@ -459,7 +490,7 @@ public class ContactsController extends AbstractController {
 					con.setOtherAddress(otherAddress);
 				if (!StringUtils.isBlank(notes))
 					con.setNotes(notes);
-				contactsManager.updateContact(con,dataContext);
+				contactsManager.updateContact(con, dataContext);
 				contactsManager.updateContactAndExecuteWorkflow(con, userEmail,
 						dataContext);
 			}
@@ -473,19 +504,19 @@ public class ContactsController extends AbstractController {
 	public @ResponseBody
 	void mailToSelectedContacts(HttpServletRequest request)
 			throws AppException, IOException {
-		//List<Key> contactKeyList = getContactKeyList(request);
+		// List<Key> contactKeyList = getContactKeyList(request);
 
 		contactsManager.sendMailToSelectedContacts();
 	}
 
-	@RequestMapping({"/contact/delete.do"})
+	@RequestMapping({ "/contact/delete.do" })
 	public void delete(Model model, HttpServletRequest request,
 			HttpServletResponse response) throws AppException, IOException {
 		deleteContacts(model, request);
 		response.sendRedirect("/contacts.do");
 	}
-	
-	@RequestMapping({"/connect/delete.do"})
+
+	@RequestMapping({ "/connect/delete.do" })
 	@ResponseBody
 	public String deleteConnect(Model model, HttpServletRequest request,
 			HttpServletResponse response) throws AppException, IOException {
@@ -550,43 +581,42 @@ public class ContactsController extends AbstractController {
 	@RequestMapping("/contact/duplicate.do")
 	public String makeDuplicateContact(HttpServletRequest request, Model model,
 			HttpServletResponse response) throws AppException, IOException {
-		//String id = request.getParameter("contactIdList");
+		// String id = request.getParameter("contactIdList");
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		String domain = CommonWebUtil.getDomain(user.getEmail());
-		DataContext dataContext = (DataContext) request.getSession().getAttribute(
-				UICommonConstants.DATA_CONTEXT);
+		DataContext dataContext = (DataContext) request.getSession()
+				.getAttribute(UICommonConstants.DATA_CONTEXT);
 		String redirectPage = "/contacts.do";
-		 doDuplicate(request, response, model, domain, dataContext, redirectPage);
+		doDuplicate(request, response, model, domain, dataContext, redirectPage);
 
-		 return showContacts(request, model, response);
+		return showContacts(request, model, response);
 	}
 
 	@RequestMapping("/connect/duplicate.do")
 	@ResponseBody
-	public String makeDuplicateConnectContact(HttpServletRequest request, Model model,
-			HttpServletResponse response) throws AppException, IOException {
+	public String makeDuplicateConnectContact(HttpServletRequest request,
+			Model model, HttpServletResponse response) throws AppException,
+			IOException {
 		String domain = request.getParameter("domainName");
-		DataContext dataContext = (DataContext) request.getSession().getAttribute(
-				UICommonConstants.DATA_CONTEXT);
+		DataContext dataContext = (DataContext) request.getSession()
+				.getAttribute(UICommonConstants.DATA_CONTEXT);
 		String redirectPage = "/contacts.do";
 		doDuplicate(request, response, model, domain, null, redirectPage);
-return "success";
+		return "success";
 	}
-	
+
 	private void doDuplicate(HttpServletRequest request,
-			HttpServletResponse response,Model model, String domain,
+			HttpServletResponse response, Model model, String domain,
 			DataContext dataContext, String redirectPage) throws AppException,
 			IOException {
-		List<Key> contactKeyList = getContactKeyList(request);		
+		List<Key> contactKeyList = getContactKeyList(request);
 		if (contactKeyList != null && !contactKeyList.isEmpty()) {
-			
-			contactsManager.duplicateContactandExecuteWorkflow(
-					contactKeyList,
-					dataContext , domain);
+
+			contactsManager.duplicateContactandExecuteWorkflow(contactKeyList,
+					dataContext, domain);
 		}
 
-		
 	}
 
 	private List<Key> getContactKeyList(HttpServletRequest request) {
@@ -610,7 +640,7 @@ return "success";
 		return contactKeyList;
 	}
 
-	@RequestMapping({"/contact/export.do","/connect/export.do"})
+	@RequestMapping({ "/contact/export.do", "/connect/export.do" })
 	public void exportContacts(Model model, HttpServletRequest request,
 			HttpServletResponse response) throws AppException, IOException {
 		log.debug("Presenting Student Form view.");
@@ -644,7 +674,7 @@ return "success";
 	@Autowired
 	IPathshalaQueueService iPathshalaQueueService;
 
-	@RequestMapping({"/contact/import.do","/connect/import.do"})
+	@RequestMapping({ "/contact/import.do", "/connect/import.do" })
 	public String importContacts(HttpServletRequest request, Model model,
 			HttpServletResponse response) throws AppException, IOException {
 		BlobstoreService blobstoreService = BlobstoreServiceFactory
@@ -689,83 +719,63 @@ return "success";
 
 	}
 
-	/*private void doSomeThing(ArrayList<ArrayList<String>> storedValueList)
-			throws IOException {
-		FileService fileService = FileServiceFactory.getFileService();
-		AppEngineFile file = fileService.createNewBlobFile("text/csv");
-		boolean lock = false;
-		FileWriteChannel writeChannel = fileService
-				.openWriteChannel(file, lock);
-		PrintWriter out = new PrintWriter(Channels.newWriter(writeChannel,
-				"UTF-8"));
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < storedValueList.size(); i++) {
-			ArrayList<String> row = storedValueList.get(i);
-			String firstname = row.get(0);
-			if (firstname.equals("&&&&")) {
-				break;
-			}
-			if (i != 0) {
-				for (int j = 0; j < 16; j++) {
+	/*
+	 * private void doSomeThing(ArrayList<ArrayList<String>> storedValueList)
+	 * throws IOException { FileService fileService =
+	 * FileServiceFactory.getFileService(); AppEngineFile file =
+	 * fileService.createNewBlobFile("text/csv"); boolean lock = false;
+	 * FileWriteChannel writeChannel = fileService .openWriteChannel(file,
+	 * lock); PrintWriter out = new PrintWriter(Channels.newWriter(writeChannel,
+	 * "UTF-8")); StringBuffer sb = new StringBuffer(); for (int i = 0; i <
+	 * storedValueList.size(); i++) { ArrayList<String> row =
+	 * storedValueList.get(i); String firstname = row.get(0); if
+	 * (firstname.equals("&&&&")) { break; } if (i != 0) { for (int j = 0; j <
+	 * 16; j++) {
+	 * 
+	 * if (row.size() > j && !StringUtils.isEmpty(row.get(j))) {
+	 * sb.append((row.get(j))); } else { sb.append("-"); }
+	 * 
+	 * if (j + 1 != 16) { sb.append("\t"); } }
+	 * 
+	 * sb.append("\n"); }
+	 * 
+	 * } out.close(); String path = file.getFullPath(); file = new
+	 * AppEngineFile(path); lock = true; writeChannel =
+	 * fileService.openWriteChannel(file, lock);
+	 * writeChannel.write(ByteBuffer.wrap(sb.toString().getBytes("UTF-8")));
+	 * writeChannel.closeFinally(); lock = false; // Let other people read at
+	 * the same time FileReadChannel readChannel =
+	 * fileService.openReadChannel(file, false);
+	 * 
+	 * // Again, different standard Java ways of reading from the channel.
+	 * BufferedReader reader = new BufferedReader(Channels.newReader(
+	 * readChannel, "UTF-8")); reader.readLine(); // line =
+	 * "The woods are lovely dark and deep."
+	 * 
+	 * readChannel.close();
+	 * 
+	 * // Now read from the file using the Blobstore API BlobKey blobKey =
+	 * fileService.getBlobKey(file); importData(blobKey.getKeyString()); }
+	 */
 
-					if (row.size() > j && !StringUtils.isEmpty(row.get(j))) {
-						sb.append((row.get(j)));
-					} else {
-						sb.append("-");
-					}
-
-					if (j + 1 != 16) {
-						sb.append("\t");
-					}
-				}
-
-				sb.append("\n");
-			}
-
-		}
-		out.close();
-		String path = file.getFullPath();
-		file = new AppEngineFile(path);
-		lock = true;
-		writeChannel = fileService.openWriteChannel(file, lock);
-		writeChannel.write(ByteBuffer.wrap(sb.toString().getBytes("UTF-8")));
-		writeChannel.closeFinally();
-		lock = false; // Let other people read at the same time
-		FileReadChannel readChannel = fileService.openReadChannel(file, false);
-
-		// Again, different standard Java ways of reading from the channel.
-		BufferedReader reader = new BufferedReader(Channels.newReader(
-				readChannel, "UTF-8"));
-		reader.readLine();
-		// line = "The woods are lovely dark and deep."
-
-		readChannel.close();
-
-		// Now read from the file using the Blobstore API
-		BlobKey blobKey = fileService.getBlobKey(file);
-		importData(blobKey.getKeyString());
-	}*/
-
-	/*private void importData(String blobKey) {
-		TaskOptions task = buildStartJob("Import Shared Contacts");
-		addJobParam(task,
-				"mapreduce.mapper.inputformat.blobstoreinputformat.blobkeys",
-				blobKey);
-
-		
-		 * String id = getGroupId(); addJobParam(task,
-		 * "mapreduce.mapper.inputformat.datastoreinputformat.entitykind", id);
-		 * 
-		 * 
-		 * addJobParam(task,
-		 * "mapreduce.mapper.inputformat.datastoreinputformat.useremail",
-		 * 
-		 * // contactsManager.getUserEamil());
-		 
-
-		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(task);
-	}*/
+	/*
+	 * private void importData(String blobKey) { TaskOptions task =
+	 * buildStartJob("Import Shared Contacts"); addJobParam(task,
+	 * "mapreduce.mapper.inputformat.blobstoreinputformat.blobkeys", blobKey);
+	 * 
+	 * 
+	 * String id = getGroupId(); addJobParam(task,
+	 * "mapreduce.mapper.inputformat.datastoreinputformat.entitykind", id);
+	 * 
+	 * 
+	 * addJobParam(task,
+	 * "mapreduce.mapper.inputformat.datastoreinputformat.useremail",
+	 * 
+	 * // contactsManager.getUserEamil());
+	 * 
+	 * 
+	 * Queue queue = QueueFactory.getDefaultQueue(); queue.add(task); }
+	 */
 
 	/*
 	 * private String getGroupId() {
@@ -793,28 +803,20 @@ return "success";
 	 * return groupId; }
 	 */
 
-/*	private static TaskOptions buildStartJob(String jobName) {
-		return TaskOptions.Builder.withUrl("/mapreduce/command/start_job")
-				// .method(Method.POST)
-				.header("X-Requested-With", "XMLHttpRequest")
-				.param("name", jobName);
-	}
-
-	private static void addJobParam(TaskOptions task, String paramName,
-			String paramValue) {
-		task.param("mapper_params." + paramName, paramValue);
-	}
-
-	private String getStringValue(Cell cell) {
-		String result = "&&&&";
-		if (cell != null) {
-			String value = cell.getStringCellValue();
-			if (value != null && !value.trim().equals("")) {
-				result = value;
-			}
-		}
-		return result;
-	}*/
+	/*
+	 * private static TaskOptions buildStartJob(String jobName) { return
+	 * TaskOptions.Builder.withUrl("/mapreduce/command/start_job") //
+	 * .method(Method.POST) .header("X-Requested-With", "XMLHttpRequest")
+	 * .param("name", jobName); }
+	 * 
+	 * private static void addJobParam(TaskOptions task, String paramName,
+	 * String paramValue) { task.param("mapper_params." + paramName,
+	 * paramValue); }
+	 * 
+	 * private String getStringValue(Cell cell) { String result = "&&&&"; if
+	 * (cell != null) { String value = cell.getStringCellValue(); if (value !=
+	 * null && !value.trim().equals("")) { result = value; } } return result; }
+	 */
 
 	@Autowired
 	private WorkflowManager workflowManager;
@@ -895,8 +897,8 @@ return "success";
 		String email = getCurrentUser(request).getEmail();
 		DomainGroup domainGroup = domainGroupManager
 				.getDomainGroupByDomainName(CommonWebUtil.getDomain(email));
-		com.netkiller.entity.UserSync userSync = contactsManager
-				.getUserSync(email, date);
+		com.netkiller.entity.UserSync userSync = contactsManager.getUserSync(
+				email, date);
 		String message = null;
 		if (userSync == null
 				|| (userSync != null && !userSync.getSyncDate().equals(
@@ -956,7 +958,8 @@ return "success";
 		return user;
 	}
 
-	@RequestMapping({"/contact/getSelectedContactData.do","/connect/getSelectedContactData.do"})
+	@RequestMapping({ "/contact/getSelectedContactData.do",
+			"/connect/getSelectedContactData.do" })
 	public @ResponseBody
 	List<Map<String, Object>> getMapOfSelectedContacts(
 			HttpServletRequest request, Model model) throws AppException {

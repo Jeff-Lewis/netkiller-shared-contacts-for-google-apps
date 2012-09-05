@@ -9,8 +9,8 @@
 
 	<mvc:annotation-driven />
 	<!-- Configures the @Controller programming model -->
-	<context:component-scan base-package="com.metacube.ipathshala.controller" />
-	<context:component-scan base-package="com.metacube.ipathshala.util" />
+	<!-- <context:component-scan base-package="com.netkiller.controller" />
+	<context:component-scan base-package="com.netkiller.util" /> -->
 	<!-- Forwards requests to the "/" resource to the "welcome" view
 		Note- This is no more required, I am trapping this in Homepagecontroller 
 	<mvc:view-controller path="/index.do" view-name="index"/>
@@ -26,11 +26,11 @@
 			<property name="defaultErrorView" value="common_error" />
 	</bean>  -->
 	
-	 <bean class="com.metacube.ipathshala.exception.handler.IpathshalaExceptionResolver">		
+	 <bean class="com.netkiller.exception.handler.IpathshalaExceptionResolver">		
 			<property name="defaultErrorView" value="common_error" />
 	</bean> 
 		
-	<bean id="validator" class="com.metacube.ipathshala.view.validators.EntityValidator" scope="singleton" lazy-init="true">
+	<bean id="validator" class="com.netkiller.view.validators.EntityValidator" scope="singleton" lazy-init="true">
 		<constructor-arg>
 			<value>validator-definition.xml</value>
 		</constructor-arg>

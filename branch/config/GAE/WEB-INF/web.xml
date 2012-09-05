@@ -7,7 +7,7 @@
 	<context-param>
     	<param-name>contextConfigLocation</param-name>
     	<param-value>
-          /WEB-INF/spring/ipathshala-db.xml /WEB-INF/spring/ipathshala-app-context.xml /WEB-INF/spring/ipathshala-gadgets.xml /WEB-INF/spring/ipathshala-security.xml 
+          /WEB-INF/spring/ipathshala-servlet.xml /WEB-INF/spring/ipathshala-db.xml /WEB-INF/spring/ipathshala-app-context.xml /WEB-INF/spring/ipathshala-gadgets.xml /WEB-INF/spring/ipathshala-security.xml 
       	</param-value>
   	</context-param>
     <listener>
@@ -16,13 +16,13 @@
 <!-- 	  	 <listener>
 	    <description>sessionListener</description>
 	    <listener-class>
-	       com.metacube.ipathshala.listener.SessionListener
+	       com.netkiller.listener.SessionListener
 	    </listener-class>
 	</listener> -->
 	<!-- Authenticate the request for ipathshala resources -->
 	<!-- <filter>
 		<filter-name>authenticationFilter</filter-name>
-		<filter-class>com.metacube.ipathshala.filter.AuthenticationFilter</filter-class>
+		<filter-class>com.netkiller.filter.AuthenticationFilter</filter-class>
 		<init-param>
 			<param-name>skipResources</param-name>
 			/async/task is temporarly skiped.
@@ -55,7 +55,7 @@
 			<param-name>skipResources</param-name>
 			<param-value>/_ah/logout,/_ah/login,/error/,/async/task,/gadget/,/resource/,/connect/,/appstats/</param-value>
 		</init-param>
-    	<filter-class>com.metacube.ipathshala.filter.AuthorisationFilter</filter-class>
+    	<filter-class>com.netkiller.filter.AuthorisationFilter</filter-class>
   	</filter>
 
   	<filter-mapping>
@@ -146,7 +146,7 @@
 	
 	<servlet>
 	<servlet-name>workflowCacheRegisterServlet</servlet-name>
-	<servlet-class>com.metacube.ipathshala.core.InitWorkflowCacheServlet</servlet-class>
+	<servlet-class>com.netkiller.core.InitWorkflowCacheServlet</servlet-class>
 	<load-on-startup>1</load-on-startup>
 	</servlet><!--
 	
@@ -167,7 +167,7 @@
     
     --><servlet>
 	<servlet-name>cacheRegisterServlet</servlet-name>
-	<servlet-class>com.metacube.ipathshala.servlet.ApplicationCacheServlet</servlet-class>
+	<servlet-class>com.netkiller.servlet.ApplicationCacheServlet</servlet-class>
 	<load-on-startup>1</load-on-startup>
 	</servlet>
     
@@ -199,7 +199,7 @@
 	
 	  <servlet>
 	  	<servlet-name>OpenIdServlet</servlet-name>
-	    <servlet-class>com.metacube.ipathshala.servlets.OpenIdServlet</servlet-class>
+	    <servlet-class>com.netkiller.servlets.OpenIdServlet</servlet-class>
 	    <init-param>
 	    	<param-name>realm</param-name>
 	        <param-value></param-value>

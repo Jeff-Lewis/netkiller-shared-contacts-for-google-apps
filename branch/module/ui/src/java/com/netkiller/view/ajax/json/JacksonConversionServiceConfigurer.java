@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAda
  * 
  * @author vnarang
  */
-@Component
+//@Component
 public class JacksonConversionServiceConfigurer implements BeanPostProcessor {
 
 	private final ConversionService conversionService;

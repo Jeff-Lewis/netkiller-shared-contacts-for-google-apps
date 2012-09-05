@@ -1,6 +1,8 @@
 package com.netkiller.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -70,6 +73,12 @@ import com.netkiller.entity.DomainGroup;
 import com.netkiller.entity.UserContact;
 import com.netkiller.entity.Workflow;
 import com.netkiller.entity.metadata.EntityMetaData;
+import com.netkiller.mail.MailAddress;
+import com.netkiller.mail.MailAttachment;
+import com.netkiller.mail.MailMessage;
+import com.netkiller.mail.Recipient;
+import com.netkiller.mail.RecipientType;
+import com.netkiller.mail.impl.GoogleMailService;
 import com.netkiller.security.DomainConfig;
 import com.netkiller.security.acl.Permission.PermissionType;
 import com.netkiller.util.AppLogger;
@@ -98,6 +107,8 @@ public class ContactsService extends AbstractService {
 	@Autowired
 	@Qualifier("ContactsMetaData")
 	private EntityMetaData entityMetaData;
+	
+	@Autowired private GoogleMailService mailService;
 
 	@Autowired
 	private ContactsDao contactsDao;
@@ -390,6 +401,55 @@ public class ContactsService extends AbstractService {
 		return contactsDao.get(key);
 	}
 
+	public void generateCSVMail( String toEmail, String toName) throws AppException{
+		 ByteArrayOutputStream out = new ByteArrayOutputStream();
+		 StringBuffer csvData = new StringBuffer();
+		 csvData.append( "ID,FirstName,LastName,FullName,WorkEmail,WorkPhone,WorkAddress\n");
+		 List<Contact> contacts = (List<Contact>) getAllGlobalFilteredContacts(null);
+			for (Contact entry : contacts) {
+				 csvData.append(entry.getKey().getId() + ",");
+				 csvData.append(entry.getFirstName() + ",");
+				 csvData.append(entry.getLastName() + ",");
+				 csvData.append(entry.getFullName() + ",");
+				 csvData.append(entry.getWorkEmail() + ",");
+				 csvData.append(entry.getWorkPhone() + ",");
+				 csvData.append(entry.getWorkAddress() + "\n");				 
+			}
+		 
+			String domain = CommonWebUtil.getDomain(toEmail);
+			sendMail(toEmail, toName, "Admin", domainAdminService.getDomainAdminByDomainName(domain ).getAdminEmail(), csvData);
+			 
+		 
+	}
+	
+	public void sendMail( String toEmail, String toName,String fromName, String fromEmail, StringBuffer sb) throws  AppException{
+		byte[] byteArray;
+		try {
+			byteArray = sb.toString().getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw  new AppException(e.getMessage());
+		}
+		MailMessage mailMessage = new MailMessage();
+		List<Recipient> recipients = new ArrayList<Recipient>();
+		Recipient recipient = new Recipient();
+		MailAddress recipientMailAddress = new MailAddress(toName, toEmail);
+		recipient.setMailAddress(recipientMailAddress );
+		recipient.setRecipientType(RecipientType.TO);
+		recipients.add(recipient);
+		mailMessage.setRecipients(recipients );
+		List<MailAttachment> attachments = new ArrayList<MailAttachment>();
+		MailAttachment attachment = new MailAttachment();
+		attachments.add(attachment);
+		attachment.setFile( ArrayUtils.toObject(byteArray));
+		attachment.setFilename("Netkiller-shared.csv");
+		mailMessage.setSubject("CSV Data" );
+		mailMessage.setAttachments(attachments);		
+		mailMessage.setSender(new MailAddress(fromName, fromEmail));
+		mailService.sendMail(mailMessage);
+	}
+	
 	public void exportContacts(DataContext dataContext,
 			ServletOutputStream outputStream) throws AppException {
 		List<Contact> contacts = (List<Contact>) getAllGlobalFilteredContacts(dataContext);

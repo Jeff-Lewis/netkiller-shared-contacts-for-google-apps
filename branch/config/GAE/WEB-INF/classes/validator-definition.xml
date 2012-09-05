@@ -19,90 +19,90 @@
 	<global>
 
 		<validator name="alldayevent"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="isAllDayEvent" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.required" />
 
 		<validator name="int"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="validateInt" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.int" />
 
 		<validator name="double"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="validateDouble" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.int" />
 
 		<validator name="required"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="validateRequired" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.required" />
 
 		<validator name="long"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="validateLong" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.long" />
 
 		<validator name="email"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="validateEmail" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.email" />
 
 		<validator name="daterange"
-			classname="com.metacube.ipathshala.view.validators.DateValidator"
+			classname="com.netkiller.view.validators.DateValidator"
 			method="validateDates" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.datesrangeinvalid" />
 
 		<validator name="workingDaysForTerm"
-			classname="com.metacube.ipathshala.view.validators.WorkingDaysValidator"
+			classname="com.netkiller.view.validators.WorkingDaysValidator"
 			method="validateWorkingDaysForEvent" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.workingDaysinvalid" />
 
 		<validator methodParams="java.lang.Object,org.apache.commons.validator.Field"
-			name="endDateValidator" classname="com.metacube.ipathshala.view.validators.DateValidator"
+			name="endDateValidator" classname="com.netkiller.view.validators.DateValidator"
 			msg="errors.enddateinvalid" method="validateEndDate">
 		</validator>
 
 		<validator name="autocomplete"
-			classname="com.metacube.ipathshala.view.validators.AutoCompleteValidator"
+			classname="com.netkiller.view.validators.AutoCompleteValidator"
 			method="validateAutoComplete" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.autocomplete" />
 
 		<validator name="userId"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="validateUserId" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.userId" />
 
 		<validator name="minLength"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="validateMinimumLength" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.minLength" />
 
 		<validator name="defaultAcademicYear"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="validateDefaultAcademicYear" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.defaultAcademicYear" />
 
 		<validator name="primaryRequired"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="validatePrimaryContact" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.primaryContacy" />
 
 		<validator name="endDateValidatorForEvent"
 			methodParams="java.lang.Object,org.apache.commons.validator.Field"
-			classname="com.metacube.ipathshala.view.validators.DateValidatorForEvent"
+			classname="com.netkiller.view.validators.DateValidatorForEvent"
 			msg="errors.enddateinvalid" method="validateEndDateForEvent" />
 
 		<!-- <constant> <constant-name>userIdLength</constant-name> <constant-value>6</constant-value> 
 			</constant> -->
 
 		<validator name="isNumericScale"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="isNumericScale" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.required" />
 
 		<validator name="isNotNumericScale"
-			classname="com.metacube.ipathshala.view.validators.CustomTypeValidator"
+			classname="com.netkiller.view.validators.CustomTypeValidator"
 			method="isNotNumericScale" methodParams="java.lang.Object,org.apache.commons.validator.Field"
 			msg="errors.required" />
 

@@ -36,7 +36,7 @@ import com.netkiller.util.MailUtil;
  * 
  */
 
-@Component("GoogleMailService")
+@Component
 public class GoogleMailService implements MailService {
 
 	private static final AppLogger log = AppLogger.getLogger(GoogleMailService.class);

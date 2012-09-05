@@ -33,7 +33,7 @@ import com.netkiller.service.conversion.ConversionResource;
 import com.netkiller.service.conversion.ConversionService;
 import com.netkiller.service.conversion.ConversionType;
 
-@Component("DocumentConversionService")
+//@Component("DocumentConversionService")
 public class DocumentConversionService implements ConversionService {
 	public static final String APP_NAME = "metacube-iPathshala-1.1";
 	private String domain;

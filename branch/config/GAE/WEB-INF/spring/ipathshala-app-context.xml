@@ -5,21 +5,21 @@
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<context:annotation-config />
-	<context:component-scan base-package="com.metacube.ipathshala.manager" />
-	<context:component-scan base-package="com.metacube.ipathshala.service" />
-	<context:component-scan base-package="com.metacube.ipathshala.entity.metadata" />
-	<context:component-scan base-package="com.metacube.ipathshala.core" />
-	<context:component-scan base-package="com.metacube.ipathshala.dataupload" />
+	<context:component-scan base-package="com.netkiller" />
+	<!-- <context:component-scan base-package="com.netkiller.service" />
+	<context:component-scan base-package="com.netkiller.entity.metadata" />
+	<context:component-scan base-package="com.netkiller.core" />
+	<context:component-scan base-package="com.netkiller.search" />
 	<context:component-scan
-		base-package="com.metacube.ipathshala.dataupload.entityprocessor" />
-	<context:component-scan base-package="com.metacube.ipathshala.cache" />
+		base-package="com.netkiller.dataupload.entityprocessor" />
+	<context:component-scan base-package="com.netkiller.cache" /> -->
 
-	<bean name="googleMailService" class="com.metacube.ipathshala.mail.impl.GoogleMailService">
+	<bean name="googleMailService" class="com.netkiller.mail.impl.GoogleMailService">
 		<property name="velocityEngine" ref="velocityEngine" />
 	</bean>
 
 	<bean name="templateServiceImpl"
-		class="com.metacube.ipathshala.service.template.impl.TemplateServiceImpl">
+		class="com.netkiller.service.template.impl.TemplateServiceImpl">
 		<property name="velocityEngine" ref="velocityEngine" />
 	</bean>
 
@@ -39,7 +39,7 @@
 	</bean>
 
 	<bean name="googleDomainService" id="googleDomainService"
-		class="com.metacube.ipathshala.service.GoogleDomainService"
+		class="com.netkiller.service.GoogleDomainService"
 		init-method="init">
 		<property name="domainName" value="${google.app.domain}" />
 		<property name="domainAdminEmail" value="${google.app.domain.admin}" />
@@ -47,7 +47,7 @@
 	</bean>
 
 	<bean name="appCacheConfig" id="appCacheConfig"
-		class="com.metacube.ipathshala.cache.AppCacheConfig">
+		class="com.netkiller.cache.AppCacheConfig">
 		<property name="keyCache" ref="keyCache" />
 		<property name="entityCacheMap">
 			<map>
@@ -67,39 +67,39 @@
 		</property>
 	</bean>
 
-	<bean id="studentCache" class="com.metacube.ipathshala.cache.impl.StudentCache">
+	<bean id="studentCache" class="com.netkiller.cache.impl.StudentCache">
 		<constructor-arg value="Student" />
 	</bean>
-	<bean id="parentCache" class="com.metacube.ipathshala.cache.impl.ParentCache">
+	<bean id="parentCache" class="com.netkiller.cache.impl.ParentCache">
 		<constructor-arg value="Parent" />
 	</bean>
-	<bean id="keyCache" class="com.metacube.ipathshala.cache.impl.KeyCache">
+	<bean id="keyCache" class="com.netkiller.cache.impl.KeyCache">
 		<constructor-arg value="Key" />
 	</bean>
 
 	<!-- This is test configuration for Workflow <bean id="workflowTask1" name="workflowTask1" 
-		class="com.metacube.ipathshala.workflow.impl.task.TestWorkflowTask1" scope="prototype" 
+		class="com.netkiller.workflow.impl.task.TestWorkflowTask1" scope="prototype" 
 		> <property name="taskName" value="task-1"></property> <property name="retryCount" 
 		value="3"></property> </bean> <bean id="workflowTask2" name="workflowTask2" 
-		class="com.metacube.ipathshala.workflow.impl.task.TestWorkflowTask2" scope="prototype" 
+		class="com.netkiller.workflow.impl.task.TestWorkflowTask2" scope="prototype" 
 		> <property name="taskName" value="task-2"></property> <property name="retryCount" 
 		value="3"></property> </bean> <bean id="workflowTask3" name="workflowTask3" 
-		class="com.metacube.ipathshala.workflow.impl.task.TestWorkflowTask3" scope="prototype"> 
+		class="com.netkiller.workflow.impl.task.TestWorkflowTask3" scope="prototype"> 
 		<property name="taskName" value="task-3"></property> <property name="retryCount" 
 		value="3"></property> <property name="actualRetryDone" value="0"></property> 
-		</bean> <bean id="workflowProcessor" name="workflowProcessor" class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor" 
+		</bean> <bean id="workflowProcessor" name="workflowProcessor" class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor" 
 		scope="prototype"> <property name="workflowTasks"> <list> <ref bean="workflowTask1"/> 
 		<ref bean="workflowTask2"/> <ref bean="workflowTask3"/> </list> </property> 
 		</bean> -->
 	<bean id="loadCacheTask" name="loadCacheTask"
-		class="com.metacube.ipathshala.workflow.impl.task.LoadCacheTask"
+		class="com.netkiller.workflow.impl.task.LoadCacheTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="Load-Cache-Task"></property>
 		<property name="retryCount" value="1"></property>
 	</bean>
 
 	<bean id="loadCacheWorkflowProcessor" name="loadCacheWorkflowProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -110,14 +110,14 @@
 
 
 	<bean id="setimporttask" name="setimporttask"
-		class="com.metacube.ipathshala.workflow.impl.task.SetImportTask"
+		class="com.netkiller.workflow.impl.task.SetImportTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="set-import-task"></property>
 		<property name="retryCount" value="1"></property>
 	</bean>
 
 	<bean id="setImportWorkflowProcessor" name="setImportWorkflowProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -127,14 +127,14 @@
 	</bean>
 
 	<bean id="valueimporttask" name="valueimporttask"
-		class="com.metacube.ipathshala.workflow.impl.task.ValueImportTask"
+		class="com.netkiller.workflow.impl.task.ValueImportTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="value-import-task"></property>
 		<property name="retryCount" value="1"></property>
 	</bean>
 
 	<bean id="valueImportWorkflowProcessor" name="valueImportWorkflowProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -144,14 +144,14 @@
 	</bean>
 
 	<bean id="datauploadtask" name="datauploadtask"
-		class="com.metacube.ipathshala.workflow.impl.task.DataUploadTask"
+		class="com.netkiller.workflow.impl.task.DataUploadTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="data-upload-task"></property>
 		<property name="retryCount" value="1"></property>
 	</bean>
 
 	<bean id="dataImportWorkflowProcessor" name="dataImportWorkflowProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -168,21 +168,21 @@
 
 
 
-	<bean id="jaxbEntityPackageConfig" class="com.metacube.ipathshala.core.JAXBEntityPackageConfig"
+	<bean id="jaxbEntityPackageConfig" class="com.netkiller.core.JAXBEntityPackageConfig"
 		lazy-init="true">
 		<property name="entityTypePackageMap">
 			<map>
 				<entry key="SET">
-					<value>com.metacube.ipathshala.core.jaxb.set</value>
+					<value>com.netkiller.core.jaxb.set</value>
 				</entry>
 				<entry key="VALUE">
-					<value>com.metacube.ipathshala.core.jaxb.value</value>
+					<value>com.netkiller.core.jaxb.value</value>
 				</entry>
 			</map>
 		</property>
 	</bean>
 
-	<bean id="entityWorkflowConfig" class="com.metacube.ipathshala.core.ImportEntityWorkflowConfig"
+	<bean id="entityWorkflowConfig" class="com.netkiller.core.ImportEntityWorkflowConfig"
 		lazy-init="true">
 		<property name="entityTypeWorkflowNameMap">
 			<map>
@@ -207,21 +207,21 @@
 		<property name="maxUploadSize" value="5024000" />
 	</bean>
 
-	<!-- <bean id="SMSService" class="com.metacube.ipathshala.service.SMSService"> 
-		<property name="sender" ref="smsSender" /> </bean> <bean id="smsSender" class="com.metacube.ipathshala.service.sms.impl.SMSSenderSMSLaneImpl" 
+	<!-- <bean id="SMSService" class="com.netkiller.service.SMSService"> 
+		<property name="sender" ref="smsSender" /> </bean> <bean id="smsSender" class="com.netkiller.service.sms.impl.SMSSenderSMSLaneImpl" 
 		init-method="init"> <property name="user" value="${sms.sender.user}" /> <property 
 		name="password" value="${sms.sender.passwd}" /> <property name="senderID" 
 		value="${sms.sender.senderid}" /> <property name="flashInput" value="${sms.sender.flashInput}" 
 		/> </bean> -->
 
 	<bean id="bulkContactDeleteTask" name="bulkContactDeleteTask"
-		class="com.metacube.ipathshala.workflow.impl.task.BulkContactDeleteTask"
+		class="com.netkiller.workflow.impl.task.BulkContactDeleteTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="Bulk-Contact-Delete-Task"></property>
 		<property name="retryCount" value="3"></property>
 	</bean>
 	<bean id="bulkdeleteContactWorkflowProcessor" name="bulkdeleteContactWorkflowProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -231,13 +231,13 @@
 	</bean>
 
 	<bean id="addContactForAllDomainUsersTask" name="addContactForAllDomainUsersTask"
-		class="com.metacube.ipathshala.workflow.impl.task.AddContactForAllDomainUsersTask"
+		class="com.netkiller.workflow.impl.task.AddContactForAllDomainUsersTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="Add-ContactForAllDomainUsers-Task"></property>
 		<property name="retryCount" value="3"></property>
 	</bean>
 	<bean id="addContactForAllDomainUsersProcessor" name="addContactForAllDomainUsersProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -248,13 +248,13 @@
 	
 	
 	<bean id="bulkContactUpdateWorkflowTask" name="bulkContactUpdateWorkflowTask"
-		class="com.metacube.ipathshala.workflow.impl.task.BulkContactUpdateWorkflowTask"
+		class="com.netkiller.workflow.impl.task.BulkContactUpdateWorkflowTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="Add-ContactForAllDomainUsers-Task"></property>
 		<property name="retryCount" value="3"></property>
 	</bean>
 	<bean id="bulkUpdateContactWorkflowProcessor" name="bulkUpdateContactWorkflowProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -265,14 +265,14 @@
 
 
 <bean id="contactImportTask" name="contactImportTask"
-		class="com.metacube.ipathshala.workflow.impl.task.ContactImportTask"
+		class="com.netkiller.workflow.impl.task.ContactImportTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="Contact-Import"></property>
 		<property name="retryCount" value="3"></property>
 	</bean>
 	
 	<bean id="contactImportWorkflowProcessor" name="contactImportWorkflowProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -283,14 +283,14 @@
 
 
 <bean id="connectContactTask" name="connectContactTask"
-		class="com.metacube.ipathshala.workflow.impl.task.ConnectContactTask"
+		class="com.netkiller.workflow.impl.task.ConnectContactTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="Connect-Contact"></property>
 		<property name="retryCount" value="3"></property>
 	</bean>
 	
 	<bean id="connectContactWorkflowProcessor" name="connectContactWorkflowProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -302,13 +302,13 @@
 
 
 	<bean id="addGroupToAllContactsForDomainTask" name="addGroupToAllContactsForDomainTask"
-		class="com.metacube.ipathshala.workflow.impl.task.AddGroupToAllContactsForDomainTask"
+		class="com.netkiller.workflow.impl.task.AddGroupToAllContactsForDomainTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="Add-ContactForAllDomainUsers-Task"></property>
 		<property name="retryCount" value="3"></property>
 	</bean>
 	<bean id="addGroupToAllContactForDomainProcessor" name="addGroupToAllContactForDomainProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -320,13 +320,13 @@
 
 
 	<bean id="syncUserContactsTask" name="syncUserContactsTask"
-		class="com.metacube.ipathshala.workflow.impl.task.SyncUserContactsTask"
+		class="com.netkiller.workflow.impl.task.SyncUserContactsTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="Sync-UserContacts-Task"></property>
 		<property name="retryCount" value="3"></property>
 	</bean>
 	<bean id="syncUserContactsWorkflowProcessor" name="syncUserContactsWorkflowProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -337,13 +337,13 @@
 	
 
 	<bean id="bulkContactDuplicateTask" name="bulkContactDuplicateTask"
-		class="com.metacube.ipathshala.workflow.impl.task.BulkContactDuplicateTask"
+		class="com.netkiller.workflow.impl.task.BulkContactDuplicateTask"
 		scope="prototype" lazy-init="true">
 		<property name="taskName" value="Bulk-Contact-Duplicate-Task"></property>
 		<property name="retryCount" value="3"></property>
 	</bean>
 	<bean id="bulkduplicateContactWorkflowProcessor" name="bulkduplicateContactWorkflowProcessor"
-		class="com.metacube.ipathshala.workflow.impl.processor.WorkflowSequenceProcessor"
+		class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor"
 		scope="prototype" lazy-init="true">
 		<property name="workflowTasks">
 			<list>
@@ -353,11 +353,11 @@
 	</bean>
 
 	<!-- Spring managed filter -->
-	<bean name="authorisationFilter" class="com.metacube.ipathshala.filter.AuthorisationFilter">
+	<bean name="authorisationFilter" class="com.netkiller.filter.AuthorisationFilter">
 	</bean>
-	<bean name="authenticationFilter" class="com.metacube.ipathshala.filter.AuthenticationFilter">
+	<bean name="authenticationFilter" class="com.netkiller.filter.AuthenticationFilter">
 	</bean>
-	<bean name="initializationFilter" class="com.metacube.ipathshala.filter.InitializationFilter">
+	<bean name="initializationFilter" class="com.netkiller.filter.InitializationFilter">
 	</bean>
 
 </beans>

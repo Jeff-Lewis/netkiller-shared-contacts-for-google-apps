@@ -108,6 +108,10 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 			ServletOutputStream outputStream) throws AppException {
 		service.exportContacts(null, outputStream);
 	}
+	
+	public void generateCSVMail( String toEmail, String toName) throws AppException{
+		service.generateCSVMail(toEmail, toName);
+	}
 
 	public void deleteContactandExecuteWorkflow(List<Key> contactKeyList,
 			DataContext dataContext) throws AppException {

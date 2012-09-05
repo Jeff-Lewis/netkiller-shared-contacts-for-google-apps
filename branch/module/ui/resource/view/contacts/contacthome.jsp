@@ -243,6 +243,18 @@
 		}
 	}
 
+	function sendCSVToMail(){
+		$.ajax({
+		url:'/contact/triggercsvmail.do',
+		success:function(result){
+			alert("CSV will be mailed to " + result);
+		},
+		error:function(){
+			alert("Error occured." );
+		}
+		});
+	}
+	
 	function autoCenter(map, markers) {
 		//  Create a new viewpoint bound
 		var bounds = new google.maps.LatLngBounds();
@@ -887,7 +899,7 @@
 			<input type="button" id="mapButton" class="button-input" value="Map"
 				name="Map" onclick="showMap()" style="margin-left: 0px;"></input> <input
 				type="button" id="mailToButton" class="button-input" value="Mail To"
-				name="Mail To" onclick="sendMail()" style="margin-left: 0px;"></input>
+				name="Mail To" onclick="sendCSVToMail()" style="margin-left: 0px;"></input>
 			<input type="button" id="connectButton" class="button-input"
 				value="Connect" name="Connect"  onclick="$('#connectPopUp').show();"
 				style="margin-left: 0px;"></input>

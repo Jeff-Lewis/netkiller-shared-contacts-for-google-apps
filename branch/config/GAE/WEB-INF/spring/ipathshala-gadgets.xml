@@ -6,59 +6,59 @@
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
-	<context:component-scan base-package="com.metacube.ipathshala.gadget" />
+	<context:component-scan base-package="com.netkiller.gadget" />
 
 	<!-- the notes gadget -->
-	<bean id="noteGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+<!-- 	<bean id="noteGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="My Notes" />
 		<property name="description"
 			value="Shows my notes." />
 		<property name="url" value="/notewidget.do" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="5" />				
 			</list>
 		</property>
 	</bean>
 	
-	<!-- the announcement gadget -->
-	<bean id="announcementGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	the announcement gadget
+	<bean id="announcementGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="Latest Announcements" />
 		<property name="description"
 			value="Shows latest announcements." />
 		<property name="url" value="/announcement.do" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="5" />				
 			</list>
 		</property>
 	</bean>
 	
-	<!-- the attachment gadget -->
-	<bean id="attachmentGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	the attachment gadget
+	<bean id="attachmentGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="Latest Assignments" />
 		<property name="description"
 			value="Shows latest attachments." />
 		<property name="url" value="/attachment.do" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="5" />				
 			</list>
 		</property>
 	</bean>
 	
-	<!-- the attachment gadget -->
-	<bean id="dueAssignmentGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	the attachment gadget
+	<bean id="dueAssignmentGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="Due Assignments" />
 		<property name="description"
 			value="Shows latest attachments." />
 		<property name="url" value="/dueassignment.do" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="5" />				
 			</list>
 		</property>
@@ -66,73 +66,73 @@
 	
 	
 	
-	<!-- the attachment gadget -->
-	<bean id="timetableGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	the attachment gadget
+	<bean id="timetableGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="Time Table" />
 		<property name="description"
 			value="Time table" />
 		<property name="url" value="/showTimeTable.do" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="8" />				
 			</list>
 		</property>
 	</bean>
-	<!-- the attachment gadget -->
-	<bean id="eventGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	the attachment gadget
+	<bean id="eventGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="Latest Events" />
 		<property name="description"
 			value="Events" />
 		<property name="url" value="/eventwidget.do" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="8" />				
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="todaysScheduleGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	<bean id="todaysScheduleGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="Todays Schedule" />
 		<property name="description"
 			value="Todays Schedule" />
 		<property name="url" value="/todaysSchedule.do" />
 		 <property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="5" />				
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="allClassTimetableGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	<bean id="allClassTimetableGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="Time Table" />
 		<property name="description"
 			value="Time table" />
 		<property name="url" value="/showAllClassTimeTable.do" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="8" />				
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="teacherTimetable" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	<bean id="teacherTimetable" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="My Schedule" />
 		<property name="description"
 			value="Time table" />
 		<property name="url" value="/showTeacherTimeTable.do" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="8" />				
 			</list>
 		</property>
 	</bean>
 
-	 <bean id="adminGadgetMappingAdmin" class="com.metacube.ipathshala.gadget.GadgetMapping" lazy-init="true">
+	 <bean id="adminGadgetMappingAdmin" class="com.netkiller.gadget.GadgetMapping" lazy-init="true">
 		<property name="role" value="ipath_app_group_admin" />
 		<property name="gadgets">
 			<list>		
@@ -144,7 +144,7 @@
 		</property>
 	</bean>
 
-	<bean id="parentGadgetMappingAdmin" class="com.metacube.ipathshala.gadget.GadgetMapping" lazy-init="true">
+	<bean id="parentGadgetMappingAdmin" class="com.netkiller.gadget.GadgetMapping" lazy-init="true">
 		<property name="role" value="ipath_app_group_parent" />
 		<property name="gadgets">
 			<list>				
@@ -153,13 +153,13 @@
 				<ref bean="attachmentGadget" />
 				<ref bean="timetableGadget" />	
 				<ref bean="eventGadget" />				
-				<!-- <ref bean="dueAssignmentGadget" />
- -->				
+				<ref bean="dueAssignmentGadget" />
+				
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="teacherGadgetMappingAdmin" class="com.metacube.ipathshala.gadget.GadgetMapping" lazy-init="true">
+	<bean id="teacherGadgetMappingAdmin" class="com.netkiller.gadget.GadgetMapping" lazy-init="true">
 		<property name="role" value="ipath_app_group_teacher" />
 		<property name="gadgets">
 			<list>
@@ -169,12 +169,12 @@
 				<ref bean="allClassTimetableGadget" />
 				<ref bean="attachmentGadget" />
 				<ref bean="eventGadget" />	
-				<!-- <ref bean="dueAssignmentGadget" /> -->
+				<ref bean="dueAssignmentGadget" />
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="studentGadgetMappingAdmin" class="com.metacube.ipathshala.gadget.GadgetMapping" lazy-init="true">
+	<bean id="studentGadgetMappingAdmin" class="com.netkiller.gadget.GadgetMapping" lazy-init="true">
 		<property name="role" value="ipath_app_group_student" />
 		<property name="gadgets">
 			<list>
@@ -183,13 +183,13 @@
 				<ref bean="announcementGadget" />
 				<ref bean="attachmentGadget" />		
 				<ref bean="eventGadget" />			
-			<!-- 	<ref bean="dueAssignmentGadget" /> -->
+				<ref bean="dueAssignmentGadget" />
 			</list>
 		</property>
 	</bean>
-
+ -->
 	
-<!-- 	<bean id="announcementGadgetMappingAdmin" class="com.metacube.ipathshala.gadget.GadgetMapping" lazy-init="true">
+<!-- 	<bean id="announcementGadgetMappingAdmin" class="com.netkiller.gadget.GadgetMapping" lazy-init="true">
 		<property name="role" value="appEngineAdmin" />
 		<property name="gadgets">
 			<list>
@@ -201,52 +201,52 @@
 
 	 Student related gadgets
 
-	<bean id="appEngineAdminAppirioGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	<bean id="appEngineAdminAppirioGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="My Teachers" />
 		<property name="description"
 			value="Shows your calendar on scale of days, weeks, months and 	year. Gives good insight 	of your schedule." />
 		<property name="url" value="teacher.do" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="10" />
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="dateFormat" p:displayName="Date Format " p:value="DD/MM/YYYY" />
 			</list>
 		</property>
 	</bean>
 
-	<bean id="appEngineAdminMetacubeGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	<bean id="appEngineAdminMetacubeGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="Metacube Information" />
 		<property name="description"
 			value="Shows your calendar on scale of days, weeks, months and 	year. Gives good insight 	of your schedule." />
 		<property name="url" value="http://www.metacube.com" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="10" />
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="dateFormat" p:displayName="Date Format " p:value="DD/MM/YYYY" />
 			</list>
 		</property>
 	</bean>
 
-	<bean id="appEngineAdminWikiGadget" class="com.metacube.ipathshala.gadget.Gadget" lazy-init="true">
+	<bean id="appEngineAdminWikiGadget" class="com.netkiller.gadget.Gadget" lazy-init="true">
 		<property name="displayName" value="My Classes" />
 		<property name="description"
 			value="Shows your calendar on scale of days, weeks, months and 	year. Gives good insight 	of your schedule." />
 		<property name="url" value="myclass.do" />
 		<property name="preferences">
 			<list>
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="numberOfRows" p:displayName="Number of Rows" p:value="10" />
-				<bean class="com.metacube.ipathshala.gadget.Gadget.Preference"
+				<bean class="com.netkiller.gadget.Gadget.Preference"
 					p:name="dateFormat" p:displayName="Date Format " p:value="DD/MM/YYYY" />
 			</list>
 		</property>
 	</bean>
 
-	<bean id="appEngineAdminGadgetMapping" class="com.metacube.ipathshala.gadget.GadgetMapping" lazy-init="true">
+	<bean id="appEngineAdminGadgetMapping" class="com.netkiller.gadget.GadgetMapping" lazy-init="true">
 
 		<property  name="role" value="demoRole" />
 

@@ -7,12 +7,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
@@ -24,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -34,8 +33,8 @@ import com.netkiller.cache.EntityCacheValue;
 import com.netkiller.cache.EntityCacheValueComparator;
 import com.netkiller.core.AppException;
 import com.netkiller.entity.metadata.ColumnMetaData;
-import com.netkiller.entity.metadata.EntityMetaData;
 import com.netkiller.entity.metadata.ColumnMetaData.ColumnType;
+import com.netkiller.entity.metadata.EntityMetaData;
 import com.netkiller.search.SearchRequest.ResultType;
 import com.netkiller.search.property.OrderByProperty;
 import com.netkiller.search.property.SearchProperty;
@@ -66,7 +65,7 @@ import com.netkiller.util.PerfLogger;
  * @author prateek
  * 
  */
-@Repository
+@Service
 public class SearchService {
 	private PersistenceManagerFactory managerFactory;
 
