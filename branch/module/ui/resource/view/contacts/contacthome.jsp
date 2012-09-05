@@ -672,16 +672,25 @@
 
 	function connectContacts() {
 		var selectedContacts = "";
+		var email =  $("#connectEmail").val();
+		if(!email){
+			alert("Email is required");
+			return false;
+		}
+		var name =  $("#connectName").val().trim()?$("#connectName").val():email;
 
 		$(".cbox:checked").each(function() {
 			var elemIndex = parseInt($("#list4 input").index($(this))) / 3 + 1;
 			selectedContacts += $('#list4').getCell(elemIndex, 'key') + ",";
 		});
-		if (selectedContacts) {
+		if (selectedContacts && email) {
 			selectedContacts = selectedContacts.substring(0,
 					selectedContacts.length - 1);
+			$('#connectPopUp').hide();
 			$.ajax({
-				url : "/contacts/connect.do?contacts=" + selectedContacts,
+				url : "/contacts/connect.do?",
+				data:{'contacts':selectedContacts,'toName':name,'toEmail':email},
+				type:'POST',
 				success : function() {
 					alert("Connect process triggered");
 				},
@@ -880,7 +889,7 @@
 				type="button" id="mailToButton" class="button-input" value="Mail To"
 				name="Mail To" onclick="sendMail()" style="margin-left: 0px;"></input>
 			<input type="button" id="connectButton" class="button-input"
-				value="Connect" name="Connect" onclick="connectContacts()"
+				value="Connect" name="Connect"  onclick="$('#connectPopUp').show();"
 				style="margin-left: 0px;"></input>
 		</div>
 		<!-- <div class="add-student" style="width: 100px;">
@@ -1170,6 +1179,23 @@
 <div class="clear"></div>
 <div id="canvas_map"
 	style="display: none; width: 400px; margin: 0 auto; margin-left: 5px; height: 469px; float: left;"></div>
+
+<div style="display: none;clear:both;width:250px;border:3px gray inset;position:absolute;left:50%;top:35%;margin-left:-125px;background:white;" id="connectPopUp">
+<div style="border-bottom:2px solid black;overflow:hidden;">
+<div style="float:left;">Connect Contacts</div><div style="float:right;padding:0 2px;border:1px solid black;cursor:pointer;" onclick="$('#connectPopUp').hide();">x</div>
+</div>
+<div style="clear:both;">
+<br>
+Name : <input type='text' id="connectName" /><br><br>
+
+Email : <input type='text'  id="connectEmail" /><br>
+</div>
+<br>
+<center>
+<input type="button" value="Connect" onclick="connectContacts()" />
+</center>
+<br>
+</div>
 
 <style>
 <!--
