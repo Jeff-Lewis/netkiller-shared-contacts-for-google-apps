@@ -16,7 +16,7 @@
 
 
 	<div class="student-info-block"
-		style="width: 680px; margin: 0 0 0 0; border: none">
+		style="width: 640px; margin: 0 0 0 0; border: none;overflow: auto;">
 
 		<div class="nameDiv">
 			<div class="student-info">
@@ -53,7 +53,7 @@
 
 				</div>
 
-				<div class="right-div" style="margin-top: 20px;">
+				<div class="right-div" style="margin-top: 29px;">
 					<div class="student-general-info"></div>
 					<div class="student-general-info-row">
 						<div class="leftdiv">
@@ -323,7 +323,7 @@
 						id="notes" onkeyup="validateTextAreaMaxLength(this)"
 						onkeydown="validateTextAreaMaxLength(this)"
 						onblur="validateTextAreaMaxLength(this)"
-						style="height:60px;width:680px" />
+						style="height:60px;width:590px" />
 					<div class="clear"></div>
 					<span class="error"> <form:errors path="notes"
 							cssClass="error" /> </span>
@@ -332,7 +332,7 @@
 
 		</div>
 		<div class="clear"></div>
-		<div class="buttonDiv">
+		<div class="buttonDiv" style="width:410px;margin-left:200px;">
 			<div class="fr">
 
 				<input type="checkbox" /> <span>Agreed to get news letter</span> <input

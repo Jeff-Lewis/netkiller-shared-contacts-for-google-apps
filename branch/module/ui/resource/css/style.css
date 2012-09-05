@@ -163,11 +163,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', end
 
 #main-contaner #middle-contaner #middle-contaner-block .breadcrumb { margin:23px; font-size:12px; float:left;}
 #main-contaner #middle-contaner #middle-contaner-block .breadcrumb-arrow { height:20px; background:url(../images/breadcrumb-arrow.png) no-repeat right center; padding-right:15px;}
-#main-contaner #middle-contaner #middle-contaner-block .grid-block{ width:908px; margin:0px 26px; height:95px;-moz-border-radius: 10px 10px 0px 0px; -webkit-border-radius: 10px 10px 0px 0px; border-radius: 10px 10px 0px 0px; border:1px solid #e0e0e0; 
+#main-contaner #middle-contaner #middle-contaner-block .grid-block{ width:1230px; margin:0px 26px; height:95px;-moz-border-radius: 10px 10px 0px 0px; -webkit-border-radius: 10px 10px 0px 0px; border-radius: 10px 10px 0px 0px; border:1px solid #e0e0e0; 
 background: rgb(247,247,247); /* Old browsers */
 background: -moz-linear-gradient(top,  rgba(249,249,249,1) 0%, rgba(239,239,239,1) 100%); /* FF3.6+ */
 }
-#main-contaner #middle-contaner #middle-contaner-block .grid-block .grids-title{ font-size:20px;  font-family: 'MyriadProSemibold'; padding:10px 0px; width:97%; margin:0px 1.5%; border-bottom:1px dotted #ccc;}
+#main-contaner #middle-contaner #middle-contaner-block .grid-block .grids-title{ font-size:25px;  font-family: 'MyriadProSemibold'; padding:10px 0px; width:97%; margin:0px 1.5%; border-bottom:none;}
 #main-contaner #middle-contaner #middle-contaner-block .grid-block .grids-title-2{margin:0px 15px; text-decoration:none; color:#008cd4; font-size:13px; font-family:'MyriadProSemibold';}
 #main-contaner #middle-contaner #middle-contaner-block .grid-block .expent-icon  { width:10px; height:20px; background:url(../images/expend-icon.png) no-repeat 0 7px;}
 #main-contaner #middle-contaner #middle-contaner-block .grid-block .filter_name { width:180px; height:23px; border:1px solid #dedede; padding-left:4px;
@@ -204,7 +204,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', end
 -moz-border-radius: 10px 10px 10px 10px; -webkit-border-radius: 10px 10px 10px 10px; border-radius: 10px 10px 10px 10px; border:none;
   -moz-box-shadow:0px 0px 3px #ccc; -webkit-box-shadow:0px 0px 3px #ccc; box-shadow:0px 0px 3px #ccc; float:left; margin-right:15px; color:#6a6a6a;}
   #main-contaner #middle-contaner #middle-contaner-block .grid-result-block .add-student a{ text-decoration:none; color:#6a6a6a;}
-#main-contaner #middle-contaner #middle-contaner-block .grid-result-block { width:908px; margin:0px 26px; border-left:1px solid #ededed;border-right:1px solid #ededed;border-bottom:1px solid #ededed;-moz-border-radius: 0px 0px 10px 10px; -webkit-border-radius: 0px 0px 10px 10px; border-radius: 0px 0px 10px 10px;}
+#main-contaner #middle-contaner #middle-contaner-block .grid-result-block { width:1230px; margin:0px 26px; border-left:1px solid #ededed;border-right:1px solid #ededed;border-bottom:1px solid #ededed;-moz-border-radius: 0px 0px 10px 10px; -webkit-border-radius: 0px 0px 10px 10px; border-radius: 0px 0px 10px 10px;}
 #main-contaner #middle-contaner #middle-contaner-block .grid-result-block .add-student-icon { width:14px; height:14px; background:url(../images/add-btn.png) no-repeat 0 0; float:left; margin:6px;}
 #main-contaner #middle-contaner #middle-contaner-block .grid-result-block .copy-student-icon { width:14px; height:14px; background:url(../images/copy-icon.png) no-repeat 0 0; float:left; margin:6px;}
 #main-contaner #middle-contaner #middle-contaner-block .grid-result-block .transfer-student-icon { width:14px; height:14px; background:url(../images/transfer-icon.png) no-repeat 0 0; float:left; margin:6px;}
@@ -642,13 +642,17 @@ background: -moz-linear-gradient(top,  rgba(249,249,249,1) 0%, rgba(239,239,239,
 #main-contaner #middle-contaner #middle-contaner-block .student-info-block{  border-bottom: 1px solid #EDEDED; border-left: 1px solid #EDEDED;
     border-radius: 0 0 10px 10px; border-right: 1px solid #EDEDED; margin: 0 26px; width: 908px; float:left;}
 #main-contaner #middle-contaner #middle-contaner-block .student-info-block .student-info { padding:0px 1.5%; width:97%; margin-top:25px; margin-bottom:30px;}
-#main-contaner #middle-contaner #middle-contaner-block .student-info-block .student-info .left-div { width:46%; float:left; border-right:1px solid #EFEFEF;}
+#main-contaner #middle-contaner #middle-contaner-block .student-info-block .student-info .left-div { width:38%; float:left; border-right:none;}
 #main-contaner #middle-contaner #middle-contaner-block .student-info-block .student-info .right-div{ width:50%; float:right;}
-#main-contaner #middle-contaner #middle-contaner-block .student-info-block .student-info .student-general-info{ font-size:18px; font-family:Georgia, "Times New Roman", Times, serif; border-bottom:1px solid #efefef; width:90%; padding-bottom:10px;}
+#main-contaner #middle-contaner #middle-contaner-block .student-info-block .student-info .student-general-info{
+	 font-size:18px; font-family:Georgia, "Times New Roman", Times, serif; border-bottom:none; width:90%; padding-bottom:0px;
+	}
 #main-contaner #middle-contaner #middle-contaner-block .student-info-block .student-info .leftdiv { width:35%; float:left; color:#6a6a6a;}
 #main-contaner #middle-contaner #middle-contaner-block .student-info-block .student-info .rightdiv{ width:60%; float:left;}
 #main-contaner #middle-contaner #middle-contaner-block .student-info-block .student-info .rightdiv a{ color:#BB4949;}
 #main-contaner #middle-contaner #middle-contaner-block .student-info-block .student-info .student-general-info-row{ width:100%; padding:7px 0; font-size:13px; line-height:20px;}
+
+
 
 .requiredBlock{
 	 background-color: #CC0000;
@@ -1011,8 +1015,8 @@ body {
 	}
 	
 .top_bar_2{
-	width:950px;
-	height:40px;
+	width:835px;
+	height:0px;
 	float:left;
 	}
 	

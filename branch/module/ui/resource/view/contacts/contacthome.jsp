@@ -3,8 +3,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/tld/breadcrumb-taglib.tld" prefix="brc"%>
 <%@ taglib uri="/tld/security-taglib.tld" prefix="sec"%>
-<%@page import="com.google.appengine.api.blobstore.BlobstoreService,com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
-<%BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(); %>
+<%@page
+	import="com.google.appengine.api.blobstore.BlobstoreService,com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
+<%
+	BlobstoreService blobstoreService = BlobstoreServiceFactory
+			.getBlobstoreService();
+%>
 <input type="hidden" id="advSeachParam"
 	value="<c:out value="${advSearchText}" />
 " />
@@ -13,8 +17,9 @@
 <!-- <script
 	src="http://maps.google.com/maps?file=api&v=2.52&key=ABQIAAAAnAZyA34zDlQmFYfWlw6JqBS5ZecFzz0-rytgJXQ0WWFbp2mDUBSm0aq1TjDhjaENKiolezSGMeNzyQ"
 	type="text/javascript"></script> -->
-	
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
 
 <style type="text/css">
@@ -25,6 +30,29 @@
 	width: 185px;
 }
 
+.button-input {
+	background-color: grey;
+	color: white;
+	height: 22px;
+	border: none;
+	font-size: 11px;
+	font-weight: 600;
+	padding-top: 3px;
+	padding-bottom: 20px;
+	margin-top: 5px;
+}
+
+.search-button {
+	background-color: green;
+	color: white;
+	height: 22px;
+	border: none;
+	font-size: 11px;
+	font-weight: 600;
+	padding-top: 3px;
+	padding-bottom: 20px;
+	margin-top: 5px;
+}
 
 .ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button
 	{
@@ -57,16 +85,16 @@
 	} */
 
 	// set up a new marker
-/* 	function addMarker(lat, lon) {
-		//alert(html);
-		var marker = new GMarker(new GLatLng(lat, lon));
-		GEvent.addListener(marker, "click", function() {
-			//marker.openInfoWindowHtml(html);
-		});
-		gmarkers.push(marker);
-		//htmls.push(html);
-		return marker;
-	} */
+	/* 	function addMarker(lat, lon) {
+	 //alert(html);
+	 var marker = new GMarker(new GLatLng(lat, lon));
+	 GEvent.addListener(marker, "click", function() {
+	 //marker.openInfoWindowHtml(html);
+	 });
+	 gmarkers.push(marker);
+	 //htmls.push(html);
+	 return marker;
+	 } */
 
 	function formatHtml(blurb, address) {
 		return '<div class="blurb">' + blurb + '</div>\n<div class="address">'
@@ -107,170 +135,197 @@
 		}
 	}
 
-	var myLatlng= new google.maps.LatLng(-25.363882,131.044922);
+	var myLatlng = new google.maps.LatLng(-25.363882, 131.044922);
 	// Check for geolocation support
 
-	    var markers = [];
-	
-	    function showAddressOnMap( lastElemIndex) {	    	
-	    	clearOverlays();
-	    	markers = new Array();
-	    	console.log(lastElemIndex)
-	        if (geocoder) {
-	        	
-	        	$(".cbox:checked").each(function(){
-	        		var elemIndex = parseInt($("#list4 input").index($(this)))/3 +1;
-					var address = $('#list4').getCell(elemIndex, 'workAddress');
-					var name = $('#list4').getCell(elemIndex, 'firstName');
-					
-					if(lastElemIndex == elemIndex){
-						
-						console.log("yellow marker for :" + address)
-			        	geocoder.geocode({'address':address},function(results, status){
-			                 if (status == google.maps.GeocoderStatus.OK) {
-			                   var latlng =  results[0].geometry.location;
-			                   addYellowMarker(latlng.lat(),latlng.lng(),name);
-			                 } 
-			          });
-					}else{
-						console.log("normal  marker for :" + address)
-					
-		        	geocoder.geocode({'address':address},function(results, status){
-		                 if (status == google.maps.GeocoderStatus.OK) {
-		                   var latlng =  results[0].geometry.location;
-		                   addMarkers(latlng.lat(),latlng.lng(),name);
-		                 } 
-		          });
-					}
-	        	});
-	        	
- 
-	        	
-	        }
-	    }
-	    
+	var markers = [];
 
- function addMarkers(x,y,placeTitle){
-	    	var latlng = new google.maps.LatLng(x, y);
-	    	var m1= new google.maps.Marker({
-	    	            position: latlng,
-	    	            title: placeTitle,
-	    	            map: map 
-	    	            });
-	    				   markers.push(m1);
-	    				     autoCenter(map, markers);
-	    	} 
+	function showAddressOnMap(lastElemIndex) {
+		clearOverlays();
+		markers = new Array();
+		console.log(lastElemIndex)
+		if (geocoder) {
 
-	    
-	    function addYellowMarker(x,y,placeTitle){
-	    	var latlng = new google.maps.LatLng(x, y);
-	    	var m1= new google.maps.Marker({
-	    	            position: latlng,
-	    	            title: placeTitle,
-	    	            icon:new google.maps.MarkerImage(
-	    	            	    'http://www.gettyicons.com/free-icons/108/gis-gps/png/24/needle_left_yellow_2_24.png',
-	    	            	    new google.maps.Size(24, 24),
-	    	            	    new google.maps.Point(0, 0),
-	    	            	    new google.maps.Point(0, 24)
-	    	            	  ),
-	    	            map: map 
-	    	            });
-	    				   markers.push(m1);
-	    				   for(var i=0;i< markers.length-1 ; i++){
-	    					   console.log(markers[i]['icon'])	    				   
-	    		        		delete  markers[i]['icon'];
-	    					   console.log(markers[i]['icon'])
-	    		        	}
-	    				     autoCenter(map, markers);
-	    	}
-	    function clearOverlays() {
-	    	  if (markers) {
-	    	    for (var i = 0; i < markers.length; i++ ) {
-	    	    	markers[i].setMap(null);
-	    	    }
-	    	  }
-	    	}
+			$(".cbox:checked")
+					.each(
+							function() {
+								var elemIndex = parseInt($("#list4 input")
+										.index($(this))) / 3 + 1;
+								var address = $('#list4').getCell(elemIndex,
+										'workAddress');
+								var name = $('#list4').getCell(elemIndex,
+										'firstName');
 
+								if (lastElemIndex == elemIndex) {
 
-	    
-	    	function autoCenter(map, markers)
-	    	{
-	    	//  Create a new viewpoint bound
-	    	var bounds = new google.maps.LatLngBounds();
-	    	//  Go through each marker...
-	    	for(var marker in markers){
-	    	bounds.extend(markers[marker].getPosition());
-	    	}    
-	    	//  Fit these bounds to the map
+									console
+											.log("yellow marker for :"
+													+ address)
+									geocoder
+											.geocode(
+													{
+														'address' : address
+													},
+													function(results, status) {
+														if (status == google.maps.GeocoderStatus.OK) {
+															var latlng = results[0].geometry.location;
+															addYellowMarker(
+																	latlng
+																			.lat(),
+																	latlng
+																			.lng(),
+																	name);
+														}
+													});
+								} else {
+									console.log("normal  marker for :"
+											+ address)
 
-	    	map.fitBounds(bounds);
-	    	map.setZoom(8);
-	    	}
-	    	var geocoder;
-	    	var map;
-	    	
-	    	function initListCheckBox(){
-				$(".cbox").click(function(){
-					
-					if($(this).is(':checked')){		
-						var elemIndex = parseInt($("#list4 input").index($(this)))/3 +1;
+									geocoder
+											.geocode(
+													{
+														'address' : address
+													},
+													function(results, status) {
+														if (status == google.maps.GeocoderStatus.OK) {
+															var latlng = results[0].geometry.location;
+															addMarkers(
+																	latlng
+																			.lat(),
+																	latlng
+																			.lng(),
+																	name);
+														}
+													});
+								}
+							});
+
+		}
+	}
+
+	function addMarkers(x, y, placeTitle) {
+		var latlng = new google.maps.LatLng(x, y);
+		var m1 = new google.maps.Marker({
+			position : latlng,
+			title : placeTitle,
+			map : map
+		});
+		markers.push(m1);
+		autoCenter(map, markers);
+	}
+
+	function addYellowMarker(x, y, placeTitle) {
+		var latlng = new google.maps.LatLng(x, y);
+		var m1 = new google.maps.Marker(
+				{
+					position : latlng,
+					title : placeTitle,
+					icon : new google.maps.MarkerImage(
+							'http://www.gettyicons.com/free-icons/108/gis-gps/png/24/needle_left_yellow_2_24.png',
+							new google.maps.Size(24, 24),
+							new google.maps.Point(0, 0), new google.maps.Point(
+									0, 24)),
+					map : map
+				});
+		markers.push(m1);
+		for ( var i = 0; i < markers.length - 1; i++) {
+			console.log(markers[i]['icon'])
+			delete markers[i]['icon'];
+			console.log(markers[i]['icon'])
+		}
+		autoCenter(map, markers);
+	}
+	function clearOverlays() {
+		if (markers) {
+			for ( var i = 0; i < markers.length; i++) {
+				markers[i].setMap(null);
+			}
+		}
+	}
+
+	function autoCenter(map, markers) {
+		//  Create a new viewpoint bound
+		var bounds = new google.maps.LatLngBounds();
+		//  Go through each marker...
+		for ( var marker in markers) {
+			bounds.extend(markers[marker].getPosition());
+		}
+		//  Fit these bounds to the map
+
+		map.fitBounds(bounds);
+		map.setZoom(8);
+	}
+	var geocoder;
+	var map;
+
+	function initListCheckBox() {
+		$(".cbox").click(
+				function() {
+
+					if ($(this).is(':checked')) {
+						var elemIndex = parseInt($("#list4 input").index(
+								$(this))) / 3 + 1;
 						showAddressOnMap(elemIndex);
 					}
 				});
-	    	}
-	    	
-	function showMap() {		
-		
-		if($("#canvas_map").is(':hidden')){
+	}
+
+	function showMap() {
+
+		if ($("#canvas_map").is(':hidden')) {
 			initListCheckBox();
-			$("#showMapButton").html("<span class='add-student-icon'></span>Hide");		
-			$('#list4').jqGrid('hideCol', 'workPhone').jqGrid('hideCol', 'workAddress').jqGrid('hideCol', 'act');
-			$("#gbox_list4").css('float','left')
+			$("#showMapButton").html(
+					"<span class='add-student-icon'></span>Hide");
+			$('#list4').jqGrid('hideCol', 'workPhone').jqGrid('hideCol',
+					'workAddress').jqGrid('hideCol', 'act');
+			$("#gbox_list4").css('float', 'left')
 			$(".grid-result").append($("#canvas_map"))
 			$("#canvas_map").show();
-			
-		 var myOptions = {
-	    zoom: 12,
-	    center: myLatlng,
-	    mapTypeId: google.maps.MapTypeId.ROADMAP
-	  };
-	  map = new google.maps.Map(document.getElementById('canvas_map'),
-	      myOptions); 
-		}else{
-			$("#showMapButton").html("<span class='add-student-icon'></span>Map");		
-		$("body").append($("#canvas_map"))	;
-		$("#canvas_map").hide();
-		$('#list4').jqGrid('showCol', 'workPhone').jqGrid('showCol', 'workAddress').jqGrid('showCol', 'act');
+
+			var myOptions = {
+				zoom : 12,
+				center : myLatlng,
+				mapTypeId : google.maps.MapTypeId.ROADMAP
+			};
+			map = new google.maps.Map(document.getElementById('canvas_map'),
+					myOptions);
+		} else {
+			$("#showMapButton").html(
+					"<span class='add-student-icon'></span>Map");
+			$("body").append($("#canvas_map"));
+			$("#canvas_map").hide();
+			$('#list4').jqGrid('showCol', 'workPhone').jqGrid('showCol',
+					'workAddress').jqGrid('showCol', 'act');
 		}
-		
-  /*geocoder = new GClientGeocoder();
-	 	var addressList = getSelectedAddressList();
-		var add = [];
-		add = addressList.split('$')
-		if (geocoder) {
-			for ( var i = 0; i < add.length; i++) {
-				geocoder.getLatLng(add[i], function(point) {
-					if (point) {
 
-						if (point.Vd < minLa) {
-							minLa = point.Vd
-						}
-						if (point.Ha < minLo) {
-							minLo = point.Ha
-						}
-						if (point.Ha > maxLo) {
-							maxLo = point.Ha
-						}
-						if (point.Vd > maxLa) {
-							maxLa = point.Vd
-						}
+		/*geocoder = new GClientGeocoder();
+		 	var addressList = getSelectedAddressList();
+			var add = [];
+			add = addressList.split('$')
+			if (geocoder) {
+				for ( var i = 0; i < add.length; i++) {
+					geocoder.getLatLng(add[i], function(point) {
+						if (point) {
 
-					}
-				});
+							if (point.Vd < minLa) {
+								minLa = point.Vd
+							}
+							if (point.Ha < minLo) {
+								minLo = point.Ha
+							}
+							if (point.Ha > maxLo) {
+								maxLo = point.Ha
+							}
+							if (point.Vd > maxLa) {
+								maxLa = point.Vd
+							}
+
+						}
+					});
+				}
 			}
-		}
 
-		load(); */
+			load(); */
 	}
 </script>
 <script src="http://www.google-analytics.com/urchin.js"
@@ -285,18 +340,17 @@
 	var grid;
 	var prmSearch;
 	$(function() {
-		
+
 		$('#ImportDialog').hide();
 		$("#menu-contaner a").removeClass("selectmenu");
 		$("#contacts").addClass("selectmenu");
-		
+
 		geocoder = new google.maps.Geocoder();
-		
-		
+
 		$('#ImportDialog').dialog({
-			autoOpen: false,
-			width: 520,
-		});	
+			autoOpen : false,
+			width : 520,
+		});
 
 		grid = $('#list4');
 		jQuery.jgrid.no_legacy_api = true;
@@ -312,9 +366,9 @@
 										root : "rows"
 									},
 									pager : '#pnewapi',
-									colNames : [ 'Id','key', 'FirstName', 'LastName',
-											'Company', 'Email', 'Phone',
-											'Address', 'Action' ],
+									colNames : [ 'Id', 'key', 'FirstName',
+											'LastName', 'Company', 'Email',
+											'Phone', 'Address', 'Action' ],
 									colModel : [ {
 										name : 'key',
 										index : 'key',
@@ -323,14 +377,14 @@
 										sortable : true,
 										hidden : false,
 										viewable : true
-									},{
+									}, {
 										name : 'keyLong',
 										index : 'keyLong',
 										align : 'left',
 										search : false,
 										sortable : false,
 										hidden : true,
-										editable:true,
+										editable : true,
 									}, {
 										name : 'firstName',
 										formatter : editLinkFormatter,
@@ -390,8 +444,8 @@
 										width : 150,
 										sortable : false,
 										search : false,
-									}									
-									
+									}
+
 									],
 
 									mtype : 'POST',
@@ -405,7 +459,7 @@
 									sortorder : 'asc',
 									beforeRequest : function() {
 										$('.cbox').unbind('click');
-									
+
 										var searchParam = $("#advSeachParam")
 												.val();
 										if (searchParam != null) {
@@ -458,21 +512,21 @@
 															}
 
 														});
-										if($("#canvas_map").is(':visible')){
-											
-										initListCheckBox();
-							
+										if ($("#canvas_map").is(':visible')) {
+
+											initListCheckBox();
+
 										}
 									},
-								 editurl: "/contact/gridUpdate.do",
-								 /* 	jsonReader:{
-								   	  root: "rows",
-								   	  page: "page",
-								   	  total: "total",
-								   	  records: "records",
-								   	  id: "id",
-								   	  repeatitems: false
-								   	}, */
+									editurl : "/contact/gridUpdate.do",
+								/* 	jsonReader:{
+								  	  root: "rows",
+								  	  page: "page",
+								  	  total: "total",
+								  	  records: "records",
+								  	  id: "id",
+								  	  repeatitems: false
+								  	}, */
 
 								});
 
@@ -569,6 +623,7 @@
 	function contactsMassUpdate() {
 		var str = "";
 		var contactKeyList = getSelectedContactsIdList();
+
 		if (contactKeyList == '') {
 			alert('Please select contacts');
 		} else {
@@ -615,31 +670,32 @@
 
 	}
 
-	function connectContacts(){
-		var selectedContacts ="";
-	
-		$(".cbox:checked").each(function(){
-    		var elemIndex = parseInt($("#list4 input").index($(this)))/3 +1;
-    		selectedContacts += $('#list4').getCell(elemIndex, 'key') +",";			
+	function connectContacts() {
+		var selectedContacts = "";
+
+		$(".cbox:checked").each(function() {
+			var elemIndex = parseInt($("#list4 input").index($(this))) / 3 + 1;
+			selectedContacts += $('#list4').getCell(elemIndex, 'key') + ",";
 		});
-		if(selectedContacts){
-			selectedContacts = selectedContacts.substring(0,selectedContacts.length-1);
+		if (selectedContacts) {
+			selectedContacts = selectedContacts.substring(0,
+					selectedContacts.length - 1);
 			$.ajax({
-			url : 	"/contacts/connect.do?contacts=" + 	selectedContacts,
-					success:function(){
-						alert("Connect process triggered");
-					},
-					error:function(){
-						alert("Connect ProcessFailed");
-					}
+				url : "/contacts/connect.do?contacts=" + selectedContacts,
+				success : function() {
+					alert("Connect process triggered");
+				},
+				error : function() {
+					alert("Connect ProcessFailed");
+				}
 			});
-			}else{
-				alert("Please choose contacts to connect")
-			}
-			
-		//	alert(selectedContacts)
+		} else {
+			alert("Please choose contacts to connect")
 		}
-	
+
+		//	alert(selectedContacts)
+	}
+
 	function closeForm() {
 		$("#massUpdateDiv").hide();
 	}
@@ -684,33 +740,37 @@
 
 	function massUpdate() {
 		var contactKeyList = getSelectedContactsIdList();
-		$.ajax({
-			url : '/contact/getSelectedContactData.do',
-			data : {
-				contactIdList : contactKeyList,
-			},
-			success : function(data) {
-				var modelMapList = eval(data);
-				var tableCode = "<table style='width:710px'>";
-				for ( var i = 0; i < modelMapList.length; i++) {
-					var modelMap = modelMapList[i];
-					tableCode += "<tr style='margin:10 10 0 0'><td>"
-							+ modelMap['fullName'] + "</td><td>"
-							+ modelMap['companyName'] + "</td><td>"
-							+ modelMap['workEmail'] + "</td><td>"
-							+ modelMap['Phone'] + "</td></tr>";
+		if (contactKeyList == '') {
+			alert('Selcet contact to update');
+		} else {
+			$.ajax({
+				url : '/contact/getSelectedContactData.do',
+				data : {
+					contactIdList : contactKeyList,
+				},
+				success : function(data) {
+					var modelMapList = eval(data);
+					var tableCode = "<table style='width:710px'>";
+					for ( var i = 0; i < modelMapList.length; i++) {
+						var modelMap = modelMapList[i];
+						tableCode += "<tr style='margin:10 10 0 0'><td>"
+								+ modelMap['fullName'] + "</td><td>"
+								+ modelMap['companyName'] + "</td><td>"
+								+ modelMap['workEmail'] + "</td><td>"
+								+ modelMap['Phone'] + "</td></tr>";
+					}
+					tableCode += "</table>";
+					//alert(tableCode);
+					//document.getElementById('iframeId').innerHTML = tableCode;
+					$("#iframeId").html(tableCode);
+					$("#massUpdateDiv").show();
+				},
+				error : function() {
+
 				}
-				tableCode += "</table>";
-				//alert(tableCode);
-				//document.getElementById('iframeId').innerHTML = tableCode;
-				$("#iframeId").html(tableCode);
-				$("#massUpdateDiv").show();
-			},
-			error : function() {
 
-			}
-
-		});
+			});
+		}
 
 	}
 
@@ -753,8 +813,8 @@
 		document.getElementById("contactUploadForm").action = '/contact/import.do';
 		document.getElementById("contactUploadForm").submit();
 	}
-	
-	function sendMail(){
+
+	function sendMail() {
 		window.location.href = '/contact/mailTo.do';
 	}
 </script>
@@ -764,24 +824,29 @@
 	<brc:breadcrumb></brc:breadcrumb>
 </div> --%>
 <div class="clear"></div>
-<div class="grid-block" style="background: none;margin: 0 165px;border-radius:0 0 0 0">
+<div class="grid-block"
+	style="background: none; margin: 0 0px; border-radius: 0 0 0 0">
 
 	<div class="grids-title">
-		<span class="fl">Contacts</span> <span class="fr expent-icon"></span>
+		<span class="fl">Contacts</span>
 		<div class="clear"></div>
 	</div>
-	<div class="top_bar_2" id="search">
 
-		<div id="gridFilter" class="search_bar2">
-			<input id="fbox_list4_search" type="submit" name="submit"
-				value="Search">
+</div>
+<div class="grid-result-block"
+	style="margin: 0 0px; border-radius: 0 0 0 0">
+	<div class="grid-result-top">
+		<div class="top_bar_2" id="search">
+
+			<div id="gridFilter" class="search_bar2">
+				<input id="fbox_list4_search" type="submit" name="submit"
+					class="search-button" value="Search">
+			</div>
+
 		</div>
 
-	</div>
-</div>
-<div class="grid-result-block" style="margin: 0 165px;border-radius:0 0 0 0">
-	<div class="grid-result-top">
-		<div class="formDiv">
+		<div class="clear"></div>
+		<div class="formDiv" style="margin-left: 660px">
 			<form action="" id="formId">
 				<input type="hidden" id="contactIdList" name="contactIdList" />
 				<table>
@@ -791,54 +856,62 @@
 								<option value="export">Export</option>
 								<option value="syncContacts">Sync</option>
 								<option value="delete">Delete</option>
-						</select></td>
+						</select>
+						</td>
 						<td><input type="button" value="Action" name="Action"
-							onclick="performAction()" /></td>
+							class="button-input" onclick="performAction()" />
+						</td>
 					</tr>
 
 
 				</table>
 			</form>
 		</div>
-		<div class="add-student">
-
-			<a href="#" onClick="massUpdate()"><span class="add-student-icon"></span>Mass
-				Update</a>
-
+		<div style="float: right">
+			<input type="button" id="massUpdateButton" class="button-input"
+				value="Mass Update" name="Mass Update" onclick="massUpdate()"
+				style="margin-left: 0px;"></input> <input type="button"
+				id="duplicateButton" class="button-input" value="Duplicate"
+				name="Duplicate" onclick="makeDuplicate()" style="margin-left: 0px;"></input>
+			<input type="button" id="newButton" class="button-input" value="New"
+				name="New" onclick="openCreateWindow()" style="margin-left: 0px;"></input>
+			<input type="button" id="mapButton" class="button-input" value="Map"
+				name="Map" onclick="showMap()" style="margin-left: 0px;"></input> <input
+				type="button" id="mailToButton" class="button-input" value="Mail To"
+				name="Mail To" onclick="sendMail()" style="margin-left: 0px;"></input>
+			<input type="button" id="connectButton" class="button-input"
+				value="Connect" name="Connect" onclick="connectContacts()"
+				style="margin-left: 0px;"></input>
 		</div>
-
-		<div class="add-student" style="width: 100px;">
+		<!-- <div class="add-student" style="width: 100px;">
 
 			<a href="#" onClick="makeDuplicate()"><span
 				class="add-student-icon"></span>Duplicate</a>
 
-		</div>
-		<div class="add-student" style="width: 70px;">
+		</div> -->
 
-			<a href="#" onClick="openCreateWindow();"><span
-				class="add-student-icon"></span>New</a>
+		<!-- <img src="/images/new.jpg" onclick = "openCreateWindow()"  /> -->
 
-		</div>
 
-		<div class="add-student" style="width: 70px;">
+		<!-- <div class="add-student" style="width: 70px;">
 
 			<a href="#" onClick="showMap();" id="showMapButton"><span
 				class="add-student-icon"></span>Map</a>
 
-		</div>
+		</div> -->
 
-		<div class="add-student" style="width: 90px;">
+		<!-- <div class="add-student" style="width: 90px;">
 
 			<a href="#" onClick="sendMail()"><span class="add-student-icon"></span>Mail
 				To</a>
 
-		</div>
+		</div> -->
 
-		<div class="add-student" style="width: 100px;">
+		<!-- <div class="add-student" style="width: 100px;">
 
 			<a href="#" onClick="connectContacts()"><span class="add-student-icon"></span>Connect</a>
 
-		</div>
+		</div> -->
 
 
 		<div class="clear"></div>
@@ -852,26 +925,31 @@
 
 	<div class="clear"></div>
 	<div id="ImportDialog" title="Import contacts"
-		style="font-family: Arial; font-size: 12px;display:none;background:white;">
+		style="font-family: Arial; font-size: 12px; display: none; background: white;">
 		<p>
-			Open <a href="https://docs.google.com/a/netkiller.com/spreadsheet/ccc?key=0ApQQqEHZz9C9dElmWTNFOHIzc3VDQk5XZE5vUDZiMUE" target="_blank"><b>this</b> </a>  doc and copy it into your google account: Go to File > Make A Copy, and then fill in the document with your contacts. Then, go to File > Download as a CSV file, and upload the file here. Upload time depends on the number of contacts, but normally takes between a few seconds and a few minutes.
-			<br /> <br /> Please select an CSV file(.csv) to upload: <br />
+			Open <a
+				href="https://docs.google.com/a/netkiller.com/spreadsheet/ccc?key=0ApQQqEHZz9C9dElmWTNFOHIzc3VDQk5XZE5vUDZiMUE"
+				target="_blank"><b>this</b> </a> doc and copy it into your google
+			account: Go to File > Make A Copy, and then fill in the document with
+			your contacts. Then, go to File > Download as a CSV file, and upload
+			the file here. Upload time depends on the number of contacts, but
+			normally takes between a few seconds and a few minutes. <br /> <br />
+			Please select an CSV file(.csv) to upload: <br />
 		<form id="uploadForm" method="post"
-			action="<%= blobstoreService.createUploadUrl("/contact/import.do") %>" enctype="multipart/form-data"
-			target="resultFrm">
+			action="<%= blobstoreService.createUploadUrl("/contact/import.do") %>"
+			enctype="multipart/form-data" target="resultFrm">
 			<div style="font-size: 12px; width: 480px; text-align: middle;">
 				<table width="100%" border="0">
 					<tr>
 						<td width="50%"><input id="file" type="file" name="file" />
 						</td>
 						<td align="center"><input id="SubmitFile" type="submit"
-							name="Submit" value="Submit" />
-						</td>
+							name="Submit" value="Submit" /></td>
 					</tr>
 				</table>
 			</div>
 		</form>
-		
+
 		<iframe id="resultFrm" name="resultFrm" width="0px" height="00px"></iframe>
 	</div>
 	<div id="uploadDiv" style="display: none;">
@@ -880,21 +958,17 @@
 			<table style="font-size: 13px">
 				<tbody>
 					<tr>
-						<td><b>Import Contacts from Existing CSV</b>
-						</td>
+						<td><b>Import Contacts from Existing CSV</b></td>
 					</tr>
 					<tr>
-						<td><input type="file" name="contactCreationFile">
-						</td>
+						<td><input type="file" name="contactCreationFile"></td>
 						<td><input type="submit" value="Import Contacts"
-							title="submit" onclick="submitForm()" id="sub">
-						</td>
+							title="submit" onclick="submitForm()" id="sub"></td>
 						<td id="error"
 							style="color: red; font-size: 12px; vertical-align: middle"><c:if
 								test="${FileError != null}">
 	${FileError}
-	</c:if>
-						</td>
+	</c:if></td>
 					</tr>
 				</tbody>
 			</table>
@@ -902,31 +976,36 @@
 		</form>
 	</div>
 
-<%-- 	<div style="display: none; margin-left: 150px; margin-top: 30px;"
+	<%-- 	<div style="display: none; margin-left: 150px; margin-top: 30px;"
 		id="mapDiv">
 		<form action="#">
 			<div id="map_canvas"></div>
 		</form>
 	</div> --%>
 
-	<div style="display: none; height: 570px; width: 740px;"
+	<div style="display: none; height: auto; width: 640px;"
 		id="massUpdateDiv">
-		<div class="fr">
+		<div id="buttonDiv" style="float: right;">
+			<input type="button" name="Update" value="Update"
+				onclick="contactsMassUpdate()" /> <input type="button"
+				name="Cancel" value="Cancel" onclick="closeForm()" />
+		</div>
+		<!-- <div class="fr">
 			<span class="student-save"
 				onclick="contactsMassUpdate()">Update</span> <span
 				class="student-save" onclick="javascript:closeForm()">Cancel</span>
 			<div class="clear"></div>
-		</div>
+		</div> -->
 
 		<form:form id="contactForm" action="" modelAttribute="contact"
 			method="post">
 			<div class="student-info-block"
-				style="margin-left: 0px; width: 735px; height: 570px;">
+				style="margin-left: 0px; width: 640px; height: auto;">
 				<div class="nameDiv">
 					<div class="student-info">
 						<div class="left-div">
 							<div class="student-general-info">Target Contacts</div>
-							<div style="height: 75px; width: 710px; overflow-y: scroll;"
+							<div style="height: 75px; width: 620px; overflow-y: scroll;"
 								id='iframeId'></div>
 						</div>
 
@@ -942,8 +1021,8 @@
 							<div class="student-general-info-row mrt10">
 								<div>
 									<input type="checkbox" name="updateGrpChckBox"
-										id="cmpnyCheckBoxId" value="checkBox" /> <span>Update
-										Group</span>
+										id="cmpnyCheckBoxId" value="checkBox"
+										style="margin-bottom: 10px" /> <span>Update Group</span>
 								</div>
 								<div class="leftdiv">Name</div>
 
@@ -966,7 +1045,7 @@
 						</div>
 
 
-						<div class="right-div" style="margin-top: 20px;">
+						<div class="right-div" style="margin-top: 40px;">
 							<div class="student-general-info"></div>
 							<div class="student-general-info-row" style="margin-top: 10px;">
 								<div class="leftdiv">Division</div>
@@ -996,8 +1075,8 @@
 							<div class="student-general-info-row mrt10">
 								<div>
 									<input type="checkbox" name="updateGrpChckBox"
-										id="addressCheckBoxId" value="checkBox" /> <span>Update
-										Group</span>
+										id="addressCheckBoxId" value="checkBox"
+										style="margin-bottom: 10px" /> <span>Update Group</span>
 								</div>
 								<div class="leftdiv">Work</div>
 								<div class="rightdiv">
@@ -1011,7 +1090,7 @@
 							</div>
 
 						</div>
-						<div class="right-div" style="margin-top: 20px;">
+						<div class="right-div" style="margin-top: 40px;">
 							<div class="student-general-info"></div>
 							<div class="student-general-info-row" style="margin-top: 10px;">
 								<div class="leftdiv">Other</div>
@@ -1054,7 +1133,7 @@
 										id="notes" onkeyup="validateTextAreaMaxLength(this)"
 										onkeydown="validateTextAreaMaxLength(this)"
 										onblur="validateTextAreaMaxLength(this)"
-										style="height:55px;  margin-bottom: 10px;margin-left: 20px;width: 680px;" />
+										style="height:55px;  margin-bottom: 10px;margin-left: 20px;width: 585px;" />
 									<div class="clear"></div>
 									<span class="error"> <form:errors path="notes"
 											cssClass="error" /> </span>
@@ -1089,7 +1168,8 @@
 
 </div>
 <div class="clear"></div>
-<div id="canvas_map" style="display:none;width:400px;margin:0 auto;margin-left:5px;height:469px;float:left;"></div>
+<div id="canvas_map"
+	style="display: none; width: 400px; margin: 0 auto; margin-left: 5px; height: 469px; float: left;"></div>
 
 <style>
 <!--
@@ -1107,7 +1187,7 @@
 	border: 3px outset;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
-	height: 900px;
+	height: auto;
 	left: 50%;
 	line-height: 21px;
 	margin-left: -100px;
@@ -1115,7 +1195,7 @@
 	position: absolute;
 	text-align: left;
 	top: 50%;
-	width: 711px;
+	width: 620px;
 	z-index: 1000;
 }
 
@@ -1124,8 +1204,8 @@
 	border: 1px solid black;
 	z-index: 1000;
 	background: #ffffff;
-	width: 835px;
-	height: 915px;
+	width: 620px;
+	height: auto;
 	left: 50%;
 	top: 50%;
 	margin-left: -600px;
@@ -1137,31 +1217,31 @@
 	text-align: left;
 }
 
-#map_canvas {		
+#map_canvas {
 	background: #ffffff;
 	width: 100%;
 	height: 100%;
-position: static;		
+	position: static;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
-	
+
 	/* text-align: left; */
 }
 
-.student-save{
-background: -moz-linear-gradient(center top , #747474 0%, #4D4D4D 100%) repeat scroll 0 0 transparent;
-    border: medium none;
-    border-radius: 10px 10px 10px 10px;
-    box-shadow: 0 0 3px #999999;
-    color: #FFFFFF;
-    cursor: pointer;
-    filter: none;
-    font-size: 13px;
-    height: 24px;
-    line-height: 26px;
-    padding-bottom: 5px;
-    width: 80px;
-
+.student-save {
+	background: -moz-linear-gradient(center top, #747474 0%, #4D4D4D 100%)
+		repeat scroll 0 0 transparent;
+	border: medium none;
+	border-radius: 10px 10px 10px 10px;
+	box-shadow: 0 0 3px #999999;
+	color: #FFFFFF;
+	cursor: pointer;
+	filter: none;
+	font-size: 13px;
+	height: 24px;
+	line-height: 26px;
+	padding-bottom: 5px;
+	width: 80px;
 }
 -->
 </style>

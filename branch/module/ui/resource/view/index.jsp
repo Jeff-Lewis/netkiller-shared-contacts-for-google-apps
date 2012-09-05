@@ -368,363 +368,11 @@ ul#add li {
 		<div class="header">
 			<div class="logo"></div>
 
-			<div class="top_most_nav">admin@mellong.com | Manage | Logout</div>
+			<div class="top_most_nav" style="margin-left:120px;">admin@mellong.com | Manage | Logout</div>
 
 
 		</div>
-		<%-- <div id="header-contaner">
-			<div id="header">
-				<div id="logo">
-					<h1 class="siteTitle"></h1>
-					<div class="school-year">
-						<form name="globalFilterForm" method="post"
-							action="/setDataContext.do">
-							<input name="contextView" type="hidden" id="contextView"
-								value="${_ipContextView}"> <select name="acadYear"
-								id="acadYear" class="styled"
-								style="border: 1px solid #dcdcdc; width: 85px;">
-								<c:forEach var="academicYear" items="${userAcademicYearList}">
-									<option value=<c:out value='${academicYear.key.id}'/>>
-										<c:out value='${academicYear.name}' />
-										<c:if test="${academicYear.isDefaultAcademicYear}">*</c:if>
-									</option>
-								</c:forEach>
-							</select>
-							<c:if
-								test="${appUser.defaultAppGroup.groupName == 'ipath_app_group_parent'}"></c:if>
-							<select
-								<c:if test="${fn:length(globalStudentList)<=1}">disabled = "disabled"</c:if>
-								name="stud" id="stud" class="styled"
-								style="border: 1px solid #dcdcdc; width: 85px;">
-								<c:if test="${fn:length(globalStudentList)>1}">
-									<option value="All">All</option>
-								</c:if>
-								<c:forEach var="student" items="${globalStudentList}">
-									<option value=<c:out value='${student.key.id}'/>>
-										<c:out value='${student.firstName}' />
-									</option>
-								</c:forEach>
-							</select>
-						</form>
-					</div>
-				</div>
-				<div id="header-right-block">
-					<div class="hearer-top">
-
-
-						<div class="fr">
-							<div class="welcome-msg">Welcome ${appUser.firstName}</div>
-
-							<div class="mysite-dropdown">
-
-								<form id="classSiteForm" method="POST"
-									action="/gotoclasssite.do">
-									<select name="selectedSite" id="selectedSite" class="styled"
-										style="width: 100px">
-										<option>My Site</option>
-										<c:if
-											test="${UserSiteList != null && appUser.defaultAppGroup.groupName != 'ipath_app_group_admin' && dataContext.currentSelectedAcademicYear.entityKey == dataContext.defaultAcademicYear.entityKey}">
-											<c:forEach var="siteList" items="${UserSiteList}">
-												<option value=<c:out value='${siteList.siteName}'/>>
-													<c:out value='${siteList.siteDisplayValue}' />
-												</option>
-											</c:forEach>
-										</c:if>
-									</select>
-								</form>
-
-							</div>
-							<div class="my-setting">
-								&nbsp;|&nbsp; <a href="#">My Settings</a>&nbsp;| &nbsp; <a
-									href="/logout.do">Logout</a>
-							</div>
-
-						</div>
-
-
-						<div class="clear"></div>
-					</div>
-					<div
-						<c:if test="${appUser.defaultAppGroup.groupName=='ipath_app_group_parent' || appUser.defaultAppGroup.groupName=='ipath_app_group_student' }">style="display:none;"</c:if>
-						class="header-search-block">
-						<form id="entityForm" method="post">
-							<div class="class-dd">
-								<select id="entityList" class="styled2"
-									style="border: 1px solid #dcdcdc; width: 160px">
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Assignment',dataContext)}">
-										<option value="Assignment">Assignment(Title)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'AcademicYear',dataContext)}">
-										<option value="AcademicYear">Academic Year(Name)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'MyClass',dataContext)}">
-										<option value="MyClass">Class(Name)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Location',dataContext)}">
-										<option value="Location">Location(Name)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Parent',dataContext)}">
-										<option value="Parent">Parent(Primary Contact)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Period',dataContext)}">
-										<option value="Period">Period(Name)</option>
-									</c:if>
-
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Student',dataContext)}">
-										<c:if
-											test="${appUser.defaultAppGroup.groupName != 'ipath_app_group_parent' && appUser.defaultAppGroup.groupName != 'ipath_app_group_student'}">
-											<option value="Student">Student(Name)</option>
-										</c:if>
-									</c:if>
-
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Subject',dataContext)}">
-										<option value="Subject">Subject(Name)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Teacher',dataContext)}">
-										<option value="Teacher">Teacher(Name)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Set',dataContext)}">
-										<option value="Set">Set(Name)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Value',dataContext)}">
-										<option value="Value">Value(Name)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Workflow',dataContext)}">
-										<option value="Workflow">Workflow(Name)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Event',dataContext)}">
-										<option value="Event">Event(Title)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Note',dataContext)}">
-										<option value="Note">Note(Subject)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'Term',dataContext)}">
-										<option value="Term">Term(Name)</option>
-									</c:if>
-									<c:if
-										test="${sec:hasReadPermission(appUser,'EvaluationStage',dataContext)}">
-										<option value="EvaluationStage">EvaluationStage(Name)</option>
-									</c:if>
-								</select>
-							</div>
-							<div class="find-div">
-								<input type="text" name="advSearchField" class="find-txtbox"
-									value='<c:out value="${advSearchText}"/>'> <input
-									type="submit" name="entityButton" value="Find"
-									id="entityButton" class="find-btn">
-							</div>
-						</form>
-						<div class="clear"></div>
-					</div>
-					<div class="clear"></div>
-				</div>
-				<div class="clear"></div>
-			</div>
-		</div> --%>
-		<%-- <div id="menu-contaner">
-			<div id="navigation">
-				<ul id="navigationList">
-					<li><a href="/index.do" class="selectmenu">Home</a></li>
-
-					<li><a id="scheduleTab" href="/schedule.do">Schedule</a>
-					</li>
-
-					<c:if
-						test="${sec:hasReadPermission(appUser,'Evaluation',dataContext)}">
-						<li><a id="evaluationTab" href="/evaluation.do">Evaluation</a>
-						</li>
-					</c:if>
-					<c:if
-						test="${sec:hasReadPermission(appUser,'Assignment',dataContext)}">
-						<li><a id="assignmentTab" href="/assignment.do">Assignment</a>
-						</li>
-					</c:if>
-
-					<c:if
-						test="${appUser.defaultAppGroup.groupName=='ipath_app_group_student'}">
-						<li><a id="showannouncement" href="/showannouncement.do">Announcement</a>
-						</li>
-					</c:if>
-
-					<c:if
-						test="${appUser.defaultAppGroup.groupName=='ipath_app_group_admin'}">
-						<li><a id="contacts" href="/contacts.do">Contacts</a>
-						</li>
-					</c:if>
-
-					<c:if
-						test="${appUser.defaultAppGroup.groupName=='ipath_app_group_parent'}">
-						<li><a id="showannouncement" href="/showannouncement.do">Announcement</a>
-						</li>
-					</c:if>
-
-
-					<c:if test="${sec:hasReadPermission(appUser,'Event',dataContext)}">
-					<li><a id="eventTab" href="/event.do">Event</a>
-					</li>
-					</c:if>
-
-					<c:if test="${sec:hasReadPermission(appUser,'Note',dataContext)}">
-						<li><a id="noteTab" href="/note.do">Note</a>
-						</li>
-					</c:if>
-
-
-
-					<c:if test="${sec:hasReadPermission(appUser,'EvaluationScheme',dataContext)}">
-					<li><a id="evaluationschemeTab" href="/evaluationScheme.do">Evaluation Scheme</a></li>
-					</c:if>
-
-					<c:if
-						test="${sec:hasReadPermission(appUser,'EvaluationStructure',dataContext)}">
-						<li><a id="subjectEvaluationEventHomeTab"
-							href="/subjectEvaluationEventHome.do?index=true">Evaluation
-								Event</a>
-						</li>
-					</c:if>
-					<c:if
-						test="${sec:hasReadPermission(appUser,'MyClass',dataContext)}">
-						<li><a id="myclassTab" href="/myclass.do">Class</a>
-						</li>
-					</c:if>
-
-
-					<c:if
-						test="${appUser.defaultAppGroup.groupName=='ipath_app_group_admin'}">
-						<c:if
-							test="${sec:hasReadPermission(appUser,'Teacher',dataContext)}">
-							<li><a id="teacherTab" href="/teacher.do">Teacher</a>
-							</li>
-						</c:if>
-					</c:if>
-
-					<c:if
-						test="${appUser.defaultAppGroup.groupName=='ipath_app_group_admin'}">
-						<c:if
-							test="${sec:hasReadPermission(appUser,'Student',dataContext)}">
-							<li><a id="studentTab" href="/student.do">Student</a>
-							</li>
-						</c:if>
-					</c:if>
-
-					<c:if
-						test="${appUser.defaultAppGroup.groupName=='ipath_app_group_student'}">
-						<li><a id="myDetailTab" href="/student/showDetail.do">My
-								Detail</a>
-						</li>
-					</c:if>
-
-					<c:if
-						test="${appUser.defaultAppGroup.groupName=='ipath_app_group_parent'}">
-						<li><a id="myDetailTab2" href="/parent/showDetail.do">My
-								Detail</a>
-						</li>
-					</c:if>
-
-					<c:if
-						test="${appUser.defaultAppGroup.groupName=='ipath_app_group_parent'}">
-						<c:choose>
-							<c:when test="${dataContext.currentSelectedStudent!=null}">
-								<li><a id="wardDetailTab" href="/student/showDetail.do">Ward
-										Detail</a>
-								</li>
-							</c:when>
-							<c:otherwise>
-								<li><a id="wardDetailTab2" href="/student.do">Wards</a>
-								</li>
-							</c:otherwise>
-						</c:choose>
-					</c:if>
-
-					<c:if
-						test="${appUser.defaultAppGroup.groupName=='ipath_app_group_parent'}">
-						<li><a id="wardPerformanceTab" href="/wardPerformance.do">Ward
-								Performance</a>
-						</li>
-					</c:if>
-
-					<c:if test="${sec:hasDeletePermission(appUser,'StudentMiscellaneous',dataContext)}">
-						<li><a id="studentMiscTab" href="/studentmiscellaneous.do">Student Miscellaneous</a></li>	
-					</c:if>
-
-
-					<c:if test="${appUser.defaultAppGroup.groupName=='ipath_app_group_admin'}">
-					<c:if test="${sec:hasReadPermission(appUser,'EvaluationScheme',dataContext)}">
-					<li><a id="evaluationSchemeTab" href="/evaluationScheme.do">Evaluation Scheme</a></li>
-					</c:if></c:if>
-
-					<c:if test="${appUser.defaultAppGroup.groupName=='ipath_app_group_admin'}">
-					<c:if test="${sec:hasReadPermission(appUser,'Parent',dataContext)}">
-					<li><a id="parentTab" href="/parent.do">Parent</a></li>
-					</c:if></c:if>
-
-					<c:if
-						test="${appUser.defaultAppGroup.groupName=='ipath_app_group_admin'}">
-						<c:if
-							test="${sec:hasReadPermission(appUser,'AcademicYear',dataContext)}">
-							<li><a id="academicyearTab" href="/academicyear.do">Academic
-									Year</a>
-							</li>
-						</c:if>
-					</c:if>
-
-					<c:if test="${sec:hasReadPermission(appUser,'Set',dataContext)}">
-						<li><a id="setTab" href="/set.do">Set</a>
-						</li>
-					</c:if>
-					<c:if test="${sec:hasReadPermission(appUser,'Value',dataContext)}">
-						<li><a id="valueTab" href="/value.do">Value</a>
-						</li>
-					</c:if>
-					<c:if
-						test="${sec:hasReadPermission(appUser,'Workflow',dataContext)}">
-						<li><a id="workflowTab" href="/workflow.do">Workflow</a>
-						</li>
-					</c:if>
-						<c:if test="${sec:hasReadPermission(appUser,'Subject',dataContext)}">
-					<li><a id="subjectTab" href="/subject.do">Subjects</a></li>
-					</c:if>
-					<c:if test="${appUser.defaultAppGroup.groupName=='ipath_app_group_teacher'}">
-					<c:if test="${sec:hasReadPermission(appUser,'Note',dataContext)}">
-					<li><a id="noteTab" href="/note.do">Note</a></li>
-					</c:if>	</c:if>
-					<c:if test="${appUser.defaultAppGroup.groupName=='ipath_app_group_teacher'}">
-					<c:if test="${sec:hasReadPermission(appUser,'Assignment',dataContext)}">
-					<li><a id="assignmentTab" href="/assignment.do">Assignment</a></li>
-					</c:if>	</c:if>
-					<c:if test="${sec:hasReadPermission(appUser,'Period',dataContext)}">
-					<li id="period"><a id="periodTab" href="/period.do">Periods</a></li>
-					</c:if>
-
-					<li
-						<c:if test="${appUser.defaultAppGroup.groupName=='ipath_app_group_parent' || appUser.defaultAppGroup.groupName=='ipath_app_group_student' }">
-					style="display:none;"
-					</c:if>
-						id="More" class="more"><a class="more" href="#"><span>More</span>
-					</a></li>
-					<div class="clear"></div>
-				</ul>
-			</div>
-			</form>
-		</div>
-		<div id="listOnMoreHover">
-			<ul id="add"></ul>
-		</div> --%>
+		
 		<div id="middle-contaner" style="width: 100%">
 			<div id="middle-contaner-block"
 				style="width: 100%; border-radius: 0 0 0 0">
@@ -737,6 +385,49 @@ ul#add li {
 			</div>
 			<div class="clear"></div>
 		</div>
+		<div class="clear"></div>
+		<div id="bottom" style="clear:both;margin-top:10px;">
+			<table width="100%" border="0" class="gen">
+				<tr>
+					<td style="height:5px;">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<hr noshade="" size="1" width="100%">
+					</td>
+				</tr>
+				<tr>
+					<td valign="middle" align="center" style="font-family: tahoma; font-size: 12px;" colspan="2">
+						<table width="100%">
+						<tr>
+							<td>
+								<a href="http://netkilleramerica.blogspot.kr/2012/03/top-10-reasons-to-use-netkiller-shared.html" target="_blank"><img src="/images/pure_google_security.png"/></a>
+							</td>
+							<td style="vertical-align:bottom" align="right">
+								<font style="color:#42426F;">
+								 &copy; 2011 Netkiller
+								 | 
+								<a href="https://docs.google.com/a/netkiller.com/presentation/d/1_vJ5a7UmdEUdEPlR5Bmt_kgtTAJkVi-xYh76QQrZo0g/edit#slide=id.p" target="_blank" style="text-decoration:none;color:#42426F;">User guide</a>
+								 | 
+								<a href="http://www.netkiller.com/" target="_blank" style="text-decoration:none;color:#42426F;">About us</a>
+								 | 
+								<a href="http://www.netkiller.com/contact" target="_blank" style="text-decoration:none;color:#42426F;">Contact</a>
+								 | 
+								<a href="https://groups.google.com/a/netkiller.com/group/ims4vph/topics" target="_blank" style="text-decoration:none;color:#42426F;">Secured Forum</a>
+								 | 
+								<a href="http://code.google.com/p/vph-ims" target="_blank" style="text-decoration:none;color:#42426F;">Open Source</a>
+								</font>
+							</td>
+						</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		
 	</div>
 
 	<script type="text/javascript">
