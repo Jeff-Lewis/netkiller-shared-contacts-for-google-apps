@@ -5,7 +5,7 @@
     <info>Generates URL for blob</info>
     <tag>
       <name>urlgenerator</name>
-      <tagclass>com.metacube.ipathshala.view.taglib.UrlGeneratorCustomTag</tagclass>
+      <tagclass>com.netkiller.view.taglib.UrlGeneratorCustomTag</tagclass>
       <bodycontent>empty</bodycontent>
       <attribute>
         <name>url</name>

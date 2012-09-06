@@ -5,7 +5,7 @@
     <info>Fetches Breadcrumb</info>
       <tag>
       <name>breadcrumb</name>
-      <tagclass>com.metacube.ipathshala.view.taglib.BreadcrumbCustomTag</tagclass>
+      <tagclass>com.netkiller.view.taglib.BreadcrumbCustomTag</tagclass>
       <bodycontent>empty</bodycontent>
       </tag>
     </taglib>

@@ -5,7 +5,7 @@
     <info>Fetches List Of Values</info>
     <tag>
       <name>listofvalues</name>
-      <tagclass>com.metacube.ipathshala.view.taglib.ListOfValuesCustomTag</tagclass>
+      <tagclass>com.netkiller.view.taglib.ListOfValuesCustomTag</tagclass>
       <bodycontent>empty</bodycontent>
       <attribute>
         <name>name</name>
