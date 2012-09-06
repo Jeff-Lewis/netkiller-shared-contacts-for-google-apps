@@ -41,7 +41,9 @@
 	padding-bottom: 20px;
 	margin-top: 5px;
 }
-
+/* .selectopts{
+	display: none;	
+	} */
 .search-button {
 	background-color: green;
 	color: white;
@@ -339,6 +341,8 @@
 
 			load(); */
 	}
+	
+	
 </script>
 <script src="http://www.google-analytics.com/urchin.js"
 	type="text/javascript"></script>
@@ -352,7 +356,7 @@
 	var grid;
 	var prmSearch;
 	$(function() {
-
+		
 		$('#ImportDialog').hide();
 		$("#menu-contaner a").removeClass("selectmenu");
 		$("#contacts").addClass("selectmenu");
@@ -387,8 +391,8 @@
 										align : 'left',
 										search : false,
 										sortable : true,
-										hidden : false,
-										viewable : true
+										hidden : true,
+										viewable : false
 									}, {
 										name : 'keyLong',
 										index : 'keyLong',
@@ -399,14 +403,15 @@
 										editable : true,
 									}, {
 										name : 'firstName',
-										formatter : editLinkFormatter,
+										//formatter : editLinkFormatter,
 										editrules : {
 											edithidden : true,
 											required : true
 										},
 										index : 'firstName',
 										align : 'left',
-										editable : false,
+										width: 130,
+										editable : true,
 										searchoptions : {
 											sopt : [ 'bw', 'eq' ]
 										},
@@ -414,6 +419,7 @@
 										name : 'lastName',
 										index : 'lastName',
 										editable : true,
+										width: 130,
 										align : 'left',
 										searchoptions : {
 											sopt : [ 'bw', 'eq' ]
@@ -422,6 +428,7 @@
 										name : 'cmpnyName',
 										index : 'cmpnyName',
 										editable : true,
+										width: 130,
 										align : 'left',
 										searchoptions : {
 											sopt : [ 'bw', 'eq' ]
@@ -430,6 +437,7 @@
 										name : 'workEmail',
 										index : 'workEmail',
 										editable : true,
+										width: 100,
 										align : 'left',
 										searchoptions : {
 											sopt : [ 'bw', 'eq' ]
@@ -438,6 +446,7 @@
 										name : 'workPhone',
 										index : 'workPhone',
 										editable : true,
+										width: 90,
 										align : 'left',
 										searchoptions : {
 											sopt : [ 'bw', 'eq' ]
@@ -446,6 +455,7 @@
 										name : 'workAddress',
 										index : 'workAddress',
 										editable : true,
+										width: 200,
 										align : 'left',
 										searchoptions : {
 											sopt : [ 'bw', 'eq' ]
@@ -453,7 +463,7 @@
 									}, {
 										name : 'act',
 										index : 'act',
-										width : 150,
+										width : 130,
 										sortable : false,
 										search : false,
 									}
@@ -469,6 +479,25 @@
 									rowList : [ 5, 10, 15, 30, 50, 100 ],
 									sortname : 'firstName',
 									sortorder : 'asc',
+									onCellSelect: function(rowid,
+											iCol,
+											cellcontent){
+										var  row= jQuery("#list4").jqGrid('getRowData',rowid);
+												//alert('hi' + cellcontent )
+											     if(cellcontent== row.workAddress){
+											    	/*  $('#map_canvas').dialog('open');
+											    	 showAddress(cellcontent);
+							 */
+							 						 cellcontent=cellcontent.replace(/ /g,"+"); 
+											    	 window.open("http://maps.google.com?q="+cellcontent,"_blank");
+											    }         
+											     else	{
+											    	 var paramId = $('#list4').jqGrid('getCell', rowid, 'key');
+											 
+											    		document.location.href = "/contact/showDetail.do?paramid="+paramId;
+											     }
+									
+									},
 									beforeRequest : function() {
 										$('.cbox').unbind('click');
 
@@ -861,7 +890,7 @@
 
 			<div id="gridFilter" class="search_bar2">
 				<input id="fbox_list4_search" type="submit" name="submit"
-					class="search-button" value="Search">
+					class="search-button" value="Search" ">
 			</div>
 
 		</div>
@@ -1283,3 +1312,5 @@ Email : <input type='text'  id="connectEmail" /><br>
 }
 -->
 </style>
+
+ 

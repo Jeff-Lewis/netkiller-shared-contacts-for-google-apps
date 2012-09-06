@@ -368,11 +368,19 @@ ul#add li {
 		<div class="header">
 			<div class="logo"></div>
 
-			<div class="top_most_nav" style="margin-left:120px;">admin@mellong.com | Manage | Logout</div>
-
+			<!--  <div class="top_most_nav" style="margin-left:120px;">admin@mellong.com | Manage | Logout</div>  -->
+			<div style="float: right; font-size: 13px;margin-left: 200px;">
+				harish@nicefact.com | Manage |
+				<c:if test="${isAdmin}">|
+				Manage
+					<!-- <a href="/basicconfiguration.do"> <fmt:message
+							key="jsp.index.manage" /> </a> -->|
+				</c:if>
+				<a href="/logout.do" style="text-decoration: none ;font-family: verdana;font-size: 13px;"> Logout </a>
+			</div>
 
 		</div>
-		
+
 		<div id="middle-contaner" style="width: 100%">
 			<div id="middle-contaner-block"
 				style="width: 100%; border-radius: 0 0 0 0">
@@ -380,54 +388,48 @@ ul#add li {
 
 				<div class="clear"></div>
 			</div>
-			<div id="footer-contaner">
-			
-			</div>
+			<div id="footer-contaner"></div>
 			<div class="clear"></div>
 		</div>
 		<div class="clear"></div>
-		<div id="bottom" style="clear:both;margin-top:10px;">
+		<div id="bottom" style="clear: both; margin-top: 10px;">
 			<table width="100%" border="0" class="gen">
 				<tr>
-					<td style="height:5px;">
-						&nbsp;
-					</td>
+					<td style="height: 5px;">&nbsp;</td>
 				</tr>
 				<tr>
 					<td>
-						<hr noshade="" size="1" width="100%">
-					</td>
+						<hr noshade="" size="1" width="100%"></td>
 				</tr>
 				<tr>
-					<td valign="middle" align="center" style="font-family: tahoma; font-size: 12px;" colspan="2">
+					<td valign="middle" align="center"
+						style="font-family: tahoma; font-size: 12px;" colspan="2">
 						<table width="100%">
-						<tr>
-							<td>
-								<a href="http://netkilleramerica.blogspot.kr/2012/03/top-10-reasons-to-use-netkiller-shared.html" target="_blank"><img src="/images/pure_google_security.png"/></a>
-							</td>
-							<td style="vertical-align:bottom" align="right">
-								<font style="color:#42426F;">
-								 &copy; 2011 Netkiller
-								 | 
-								<a href="https://docs.google.com/a/netkiller.com/presentation/d/1_vJ5a7UmdEUdEPlR5Bmt_kgtTAJkVi-xYh76QQrZo0g/edit#slide=id.p" target="_blank" style="text-decoration:none;color:#42426F;">User guide</a>
-								 | 
-								<a href="http://www.netkiller.com/" target="_blank" style="text-decoration:none;color:#42426F;">About us</a>
-								 | 
-								<a href="http://www.netkiller.com/contact" target="_blank" style="text-decoration:none;color:#42426F;">Contact</a>
-								 | 
-								<a href="https://groups.google.com/a/netkiller.com/group/ims4vph/topics" target="_blank" style="text-decoration:none;color:#42426F;">Secured Forum</a>
-								 | 
-								<a href="http://code.google.com/p/vph-ims" target="_blank" style="text-decoration:none;color:#42426F;">Open Source</a>
-								</font>
-							</td>
-						</tr>
-						</table>
-					</td>
+							<tr>
+								<td><a
+									href="http://netkilleramerica.blogspot.kr/2012/03/top-10-reasons-to-use-netkiller-shared.html"
+									target="_blank"><img src="/images/pure_google_security.png" />
+								</a></td>
+								<td style="vertical-align: bottom" align="right"><font
+									style="color: #42426F;"> &copy; 2011 Netkiller | <a
+										href="https://docs.google.com/a/netkiller.com/presentation/d/1_vJ5a7UmdEUdEPlR5Bmt_kgtTAJkVi-xYh76QQrZo0g/edit#slide=id.p"
+										target="_blank" style="text-decoration: none; color: #42426F;">User
+											guide</a> | <a href="http://www.netkiller.com/" target="_blank"
+										style="text-decoration: none; color: #42426F;">About us</a> |
+										<a href="http://www.netkiller.com/contact" target="_blank"
+										style="text-decoration: none; color: #42426F;">Contact</a> | <a
+										href="https://groups.google.com/a/netkiller.com/group/ims4vph/topics"
+										target="_blank" style="text-decoration: none; color: #42426F;">Secured
+											Forum</a> | <a href="http://code.google.com/p/vph-ims"
+										target="_blank" style="text-decoration: none; color: #42426F;">Open
+											Source</a> </font></td>
+							</tr>
+						</table></td>
 				</tr>
 			</table>
 		</div>
-		
-		
+
+
 	</div>
 
 	<script type="text/javascript">

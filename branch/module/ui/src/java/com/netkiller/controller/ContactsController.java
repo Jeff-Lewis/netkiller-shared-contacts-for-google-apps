@@ -136,6 +136,21 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.VIEW_INDEX;
 	}
 
+	@RequestMapping("/logout.do")
+	public void doLogout(HttpSession session, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		session.setAttribute("logoutAction", new Boolean(true));
+		UserService userService = UserServiceFactory.getUserService();
+		String logoutUrl = userService.createLogoutURL("/contacts.do");
+		session.invalidate();
+		try {
+			((HttpServletResponse) response).sendRedirect(logoutUrl);
+
+		} catch (IOException ioe) {
+			throw new AppException("Unable to logout", ioe);
+		}
+	}
+
 	@RequestMapping("/contact/triggercsvmail.do")
 	@ResponseBody
 	public String triggerExport(HttpServletRequest request) {
@@ -161,6 +176,7 @@ public class ContactsController extends AbstractController {
 		String toEmail = CommonWebUtil.getParameter(request, "toEmail");
 		contactsManager.generateCSVMail(toEmail, toName);	
 	}
+
 
 	@RequestMapping("/connect/data.do")
 	public @ResponseBody
@@ -555,16 +571,18 @@ public class ContactsController extends AbstractController {
 
 	@RequestMapping("/contact/close.do")
 	public void close(HttpServletRequest request, HttpServletResponse response) {
-		removeFromNavigationTrail(request);
-		redirectToPreviousBreadcrumb(request, response);
-
+		try {
+			response.sendRedirect("/contacts.do");
+		} catch (IOException e) {
+			log.error("Can not redirect to specified URL");
+			e.printStackTrace();
+		}
 	}
 
 	@RequestMapping("/contact/showDetail.do")
 	public String showDetail(HttpServletRequest request, Model model)
 			throws NumberFormatException, AppException {
-		String contactId = request
-				.getParameter(UICommonConstants.PARAM_ENTITY_ID);
+		String contactId = request.getParameter("paramid");
 		Key contactKey = KeyFactory.createKey(Contact.class.getSimpleName(),
 				Long.parseLong(contactId));
 		Contact currentContact = (Contact) contactsManager.getById(contactKey);

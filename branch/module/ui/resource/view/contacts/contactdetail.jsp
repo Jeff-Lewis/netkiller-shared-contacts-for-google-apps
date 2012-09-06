@@ -22,17 +22,17 @@
 }
 </style>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	$(function() {
 		$("#menu-contaner a").removeClass("selectmenu");
 		$("#contactTab").addClass("selectmenu");
 	});
-</script>
+</script> -->
 <!-- Start page content -->
-<div class="breadcrumb">
+ <div class="breadcrumb">
 
-	<brc:breadcrumb></brc:breadcrumb>
-</div>
+	<%-- <brc:breadcrumb></brc:breadcrumb> --%>
+</div> 
 <form:form id="contactForm" action="/contact/editForm.do"
 	modelAttribute="contact" method="post">
 	<input type="hidden" name="paramid"
@@ -41,13 +41,13 @@
 
 	<div class="clear"></div>
 	<div class="entity-detail">
-		<div class="entity-edit" onclick="editContact()">
+		<!-- <div class="entity-edit" onclick="editContact()">
 			<a href="#"><span class="entity-edit-icon">Edit</span> </a>
 		</div>
 
 		<div class="entity-delete" onclick="deleteContact()">
 			<a href="#"><span class="entity-delete-icon"> Delete</span> </a>
-		</div>
+		</div> -->
 
 		<div class="entity-close" onclick="closeForm()">
 			<a href="#"><span class="entity-close-icon"> Close</span> </a>
@@ -57,7 +57,7 @@
 
 	</div>
 
-	<div class="entity-grid-block">
+	<div class="entity-grid-block" style="width:1150px;">
 		<div class="entity-title">
 			<span class="fl"><c:out value="${student.fullName}" />&nbsp;
 			</span>
@@ -65,7 +65,7 @@
 		</div>
 	</div>
 
-	<div class="entity-info-block">
+	<div class="entity-info-block" style="width:1150px;">
 		<div class="entity-info">
 			<div class="left-div">
 				<div class="entity-general-info">General Information</div>
