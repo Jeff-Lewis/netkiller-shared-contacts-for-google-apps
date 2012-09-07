@@ -433,16 +433,16 @@ ul#add li {
 	</div>
 
 	<script type="text/javascript">
-		jQuery('#hdr-popup').bind('click', function(e) {
-			e.stopPropagation();
-		});
-		jQuery(document).bind('click', function() {
+	$(function(){
+		
+	});
+	/* 	jQuery(document).bind('click', function() {
 			jQuery('#hdr-popup').hide();
 			jQuery('#mysite-dropdown').removeClass('edu-username-red-arrow');
 			jQuery('#mysite-dropdown').addClass('edu-username-white-arrow');
-		});
+		}); */
 		var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {
-			imgRight : "SpryAssets/SpryMenuBarRightHover.gif"
+			imgRight : "/SpryAssets/SpryMenuBarRightHover.gif"
 		});
 	</script>
 </body>

@@ -357,6 +357,8 @@
 	var prmSearch;
 	$(function() {
 		
+		
+		
 		$('#ImportDialog').hide();
 		$("#menu-contaner a").removeClass("selectmenu");
 		$("#contacts").addClass("selectmenu");
@@ -515,6 +517,9 @@
 									},
 
 									gridComplete : function() {
+										
+										
+
 										var ids = jQuery("#list4").jqGrid(
 												'getDataIDs');
 										for ( var i = 0; i < ids.length; i++) {
@@ -557,6 +562,8 @@
 
 											initListCheckBox();
 
+										}else{
+											$('.cbox').click(function(e){ e.stopPropagation(); });
 										}
 									},
 									editurl : "/contact/gridUpdate.do",
