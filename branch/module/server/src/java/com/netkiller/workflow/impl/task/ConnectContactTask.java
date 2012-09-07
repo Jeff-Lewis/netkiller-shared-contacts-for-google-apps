@@ -54,15 +54,14 @@ public class ConnectContactTask extends AbstractWorkflowTask {
 		ConnectContactContext connectContactContext = (ConnectContactContext) context;
 		String contactKeys = connectContactContext.getContactKeysCSV();
 		String email = connectContactContext.getOwnerEmail();
-
-		Scanner sc = new Scanner(contactKeys).useDelimiter(",");
-		String randomUrl = CommonWebUtil.getDomain(email);
 		String domain = CommonWebUtil.getDomain(email);
+		Scanner sc = new Scanner(contactKeys).useDelimiter(",");
+		
 		StringBuffer sb = new StringBuffer();
 		for (int x = 0; x < 8; x++) {
 			sb.append((char) ((int) (Math.random() * 26) + 97));
 		}
-		randomUrl += (new Date()).getTime() + sb.toString();
+		String randomUrl =domain + (new Date()).getTime() + sb.toString();
 		List<Key> contactKeyList = new ArrayList<Key>();
 		Date date = new Date();
 		while (sc.hasNextLong()) {
@@ -120,6 +119,7 @@ public class ConnectContactTask extends AbstractWorkflowTask {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("fullName", toName);
 		map.put("randomUrl", randomUrl);
+		map.put("domain", domain);
 		try {
 			mailService.sendMailTemplate(mailMessage, "connectContactTemplate.vm", map);
 		} catch (AppException e) {
