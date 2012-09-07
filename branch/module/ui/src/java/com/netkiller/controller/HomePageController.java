@@ -115,7 +115,7 @@ public class HomePageController extends AbstractController {
 		return UICommonConstants.VIEW_INDEX;
 	}
 
-	@RequestMapping("/logout.do")
+	//@RequestMapping("/logout.do")
 	public void doLogout(HttpSession session, HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		session.setAttribute("logoutAction", new Boolean(true));

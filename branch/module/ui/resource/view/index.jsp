@@ -370,9 +370,9 @@ ul#add li {
 
 			<!--  <div class="top_most_nav" style="margin-left:120px;">admin@mellong.com | Manage | Logout</div>  -->
 			<div style="float: right; font-size: 13px;margin-left: 200px;">
-				harish@nicefact.com | Manage |
-				<c:if test="${isAdmin}">|
-				Manage
+				${appUser.email}&nbsp;| 
+				<c:if test="${isAdmin}"> |
+				
 					<!-- <a href="/basicconfiguration.do"> <fmt:message
 							key="jsp.index.manage" /> </a> -->|
 				</c:if>

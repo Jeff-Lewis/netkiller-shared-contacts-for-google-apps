@@ -13,6 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,8 +88,18 @@ public class AuthorisationFilter implements Filter {
 		}else if (user == null) {			
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
 		} else {
-			AppUserEntity appUser = appUserEntityService.getAppUserByEmail(user
-					.getEmail());
+			HttpSession session = req.getSession();
+			AppUserEntity appUser = null;
+			if(session.getAttribute("appUser")!=null){
+				appUser = (AppUserEntity) session.getAttribute("appUser");
+			}else{
+				 appUser = appUserEntityService.getAppUserByEmail(user
+							.getEmail());
+				 session.setAttribute("appUser",appUser);
+			}
+			
+			
+			
 			if (appUser == null) {				
 				DomainAdmin domainAdmin = domainAdminManager
 						.getDomainAdminByDomainName(CommonWebUtil

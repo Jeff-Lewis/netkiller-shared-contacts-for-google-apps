@@ -138,17 +138,13 @@ public class ContactsController extends AbstractController {
 
 	@RequestMapping("/logout.do")
 	public void doLogout(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response) throws AppException {
-		session.setAttribute("logoutAction", new Boolean(true));
-		UserService userService = UserServiceFactory.getUserService();
-		String logoutUrl = userService.createLogoutURL("/contacts.do");
+			HttpServletResponse response) throws AppException, IOException {
+//		session.setAttribute("logoutAction", new Boolean(true));
 		session.invalidate();
-		try {
-			((HttpServletResponse) response).sendRedirect(logoutUrl);
+		UserService userService = UserServiceFactory.getUserService();
+		String logoutUrl = userService.createLogoutURL("/contacts.do");		
+			response.sendRedirect(logoutUrl);
 
-		} catch (IOException ioe) {
-			throw new AppException("Unable to logout", ioe);
-		}
 	}
 
 	@RequestMapping("/contact/triggercsvmail.do")
