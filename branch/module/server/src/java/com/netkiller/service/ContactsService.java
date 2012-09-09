@@ -26,7 +26,6 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -39,10 +38,9 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.mail.MailService;
+import com.google.appengine.api.mail.MailService.Attachment;
 import com.google.appengine.api.mail.MailService.Message;
 import com.google.appengine.api.mail.MailServiceFactory;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gdata.client.Query;
 import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
 import com.google.gdata.client.authn.oauth.OAuthException;
@@ -75,11 +73,6 @@ import com.netkiller.entity.DomainGroup;
 import com.netkiller.entity.UserContact;
 import com.netkiller.entity.Workflow;
 import com.netkiller.entity.metadata.EntityMetaData;
-import com.netkiller.mail.MailAddress;
-import com.netkiller.mail.MailAttachment;
-import com.netkiller.mail.MailMessage;
-import com.netkiller.mail.Recipient;
-import com.netkiller.mail.RecipientType;
 import com.netkiller.mail.impl.GoogleMailService;
 import com.netkiller.security.DomainConfig;
 import com.netkiller.security.acl.Permission.PermissionType;
@@ -417,7 +410,9 @@ public class ContactsService extends AbstractService {
 				 csvData.append(entry.getFullName() + ",");
 				 csvData.append(entry.getWorkEmail() + ",");
 				 csvData.append(entry.getWorkPhone() + ",");
-				 csvData.append(entry.getWorkAddress() + "\n");				 
+				 String address = entry.getWorkAddress();
+				 address = address.replace("\n", ",");
+				 csvData.append(address + "\n");				 
 			}
 		 
 			String domain = CommonWebUtil.getDomain(fromEmail);
@@ -435,7 +430,23 @@ public class ContactsService extends AbstractService {
 			e.printStackTrace();
 			throw new AppException(e.getMessage());
 		}
-		MailMessage mailMessage = new MailMessage();
+		
+		Message mail = new Message();		
+		mail.setSubject("CSV Data");
+		mail.setHtmlBody("Shared Contacts CSV");
+		mail.setTo(toEmail);
+		mail.setSender(fromEmail);
+		Attachment attachment = new Attachment("CSV-File.csv", byteArray);
+		mail.setAttachments(attachment);
+		MailService service = MailServiceFactory.getMailService();
+		try {
+			service.send(mail);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("mail sent");
+		
+	/*	MailMessage mailMessage = new MailMessage();
 		List<Recipient> recipients = new ArrayList<Recipient>();
 		Recipient recipient = new Recipient();
 		MailAddress recipientMailAddress = new MailAddress(toName, toEmail);
@@ -446,12 +457,13 @@ public class ContactsService extends AbstractService {
 		List<MailAttachment> attachments = new ArrayList<MailAttachment>();
 		MailAttachment attachment = new MailAttachment();
 		attachments.add(attachment);
-		attachment.setFile(ArrayUtils.toObject(byteArray));
+		attachment.setFile(byteArray);
 		attachment.setFilename("Netkiller-shared.csv");
 		mailMessage.setSubject("CSV Data");
+		mailMessage.setHtmlBody(fromEmail + " has shared the attached contacts with you.");
 		mailMessage.setAttachments(attachments);
 		mailMessage.setSender(new MailAddress(fromName, fromEmail));
-		mailService.sendMail(mailMessage);
+		mailService.sendMail(mailMessage);*/
 	}
 
 	public void exportContacts(DataContext dataContext,

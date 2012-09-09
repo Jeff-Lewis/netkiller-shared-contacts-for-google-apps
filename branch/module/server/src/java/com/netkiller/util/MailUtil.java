@@ -13,9 +13,34 @@ import com.netkiller.mail.RecipientType;
 
 public class MailUtil {
 
-	private static MimetypesFileTypeMap mediaTypes;
+
+	
+	private static MimetypesFileTypeMap mediaTypes ;
 	private static final AppLogger log = AppLogger.getLogger(MailUtil.class);
 
+	static{
+		mediaTypes = new MimetypesFileTypeMap();
+	    mediaTypes.addMimeTypes("application/msword doc");
+	    mediaTypes.addMimeTypes("application/vnd.ms-excel xls");
+	    mediaTypes.addMimeTypes("application/pdf pdf");
+	    mediaTypes.addMimeTypes("text/richtext rtx");
+	    mediaTypes.addMimeTypes("text/csv csv");
+	    mediaTypes.addMimeTypes("text/tab-separated-values tsv tab");
+	    mediaTypes.addMimeTypes("application/x-vnd.oasis.opendocument.spreadsheet ods");
+	    mediaTypes.addMimeTypes("application/vnd.oasis.opendocument.text odt");
+	    mediaTypes.addMimeTypes("application/vnd.ms-powerpoint ppt pps pot");
+	    mediaTypes.addMimeTypes("application/vnd.openxmlformats-officedocument.wordprocessingml.document docx");
+	    mediaTypes.addMimeTypes("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet xlsx");
+	    mediaTypes.addMimeTypes("audio/mpeg mp3 mpeg3");
+	    mediaTypes.addMimeTypes("image/png png");
+	    mediaTypes.addMimeTypes("application/zip zip");
+	    mediaTypes.addMimeTypes("application/x-tar tar");
+	    mediaTypes.addMimeTypes("video/quicktime qt mov moov");
+	    mediaTypes.addMimeTypes("video/mpeg mpeg mpg mpe mpv vbs mpegv");
+	    mediaTypes.addMimeTypes("video/msvideo avi");		
+		
+	}
+	
 	public static Message.RecipientType getMessageRecipientType(RecipientType type) {
 		Message.RecipientType recipientType = null;
 		switch (type) {
@@ -33,6 +58,7 @@ public class MailUtil {
 	}
 
 	public static MimeBodyPart getAttachmentBodyPart(MailAttachment mailAttachment) throws AppException {
+		
 		MimeBodyPart attachment = new MimeBodyPart();
 		try {
 			attachment.setFileName(mailAttachment.getFilename());
