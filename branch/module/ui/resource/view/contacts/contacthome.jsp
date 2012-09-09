@@ -842,7 +842,7 @@ background:none !important;
 	}
 
 	function getSelectedContactsIdList() {
-		var contactIdList = "";
+	/* 	var contactIdList = "";
 		var contactKeyList = "";
 		jQuery.each(jQuery("#list4").getGridParam('selarrrow'), function() {
 			if (!isNaN(this))
@@ -854,7 +854,13 @@ background:none !important;
 		contactKeyList = contactKeyList.substring(0, contactKeyList.length - 1);
 		document.getElementById("contactIdList").value = contactKeyList;
 		//alert(contactKeyList);
-		return contactKeyList;
+		return contactKeyList; */
+		var selectedContacts = "";
+		$(".cbox:checked").each(function() {
+			var elemIndex = parseInt($("#list4 input").index($(this))) / 3 + 1;
+			selectedContacts += $('#list4').getCell(elemIndex, 'key') + ",";
+		});
+		return selectedContacts;
 	}
 
 	function massUpdate() {

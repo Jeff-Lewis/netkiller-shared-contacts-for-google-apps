@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <!--
+  - Copyright 2010 Google Inc.
+  -
+  - Licensed to the Apache Software Foundation (ASF) under one
+  - or more contributor license agreements. See the NOTICE file
+  - distributed with this work for additional information
+  - regarding copyright ownership. The ASF licenses this file
+  - to you under the Apache License, Version 2.0 (the "License");
+  - you may not use this file except in compliance
+  - with the License. You may obtain a copy of the License at
+  -
+  -     http://www.apache.org/licenses/LICENSE-2.0
+  -
+  - Unless required by applicable law or agreed to in writing,
+  - software distributed under the License is distributed on an
+  - "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  - KIND, either express or implied. See the License for the
+  - specific language governing permissions and limitations
+  - under the License.
+  -->
+<ApplicationManifest xmlns="http://schemas.google.com/ApplicationManifest/2009">
+  <Name>Shared Contacts</Name>
+  <Description>This app manage Domain's shared contacts</Description>
+
+  <!-- Administrators and users will be sent to this URL for application support -->
+  <Support>
+    <Link rel="support" href="http://www.netkiller.com/support" />
+  </Support>
+
+  <!-- Show this link in Google's universal navigation for all users -->
+  <Extension id="navLink" type="link">
+    <Name>NetKiller Shared Contacts</Name>
+    <Url>http://netkillernsc3.appspot.com/openid?domain=${DOMAIN_NAME}</Url>
+    
+    <Scope ref="contactsAPI"/>
+    <Scope ref="spreadsheetAPI" />
+    <Scope ref="Provisioning API" />
+    
+  </Extension>
+
+  <!-- Declare our OpenID realm so our app is white listed -->
+  <Extension id="realm" type="openIdRealm">
+    <Url>http://netkillernsc3.appspot.com</Url>
+  </Extension>
+
+  <!-- Need access to the Contacts API -->
+  <Scope id="contactsAPI">
+    <Url>https://www.google.com/m8/feeds/</Url>
+    <Reason>This app manage Domain's shared contacts.</Reason>
+  </Scope>
+  
+  <Scope id="spreadsheetAPI">
+  	<Url>https://spreadsheets.google.com/feeds/</Url>
+  	<Reason>To import export contacts</Reason>
+  </Scope>
+  
+  <Scope id="Provisioning API">
+  <Url>https://apps-apis.google.com/a/feeds/user/#readonly</Url>
+  <Reason>This application can list domain users to give them permissions.</Reason>
+</Scope>
+
+  <!-- Configures the free edition for -->
+  <Edition id="free_edition">
+    <Name>Free Edition</Name>
+    <Extension ref="navLink"/>
+    <Extension ref="realm"/>
+  </Edition>
+  
+</ApplicationManifest>

@@ -136,7 +136,7 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.VIEW_INDEX;
 	}
 
-	/*@RequestMapping("/logout.do")
+	@RequestMapping("/logout.do")
 	public void doLogout(HttpSession session, HttpServletRequest request,
 			HttpServletResponse response) throws AppException, IOException {
 //		session.setAttribute("logoutAction", new Boolean(true));
@@ -145,7 +145,7 @@ public class ContactsController extends AbstractController {
 		String logoutUrl = userService.createLogoutURL("/contacts.do");		
 			response.sendRedirect(logoutUrl);
 
-	}*/
+	}
 
 	@RequestMapping("/contact/triggercsvmail.do")
 	@ResponseBody
