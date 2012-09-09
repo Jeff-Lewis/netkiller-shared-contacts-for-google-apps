@@ -48,294 +48,7 @@
 	type="text/css">
 </head>
 
-<%-- <c:if test="${dataContext.currentSelectedAcademicYear==null}">
-	<script type="text/javascript">
-		var acadYear = "";
-		var notSelectedOption = "<option value='Not Selected'>Not Selected</option>";
-	</script>
-</c:if>
-<c:if test="${dataContext.currentSelectedAcademicYear!=null}">
-	<script type="text/javascript">
-		var acadYear = $
-		{
-			dataContext.currentSelectedAcademicYear.entityKey.id
-		};
-		var notSelectedOption = "";
-	</script>
-</c:if>
 
-<c:if test="${dataContext.currentSelectedStudent!=null}">
-	<script type="text/javascript">
-		var stud = $
-		{
-			dataContext.currentSelectedStudent.key.id
-		};
-	</script>
-</c:if> --%>
-<%-- <c:if test="${dataContext.currentSelectedStudent==null}">
-	<script type="text/javascript">
-		var stud = undefined;
-	</script>
-</c:if>
-
-
-<script type="text/javascript">
-	function getHeaderTitle() {
-		$.ajax({
-			url : "/getHeaderTitle.do",
-			success : function(title) {
-				$("#logo .siteTitle").html(title);
-			}
-		});
-
-	}
-
-	function getSchoolsite() {
-		$
-				.ajax({
-					url : "/getSchoolSite.do",
-					success : function(title) {
-						var opt = "<option value ='" + title +"'> School Site </option>";
-						$("#selectedSite").append(opt);
-					}
-				});
-	}
-
-	function getUrlParameter(name) {
-		name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-		var regexS = "[\\?&]" + name + "=([^&#]*)";
-		var regex = new RegExp(regexS);
-		var results = regex.exec(window.location.href);
-		if (results == null)
-			return "";
-		else
-			return results[1];
-	}
-
-	$(function() {
-
-		getHeaderTitle();
-		getSchoolsite();
-		//$("#acadYear").html(notSelectedOption + $("#acadYear").html())
-
-		var academicYearList = document.getElementById("acadYear");
-		for ( var i = 0; i < academicYearList.length; i++) {
-
-			if (academicYearList.options[i].value == acadYear)
-				academicYearList.value = academicYearList.options[i].value;
-		}
-		$("#acadYear").change(function() {
-			document.globalFilterForm.submit();
-		});
-
-		if (stud) {
-			$("#stud").val(stud);
-		}
-		$("#stud").change(function() {
-			document.globalFilterForm.action = "/setGlobalFilterStudent.do";
-			document.globalFilterForm.submit();
-		});
-
-	});
-	$(document)
-			.ready(
-					function() {
-
-						$("#selectedSite").change(function() {
-							document.getElementById("classSiteForm").submit();
-						});
-
-						$("#entityList").val(getUrlParameter("entity"));
-						$("#entityButton")
-								.click(
-										function() {
-											var selectListValue = $(
-													"#entityList :selected")
-													.val().toLowerCase();
-											var redirectTo = "/"
-													+ selectListValue
-													+ "/advancedsearch.do?entity="
-													+ $("#entityList :selected")
-															.val();
-											$("#entityForm").attr("action",
-													redirectTo);
-										});
-						$("#More ul").empty();
-						var pos = $("#More").position();
-						$("#listOnMoreHover").css("left", pos.left);
-						$("#listOnMoreHover").css("top", pos.top + 40);
-						$("#listOnMoreHover").css({
-							'visibility' : 'visible',
-							'width' : '12%',
-							'background-color' : '#B46D6D',
-							'color' : 'black'
-						});
-						if (('${appUser.defaultAppGroup.groupName}') == "ipath_app_group_admin") {
-							var currentSelect = "academicyear";
-							var currentSelectText = "AcademicYear";
-						}
-						if (('${appUser.defaultAppGroup.groupName}') == "ipath_app_group_teacher") {
-							var currentSelect = "myclass";
-							var currentSelectText = "Class";
-						}
-						if (('${appUser.defaultAppGroup.groupName}') == "ipath_app_group_parent"
-								|| ('${appUser.defaultAppGroup.groupName}') == "ipath_app_group_student") {
-							$("#More").hide();
-						}
-						$("#add").empty();
-						var curTop, curLeft, curBottom, curRight;
-						var currSel = "${currentSelectTab}";
-						var currSelText = "${currentSelectTabVal}";
-						if (currSel != '') {
-							currentSelect = currSel;
-							tabAlreadySelected(currentSelect, currSelText);
-						}
-
-						$('.more')
-								.hover(
-										function() {
-											if (('${appUser.defaultAppGroup.groupName}') == "ipath_app_group_admin") {
-												$("#listOnMoreHover")
-														.css('visibility',
-																'visible');
-												$("#add").empty();
-												$("#add")
-														.append(
-																'<li id="parent" >Parent</li><li id="evaluationScheme">Evaluation Scheme</li><li id="sendsms" >Send Sms</li>'
-																		+ '<li id="gradingscale" >Grading Scale</li><li id="subject" >Subject</li>'
-																		+ '<li id="period" >Period</li><li id="location">Location</li><li id="studentMiscellaneous">Student Record</li><li id="school">School</li><li id="reportCard">Report Card Config</li><li id="showannouncement">Announcement</li>');
-												if (currentSelect != "academicyear") {
-													$("#" + currentSelect)
-															.remove();
-													$("#add")
-															.append(
-																	'<li id="academicyear">Academic Year</li>');
-												}
-											} else if (('${appUser.defaultAppGroup.groupName}') == "ipath_app_group_teacher") {
-												$("#listOnMoreHover")
-														.css('visibility',
-																'visible');
-												$("#add").empty();
-												$("#add")
-														.append(
-																'<li id="student">Student</li>'
-																		+ '<li id="parent" >Parent</li>'
-																		+ '<li id="subject">Subject</li>'
-																		+ '<li id="studentMiscellaneous">Student Record</li><li id="showannouncement">Announcement</li>');
-												if (currentSelect != "myclass") {
-													$("#" + currentSelect)
-															.remove();
-													$("#add")
-															.append(
-																	'<li id="myclass">Class</li>');
-												}
-											}
-
-											var pos = $("#More").position();
-											$("#listOnMoreHover").css("left",
-													pos.left);
-											$("#listOnMoreHover").css("top",
-													pos.top + 40);
-											$("#listOnMoreHover").css({
-												'visibility' : 'visible',
-												'width' : '12%',
-												'background-color' : '#B46D6D',
-												'color' : 'black'
-											});
-
-											$("#add li")
-													.click(
-															function() {
-																$(
-																		"#navigationList li:last")
-																		.prev()
-																		.hide();
-																var id = $(this)
-																		.attr(
-																				"id");
-																currentSelect = this.id;
-																currentSelectText = $(
-																		this)
-																		.text();
-																$(
-																		"#navigationList li:last")
-																		.prev()
-																		.after(
-																				'<li><a id="'+id+'Tab'+' "href="/'+id+'.do">'
-																						+ $(
-																								this)
-																								.text()
-																						+ '</a></li>');
-																$
-																		.ajax({
-																			url : "/index.do?currentSelectTab="
-																					+ currentSelect
-																					+ "&currentSelectTabVal="
-																					+ currentSelectText,
-																			success : function(
-																					data) {
-																				window.location.href = '/'
-																						+ currentSelect
-																						+ '.do';
-																			}
-
-																		});
-																$("#add")
-																		.empty();
-															});
-											$("#add li")
-													.mouseover(
-															function() {
-																$(this)
-																		.css(
-																				{
-																					'background-color' : 'white',
-																					'cursor' : 'pointer'
-																				});
-															})
-													.mouseout(
-															function() {
-																$(this)
-																		.css(
-																				'background-color',
-																				'#B46D6D');
-															});
-
-										},
-										function(e) {
-											curLeft = $(".more").position().left;
-											curRight = curLeft + 40;
-											curTop = $(".more").position().top;
-											curBottom = curTop + 50;
-											if (e.pageX > curLeft
-													&& e.pageY > curTop
-													&& e.pageX < curRight
-													&& e.pageY < curBottom) {
-												$("#listOnMoreHover")
-														.css('visibility',
-																'visible');
-											} else {
-												$("#listOnMoreHover").css(
-														'visibility', 'hidden');
-											}
-										});
-						$('#listOnMoreHover').hover(function() {
-							$("#listOnMoreHover").css('visibility', 'visible');
-						}, function() {
-							//$("#add").empty();
-							$("#listOnMoreHover").css('visibility', 'hidden');
-						});
-
-					});
-	function tabAlreadySelected(currentSelection, currSelText) {
-		$("#navigationList li:last").prev().hide();
-		$("#navigationList li:last").prev().after(
-				'<li><a id="'+currentSelection+'Tab'+'" href="/'+currentSelection+'.do">'
-						+ currSelText + '</a></li>');
-		$("#add").empty();
-
-	}
-</script> --%>
 <style type="text/css">
 .more {
 	position: relative;
@@ -365,14 +78,14 @@ ul#add li {
 </style>
 <body>
 	<div id="main-contaner">
-		<div class="header">
+		<div class="header" style="width:100%">
 			<div class="logo"></div>
 
 			<!--  <div class="top_most_nav" style="margin-left:120px;">admin@mellong.com | Manage | Logout</div>  -->
 			<div style="float: right; font-size: 13px;margin-left: 200px;">
-				${appUser.email}&nbsp;| 
-				<c:if test="${isAdmin}"> |
-				
+				harish@nicefact.com | Manage |
+				<c:if test="${isAdmin}">|
+				Manage
 					<!-- <a href="/basicconfiguration.do"> <fmt:message
 							key="jsp.index.manage" /> </a> -->|
 				</c:if>
@@ -433,16 +146,16 @@ ul#add li {
 	</div>
 
 	<script type="text/javascript">
-	$(function(){
-		
-	});
-	/* 	jQuery(document).bind('click', function() {
+		jQuery('#hdr-popup').bind('click', function(e) {
+			e.stopPropagation();
+		});
+		jQuery(document).bind('click', function() {
 			jQuery('#hdr-popup').hide();
 			jQuery('#mysite-dropdown').removeClass('edu-username-red-arrow');
 			jQuery('#mysite-dropdown').addClass('edu-username-white-arrow');
-		}); */
+		});
 		var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {
-			imgRight : "/SpryAssets/SpryMenuBarRightHover.gif"
+			imgRight : "SpryAssets/SpryMenuBarRightHover.gif"
 		});
 	</script>
 </body>

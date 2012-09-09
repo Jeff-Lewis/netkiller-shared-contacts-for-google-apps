@@ -108,7 +108,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#935d5d', end
 #main-contaner #menu-contaner #navigation ul li a:hover { background:#fff; color:#B46D6D;}
 #main-contaner #menu-contaner #navigation ul li a.selectmenu{ background:#fff; color:#B46D6D;  font-family:'MyriadProSemibold';}
 
-#main-contaner #middle-contaner { width:100%; min-height:300px; background:#443030  no-repeat center 0;}
+#main-contaner #middle-contaner { width:100%;}
 #main-contaner #middle-contaner #middle-contaner-block { width:960px; margin:0px auto; background-color:#fff; -moz-border-radius: 10px 10px 0px 0px; -webkit-border-radius: 10px 10px 0px 0px; border-radius: 10px 10px 10px 10px; padding-bottom:50px;min-height:500px;}
 #main-contaner #middle-contaner #middle-contaner-block #left-div { float:left; width:690px; background:url(../images/h-divider.png) repeat-y right 0;}
 #main-contaner #middle-contaner #middle-contaner-block #left-div .home-filter { margin:20px 0px 0px 10px;}
@@ -163,7 +163,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', end
 
 #main-contaner #middle-contaner #middle-contaner-block .breadcrumb { margin:23px; font-size:12px; float:left;}
 #main-contaner #middle-contaner #middle-contaner-block .breadcrumb-arrow { height:20px; background:url(../images/breadcrumb-arrow.png) no-repeat right center; padding-right:15px;}
-#main-contaner #middle-contaner #middle-contaner-block .grid-block{ width:1230px; margin:0px 26px; height:95px;-moz-border-radius: 10px 10px 0px 0px; -webkit-border-radius: 10px 10px 0px 0px; border-radius: 10px 10px 0px 0px; border:1px solid #e0e0e0; 
+#main-contaner #middle-contaner #middle-contaner-block .grid-block{ width:100%; margin:0px 26px; height:95px;-moz-border-radius: 10px 10px 0px 0px; -webkit-border-radius: 10px 10px 0px 0px; border-radius: 10px 10px 0px 0px; border:1px solid #e0e0e0; 
 background: rgb(247,247,247); /* Old browsers */
 background: -moz-linear-gradient(top,  rgba(249,249,249,1) 0%, rgba(239,239,239,1) 100%); /* FF3.6+ */
 }
@@ -190,7 +190,7 @@ background: -ms-linear-gradient(top,  rgba(116,116,116,1) 0%,rgba(77,77,77,1) 10
 background: linear-gradient(top,  rgba(116,116,116,1) 0%,rgba(77,77,77,1) 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#747474', endColorstr='#4d4d4d',GradientType=0 ); /* IE6-9 */
 }
-#main-contaner #middle-contaner #middle-contaner-block .grid-result-block { width:908px; margin:0px 26px; border-left:1px solid #ededed;border-right:1px solid #ededed;border-bottom:1px solid #ededed;-moz-border-radius: 0px 0px 10px 10px; -webkit-border-radius: 0px 0px 10px 10px; border-radius: 0px 0px 10px 10px;}
+#main-contaner #middle-contaner #middle-contaner-block .grid-result-block { width:100%; margin:0px 26px; border-left:1px solid #ededed;border-right:1px solid #ededed;border-bottom:1px solid #ededed;-moz-border-radius: 0px 0px 10px 10px; -webkit-border-radius: 0px 0px 10px 10px; border-radius: 0px 0px 10px 10px;}
 #main-contaner #middle-contaner #middle-contaner-block .grid-result-block .grid-result-top { width:97%; margin:0px 1.5%; height:53px; padding-top:25px; }
 #main-contaner #middle-contaner #middle-contaner-block .grid-result-block .add-student {width:130px; height:24px; line-height:24px; font-size:13px;
 background: rgb(247,247,247); /* Old browsers */
@@ -855,7 +855,7 @@ body {
 .logo{
 	width:226px;
 	height:72px;
-	background-image:url(http://netkiller-ims.appspot.com/images/logo.png);
+	background:url("/images/shared contacts_sm.jpg");
 	background-position:0 0;
 	background-repeat:no-repeat;
 	float:left;

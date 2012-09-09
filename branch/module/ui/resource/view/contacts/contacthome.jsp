@@ -965,28 +965,24 @@ background:none !important;
 		</div>
 
 		<div class="clear"></div>
+	<div>
+		
 		<div class="formDiv" style="margin-left: 660px">
 			<form action="" id="formId">
 				<input type="hidden" id="contactIdList" name="contactIdList" />
-				<table>
-					<tr>
-						<td><select id="selectBoxId">
+				<select id="selectBoxId">
 								<option selected="selected" value="import">Import</option>
 								<option value="export">Export</option>
 								<option value="syncContacts">Sync</option>
 								<option value="delete">Delete</option>
 						</select>
-						</td>
-						<td><input type="button" value="Action" name="Action"
+					<input type="button" value="Action" name="Action"
 							class="button-input" onclick="performAction()" />
-						</td>
-					</tr>
 
-
-				</table>
 			</form>
 		</div>
-		<div style="float: right">
+		
+		
 			<input type="button" id="massUpdateButton" class="button-input"
 				value="Mass Update" name="Mass Update" onclick="massUpdate()"
 				style="margin-left: 0px;"></input> <input type="button"
@@ -997,9 +993,9 @@ background:none !important;
 			<input type="button" id="mapButton" class="button-input" value="Map"
 				name="Map" onclick="showMap()" style="margin-left: 0px;"></input> <input
 				type="button" id="mailToButton" class="button-input" value="Mail To"
-				name="Mail To" onclick="sendCSVToMail()" style="margin-left: 0px;"></input>
+				name="Mail To" onclick="sendMail()" style="margin-left: 0px;"></input>
 			<input type="button" id="connectButton" class="button-input"
-				value="Connect" name="Connect"  onclick="$('#connectPopUp').show();"
+				value="Connect" name="Connect" onclick="$('#connectPopUp').show();"
 				style="margin-left: 0px;"></input>
 		</div>
 		<!-- <div class="add-student" style="width: 100px;">
