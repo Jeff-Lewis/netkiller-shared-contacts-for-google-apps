@@ -41,6 +41,8 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.mail.MailService;
 import com.google.appengine.api.mail.MailService.Message;
 import com.google.appengine.api.mail.MailServiceFactory;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gdata.client.Query;
 import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
 import com.google.gdata.client.authn.oauth.OAuthException;
@@ -403,28 +405,26 @@ public class ContactsService extends AbstractService {
 		return contactsDao.get(key);
 	}
 
-	public void generateCSVMail(String toEmail, String toName)
-			throws AppException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		StringBuffer csvData = new StringBuffer();
-		csvData.append("ID,FirstName,LastName,FullName,WorkEmail,WorkPhone,WorkAddress\n");
-		List<Contact> contacts = (List<Contact>) getAllGlobalFilteredContacts(null);
-		for (Contact entry : contacts) {
-			csvData.append(entry.getKey().getId() + ",");
-			csvData.append(entry.getFirstName() + ",");
-			csvData.append(entry.getLastName() + ",");
-			csvData.append(entry.getFullName() + ",");
-			csvData.append(entry.getWorkEmail() + ",");
-			csvData.append(entry.getWorkPhone() + ",");
-			csvData.append(entry.getWorkAddress() + "\n");
-		}
-
-		String domain = CommonWebUtil.getDomain(toEmail);
-		sendMail(toEmail, toName, "Admin", domainAdminService
-				.getDomainAdminByDomainName(domain).getAdminEmail(), csvData);
-
+	public void generateCSVMail( String toEmail, String toName, String fromEmail) throws AppException{
+		 ByteArrayOutputStream out = new ByteArrayOutputStream();
+		 StringBuffer csvData = new StringBuffer();
+		 csvData.append( "ID,FirstName,LastName,FullName,WorkEmail,WorkPhone,WorkAddress\n");
+		 List<Contact> contacts = (List<Contact>) getAllGlobalFilteredContacts(null);
+			for (Contact entry : contacts) {
+				 csvData.append(entry.getKey().getId() + ",");
+				 csvData.append(entry.getFirstName() + ",");
+				 csvData.append(entry.getLastName() + ",");
+				 csvData.append(entry.getFullName() + ",");
+				 csvData.append(entry.getWorkEmail() + ",");
+				 csvData.append(entry.getWorkPhone() + ",");
+				 csvData.append(entry.getWorkAddress() + "\n");				 
+			}
+		 
+			String domain = CommonWebUtil.getDomain(fromEmail);
+			sendMail(toEmail, toName, "Admin", domainAdminService.getDomainAdminByDomainName(domain ).getAdminEmail(), csvData);
+			 
+		 
 	}
-
 	public void sendMail(String toEmail, String toName, String fromName,
 			String fromEmail, StringBuffer sb) throws AppException {
 		byte[] byteArray;

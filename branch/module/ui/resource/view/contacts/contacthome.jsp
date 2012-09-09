@@ -259,7 +259,7 @@ background:none !important;
 		}
 	}
 
-	function sendCSVToMail(){
+	/* function sendCSVToMail(){
 		$.ajax({
 		url:'/contact/triggercsvmail.do',
 		success:function(result){
@@ -269,7 +269,7 @@ background:none !important;
 			alert("Error occured." );
 		}
 		});
-	}
+	} */
 	
 	function autoCenter(map, markers) {
 		//  Create a new viewpoint bound
@@ -805,7 +805,7 @@ background:none !important;
 					alert("Connect process triggered");
 				},
 				error : function() {
-					alert("Connect ProcessFailed");
+					alert("Connect Process Failed");
 				}
 			});
 		} else {
@@ -943,8 +943,38 @@ background:none !important;
 		document.getElementById("contactUploadForm").submit();
 	}
 
-	function sendMail() {
-		window.location.href = '/contact/mailTo.do';
+	function sendCSVMail() {
+		var selectedContacts = "";
+		var email =  $("#connectEmail").val();
+		if(!email){
+			alert("Email is required");
+			return false;
+		}
+		var name =  $("#connectName").val().trim()?$("#connectName").val():email;
+
+/* 		$(".cbox:checked").each(function() {
+			var elemIndex = parseInt($("#list4 input").index($(this))) / 3 + 1;
+			selectedContacts += $('#list4').getCell(elemIndex, 'key') + ",";
+		}); */
+		if (email) {
+			selectedContacts = selectedContacts.substring(0,
+					selectedContacts.length - 1);
+			$('#connectPopUp').hide();
+			$.ajax({
+				url : "/contact/triggercsvmail.do",
+				data:{'toName':name,'toEmail':email},
+				type:'POST',
+				success : function(result) {
+					alert("Mail will be sent shortly to " + result +".");
+				},
+				error : function() {
+					alert("Mail Sending Failed");
+				}
+			});
+		} else {
+			alert("Please choose contacts to connect")
+		}
+		
 	}
 </script>
 
@@ -1003,9 +1033,9 @@ background:none !important;
 			<input type="button" id="mapButton" class="button-input" value="Map"
 				name="Map" onclick="showMap()" style="margin-left: 0px;"></input> <input
 				type="button" id="mailToButton" class="button-input" value="Mail To"
-				name="Mail To" onclick="sendMail()" style="margin-left: 0px;"></input>
+				name="Mail To" onclick="$('#connectPopUp,#connectPopUp .csvMail').show();$('#connectPopUp .connect').hide();" style="margin-left: 0px;"></input>
 			<input type="button" id="connectButton" class="button-input"
-				value="Connect" name="Connect" onclick="$('#connectPopUp').show();"
+				value="Connect" name="Connect" onclick="$('#connectPopUp,#connectPopUp .connect').show();$('#connectPopUp .csvMail').hide();"
 				style="margin-left: 0px;"></input>
 		</div>
 		<!-- <div class="add-student" style="width: 100px;">
@@ -1311,7 +1341,8 @@ Email : <input type='text'  id="connectEmail" /><br>
 </div>
 <br>
 <center>
-<input type="button" value="Connect" onclick="connectContacts()" />
+<input type="button" value="Connect" class="connect" onclick="connectContacts()" />
+<input type="button" value="Send Mail" class="csvMail" onclick="sendCSVMail()" />
 </center>
 <br>
 </div>

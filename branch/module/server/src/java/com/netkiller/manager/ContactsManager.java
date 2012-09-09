@@ -109,8 +109,8 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 		service.exportContacts(null, outputStream);
 	}
 	
-	public void generateCSVMail( String toEmail, String toName) throws AppException{
-		service.generateCSVMail(toEmail, toName);
+	public void generateCSVMail( String toEmail, String toName, String fromEmail) throws AppException{
+		service.generateCSVMail(toEmail, toName, fromEmail);
 	}
 
 	public void deleteContactandExecuteWorkflow(Contact contact,String userEmail,

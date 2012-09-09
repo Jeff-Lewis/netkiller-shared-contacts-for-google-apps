@@ -153,17 +153,18 @@ public class ContactsController extends AbstractController {
 	public String triggerExport(HttpServletRequest request) {
 		Map<String, Object> params = request.getParameterMap();
 		Queue queue = QueueFactory.getQueue("default");
+		String toName = CommonWebUtil.getParameter(request, "toName");
+		String toEmail = CommonWebUtil.getParameter(request, "toEmail");
 		User user = UserServiceFactory.getUserService().getCurrentUser();
 		TaskOptions options = TaskOptions.Builder.withUrl(
-				"/resource/csvmail.do").param("toEmail", user.getEmail());
+				"/resource/csvmail.do").param("toEmail", toEmail);
 		for (String key : params.keySet()) {
 			options.param(key, CommonWebUtil.getParameter(request, key));
 		}
-		options.param("toName", user.getNickname());
-		DataContext dataContext = (DataContext) request.getSession()
-				.getAttribute(UICommonConstants.DATA_CONTEXT);
+		options.param("toName", toName);
+		options.param("fromEmail", user.getEmail());
 		queue.add(options);
-		return user.getEmail();
+		return toEmail;
 	}
 
 	@RequestMapping("/resource/csvmail.do")
@@ -172,7 +173,8 @@ public class ContactsController extends AbstractController {
 			AppException {
 		String toName = CommonWebUtil.getParameter(request, "toName");
 		String toEmail = CommonWebUtil.getParameter(request, "toEmail");
-		contactsManager.generateCSVMail(toEmail, toName);
+		String fromEmail = CommonWebUtil.getParameter(request, "fromEmail");
+		contactsManager.generateCSVMail(toEmail, toName, fromEmail);
 	}
 
 	@RequestMapping("/connect/data.do")
