@@ -107,8 +107,9 @@ public class ContactsService extends AbstractService {
 	@Autowired
 	@Qualifier("ContactsMetaData")
 	private EntityMetaData entityMetaData;
-	
-	@Autowired private GoogleMailService mailService;
+
+	@Autowired
+	private GoogleMailService mailService;
 
 	@Autowired
 	private ContactsDao contactsDao;
@@ -135,7 +136,7 @@ public class ContactsService extends AbstractService {
 	@Autowired
 	private UserSyncService userSyncService;
 
-	//private String userEmail;
+	// private String userEmail;
 
 	private boolean isUserAdmin;
 
@@ -147,13 +148,11 @@ public class ContactsService extends AbstractService {
 		this.isUserAdmin = isUserAdmin;
 	}
 
-	/*public void setUserEamil(String email) {
-		this.userEmail = email;
-	}
-
-	public String getUserEamil() {
-		return this.userEmail;
-	}*/
+	/*
+	 * public void setUserEamil(String email) { this.userEmail = email; }
+	 * 
+	 * public String getUserEamil() { return this.userEmail; }
+	 */
 
 	public EntityMetaData getEntityMetaData() {
 		return entityMetaData;
@@ -179,8 +178,8 @@ public class ContactsService extends AbstractService {
 		userSyncService.createUserSync(userSync);
 	}
 
-	public com.netkiller.entity.UserSync getUserSync(
-			String userEmail, Date date) throws AppException {
+	public com.netkiller.entity.UserSync getUserSync(String userEmail, Date date)
+			throws AppException {
 
 		/*
 		 * com.google.appengine.api.datastore.Query query = new
@@ -294,7 +293,8 @@ public class ContactsService extends AbstractService {
 		return workflow;
 	}
 
-	public ContactEntry update(ContactEntry contact,String userEmail) throws AppException {
+	public ContactEntry update(ContactEntry contact, String userEmail)
+			throws AppException {
 		try {
 			com.google.gdata.client.contacts.ContactsService service = getContactsService();
 			URL editUrl = new URL(contact.getEditLink().getHref()
@@ -309,7 +309,8 @@ public class ContactsService extends AbstractService {
 
 	}
 
-	public ContactEntry getContact(String urlStr, String userEmail) throws AppException {
+	public ContactEntry getContact(String urlStr, String userEmail)
+			throws AppException {
 
 		ContactEntry entry = null;
 		try {
@@ -337,7 +338,8 @@ public class ContactsService extends AbstractService {
 	 * @param contactEntry
 	 * @throws AppException
 	 */
-	public void delete(ContactEntry contactEntry,String userEmail) throws AppException {
+	public void delete(ContactEntry contactEntry, String userEmail)
+			throws AppException {
 		try {
 			com.google.gdata.client.contacts.ContactsService service = getContactsService();
 			URL url = new URL(contactEntry.getEditLink().getHref()
@@ -401,55 +403,57 @@ public class ContactsService extends AbstractService {
 		return contactsDao.get(key);
 	}
 
-	public void generateCSVMail( String toEmail, String toName) throws AppException{
-		 ByteArrayOutputStream out = new ByteArrayOutputStream();
-		 StringBuffer csvData = new StringBuffer();
-		 csvData.append( "ID,FirstName,LastName,FullName,WorkEmail,WorkPhone,WorkAddress\n");
-		 List<Contact> contacts = (List<Contact>) getAllGlobalFilteredContacts(null);
-			for (Contact entry : contacts) {
-				 csvData.append(entry.getKey().getId() + ",");
-				 csvData.append(entry.getFirstName() + ",");
-				 csvData.append(entry.getLastName() + ",");
-				 csvData.append(entry.getFullName() + ",");
-				 csvData.append(entry.getWorkEmail() + ",");
-				 csvData.append(entry.getWorkPhone() + ",");
-				 csvData.append(entry.getWorkAddress() + "\n");				 
-			}
-		 
-			String domain = CommonWebUtil.getDomain(toEmail);
-			sendMail(toEmail, toName, "Admin", domainAdminService.getDomainAdminByDomainName(domain ).getAdminEmail(), csvData);
-			 
-		 
+	public void generateCSVMail(String toEmail, String toName)
+			throws AppException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		StringBuffer csvData = new StringBuffer();
+		csvData.append("ID,FirstName,LastName,FullName,WorkEmail,WorkPhone,WorkAddress\n");
+		List<Contact> contacts = (List<Contact>) getAllGlobalFilteredContacts(null);
+		for (Contact entry : contacts) {
+			csvData.append(entry.getKey().getId() + ",");
+			csvData.append(entry.getFirstName() + ",");
+			csvData.append(entry.getLastName() + ",");
+			csvData.append(entry.getFullName() + ",");
+			csvData.append(entry.getWorkEmail() + ",");
+			csvData.append(entry.getWorkPhone() + ",");
+			csvData.append(entry.getWorkAddress() + "\n");
+		}
+
+		String domain = CommonWebUtil.getDomain(toEmail);
+		sendMail(toEmail, toName, "Admin", domainAdminService
+				.getDomainAdminByDomainName(domain).getAdminEmail(), csvData);
+
 	}
-	
-	public void sendMail( String toEmail, String toName,String fromName, String fromEmail, StringBuffer sb) throws  AppException{
+
+	public void sendMail(String toEmail, String toName, String fromName,
+			String fromEmail, StringBuffer sb) throws AppException {
 		byte[] byteArray;
 		try {
 			byteArray = sb.toString().getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw  new AppException(e.getMessage());
+			throw new AppException(e.getMessage());
 		}
 		MailMessage mailMessage = new MailMessage();
 		List<Recipient> recipients = new ArrayList<Recipient>();
 		Recipient recipient = new Recipient();
 		MailAddress recipientMailAddress = new MailAddress(toName, toEmail);
-		recipient.setMailAddress(recipientMailAddress );
+		recipient.setMailAddress(recipientMailAddress);
 		recipient.setRecipientType(RecipientType.TO);
 		recipients.add(recipient);
-		mailMessage.setRecipients(recipients );
+		mailMessage.setRecipients(recipients);
 		List<MailAttachment> attachments = new ArrayList<MailAttachment>();
 		MailAttachment attachment = new MailAttachment();
 		attachments.add(attachment);
-		attachment.setFile( ArrayUtils.toObject(byteArray));
+		attachment.setFile(ArrayUtils.toObject(byteArray));
 		attachment.setFilename("Netkiller-shared.csv");
-		mailMessage.setSubject("CSV Data" );
-		mailMessage.setAttachments(attachments);		
+		mailMessage.setSubject("CSV Data");
+		mailMessage.setAttachments(attachments);
 		mailMessage.setSender(new MailAddress(fromName, fromEmail));
 		mailService.sendMail(mailMessage);
 	}
-	
+
 	public void exportContacts(DataContext dataContext,
 			ServletOutputStream outputStream) throws AppException {
 		List<Contact> contacts = (List<Contact>) getAllGlobalFilteredContacts(dataContext);
@@ -526,9 +530,10 @@ public class ContactsService extends AbstractService {
 	@Autowired
 	private WorkflowService workflowService;
 
-	public void deleteContactandExecuteWorkflow(List<Key> contactKeyList,
-			DataContext dataContext) throws AppException {
-		Workflow workflow = deleteContactWorkflow(contactKeyList, dataContext);
+	public void deleteContactandExecuteWorkflow(Contact contact,
+			String userEmail, DataContext dataContext) throws AppException {
+		Workflow workflow = deleteContactWorkflow(contact, userEmail,
+				dataContext);
 		if (workflow != null) {
 			workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS.toString());
 			workflowService.updateWorkflow(workflow);
@@ -536,10 +541,11 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
-	public Workflow deleteContactWorkflow(List<Key> contactList,
-			DataContext dataContext) throws AppException {
+	public Workflow deleteContactWorkflow(Contact contact,
+			String userEmail, DataContext dataContext) throws AppException {
 		BulkContactDeleteWorkflowContext context = new BulkContactDeleteWorkflowContext();
-		context.setContacts(contactList);
+		context.setContact(contact);
+		context.setUserEmail(userEmail);
 		WorkflowInfo info = new WorkflowInfo(
 				"bulkdeleteContactWorkflowProcessor");
 		info.setIsNewWorkflow(true);
@@ -683,7 +689,7 @@ public class ContactsService extends AbstractService {
 			service.getFeed(new URL(feedurl), ContactGroupFeed.class);
 			// success,,, so its admin user
 			this.isUserAdmin = true;
-			//setUserEamil(userEmail);
+			// setUserEamil(userEmail);
 			result = getDomainAdminByDomainName(CommonWebUtil
 					.getDomain(userEmail));
 			if (result == null) {
@@ -694,7 +700,7 @@ public class ContactsService extends AbstractService {
 			System.out.println("******************** not admin user");
 			result = getDomainAdminByDomainName(CommonWebUtil
 					.getDomain(userEmail));
-			//setUserEamil(result.getAdminEmail());
+			// setUserEamil(result.getAdminEmail());
 		}
 		return result;
 	}
@@ -1008,8 +1014,8 @@ public class ContactsService extends AbstractService {
 	}
 
 	public List<ContactEntry> getContacts(int start, int limit, String groupId,
-			boolean isUseForSharedContacts, GridRequest gridRequest,String userEmail)
-			throws AppException {
+			boolean isUseForSharedContacts, GridRequest gridRequest,
+			String userEmail) throws AppException {
 		List<ContactEntry> contactVOs = null;
 		try {
 

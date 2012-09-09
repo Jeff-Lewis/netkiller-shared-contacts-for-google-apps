@@ -113,9 +113,9 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 		service.generateCSVMail(toEmail, toName);
 	}
 
-	public void deleteContactandExecuteWorkflow(List<Key> contactKeyList,
+	public void deleteContactandExecuteWorkflow(Contact contact,String userEmail,
 			DataContext dataContext) throws AppException {
-		service.deleteContactandExecuteWorkflow(contactKeyList, null);
+		service.deleteContactandExecuteWorkflow(contact, userEmail,null);
 
 	}
 

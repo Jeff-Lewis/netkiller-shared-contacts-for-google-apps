@@ -901,8 +901,12 @@ background:none !important;
 
 	function makeDuplicate() {
 		var contactIdList = getSelectedContactsIdList();
-		window.location.href = '/contact/duplicate.do?contactIdList='
+		if(contactIdList != ''){
+		   window.location.href = '/contact/duplicate.do?contactIdList='
 				+ contactIdList;
+		}else {
+			alert('Please select contacts');
+		}
 	}
 
 	function getSelectedAddressList() {

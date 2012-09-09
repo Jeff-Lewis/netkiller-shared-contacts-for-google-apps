@@ -136,6 +136,7 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.VIEW_INDEX;
 	}
 
+
 	@RequestMapping("/logout.do")
 	public void doLogout(HttpSession session, HttpServletRequest request,
 			HttpServletResponse response) throws AppException, IOException {
@@ -153,26 +154,26 @@ public class ContactsController extends AbstractController {
 		Map<String, Object> params = request.getParameterMap();
 		Queue queue = QueueFactory.getQueue("default");
 		User user = UserServiceFactory.getUserService().getCurrentUser();
-		TaskOptions options = TaskOptions.Builder.withUrl("/resource/csvmail.do").param(
-				"toEmail", user.getEmail());
+		TaskOptions options = TaskOptions.Builder.withUrl(
+				"/resource/csvmail.do").param("toEmail", user.getEmail());
 		for (String key : params.keySet()) {
 			options.param(key, CommonWebUtil.getParameter(request, key));
 		}
 		options.param("toName", user.getNickname());
 		DataContext dataContext = (DataContext) request.getSession()
-		.getAttribute(UICommonConstants.DATA_CONTEXT);		
+				.getAttribute(UICommonConstants.DATA_CONTEXT);
 		queue.add(options);
 		return user.getEmail();
 	}
 
 	@RequestMapping("/resource/csvmail.do")
 	@ResponseBody
-	public void getCSV(HttpServletRequest request) throws IOException, AppException {
+	public void getCSV(HttpServletRequest request) throws IOException,
+			AppException {
 		String toName = CommonWebUtil.getParameter(request, "toName");
 		String toEmail = CommonWebUtil.getParameter(request, "toEmail");
-		contactsManager.generateCSVMail(toEmail, toName);	
+		contactsManager.generateCSVMail(toEmail, toName);
 	}
-
 
 	@RequestMapping("/connect/data.do")
 	public @ResponseBody
@@ -539,6 +540,9 @@ public class ContactsController extends AbstractController {
 	private void deleteContacts(Model model, HttpServletRequest request)
 			throws AppException {
 		log.debug("Processing detete contact request.");
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		String userEmail = user.getEmail();
 		String id = request.getParameter("contactIdList");
 		List<Key> contactKeyList = new ArrayList<Key>();
 		if (id != null && !id.isEmpty()) {
@@ -557,10 +561,27 @@ public class ContactsController extends AbstractController {
 			}
 
 		}
-		contactsManager.deleteContactandExecuteWorkflow(
-				contactKeyList,
-				(DataContext) request.getSession().getAttribute(
-						UICommonConstants.DATA_CONTEXT));
+		List<Contact> contactList = new ArrayList<Contact>();
+		if (contactKeyList != null && !contactKeyList.isEmpty()) {
+			contactList = (List<Contact>) contactsManager
+					.getByKeys(contactKeyList);
+		}
+		if (contactList != null && !contactList.isEmpty()) {
+			for (Contact contact : contactList) {
+				contactsManager.deleteContact(
+						contact,
+						(DataContext) request.getSession().getAttribute(
+								UICommonConstants.DATA_CONTEXT));
+				contactsManager.deleteContactandExecuteWorkflow(contact,
+						userEmail, (DataContext) request.getSession()
+								.getAttribute(UICommonConstants.DATA_CONTEXT));
+			}
+		}
+		/*
+		 * contactsManager.deleteContactandExecuteWorkflow( contactKeyList,
+		 * userEmail, (DataContext) request.getSession().getAttribute(
+		 * UICommonConstants.DATA_CONTEXT));
+		 */
 		model.addAttribute(UICommonConstants.ATTRIB_CONTEXT_VIEW,
 				UICommonConstants.CONTEXT_CONTACTS_HOME);
 	}

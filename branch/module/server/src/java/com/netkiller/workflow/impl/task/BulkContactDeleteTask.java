@@ -1,15 +1,20 @@
 package com.netkiller.workflow.impl.task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.gdata.data.contacts.ContactEntry;
 import com.netkiller.core.AppException;
 import com.netkiller.core.DataContext;
 import com.netkiller.entity.Contact;
+import com.netkiller.entity.UserContact;
 import com.netkiller.manager.ContactsManager;
+import com.netkiller.service.ContactsService;
 import com.netkiller.util.AppLogger;
+import com.netkiller.util.CommonWebUtil;
 import com.netkiller.workflow.AbstractWorkflowTask;
 import com.netkiller.workflow.WorkflowContext;
 import com.netkiller.workflow.WorkflowExecutionException;
@@ -21,32 +26,56 @@ public class BulkContactDeleteTask extends AbstractWorkflowTask {
 			.getLogger(BulkContactDeleteTask.class);
 
 	@Autowired
-	private ContactsManager contactsManager;
+	private ContactsService service;
 
 	@Override
 	public WorkflowContext execute(WorkflowContext context)
 			throws WorkflowExecutionException {
 		BulkContactDeleteWorkflowContext bulkContactDeleteWorkflowContext = (BulkContactDeleteWorkflowContext) context;
-		List<Key> contactKeyList = bulkContactDeleteWorkflowContext
-				.getContacts();
+		Contact contact = bulkContactDeleteWorkflowContext.getContact();
 		DataContext dataContext = bulkContactDeleteWorkflowContext
 				.getDataContext();
-		if (contactKeyList == null || contactKeyList.isEmpty()) {
-			throw new WorkflowExecutionException("NO contacts to be deleted");
-		}
-
-		try {
-			List<Contact> contactList = (List<Contact>) contactsManager
-					.getByKeys(contactKeyList);
-			for (Contact contacts : contactList) {
-				contactsManager.deleteContact(contacts, dataContext);
+		String userEmail = bulkContactDeleteWorkflowContext.getUserEmail();
+		List<UserContact> userContactList = service
+				.getUserContactForDomain(CommonWebUtil.getDomain(userEmail));
+		List<UserContact> filteredUserContactList = new ArrayList<UserContact>();
+		if (userContactList != null && !userContactList.isEmpty()) {
+			for (UserContact userContact : userContactList) {
+				if (userContact.getContactKey().equals(contact.getKey())) {
+					filteredUserContactList.add(userContact);
+				}
 			}
-		} catch (AppException e) {
-			String msg = "delete operation failed";
-			log.error(msg, e);
-
 		}
-		return context;
+		if (filteredUserContactList != null
+				&& !filteredUserContactList.isEmpty()) {
+			try {
+				for (UserContact userContact : filteredUserContactList) {
+
+					ContactEntry tobeDeletedContactEntry = service.getContact(
+							userContact.getContactId(),
+							userContact.getUserEmail());
+					service.delete(tobeDeletedContactEntry,
+							userContact.getUserEmail());
+
+				}
+			} catch (AppException e) {
+				log.error("Contact Deletion failed");
+				e.printStackTrace();
+			}
+		}
+		/*
+		 * if (contactKeyList == null || contactKeyList.isEmpty()) { throw new
+		 * WorkflowExecutionException("NO contacts to be deleted"); }
+		 * 
+		 * try { List<Contact> contactList = (List<Contact>) contactsManager
+		 * .getByKeys(contactKeyList); for (Contact contacts : contactList) {
+		 * contactsManager.deleteContact(contacts, dataContext); } } catch
+		 * (AppException e) { String msg = "delete operation failed";
+		 * log.error(msg, e);
+		 * 
+		 * }
+		 */
+		return bulkContactDeleteWorkflowContext;
 	}
 
 	/**
@@ -59,7 +88,7 @@ public class BulkContactDeleteTask extends AbstractWorkflowTask {
 			for (Contact deletedContact : deletedcontacts) {
 				// nullify existing key in the object
 				deletedContact.setKey(null);
-				contactsManager.createContact(deletedContact);
+				service.createContact(deletedContact);
 			}
 
 		} catch (AppException e) {

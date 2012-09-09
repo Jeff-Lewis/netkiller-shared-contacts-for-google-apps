@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.appengine.api.datastore.Key;
 import com.netkiller.core.DataContext;
+import com.netkiller.entity.Contact;
 import com.netkiller.workflow.WorkflowContext;
 import com.netkiller.workflow.WorkflowInfo;
 
@@ -14,9 +15,26 @@ public class BulkContactDeleteWorkflowContext implements WorkflowContext,
 
 	WorkflowInfo workflowInfo;
 
-	List<Key> contacts;
+	Contact contact;
 
 	DataContext dataContext;
+
+	String userEmail;
+
+	@Override
+	public String toString() {
+		return "BulkContactDeleteWorkflowContext [workflowInfo=" + workflowInfo
+				+ ", contacts=" + contact + ", dataContext=" + dataContext
+				+ ", userEmail=" + userEmail + "]";
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
 
 	public DataContext getDataContext() {
 		return dataContext;
@@ -36,12 +54,12 @@ public class BulkContactDeleteWorkflowContext implements WorkflowContext,
 		this.workflowInfo = workflowInfo;
 	}
 
-	public List<Key> getContacts() {
-		return contacts;
+	public Contact getContact() {
+		return contact;
 	}
 
-	public void setContacts(List<Key> contacts) {
-		this.contacts = contacts;
+	public void setContact(Contact contact) {
+		this.contact = contact;
 	}
 
 }
