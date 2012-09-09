@@ -411,7 +411,8 @@ public class ContactsService extends AbstractService {
 				 csvData.append(entry.getWorkEmail() + ",");
 				 csvData.append(entry.getWorkPhone() + ",");
 				 String address = entry.getWorkAddress();
-				 address = address.replace("\n", ",");
+				 address = address.replace("\n", " ");
+				 address = address.replace(",", " ");
 				 csvData.append(address + "\n");				 
 			}
 		 
