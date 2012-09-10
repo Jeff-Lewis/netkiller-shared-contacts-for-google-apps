@@ -1,4 +1,4 @@
-package com.netkiller.service;
+/*package com.netkiller.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,13 +19,13 @@ import com.netkiller.core.AppException;
 import com.netkiller.core.UserRoleType;
 import com.netkiller.util.AppLogger;
 
-/**
+*//**
  * The service class that will interact with google app domain to fulfil any
  * request by this application.
  * 
  * @author sabir
  * 
- */
+ *//*
 public class GoogleDomainService {
 
 	private static final AppLogger log = AppLogger.getLogger(GoogleDomainService.class);
@@ -57,22 +57,22 @@ public class GoogleDomainService {
 		this.dataAdminPassword = dataAdminPassword;
 	}
 
-	/*
+	
 	 * client to communicate with google app domain.
-	 */
+	 
 	private AppsForYourDomainClient domainClient;
 
-	/*
+	
 	 * Group service to handle group related request for google app domain.
-	 */
+	 
 	private AppsGroupsService groupsService;
 	
 
-	/**
+	*//**
 	 * This will initialise various google app domain related services.
 	 * 
 	 * @throws AppException
-	 */
+	 *//*
 	public void init() throws AppException {
 		try {
 			log.debug("Domain detail: " + domainName + ", " + domainAdminEmail);
@@ -83,7 +83,7 @@ public class GoogleDomainService {
 		}
 	}
 
-	/**
+	*//**
 	 * This will call google app domain group service to create new group in app
 	 * domain.
 	 * 
@@ -96,7 +96,7 @@ public class GoogleDomainService {
 	 * @return the groupId of newly created group.
 	 * @throws AppException
 	 *             if group creation fail.
-	 */
+	 *//*
 	public String createGroup(String id, String name, String description) throws AppException {
 
 		try {
@@ -110,7 +110,7 @@ public class GoogleDomainService {
 		return id + "@" + domainName;
 	}
 
-	/**
+	*//**
 	 * This will call google app domain group service to get the domain group
 	 * for provided id.
 	 * 
@@ -119,7 +119,7 @@ public class GoogleDomainService {
 	 * @return the GenericEntry, google API don't have GroupEntry for now.
 	 * @throws AppException
 	 *             if get group process interrupted
-	 */
+	 *//*
 	public GenericEntry getGroup(String id) throws AppException {
 		log.debug("Finding group for group id: " + id);
 		GenericEntry genericEntry = null;
@@ -137,7 +137,7 @@ public class GoogleDomainService {
 		return genericEntry;
 	}
 
-	/**
+	*//**
 	 * This will call google app domain group service to get the domain group of
 	 * user.
 	 * 
@@ -146,7 +146,7 @@ public class GoogleDomainService {
 	 * @return group to which user belong.
 	 * @throws AppException
 	 *             if get group process interrupted
-	 */
+	 *//*
 	public GenericEntry getUserGroup(String userId) throws AppException {
 		log.debug("Finding group for user : " + userId);
 
@@ -169,7 +169,7 @@ public class GoogleDomainService {
 		return genericEntry;
 	}
 
-	/**
+	*//**
 	 * This will call google domain service to create new user inside app
 	 * domain.
 	 * 
@@ -183,7 +183,7 @@ public class GoogleDomainService {
 	 *            the password for login.
 	 * @throws AppException
 	 *             if user creation fail.
-	 */
+	 *//*
 	public void createUser(String id, String givenName, String familyName, String password) throws AppException {
 		log.debug("inside create user method.");
 
@@ -196,7 +196,7 @@ public class GoogleDomainService {
 		}
 	}
 
-	/**
+	*//**
 	 * This will call the google app domain service to find the user for
 	 * provided id.
 	 * 
@@ -206,7 +206,7 @@ public class GoogleDomainService {
 	 * @see UserEntry
 	 * @throws AppException
 	 *             if get user process interrupted
-	 */
+	 *//*
 	public UserEntry getUser(String id) throws AppException {
 		log.debug("Finding user in app domain for id: " + id);
 		UserEntry userEntry = null;
@@ -224,7 +224,7 @@ public class GoogleDomainService {
 		return userEntry;
 	}
 
-	/**
+	*//**
 	 * This will call google app domain group service to add any user to any
 	 * group.
 	 * 
@@ -234,7 +234,7 @@ public class GoogleDomainService {
 	 *            the group identifier to find the group.
 	 * @throws AppException
 	 *             if adding user to group operation fails.
-	 */
+	 *//*
 	public void addUserToGroup(String userId, String groupId) throws AppException {
 		try {
 			groupsService.addMemberToGroup(groupId, userId);
@@ -245,7 +245,7 @@ public class GoogleDomainService {
 		}
 	}
 
-	/**
+	*//**
 	 * This will call google app domain group service to add a group under a
 	 * group, or to create sub groups.
 	 * 
@@ -256,7 +256,7 @@ public class GoogleDomainService {
 	 *            the sub group identifier.
 	 * @throws AppException
 	 *             if operation fail.
-	 */
+	 *//*
 	public void addGroupUnderGroup(String parentGroupId, String subGroupId) throws AppException {
 		try {
 			groupsService.addMemberToGroup(parentGroupId, subGroupId);
@@ -268,10 +268,10 @@ public class GoogleDomainService {
 		}
 	}
 	
-	/**
+	*//**
 	 * This method is temporarily created to get current logged in user information
 	 * @return Current Logged in User
-	 */
+	 *//*
 	public User getCurrentUser()	{
 		UserService userService = UserServiceFactory.getUserService();
 		return userService.getCurrentUser();
@@ -316,49 +316,50 @@ public class GoogleDomainService {
 
 	
 
-	/**
+	*//**
 	 * @return the domainName
-	 */
+	 *//*
 	public String getDomainName() {
 		return domainName;
 	}
 
-	/**
+	*//**
 	 * @param domainName
 	 *            the domainName to set
-	 */
+	 *//*
 	public void setDomainName(String domainName) {
 		this.domainName = domainName;
 	}
 
-	/**
+	*//**
 	 * @return the domainAdminEmail
-	 */
+	 *//*
 	public String getDomainAdminEmail() {
 		return domainAdminEmail;
 	}
 
-	/**
+	*//**
 	 * @param domainAdminEmail
 	 *            the domainAdminEmail to set
-	 */
+	 *//*
 	public void setDomainAdminEmail(String domainAdminEmail) {
 		this.domainAdminEmail = domainAdminEmail;
 	}
 
-	/**
+	*//**
 	 * @return the domainAdminPassword
-	 */
+	 *//*
 	public String getDomainAdminPassword() {
 		return domainAdminPassword;
 	}
 
-	/**
+	*//**
 	 * @param domainAdminPassword
 	 *            the domainAdminPassword to set
-	 */
+	 *//*
 	public void setDomainAdminPassword(String domainAdminPassword) {
 		this.domainAdminPassword = domainAdminPassword;
 	}
 
 }
+*/

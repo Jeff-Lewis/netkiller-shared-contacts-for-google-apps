@@ -427,7 +427,7 @@ public class ContactsService extends AbstractService {
 		try {
 			byteArray = sb.toString().getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 			throw new AppException(e.getMessage());
 		}
@@ -554,8 +554,8 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
-	public Workflow deleteContactWorkflow(Contact contact,
-			String userEmail, DataContext dataContext) throws AppException {
+	public Workflow deleteContactWorkflow(Contact contact, String userEmail,
+			DataContext dataContext) throws AppException {
 		BulkContactDeleteWorkflowContext context = new BulkContactDeleteWorkflowContext();
 		context.setContact(contact);
 		context.setUserEmail(userEmail);
@@ -762,13 +762,13 @@ public class ContactsService extends AbstractService {
 						retrieveUrl = new URL(nextLink.getHref());
 					}
 				} catch (AppsForYourDomainException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				}
 			} while (nextLink != null);
@@ -789,7 +789,7 @@ public class ContactsService extends AbstractService {
 			e.printStackTrace();
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		return isAdmin;
@@ -903,13 +903,13 @@ public class ContactsService extends AbstractService {
 						retrieveUrl = new URL(nextLink.getHref());
 					}
 				} catch (AppsForYourDomainException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				}
 			} while (nextLink != null);
@@ -928,7 +928,7 @@ public class ContactsService extends AbstractService {
 			e.printStackTrace();
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		if (users != null && !users.isEmpty()) {
@@ -980,13 +980,13 @@ public class ContactsService extends AbstractService {
 						retrieveUrl = new URL(nextLink.getHref());
 					}
 				} catch (AppsForYourDomainException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			} while (nextLink != null);
@@ -1008,7 +1008,7 @@ public class ContactsService extends AbstractService {
 			e.printStackTrace();
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		users = new ArrayList<String>(new HashSet<String>(users));

@@ -59,9 +59,7 @@ public class HomePageController extends AbstractController {
 	/*@Autowired
 	private StudentManager studentManager;*/
 
-	@Autowired
-	@Qualifier("GoogleSitesService")
-	private SiteService siteService;
+	
 
 	/**
 	 * Show dashboard to student group.
@@ -140,18 +138,18 @@ public class HomePageController extends AbstractController {
 		return UICommonConstants.VIEW_RESOURCE_MISSING_ERROR;
 	}
 
-	@RequestMapping("/gotoclasssite.do")
+	/*@RequestMapping("/gotoclasssite.do")
 	public void goToGoogleSite(HttpServletRequest request, HttpServletResponse response) throws AppException,
 			ServletException, IOException {
 		String siteName = request.getParameter("selectedSite");
 		try {
-			Site classSite = siteService.getSiteFromSiteName(siteName);
-			response.sendRedirect(classSite.getSiteHref());
+			//Site classSite = siteService.getSiteFromSiteName(siteName);
+			//response.sendRedirect(classSite.getSiteHref());
 		} catch (AppException siteNotFoundException) {
 			log.error("Class Site Does not Exist. Workflow Might not have been executed.", siteNotFoundException);
 			response.sendRedirect("resourcenotfounderror.do");
 		}
-	}
+	}*/
 
 	@RequestMapping("/setDataContext.do")
 	public void setSession(HttpServletRequest request, Model model, HttpSession session, HttpServletResponse response)

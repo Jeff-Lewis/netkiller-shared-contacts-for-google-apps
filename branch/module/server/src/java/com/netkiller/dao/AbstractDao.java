@@ -4,7 +4,6 @@
 package com.netkiller.dao;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -20,8 +19,8 @@ import org.springframework.orm.jdo.support.JdoDaoSupport;
 
 import com.google.appengine.api.datastore.Key;
 import com.netkiller.entity.metadata.ColumnMetaData;
-import com.netkiller.entity.metadata.EntityMetaData;
 import com.netkiller.entity.metadata.ColumnMetaData.ColumnType;
+import com.netkiller.entity.metadata.EntityMetaData;
 import com.netkiller.entity.metadata.impl.OperationType;
 import com.netkiller.security.AppUser;
 import com.netkiller.security.AppUserService;

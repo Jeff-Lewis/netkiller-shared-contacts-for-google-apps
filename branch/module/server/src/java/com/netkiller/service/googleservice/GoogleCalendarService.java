@@ -45,8 +45,7 @@ import com.netkiller.security.DomainConfig;
 import com.netkiller.service.googleservice.util.GoogleCalendarUtil;
 import com.netkiller.util.AppLogger;
 
-@Service
-@Component("GoogleCalendarService")
+
 public class GoogleCalendarService implements
 		com.netkiller.service.googleservice.CalendarService {
 
@@ -66,7 +65,7 @@ public class GoogleCalendarService implements
 	private String adminEmail;
 	private String domain;
 
-	@Autowired
+
 	public GoogleCalendarService(DomainConfig domainConfig) throws AppException {
 		calendarService = new CalendarService("");
 		adminEmail = domainConfig.getDomainAdminEmail();

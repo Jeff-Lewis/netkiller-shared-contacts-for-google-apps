@@ -1,6 +1,6 @@
 package com.netkiller.security;
 
-import sample.appsforyourdomain.AppsForYourDomainClient;
+import com.netkiller.security.AppsForYourDomainClient;
 
 import com.google.gdata.client.appsforyourdomain.AppsGroupsService;
 import com.netkiller.core.AppException;
@@ -25,10 +25,8 @@ public class DomainConfig {
 	private String groupFeedUrl;
 
 	private String feedurl;
-	
+
 	private String applicationUrl;
-	
-	
 
 	public String getApplicationUrl() {
 		return applicationUrl;
@@ -103,8 +101,8 @@ public class DomainConfig {
 	public void init() throws AppException {
 		try {
 			log.debug("Domain detail: " + domainName + ", " + domainAdminEmail);
-			domainClient = new AppsForYourDomainClient(domainAdminEmail,
-					domainAdminPassword, domainName);
+			domainClient = new AppsForYourDomainClient(consumerkey,
+					consumerKeySecret, domainName, "");
 			groupsService = domainClient.getGroupService();
 		} catch (Exception e) {
 			log.error("Unable to create domain client.", e);

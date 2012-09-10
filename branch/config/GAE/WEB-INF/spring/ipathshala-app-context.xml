@@ -38,13 +38,13 @@
 		<property name="location" value="classpath:ipathshala.properties" />
 	</bean>
 
-	<bean name="googleDomainService" id="googleDomainService"
+	<!-- <bean name="googleDomainService" id="googleDomainService"
 		class="com.netkiller.service.GoogleDomainService"
 		init-method="init">
 		<property name="domainName" value="${google.app.domain}" />
 		<property name="domainAdminEmail" value="${google.app.domain.admin}" />
 		<property name="domainAdminPassword" value="${google.app.domain.admin.passwd}" />
-	</bean>
+	</bean> -->
 
 	<bean name="appCacheConfig" id="appCacheConfig"
 		class="com.netkiller.cache.AppCacheConfig">

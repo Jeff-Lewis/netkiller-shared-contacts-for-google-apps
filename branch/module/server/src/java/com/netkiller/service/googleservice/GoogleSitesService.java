@@ -97,7 +97,7 @@ import com.netkiller.util.AppLogger;
  * @author sparakh
  * 
  */
-@Component("GoogleSitesService")
+
 public class GoogleSitesService implements Serializable, SiteService {
 
 	private String domain;
@@ -119,7 +119,7 @@ public class GoogleSitesService implements Serializable, SiteService {
 	 * @throws AuthenticationException
 	 * @throws AppException
 	 */
-	@Autowired
+	
 	public GoogleSitesService(DomainConfig domainConfig) throws AppException {
 
 		this.domain = domainConfig.getDomainName();

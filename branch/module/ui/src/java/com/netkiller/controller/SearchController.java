@@ -68,8 +68,6 @@ public class SearchController {
 	/*@Autowired
 	private AcademicYearManager academicYearManager;*/
 
-	@Autowired
-	private GoogleSitesService siteService;
 	
 	/*@Autowired
 	private TeacherManager teacherManager;*/

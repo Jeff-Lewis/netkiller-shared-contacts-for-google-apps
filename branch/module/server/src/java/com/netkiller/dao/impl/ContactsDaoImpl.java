@@ -1,12 +1,9 @@
 package com.netkiller.dao.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,7 +14,6 @@ import com.google.appengine.api.datastore.Key;
 import com.netkiller.dao.AbstractDao;
 import com.netkiller.dao.ContactsDao;
 import com.netkiller.entity.Contact;
-import com.netkiller.entity.UserSync;
 
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)

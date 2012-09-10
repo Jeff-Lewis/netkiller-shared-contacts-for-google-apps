@@ -23,10 +23,9 @@ import com.netkiller.manager.DomainServiceManager;
  * @author sabir
  * 
  */
-@Controller
 public class QueueTaskController {
 
-	@Autowired
+	/*@Autowired
 	private DomainServiceManager domainServiceManager;
 
 	@RequestMapping("/async/task/createUserInAppDomain.do")
@@ -39,5 +38,5 @@ public class QueueTaskController {
 
 		domainServiceManager.createUserUnderGroup(userId, givenName, familyName, password, groupId);
 
-	}
+	}*/
 }

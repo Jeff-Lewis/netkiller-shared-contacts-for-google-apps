@@ -8,9 +8,6 @@
 	<context:component-scan base-package="com.netkiller.security" />
 	
 	<bean name="domainConfig" class="com.netkiller.security.DomainConfig" init-method="init">
-		<property name="domainName" value="${google.app.domain}"/>
-		<property name="domainAdminEmail" value="${google.app.domain.admin}"/>
-		<property name="domainAdminPassword" value="${google.app.domain.admin.passwd}"/>
 		<property name="consumerkey" value="${consumerkey}"></property>
 		<property name="consumerKeySecret" value="${consumerKeySecret}"></property>
 		<property name="groupFeedUrl" value = "${groupFeedUrl}"></property>
