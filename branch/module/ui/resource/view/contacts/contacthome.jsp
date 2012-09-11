@@ -371,28 +371,7 @@ background:none !important;
 	var prmSearch;
 	$(function() {
 		
-		$.fn.center = function () {
-		    this.css("position","absolute");
-		    var backgroundElementId = null;
-		    $(".loadingBack").each(function(){
-		    	backgroundElementId = $(this).attr("id");
-		    	if (backgroundElementId != null) {
-		    		return false;
-		    	}
-		    });
-		    if (backgroundElementId != null) {
-			    this.css("top", ($("#list4").offset().top + 40)+ "px");
-			    this.css("left", (($("#" + backgroundElementId).width() - this.outerWidth()) / 2) + $("#" + backgroundElementId).scrollLeft() + "px");
-		    } else {
-		    	 this.css("top", ($("#list4").offset().top + 40)+ "px");
-			    this.css("left", (($(window).width() - this.outerWidth()) / 2) + $(window).scrollLeft() + "px");
-		    }
-		    
-		    return this;
-		    
-		    this.css("position","absolute");
-		    return this;
-		}
+	
 		
 		
 		$('#ImportDialog').hide();
@@ -676,30 +655,7 @@ background:none !important;
 		createSearchDialog();
 	
 	});
-	var progressBar;
-	function startLoading(){ 
-		clearInterval(progressBar);
-		$('#progressbar').progressbar({value: 0});
-		$('#loading').center().show();
-		progressBar = setInterval(function() {
-	        var val = $('#progressbar').progressbar('option', 'value');
-	        var percent = !isNaN(val) ? (val + 1) : 1;
-	        if (percent > 100) {
-	            clearInterval(progressBar);
-	        } else if (percent > 80) {
-	        	percent = !isNaN(val) ? (val + 0.1) : 0.1;
-			}
-	        
-	        $('#progressbar').progressbar({value: percent});
-	    }, 15);
-		
-	}
-
-	function endLoading(){
-		$('#progressbar').progressbar({value: 100});
-		$('#loading').fadeOut(500);
-		clearInterval(progressBar);
-	}
+	
 	
 	function editLinkFormatter(cellvalue, options, rowObject) {
 		return '<a href="/contact/showDetail.do?paramid=' + rowObject[0] + '">'
@@ -1323,10 +1279,7 @@ background:none !important;
 
 
 
-<div id="loading" class="loading" style="display:block;width:200px;z-index:10000">
-	<b>&nbsp;&nbsp;Working...</b><br/>
-	<div id="progressbar"></div>
-</div>
+
 
 	<div id="createFormDiv" style="display: none"></div>
 
