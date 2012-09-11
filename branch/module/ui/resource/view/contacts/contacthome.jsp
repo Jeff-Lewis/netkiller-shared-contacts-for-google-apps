@@ -822,14 +822,17 @@ background:none !important;
 	function performAction() {
 		var optionValue = $("#selectBoxId option:selected").val();
 		var contactIdList = getSelectedContactsIdList();
+		console.log(contactIdList)
 		if (optionValue == 'import') {
 			//$('#uploadDiv').show();
 			$('#ImportDialog').dialog('open');
 			return false;
 		} else {
 			$('#uploadDiv').hide();
+			
 			document.getElementById("formId").action = "/contact/"
-					+ optionValue + ".do?contactIdList=" + contactIdList;
+					+ optionValue + ".do";
+					$("#contactIdList").val(contactIdList);
 			document.getElementById("formId").submit();
 		}
 
@@ -860,6 +863,9 @@ background:none !important;
 			var elemIndex = parseInt($("#list4 input").index($(this))) / 3 + 1;
 			selectedContacts += $('#list4').getCell(elemIndex, 'key') + ",";
 		});
+		if(selectedContacts){
+			selectedContacts= selectedContacts.substring(0,selectedContacts.length-1);
+		}
 		return selectedContacts;
 	}
 
