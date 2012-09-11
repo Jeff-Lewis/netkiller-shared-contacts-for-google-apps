@@ -459,6 +459,7 @@
 		$.ajax({
 			url : '/connect/getSelectedContactData.do',
 			data : {
+				"urlId" : "${param.id}",
 				contactIdList : contactKeyList,
 			},
 			success : function(data) {

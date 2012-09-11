@@ -137,15 +137,14 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.VIEW_INDEX;
 	}
 
-
 	@RequestMapping("/logout.do")
 	public void doLogout(HttpSession session, HttpServletRequest request,
 			HttpServletResponse response) throws AppException, IOException {
-//		session.setAttribute("logoutAction", new Boolean(true));
+		// session.setAttribute("logoutAction", new Boolean(true));
 		session.invalidate();
 		UserService userService = UserServiceFactory.getUserService();
-		String logoutUrl = userService.createLogoutURL("/contacts.do");		
-			response.sendRedirect(logoutUrl);
+		String logoutUrl = userService.createLogoutURL("/contacts.do");
+		response.sendRedirect(logoutUrl);
 
 	}
 
@@ -345,33 +344,32 @@ public class ContactsController extends AbstractController {
 			 * UICommonConstants.CONTEXT_CONTACTS_HOME);
 			 */
 			try {
-				
+
 				Contact createdcontact = contactsManager.createContact(contact);
-				
+
 				String email = null;
-				String urlId =  request.getParameter("urlId");
-				if(StringUtils.isBlank(urlId)){
-				UserService userService = UserServiceFactory.getUserService();
-				User user = userService.getCurrentUser();
-				email = user.getEmail();
-				}else{
-					List<ConnectContact> list =connectContactManager.getByUrl(urlId);
-					if(list!=null && !list.isEmpty()){
+				String urlId = request.getParameter("urlId");
+				if (StringUtils.isBlank(urlId)) {
+					UserService userService = UserServiceFactory
+							.getUserService();
+					User user = userService.getCurrentUser();
+					email = user.getEmail();
+				} else {
+					List<ConnectContact> list = connectContactManager
+							.getByUrl(urlId);
+					if (list != null && !list.isEmpty()) {
 						email = list.get(0).getCreatedBy();
 						ConnectContact connectContact = new ConnectContact();
 						connectContact.setRandomUrl(urlId);
 						connectContact.setContactKey(createdcontact.getKey());
-						connectContact.setDomainName(list.get(0).getDomainName());
+						connectContact.setDomainName(list.get(0)
+								.getDomainName());
 						connectContactManager.create(connectContact);
 					}
-					
 				}
 
-				
-				
 				contactsManager.addContactForAllDomainUsers(
-						CommonWebUtil.getDomain(email ),
-						createdcontact);
+						CommonWebUtil.getDomain(email), createdcontact);
 				removeFromNavigationTrail(request);
 			} catch (UniqueValidationException exception) {
 				result.rejectValue(
@@ -502,9 +500,20 @@ public class ContactsController extends AbstractController {
 	String contactMassUpdate(HttpServletRequest request) throws AppException {
 		DataContext dataContext = (DataContext) request.getSession()
 				.getAttribute(UICommonConstants.DATA_CONTEXT);
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
-		String userEmail = user.getEmail();
+
+		String userEmail = null;
+		String urlId = request.getParameter("urlId");
+		if (StringUtils.isBlank(urlId)) {
+			UserService userService = UserServiceFactory.getUserService();
+			User user = userService.getCurrentUser();
+			userEmail = user.getEmail();
+		} else {
+			List<ConnectContact> list = connectContactManager.getByUrl(urlId);
+			if (list != null && !list.isEmpty()) {
+				userEmail = list.get(0).getCreatedBy();
+			}
+		}
+
 		String cmpanyName = request.getParameter("name");
 		String cmpnyDept = request.getParameter("dept");
 		String wrkAddress = request.getParameter("workAddr");
@@ -563,18 +572,18 @@ public class ContactsController extends AbstractController {
 			throws AppException {
 		log.debug("Processing detete contact request.");
 		String userEmail = null;
-		String urlId =  request.getParameter("urlId");
-		if(StringUtils.isBlank(urlId)){
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
-		userEmail = user.getEmail();
-		}else{
-			List<ConnectContact> list =connectContactManager.getByUrl(urlId);
-			if(list!=null && !list.isEmpty()){
-				userEmail  = list.get(0).getCreatedBy();
-				
+		String urlId = request.getParameter("urlId");
+		if (StringUtils.isBlank(urlId)) {
+			UserService userService = UserServiceFactory.getUserService();
+			User user = userService.getCurrentUser();
+			userEmail = user.getEmail();
+		} else {
+			List<ConnectContact> list = connectContactManager.getByUrl(urlId);
+			if (list != null && !list.isEmpty()) {
+				userEmail = list.get(0).getCreatedBy();
+
 			}
-		}	
+		}
 		String id = request.getParameter("contactIdList");
 		List<Key> contactKeyList = new ArrayList<Key>();
 		if (id != null && !id.isEmpty()) {
@@ -665,7 +674,7 @@ public class ContactsController extends AbstractController {
 			Model model, HttpServletResponse response) throws AppException,
 			IOException {
 		String domain = request.getParameter("domainName");
-		String urlId =  request.getParameter("urlId");
+		String urlId = request.getParameter("urlId");
 		DataContext dataContext = (DataContext) request.getSession()
 				.getAttribute(UICommonConstants.DATA_CONTEXT);
 		doDuplicate(request, response, model, domain, null, urlId);
