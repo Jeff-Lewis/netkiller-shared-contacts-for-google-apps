@@ -562,9 +562,19 @@ public class ContactsController extends AbstractController {
 	private void deleteContacts(Model model, HttpServletRequest request)
 			throws AppException {
 		log.debug("Processing detete contact request.");
+		String userEmail = null;
+		String urlId =  request.getParameter("urlId");
+		if(StringUtils.isBlank(urlId)){
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		String userEmail = user.getEmail();
+		userEmail = user.getEmail();
+		}else{
+			List<ConnectContact> list =connectContactManager.getByUrl(urlId);
+			if(list!=null && !list.isEmpty()){
+				userEmail  = list.get(0).getCreatedBy();
+				
+			}
+		}	
 		String id = request.getParameter("contactIdList");
 		List<Key> contactKeyList = new ArrayList<Key>();
 		if (id != null && !id.isEmpty()) {

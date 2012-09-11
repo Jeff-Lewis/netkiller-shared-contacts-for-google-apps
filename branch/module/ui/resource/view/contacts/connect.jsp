@@ -414,7 +414,7 @@
 			$('#ImportDialog').dialog('open');
 			return false;
 		} else if (optionValue == 'delete') {
-			$.ajax({url:'/connect/delete.do?contactIdList=' + contactIdList,
+			$.ajax({url:'/connect/delete.do?urlId=${param.id}&contactIdList=' + contactIdList,
 					success:function(){
 						alert("deletion process started")
 					},
