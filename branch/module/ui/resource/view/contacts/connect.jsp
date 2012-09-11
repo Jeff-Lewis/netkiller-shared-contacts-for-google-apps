@@ -96,7 +96,6 @@
 										editable:true,
 									}, {
 										name : 'firstName',
-										formatter : editLinkFormatter,
 										editrules : {
 											edithidden : true,
 											required : true
@@ -348,7 +347,7 @@
 				str += '&notes=' + $("#notes").val();
 			}
 			$.ajax({
-				url : 'connect/contactMassUpdate.do?contactIdList='
+				url : '/connect/contactMassUpdate.do?contactIdList='
 						+ contactKeyList,
 				data : str,
 				success : function(result) {
@@ -434,7 +433,7 @@
 	}
 
 	function openCreateWindow() {
-		$("#createFormDiv").load('/connect/createForm.do').show();
+		$("#createFormDiv").load('/connect/createForm.do?urlId=${param.id}').show();
 		//document.getElementById("")
 		//window.location.href = '/contact/createForm.do';
 	}
@@ -491,7 +490,7 @@
 		var contactIdList = getSelectedContactsIdList();
 		if(contactIdList){
 		$.ajax({
-			url:'/connect/duplicate.do?domainName=${domainName}&contactIdList='
+			url:'/connect/duplicate.do?urlId=${param.id}&domainName=${domainName}&contactIdList='
 				+ contactIdList,
 				success:function(){
 					alert("Contacts will be duplicated. Please refresh screen after some time.")

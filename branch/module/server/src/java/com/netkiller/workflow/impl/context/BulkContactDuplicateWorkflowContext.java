@@ -18,6 +18,10 @@ public class BulkContactDuplicateWorkflowContext implements WorkflowContext,
 
 	DataContext dataContext;
 	
+	String urlId;
+	
+	Boolean addToConnect = false;	
+	
 	String domain;
 
 	@Override
@@ -33,6 +37,23 @@ public class BulkContactDuplicateWorkflowContext implements WorkflowContext,
 
 	public void setDomain(String domain) {
 		this.domain = domain;
+	}
+
+	
+	public String getUrlId() {
+		return urlId;
+	}
+
+	public void setUrlId(String urlId) {
+		this.urlId = urlId;
+	}
+
+	public Boolean getAddToConnect() {
+		return addToConnect;
+	}
+
+	public void setAddToConnect(Boolean addToConnect) {
+		this.addToConnect = addToConnect;
 	}
 
 	public DataContext getDataContext() {

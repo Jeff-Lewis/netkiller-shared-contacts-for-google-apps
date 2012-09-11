@@ -84,12 +84,12 @@ ul#add li {
 			<!--  <div class="top_most_nav" style="margin-left:120px;">admin@mellong.com | Manage | Logout</div>  -->
 				<div style="float: right; font-size: 13px; margin-left: 200px;">
 					${appUser.email}&nbsp;|
-					<c:if test="${isAdmin}"> |
-				
-				</c:if>
-					<a href="/logout.do"
+					<c:if test="${not empty appUser.email}"> |
+				<a href="/logout.do"
 						style="text-decoration: none; font-family: verdana; font-size: 13px;">
 						Logout </a>
+				</c:if>
+					
 				</div>
 
 				<div id="middle-contaner" style="width: 100%">

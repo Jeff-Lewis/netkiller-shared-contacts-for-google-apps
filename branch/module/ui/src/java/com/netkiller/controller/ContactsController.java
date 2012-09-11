@@ -46,6 +46,7 @@ import com.netkiller.core.AppException;
 import com.netkiller.core.DataContext;
 import com.netkiller.core.UniqueValidationException;
 import com.netkiller.core.UserIdConflictException;
+import com.netkiller.entity.ConnectContact;
 import com.netkiller.entity.Contact;
 import com.netkiller.entity.DomainAdmin;
 import com.netkiller.entity.DomainGroup;
@@ -344,13 +345,32 @@ public class ContactsController extends AbstractController {
 			 * UICommonConstants.CONTEXT_CONTACTS_HOME);
 			 */
 			try {
+				
+				Contact createdcontact = contactsManager.createContact(contact);
+				
+				String email = null;
+				String urlId =  request.getParameter("urlId");
+				if(StringUtils.isBlank(urlId)){
 				UserService userService = UserServiceFactory.getUserService();
 				User user = userService.getCurrentUser();
+				email = user.getEmail();
+				}else{
+					List<ConnectContact> list =connectContactManager.getByUrl(urlId);
+					if(list!=null && !list.isEmpty()){
+						email = list.get(0).getCreatedBy();
+						ConnectContact connectContact = new ConnectContact();
+						connectContact.setRandomUrl(urlId);
+						connectContact.setContactKey(createdcontact.getKey());
+						connectContact.setDomainName(list.get(0).getDomainName());
+						connectContactManager.create(connectContact);
+					}
+					
+				}
 
-				Contact createdcontact = contactsManager.createContact(contact);
-
+				
+				
 				contactsManager.addContactForAllDomainUsers(
-						CommonWebUtil.getDomain(user.getEmail()),
+						CommonWebUtil.getDomain(email ),
 						createdcontact);
 				removeFromNavigationTrail(request);
 			} catch (UniqueValidationException exception) {
@@ -624,8 +644,7 @@ public class ContactsController extends AbstractController {
 		String domain = CommonWebUtil.getDomain(user.getEmail());
 		DataContext dataContext = (DataContext) request.getSession()
 				.getAttribute(UICommonConstants.DATA_CONTEXT);
-		String redirectPage = "/contacts.do";
-		doDuplicate(request, response, model, domain, dataContext, redirectPage);
+		doDuplicate(request, response, model, domain, dataContext, null);
 
 		return showContacts(request, model, response);
 	}
@@ -636,22 +655,22 @@ public class ContactsController extends AbstractController {
 			Model model, HttpServletResponse response) throws AppException,
 			IOException {
 		String domain = request.getParameter("domainName");
+		String urlId =  request.getParameter("urlId");
 		DataContext dataContext = (DataContext) request.getSession()
 				.getAttribute(UICommonConstants.DATA_CONTEXT);
-		String redirectPage = "/contacts.do";
-		doDuplicate(request, response, model, domain, null, redirectPage);
+		doDuplicate(request, response, model, domain, null, urlId);
 		return "success";
 	}
 
 	private void doDuplicate(HttpServletRequest request,
 			HttpServletResponse response, Model model, String domain,
-			DataContext dataContext, String redirectPage) throws AppException,
+			DataContext dataContext, String urlId) throws AppException,
 			IOException {
 		List<Key> contactKeyList = getContactKeyList(request);
 		if (contactKeyList != null && !contactKeyList.isEmpty()) {
 
 			contactsManager.duplicateContactandExecuteWorkflow(contactKeyList,
-					dataContext, domain);
+					dataContext, domain, urlId);
 		}
 
 	}

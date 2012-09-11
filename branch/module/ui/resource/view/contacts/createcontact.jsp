@@ -13,7 +13,7 @@
 <div class="clear"></div>
 <form:form id="contactCreateForm" action="/connect/create.do"
 	modelAttribute="contact" method="post">
-
+<input type="hidden" value="${param.urlId}" name="urlId"/>
 
 	<div class="student-info-block"
 		style="width: 640px; margin: 0 0 0 0; border: none;overflow: auto;">

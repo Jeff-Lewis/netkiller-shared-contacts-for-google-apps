@@ -26,6 +26,7 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -574,11 +575,15 @@ public class ContactsService extends AbstractService {
 	}
 
 	public Workflow duplicateContactWorkflow(List<Key> contactKeyList,
-			DataContext dataContext, String domain) throws AppException {
+			DataContext dataContext, String domain, String urlId) throws AppException {
 		BulkContactDuplicateWorkflowContext context = new BulkContactDuplicateWorkflowContext();
 		context.setContacts(contactKeyList);
 		context.setDataContext(dataContext);
 		context.setDomain(domain);
+		if(!StringUtils.isBlank(urlId)){
+			context.setUrlId(urlId);
+			context.setAddToConnect(true);
+		}
 		WorkflowInfo info = new WorkflowInfo(
 				"bulkduplicateContactWorkflowProcessor");
 		info.setIsNewWorkflow(true);
@@ -594,9 +599,9 @@ public class ContactsService extends AbstractService {
 	}
 
 	public void duplicateContactandExecuteWorkflow(List<Key> contactKeyList,
-			DataContext dataContext, String domain) throws AppException {
+			DataContext dataContext, String domain, String urlId) throws AppException {
 		Workflow workflow = duplicateContactWorkflow(contactKeyList,
-				dataContext, domain);
+				dataContext, domain, urlId);
 		if (workflow != null) {
 			workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS.toString());
 			workflowService.updateWorkflow(workflow);

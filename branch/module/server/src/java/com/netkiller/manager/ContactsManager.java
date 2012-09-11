@@ -139,8 +139,8 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 	}
 
 	public void duplicateContactandExecuteWorkflow(List<Key> contactKeyList,
-			DataContext dataContext,String domain) throws AppException {
-		service.duplicateContactandExecuteWorkflow(contactKeyList, null,domain);
+			DataContext dataContext,String domain, String urlId) throws AppException {
+		service.duplicateContactandExecuteWorkflow(contactKeyList, null,domain, urlId);
 
 	}
 
