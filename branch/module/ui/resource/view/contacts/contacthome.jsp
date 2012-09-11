@@ -689,7 +689,7 @@ background:none !important;
 	function contactsMassUpdate() {
 		var str = "";
 		var contactKeyList = getSelectedContactsIdList();
-
+		startLoading();
 		if (contactKeyList == '') {
 			alert('Please select contacts');
 		} else {
@@ -705,17 +705,20 @@ background:none !important;
 			if ($("#noteCheckBoxId").attr('checked')) {
 				str += '&notes=' + $("#notes").val();
 			}
+			
 			$.ajax({
-				url : 'contact/contactMassUpdate.do?contactIdList='
+				url : 'connect/contactMassUpdate.do?contactIdList='
 						+ contactKeyList,
 				data : str,
 				success : function(result) {
+					endLoading();
 					alert('updated All contacts');
 					$("#massUpdateDiv").hide();
 					$("#list4").trigger('reloadGrid');
 					emptyForm();
 				},
 				error : function() {
+					endLoading();
 					alert('error');
 
 				}
@@ -795,7 +798,10 @@ background:none !important;
 	}
 
 	function openCreateWindow() {
+		
+		startLoading();
 		$("#createFormDiv").load('/contact/createForm.do').show();
+		endLoading();
 		//document.getElementById("")
 		//window.location.href = '/contact/createForm.do';
 	}

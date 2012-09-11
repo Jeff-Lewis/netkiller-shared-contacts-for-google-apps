@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,10 +37,10 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.netkiller.FilterInfo;
+import com.netkiller.FilterInfo.Rule;
 import com.netkiller.GridRequest;
 import com.netkiller.SortInfo;
 import com.netkiller.UICommonConstants;
-import com.netkiller.FilterInfo.Rule;
 import com.netkiller.core.AppException;
 import com.netkiller.core.DataContext;
 import com.netkiller.core.UniqueValidationException;
@@ -366,6 +365,7 @@ public class ContactsController extends AbstractController {
 								.getDomainName());
 						connectContactManager.create(connectContact);
 					}
+
 				}
 
 				contactsManager.addContactForAllDomainUsers(
@@ -495,7 +495,8 @@ public class ContactsController extends AbstractController {
 		return UICommonConstants.VIEW_INDEX;
 	}
 
-	@RequestMapping("/connect/contactMassUpdate.do")
+	@RequestMapping({ "/contact/contactMassUpdate.do",
+			"/connect/contactMassUpdate.do" })
 	public @ResponseBody
 	String contactMassUpdate(HttpServletRequest request) throws AppException {
 		DataContext dataContext = (DataContext) request.getSession()

@@ -22,12 +22,11 @@
 }
 </style>
 
-<!-- <script type="text/javascript">
+ <script type="text/javascript">
 	$(function() {
-		$("#menu-contaner a").removeClass("selectmenu");
-		$("#contactTab").addClass("selectmenu");
+		$("#loading").hide();
 	});
-</script> -->
+</script> 
 <!-- Start page content -->
  <div class="breadcrumb">
 

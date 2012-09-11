@@ -398,10 +398,12 @@
 
 	function createContact(isSaveAndNew, elm) {
 		singleClickDisabled(elm);
+		startLoading();
 		$.ajax({
 			url : '/connect/create.do?isSaveAndNew=' + isSaveAndNew,
 			data : $('#contactCreateForm').serialize(),
 			success : function(result) {
+				endLoading();
 				if (result == 'success') {
 					alert('Saved');
 					if (!isSaveAndNew) {
@@ -417,6 +419,7 @@
 				}
 			},
 			error : function() {
+				endLoading();
 				alert('error');
 			}
 		});
