@@ -310,11 +310,16 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	}
 
 	/**
-	 * ÃƒÂ¬Ã…Â¾Ã¢â‚¬Â¦ÃƒÂ«Ã‚Â Ã‚Â¥ÃƒÂ«Ã¯Â¿Â½Ã…â€œ List ElementsÃƒÂ«Ã‚Â¥Ã‚Â¼
-	 * 100ÃƒÂªÃ‚Â°Ã…â€œ ÃƒÂ¬Ã¢â‚¬ï¿½Ã‚Â© ÃƒÂ«Ã‚Â¬Ã‚Â¶ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´
-	 * ListÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½ ÃƒÂ«Ã¢â‚¬Å¾Ã‚Â£ÃƒÂ¬Ã¯Â¿Â½Ã¢â€šÂ¬
-	 * ÃƒÂ­Ã¢â‚¬ÂºÃ¢â‚¬Å¾ Container ListÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
-	 * ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â´ÃƒÂ¬Ã¢â‚¬Â¢Ã¢â‚¬Å¾ ÃƒÂ«Ã‚Â°Ã‹Å“ÃƒÂ­Ã¢â€žÂ¢Ã‹Å“
+	 * ÃƒÂ¬Ã…Â¾Ã¢â‚¬Â¦ÃƒÂ«Ã‚Â Ã‚Â¥ÃƒÂ«Ã¯Â�
+	 * �Â½Ã…â€œ List ElementsÃƒÂ«Ã‚Â¥Ã‚Â¼
+	 * 100ÃƒÂªÃ‚Â°Ã…â€œ ÃƒÂ¬Ã¢â‚¬ï¿½Ã‚Â©
+	 * ÃƒÂ«Ã‚Â¬Ã‚Â¶ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´
+	 * ListÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
+	 * ÃƒÂ«Ã¢â‚¬Å¾Ã‚Â£ÃƒÂ¬Ã¯Â¿Â½Ã¢â€šÂ¬
+	 * ÃƒÂ­Ã¢â‚¬ÂºÃ¢â‚¬Å¾ Container
+	 * ListÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
+	 * ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â´ÃƒÂ¬Ã¢â‚¬Â¢Ã¢â‚¬Å¾
+	 * ÃƒÂ«Ã‚Â°Ã‹Å“ÃƒÂ­Ã¢â€žÂ¢Ã‹Å“
 	 * 
 	 * @param list
 	 * @return
@@ -1750,7 +1755,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 					tc = groupEntry.getTitle();
 					if (tc != null) {
 						titleTmp = tc.getPlainText();
-						System.out.println("Contacts group Name:"+titleTmp);
+						System.out.println("Contacts group Name:" + titleTmp);
 						// logger.info("Id: " + groupEntry.getId());
 						if (titleTmp.equals(scGrpName)) {
 
@@ -1813,6 +1818,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		entity.setProperty("userEmail", userEmail);
 		entity.setProperty("domain", domain);
 		entity.setProperty("date", date);
+		entity.setProperty("noOfSyncs", 1);
 
 		datastore.put(entity);
 	}
@@ -1862,6 +1868,10 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		userSync.setDate((String) entity.getProperty("date"));
 		userSync.setUserEmail((String) entity.getProperty("userEmail"));
 		userSync.setKey(entity.getKey());
+		Long noOfSyncs = (Long) entity.getProperty("noOfSyncs");
+		if (noOfSyncs != null) {
+			userSync.setNoOfSyncs(noOfSyncs.intValue());
+		}
 		return userSync;
 
 	}
@@ -2099,5 +2109,29 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		}
 
 		return contact;
+	}
+
+	@Override
+	public UserSync updateExistingUserSync(UserSync userSync) {
+		Entity currentSync = null;
+		try {
+			currentSync = datastore.get(userSync.getKey());
+		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		currentSync.setProperty("domain", userSync.getDomain());
+		currentSync.setProperty("date", userSync.getDate());
+		currentSync.setProperty("userEmail", userSync.getUserEmail());
+		currentSync.setProperty("noOfSyncs", userSync.getNoOfSyncs());
+
+		try {
+			return getUserSync(datastore.get(datastore.put(currentSync)));
+		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

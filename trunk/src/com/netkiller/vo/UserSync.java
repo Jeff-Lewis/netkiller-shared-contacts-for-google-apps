@@ -16,6 +16,15 @@ public class UserSync {
 	private String userEmail;
 	private String date;
 	private String domain;
+	Integer noOfSyncs;
+	
+	
+	public Integer getNoOfSyncs() {
+		return noOfSyncs;
+	}
+	public void setNoOfSyncs(Integer noOfSyncs) {
+		this.noOfSyncs = noOfSyncs;
+	}
 	public String getUserEmail() {
 		return userEmail;
 	}

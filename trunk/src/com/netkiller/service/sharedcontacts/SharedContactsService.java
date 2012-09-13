@@ -99,6 +99,8 @@ public interface SharedContactsService {
 	public UserSync getUserSync(String userEmail, String date);
 	public UserSync getUserSync(String userEmail);
 	public void updateUserSync(UserSync userSync);
+	public UserSync updateExistingUserSync(UserSync userSync);
+	
 	public void createUserSync(String userEmail, String domain, String date);
 
 	public void deleteGroupsAndContactsByUsers(List<String> usersToBeAdded, String domain) throws AppException;

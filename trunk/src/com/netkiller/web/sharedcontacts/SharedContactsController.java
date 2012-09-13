@@ -111,6 +111,8 @@ public class SharedContactsController {
 	@Resource
 	private GridRequestParser gridRequestParser;
 
+	public static final Integer SYNC_LIMIT = 10;
+
 	public void setGridRequestParser(GridRequestParser gridRequestParser) {
 		this.gridRequestParser = gridRequestParser;
 	}
@@ -273,7 +275,7 @@ public class SharedContactsController {
 			User user = userService.getCurrentUser();
 			String sharedContactsGroupName = sharedContactsService
 					.getGroupName(CommonWebUtil.getDomain(user.getEmail()));
-			
+
 			groupId = sharedContactsService.getUserContactsGroupId(
 					sharedContactsGroupName, email);
 			logger.info("sharedContactsGroupName ===> "
@@ -839,7 +841,7 @@ public class SharedContactsController {
 	private ModelAndView deleteDuplicate(HttpServletRequest request,
 			HttpServletResponse response, Customer currentCustomer) {
 		// TODO Auto-generated method stub
-		
+
 		String email = getCurrentUser(request).getEmail();
 		String domain = CommonWebUtil.getDomain(email);
 		Map<String, String> result = new HashMap<String, String>();
@@ -848,17 +850,16 @@ public class SharedContactsController {
 		boolean success = true;
 		try {
 			sharedContactsService.removeDuplicateGroups(groupName, email);
-			message ="Duplicate Groups removed successfully";
+			message = "Duplicate Groups removed successfully";
 		} catch (Exception e) {
 			e.printStackTrace();
 			success = false;
-			message ="Error Occured";
+			message = "Error Occured";
 		}
-		if(success)	{
-		result.put("code", "success");
-		}
-		else 	{
-			result.put("code", "error");	
+		if (success) {
+			result.put("code", "success");
+		} else {
+			result.put("code", "error");
 		}
 		result.put("message", message);
 
@@ -900,15 +901,28 @@ public class SharedContactsController {
 			e.printStackTrace();
 		}
 		Date date = new Date();
+		Integer noOfSyncs = 1;
+
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		String dateString = formatter.format(date);
 		String email = getCurrentUser(request).getEmail();
 		UserSync userSync = sharedContactsService.getUserSync(
 				getCurrentUser(request).getEmail(), dateString);
+		if (userSync != null) {
+			if (userSync.getDate().equals(dateString)) {
+				noOfSyncs = userSync.getNoOfSyncs();
+				if (noOfSyncs == null) {
+					noOfSyncs = 1;
+				} else {
+					noOfSyncs++;
+				}
+				userSync.setNoOfSyncs(noOfSyncs);
+				userSync.setDate(dateString);
+			}
+		}
 		Map<String, String> result = new HashMap<String, String>();
 		String message = null;
-		if (userSync == null
-				|| (userSync != null && !userSync.getDate().equals(dateString))) {
+		if (userSync == null || (userSync != null && noOfSyncs <= SYNC_LIMIT)) {
 			SyncUserContactsContext syncUserContactsContext = new SyncUserContactsContext();
 			syncUserContactsContext.setUserEmail(getCurrentUser(request)
 					.getEmail());
@@ -939,8 +953,7 @@ public class SharedContactsController {
 			sharedContactsService.createUserSync(email,
 					CommonWebUtil.getDomain(email), dateString);
 		} else {
-			sharedContactsService.createUserSync(email,
-					CommonWebUtil.getDomain(email), dateString);
+			sharedContactsService.updateExistingUserSync(userSync);
 		}
 
 		result.put("code", "success");
