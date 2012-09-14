@@ -141,8 +141,8 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 		log.debug("Update Method started for: " + object);
 
 		E updatedEntity = null;
-		/*
-		 * Update the existing entry in the store, or will persist if does not
+		 /* Update the existing entry in the store, or will persist if does not
+		 /*
 		 * exist.
 		 */
 		setSystemProperties(object, (Class<E>) object.getClass());

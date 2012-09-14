@@ -55,6 +55,7 @@ import com.netkiller.entity.metadata.impl.ContactsMetaData;
 import com.netkiller.manager.ConnectContactManager;
 import com.netkiller.manager.ContactsManager;
 import com.netkiller.manager.DomainGroupManager;
+import com.netkiller.manager.EntityCounterManager;
 import com.netkiller.manager.WorkflowManager;
 import com.netkiller.search.SearchResult;
 import com.netkiller.search.property.operator.InputFilterOperatorType;
@@ -90,6 +91,9 @@ public class ContactsController extends AbstractController {
 
 	@Autowired
 	private ConnectContactManager connectContactManager;
+	
+	@Autowired
+	private EntityCounterManager entityCounterManager;
 
 	public ContactsManager getContactsManager() {
 		return contactsManager;
@@ -345,7 +349,8 @@ public class ContactsController extends AbstractController {
 			try {
 
 				Contact createdcontact = contactsManager.createContact(contact);
-
+				/*entityCounterManager.create(entityCounter);*/
+				
 				String email = null;
 				String urlId = request.getParameter("urlId");
 				if (StringUtils.isBlank(urlId)) {

@@ -3,6 +3,7 @@ package com.netkiller.service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,6 +44,9 @@ import com.google.appengine.api.mail.MailService;
 import com.google.appengine.api.mail.MailService.Attachment;
 import com.google.appengine.api.mail.MailService.Message;
 import com.google.appengine.api.mail.MailServiceFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gdata.client.Query;
 import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
 import com.google.gdata.client.authn.oauth.OAuthException;
@@ -67,14 +72,17 @@ import com.netkiller.GridRequest;
 import com.netkiller.core.AppException;
 import com.netkiller.core.DataContext;
 import com.netkiller.dao.ContactsDao;
+import com.netkiller.dao.EntityCounterDao;
 import com.netkiller.dao.UserContactDao;
 import com.netkiller.entity.Contact;
 import com.netkiller.entity.DomainAdmin;
 import com.netkiller.entity.DomainGroup;
+import com.netkiller.entity.EntityCounter;
 import com.netkiller.entity.UserContact;
 import com.netkiller.entity.Workflow;
 import com.netkiller.entity.metadata.EntityMetaData;
 import com.netkiller.mail.impl.GoogleMailService;
+import com.netkiller.manager.EntityCounterManager;
 import com.netkiller.security.DomainConfig;
 import com.netkiller.security.acl.Permission.PermissionType;
 import com.netkiller.util.AppLogger;
@@ -112,6 +120,12 @@ public class ContactsService extends AbstractService {
 
 	@Autowired
 	private UserContactDao userContactDao;
+
+	@Autowired
+	private EntityCounterDao entityCounterDao;
+
+	@Autowired
+	private EntityCounterManager entityCounterManager;
 
 	public void setContactsService(
 			com.google.gdata.client.contacts.ContactsService contactsService) {
@@ -227,13 +241,50 @@ public class ContactsService extends AbstractService {
 
 			super.validate(contacts, entityMetaData, globalFilterSearchService,
 					null);
+			contacts = contactsDao.create(contacts);
+			UserService userService = UserServiceFactory.getUserService();
+			User user = userService.getCurrentUser();
+			EntityCounter entityCounter = entityCounterDao
+					.getByEntityName(Contact.class.getSimpleName());
+			if (entityCounter == null) {
+				entityCounter = new EntityCounter();
+				entityCounter.setCount(1);
+				entityCounter.setEntityName(Contact.class.getSimpleName());
+				entityCounter
+						.setDomain(CommonWebUtil.getDomain(user.getEmail()));
+				entityCounter = entityCounterManager.create(entityCounter);
 
-			return contactsDao.create(contacts);
+			} else {
+				int count = entityCounter.getCount();
+				count++;
+				entityCounter.setCount(count);
+				try {
+					entityCounter = (EntityCounter) BeanUtils
+							.cloneBean(entityCounter);
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				entityCounterManager.update(entityCounter);
+			}
+
+			return contacts;
+
 		} catch (DataAccessException dae) {
 			String message = "Unable to create contact:" + contacts;
 			log.error(message, dae);
 			throw new AppException(message, dae);
 		}
+
 	}
 
 	public List<UserContact> getUserContactForDomain(String domain) {
@@ -399,29 +450,31 @@ public class ContactsService extends AbstractService {
 		return contactsDao.get(key);
 	}
 
-	public void generateCSVMail( String toEmail, String toName, String fromEmail) throws AppException{
-		 ByteArrayOutputStream out = new ByteArrayOutputStream();
-		 StringBuffer csvData = new StringBuffer();
-		 csvData.append( "ID,FirstName,LastName,FullName,WorkEmail,WorkPhone,WorkAddress\n");
-		 List<Contact> contacts = (List<Contact>) getAllGlobalFilteredContacts(null);
-			for (Contact entry : contacts) {
-				 csvData.append(entry.getKey().getId() + ",");
-				 csvData.append(entry.getFirstName() + ",");
-				 csvData.append(entry.getLastName() + ",");
-				 csvData.append(entry.getFullName() + ",");
-				 csvData.append(entry.getWorkEmail() + ",");
-				 csvData.append(entry.getWorkPhone() + ",");
-				 String address = entry.getWorkAddress();
-				 address = address.replace("\n", " ");
-				 address = address.replace(",", " ");
-				 csvData.append(address + "\n");				 
-			}
-		 
-			String domain = CommonWebUtil.getDomain(fromEmail);
-			sendMail(toEmail, toName, "Admin", domainAdminService.getDomainAdminByDomainName(domain ).getAdminEmail(), csvData);
-			 
-		 
+	public void generateCSVMail(String toEmail, String toName, String fromEmail)
+			throws AppException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		StringBuffer csvData = new StringBuffer();
+		csvData.append("ID,FirstName,LastName,FullName,WorkEmail,WorkPhone,WorkAddress\n");
+		List<Contact> contacts = (List<Contact>) getAllGlobalFilteredContacts(null);
+		for (Contact entry : contacts) {
+			csvData.append(entry.getKey().getId() + ",");
+			csvData.append(entry.getFirstName() + ",");
+			csvData.append(entry.getLastName() + ",");
+			csvData.append(entry.getFullName() + ",");
+			csvData.append(entry.getWorkEmail() + ",");
+			csvData.append(entry.getWorkPhone() + ",");
+			String address = entry.getWorkAddress();
+			address = address.replace("\n", " ");
+			address = address.replace(",", " ");
+			csvData.append(address + "\n");
+		}
+
+		String domain = CommonWebUtil.getDomain(fromEmail);
+		sendMail(toEmail, toName, "Admin", domainAdminService
+				.getDomainAdminByDomainName(domain).getAdminEmail(), csvData);
+
 	}
+
 	public void sendMail(String toEmail, String toName, String fromName,
 			String fromEmail, StringBuffer sb) throws AppException {
 		byte[] byteArray;
@@ -432,8 +485,8 @@ public class ContactsService extends AbstractService {
 			e.printStackTrace();
 			throw new AppException(e.getMessage());
 		}
-		
-		Message mail = new Message();		
+
+		Message mail = new Message();
 		mail.setSubject("CSV Data");
 		mail.setHtmlBody("Shared Contacts CSV");
 		mail.setTo(toEmail);
@@ -447,25 +500,24 @@ public class ContactsService extends AbstractService {
 			e.printStackTrace();
 		}
 		System.out.println("mail sent");
-		
-	/*	MailMessage mailMessage = new MailMessage();
-		List<Recipient> recipients = new ArrayList<Recipient>();
-		Recipient recipient = new Recipient();
-		MailAddress recipientMailAddress = new MailAddress(toName, toEmail);
-		recipient.setMailAddress(recipientMailAddress);
-		recipient.setRecipientType(RecipientType.TO);
-		recipients.add(recipient);
-		mailMessage.setRecipients(recipients);
-		List<MailAttachment> attachments = new ArrayList<MailAttachment>();
-		MailAttachment attachment = new MailAttachment();
-		attachments.add(attachment);
-		attachment.setFile(byteArray);
-		attachment.setFilename("Netkiller-shared.csv");
-		mailMessage.setSubject("CSV Data");
-		mailMessage.setHtmlBody(fromEmail + " has shared the attached contacts with you.");
-		mailMessage.setAttachments(attachments);
-		mailMessage.setSender(new MailAddress(fromName, fromEmail));
-		mailService.sendMail(mailMessage);*/
+
+		/*
+		 * MailMessage mailMessage = new MailMessage(); List<Recipient>
+		 * recipients = new ArrayList<Recipient>(); Recipient recipient = new
+		 * Recipient(); MailAddress recipientMailAddress = new
+		 * MailAddress(toName, toEmail);
+		 * recipient.setMailAddress(recipientMailAddress);
+		 * recipient.setRecipientType(RecipientType.TO);
+		 * recipients.add(recipient); mailMessage.setRecipients(recipients);
+		 * List<MailAttachment> attachments = new ArrayList<MailAttachment>();
+		 * MailAttachment attachment = new MailAttachment();
+		 * attachments.add(attachment); attachment.setFile(byteArray);
+		 * attachment.setFilename("Netkiller-shared.csv");
+		 * mailMessage.setSubject("CSV Data"); mailMessage.setHtmlBody(fromEmail
+		 * + " has shared the attached contacts with you.");
+		 * mailMessage.setAttachments(attachments); mailMessage.setSender(new
+		 * MailAddress(fromName, fromEmail)); mailService.sendMail(mailMessage);
+		 */
 	}
 
 	public void exportContacts(DataContext dataContext,
@@ -575,12 +627,13 @@ public class ContactsService extends AbstractService {
 	}
 
 	public Workflow duplicateContactWorkflow(List<Key> contactKeyList,
-			DataContext dataContext, String domain, String urlId) throws AppException {
+			DataContext dataContext, String domain, String urlId)
+			throws AppException {
 		BulkContactDuplicateWorkflowContext context = new BulkContactDuplicateWorkflowContext();
 		context.setContacts(contactKeyList);
 		context.setDataContext(dataContext);
 		context.setDomain(domain);
-		if(!StringUtils.isBlank(urlId)){
+		if (!StringUtils.isBlank(urlId)) {
 			context.setUrlId(urlId);
 			context.setAddToConnect(true);
 		}
@@ -599,7 +652,8 @@ public class ContactsService extends AbstractService {
 	}
 
 	public void duplicateContactandExecuteWorkflow(List<Key> contactKeyList,
-			DataContext dataContext, String domain, String urlId) throws AppException {
+			DataContext dataContext, String domain, String urlId)
+			throws AppException {
 		Workflow workflow = duplicateContactWorkflow(contactKeyList,
 				dataContext, domain, urlId);
 		if (workflow != null) {
@@ -933,7 +987,7 @@ public class ContactsService extends AbstractService {
 			e.printStackTrace();
 
 		} catch (MalformedURLException e) {
-			
+
 			e.printStackTrace();
 		}
 		if (users != null && !users.isEmpty()) {
@@ -985,13 +1039,13 @@ public class ContactsService extends AbstractService {
 						retrieveUrl = new URL(nextLink.getHref());
 					}
 				} catch (AppsForYourDomainException e) {
-					
+
 					e.printStackTrace();
 				} catch (ServiceException e) {
-					
+
 					e.printStackTrace();
 				} catch (IOException e) {
-					
+
 					e.printStackTrace();
 				}
 			} while (nextLink != null);
@@ -1013,7 +1067,7 @@ public class ContactsService extends AbstractService {
 			e.printStackTrace();
 
 		} catch (MalformedURLException e) {
-			
+
 			e.printStackTrace();
 		}
 		users = new ArrayList<String>(new HashSet<String>(users));

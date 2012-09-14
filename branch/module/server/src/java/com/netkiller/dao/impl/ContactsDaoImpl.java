@@ -57,6 +57,7 @@ public class ContactsDaoImpl extends AbstractDao<Contact> implements
 		super.remove(Contact.class, id);
 
 	}
+	
 
 
 }
