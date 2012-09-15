@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gdata.data.contacts.ContactEntry;
+import com.google.gdata.util.ResourceNotFoundException;
 import com.netkiller.core.AppException;
 import com.netkiller.entity.Contact;
 import com.netkiller.entity.UserContact;
@@ -48,9 +49,15 @@ public class BulkContactUpdateWorkflowTask extends AbstractWorkflowTask {
 			try {
 				for (UserContact userContact : filteredUserContactList) {
 
-					ContactEntry tobeUpdatedContactEntry = service.getContact(
-							userContact.getContactId(),
-							userContact.getUserEmail());
+					ContactEntry tobeUpdatedContactEntry = null;
+					try {
+						tobeUpdatedContactEntry = service.getContact(
+								userContact.getContactId(),
+								userContact.getUserEmail());
+					} catch (ResourceNotFoundException e) {
+						log.error("Can not find contact For userContact"+ userContact);
+						continue;
+					}
 					service.update(tobeUpdatedContactEntry,
 							userContact.getUserEmail());
 

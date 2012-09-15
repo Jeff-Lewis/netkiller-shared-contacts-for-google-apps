@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.gdata.data.contacts.ContactEntry;
+import com.google.gdata.util.ResourceNotFoundException;
 import com.netkiller.core.AppException;
 import com.netkiller.core.DataContext;
 import com.netkiller.entity.Contact;
@@ -51,9 +52,16 @@ public class BulkContactDeleteTask extends AbstractWorkflowTask {
 			try {
 				for (UserContact userContact : filteredUserContactList) {
 
-					ContactEntry tobeDeletedContactEntry = service.getContact(
-							userContact.getContactId(),
-							userContact.getUserEmail());
+					ContactEntry tobeDeletedContactEntry = null;
+					try {
+						tobeDeletedContactEntry = service.getContact(
+								userContact.getContactId(),
+								userContact.getUserEmail());
+					} catch (ResourceNotFoundException e) {
+						log.error("Can not find contact for usercontact "
+								+ userContact);
+						continue;
+					}
 					service.delete(tobeDeletedContactEntry,
 							userContact.getUserEmail());
 

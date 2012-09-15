@@ -67,6 +67,7 @@ import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.google.gdata.data.contacts.ContactGroupFeed;
 import com.google.gdata.data.contacts.GroupMembershipInfo;
 import com.google.gdata.util.PreconditionFailedException;
+import com.google.gdata.util.ResourceNotFoundException;
 import com.google.gdata.util.ServiceException;
 import com.netkiller.GridRequest;
 import com.netkiller.core.AppException;
@@ -357,7 +358,7 @@ public class ContactsService extends AbstractService {
 	}
 
 	public ContactEntry getContact(String urlStr, String userEmail)
-			throws AppException {
+			throws AppException, ResourceNotFoundException {
 
 		ContactEntry entry = null;
 		try {
@@ -371,6 +372,8 @@ public class ContactsService extends AbstractService {
 			URL url = new URL(urlStr);
 			com.google.gdata.client.contacts.ContactsService service = getContactsService();
 			entry = service.getEntry(url, ContactEntry.class);
+		} catch (ResourceNotFoundException rnf) {
+			throw new ResourceNotFoundException(rnf.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage() + " ========= " + urlStr, e);
