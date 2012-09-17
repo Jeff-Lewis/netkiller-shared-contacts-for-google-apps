@@ -212,16 +212,16 @@ public class SharedContactsController {
 				ContactGroupEntry group = new ContactGroupEntry();
 				group.setSummary(new PlainTextConstruct(sharedContactsGroupName));
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
-				sharedContactsService.create(group);
-				groupId = sharedContactsService
-						.getSharedContactsGroupId(sharedContactsGroupName);
+				group = sharedContactsService.create(group);
+				groupId = group.getId();
+				if(!StringUtils.isBlank(groupId)){
 
 				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
 				gmInfo.setHref(groupId); // added
 				for (ContactEntry entry : makeInitialContacts()) {
 					entry.addGroupMembershipInfo(gmInfo);
 					sharedContactsService.create(entry);
-
+				}
 				}
 
 			}
@@ -458,7 +458,7 @@ public class SharedContactsController {
 				&& CommonWebUtil.getParameter(request, "cmd").equals(
 						"initializeContacts")) {
 			String domain = CommonWebUtil.getDomain(user.getEmail());
-			groupCreationRetry = 0;
+			getGroupId();
 			// Create a workflow to create the initial contacts and groups
 			AddInitialContactsAndGroupContext context = new AddInitialContactsAndGroupContext();
 			context.setDomain(domain);
