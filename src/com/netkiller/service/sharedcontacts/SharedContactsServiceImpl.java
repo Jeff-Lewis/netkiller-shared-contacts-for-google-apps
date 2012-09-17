@@ -710,17 +710,17 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		return url;
 	}
 
-	public void create(ContactGroupEntry entry) throws AppException {
+	public ContactGroupEntry create(ContactGroupEntry entry) throws AppException {
 		try {
-			System.out.println("creating group 666666666666666666666666");
 			ContactsService service = getContactsService();
-			service.insert(
+			entry =service.insert(
 					new URL(getFeedUrl(appProperties.getGroupFeedUrl())), entry);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.log(Level.SEVERE, "e.getMessage: " + e.getMessage(), e);
 			throw new AppException();
 		}
+		return entry;
 	}
 
 	public void createGroup(ContactGroupEntry entry, String userEmail)
