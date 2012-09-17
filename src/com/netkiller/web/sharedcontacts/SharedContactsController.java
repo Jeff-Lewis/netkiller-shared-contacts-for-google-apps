@@ -454,11 +454,19 @@ public class SharedContactsController {
 			}
 		}
 
+		if (getGroupId() == null
+				&& !StringUtils.isBlank(CommonWebUtil.getParameter(request,
+						"groupName"))) {
+			sharedContactsService
+					.setGroupName(CommonWebUtil.getDomain(getCurrentUser(
+							request).getEmail()), CommonWebUtil.getParameter(
+							request, "group"));
+		}
+		
 		if (!StringUtils.isBlank(CommonWebUtil.getParameter(request, "group"))
 				&& CommonWebUtil.getParameter(request, "cmd").equals(
 						"initializeContacts")) {
 			String domain = CommonWebUtil.getDomain(user.getEmail());
-			getGroupId();
 			// Create a workflow to create the initial contacts and groups
 			AddInitialContactsAndGroupContext context = new AddInitialContactsAndGroupContext();
 			context.setDomain(domain);
@@ -504,14 +512,7 @@ public class SharedContactsController {
 			 * } }
 			 */
 		}
-		if (getGroupId() == null
-				&& !StringUtils.isBlank(CommonWebUtil.getParameter(request,
-						"groupName"))) {
-			sharedContactsService
-					.setGroupName(CommonWebUtil.getDomain(getCurrentUser(
-							request).getEmail()), CommonWebUtil.getParameter(
-							request, "groupName"));
-		}
+		
 		if (getGroupId() == null) {
 			groupCreationRetry++;
 			return new ModelAndView(
