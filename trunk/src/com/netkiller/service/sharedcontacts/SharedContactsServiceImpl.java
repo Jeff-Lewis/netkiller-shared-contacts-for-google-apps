@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -618,14 +619,32 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			String scGrpName = name;
 			logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
-			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-					ContactGroupFeed.class);
-			if (resultFeed != null) {
+			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			URL retrieveUrl = new URL(feedurl);
+			Link nextLink = null;
+			
+			
+/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+					ContactGroupFeed.class);*/
+			
+			do {
+				
+				ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
+						ContactGroupFeed.class);
+				contactGroupEntries.addAll(resultFeed.getEntries());
+				nextLink = resultFeed.getLink(Link.Rel.NEXT,
+						Link.Type.ATOM);
+				if (nextLink != null) {
+					retrieveUrl = new URL(nextLink.getHref());
+				}
+				
+				} while (nextLink != null);
+			
+			
+			if (!contactGroupEntries.isEmpty()) {
 				String titleTmp = null;
 				TextConstruct tc = null;
-				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-					ContactGroupEntry groupEntry = resultFeed.getEntries().get(
-							i);
+				for (ContactGroupEntry groupEntry : contactGroupEntries) {
 					tc = groupEntry.getTitle();
 					if (tc != null) {
 						titleTmp = tc.getPlainText();
@@ -693,6 +712,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 	public void create(ContactGroupEntry entry) throws AppException {
 		try {
+			System.out.println("creating group 666666666666666666666666");
 			ContactsService service = getContactsService();
 			service.insert(
 					new URL(getFeedUrl(appProperties.getGroupFeedUrl())), entry);
@@ -1743,26 +1763,47 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			String scGrpName = groupName;
 			logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
-			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			URL retrieveUrl = new URL(feedurl);
+			Link nextLink = null;
+			
+			do {
+			
+			ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
 					ContactGroupFeed.class);
-			if (resultFeed != null) {
+			contactGroupEntries.addAll(resultFeed.getEntries());
+			nextLink = resultFeed.getLink(Link.Rel.NEXT,
+					Link.Type.ATOM);
+			if (nextLink != null) {
+				retrieveUrl = new URL(nextLink.getHref());
+			}
+			
+			} while (nextLink != null);
+			
+			
+			if (!contactGroupEntries.isEmpty()) {
 				String titleTmp = null;
 				TextConstruct tc = null;
 				int count = 0;
-				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-					ContactGroupEntry groupEntry = resultFeed.getEntries().get(
-							i);
+				for (ContactGroupEntry groupEntry : contactGroupEntries) {
 					tc = groupEntry.getTitle();
+					/* To delete all uncomment this, and comment lines following this block
+					  try {
+						groupEntry.delete();
+						System.out.println("deleting " +  tc.getPlainText());
+					} catch (Exception e) {
+						System.out.println(tc.getPlainText() + "delete failed");
+					}	*/
+					
 					if (tc != null) {
 						titleTmp = tc.getPlainText();
-						System.out.println("Contacts group Name:" + titleTmp);
+						//System.out.println("Contacts group Name:" + titleTmp);
 						// logger.info("Id: " + groupEntry.getId());
 						if (titleTmp.equals(scGrpName)) {
-
 							if (count != 0) {
 								groupEntry.delete();
 								logger.info("Deleted Group Name: " + titleTmp);
-								logger.info("Deleted Group Id: " + result);
+								//logger.info("Deleted Group Id: " + result);
 							}
 							count++;
 						}
