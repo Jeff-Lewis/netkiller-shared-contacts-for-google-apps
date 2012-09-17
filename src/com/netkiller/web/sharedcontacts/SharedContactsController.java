@@ -208,7 +208,7 @@ public class SharedContactsController {
 			logger.info("sharedContactsGroupName ===> "
 					+ sharedContactsGroupName);
 			logger.info("groupId ===> " + groupId);
-			if (groupId == null || groupId.equals("")) {
+			if ((groupId == null || groupId.equals(""))&& !StringUtils.isBlank(sharedContactsGroupName)) {
 				ContactGroupEntry group = new ContactGroupEntry();
 				group.setSummary(new PlainTextConstruct(sharedContactsGroupName));
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
@@ -337,6 +337,7 @@ public class SharedContactsController {
 	private boolean isUseForSharedContacts;
 	private boolean arePropertiesLoaded;
 	private static double count = 0d;
+	private int groupCreationRetry = 0;
 
 	/*
 	 * @RequestMapping("/deleteDuplicateGroups.do") public
@@ -457,7 +458,7 @@ public class SharedContactsController {
 				&& CommonWebUtil.getParameter(request, "cmd").equals(
 						"initializeContacts")) {
 			String domain = CommonWebUtil.getDomain(user.getEmail());
-
+			groupCreationRetry = 0;
 			// Create a workflow to create the initial contacts and groups
 			AddInitialContactsAndGroupContext context = new AddInitialContactsAndGroupContext();
 			context.setDomain(domain);
@@ -512,6 +513,7 @@ public class SharedContactsController {
 							request, "groupName"));
 		}
 		if (getGroupId() == null) {
+			groupCreationRetry++;
 			return new ModelAndView(
 					"/sharedcontacts/promptSharedContactsGroupName", "result",
 					null);
