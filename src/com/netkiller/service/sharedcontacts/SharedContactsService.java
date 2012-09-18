@@ -42,7 +42,7 @@ public interface SharedContactsService {
 	public String getUserContactsGroupId(String name, String userEmail) throws AppException;
 	
 	public ContactGroupEntry create(ContactGroupEntry entry) throws AppException;
-	public void createGroup(ContactGroupEntry entry, String userEmail) throws AppException;
+	public ContactGroupEntry createGroup(ContactGroupEntry entry, String userEmail) throws AppException;
 	
 	public void multipleCreate(List<ContactEntry> contactEntries) throws AppException;
 	

@@ -81,9 +81,9 @@ public class AddInitialContactsAndGroupTask extends AbstractWorkflowTask{
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
 				// sharedContactsService.createGroup(group,
 				// getCurrentUser(request).getEmail());
-				sharedContactsService.createGroup(group, email);
-
-				groupId = sharedContactsService.getUserContactsGroupId(sharedContactsGroupName, email);
+				ContactGroupEntry groupEntry = sharedContactsService.createGroup(group, email);
+				if(groupEntry!=null)	
+				groupId = groupEntry.getId();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

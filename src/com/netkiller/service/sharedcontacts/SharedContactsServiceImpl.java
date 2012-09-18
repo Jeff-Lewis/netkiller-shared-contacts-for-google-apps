@@ -311,8 +311,8 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	}
 
 	/**
-	 * ÃƒÂ¬Ã…Â¾Ã¢â‚¬Â¦ÃƒÂ«Ã‚Â Ã‚Â¥ÃƒÂ«Ã¯Â�
-	 * �Â½Ã…â€œ List ElementsÃƒÂ«Ã‚Â¥Ã‚Â¼
+	 * ÃƒÂ¬Ã…Â¾Ã¢â‚¬Â¦ÃƒÂ«Ã‚Â Ã‚Â¥ÃƒÂ«Ã¯Â�
+	 * �Â½Ã…â€œ List ElementsÃƒÂ«Ã‚Â¥Ã‚Â¼
 	 * 100ÃƒÂªÃ‚Â°Ã…â€œ ÃƒÂ¬Ã¢â‚¬ï¿½Ã‚Â©
 	 * ÃƒÂ«Ã‚Â¬Ã‚Â¶ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´
 	 * ListÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
@@ -723,8 +723,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		return entry;
 	}
 
-	public void createGroup(ContactGroupEntry entry, String userEmail)
+	public ContactGroupEntry createGroup(ContactGroupEntry entry, String userEmail)
 			throws AppException {
+		ContactGroupEntry groupEntry = null;
 		try {
 			ContactsService service = getContactsService();
 			// System.out.println("Url:"+appProperties.getGroupFeedUrl()+"agent_noreply@netkiller.com/full?xoauth_requestor_id="
@@ -732,7 +733,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			// service.insert(new
 			// URL(appProperties.getGroupFeedUrl()+"agent_noreply@netkiller.com/full?xoauth_requestor_id="
 			// + "agent_noreply@netkiller.com"), entry);
-			service.insert(
+			groupEntry = service.insert(
 					new URL(getUserFeedUrl(appProperties.getGroupFeedUrl(),
 							userEmail)), entry);
 		} catch (Exception e) {
@@ -740,6 +741,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			logger.severe("e.getMessage: " + e.getMessage());
 			throw new AppException();
 		}
+		return groupEntry;
 	}
 
 	public String getUserContactsGroupId(String name, String userEmail)
@@ -751,14 +753,33 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			String scGrpName = name;
 			logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
-			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-					ContactGroupFeed.class);
-			if (resultFeed != null) {
+			
+			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			URL retrieveUrl = new URL(feedurl);
+			Link nextLink = null;
+			
+			
+/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+					ContactGroupFeed.class);*/
+			
+			do {
+				
+				ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
+						ContactGroupFeed.class);
+				contactGroupEntries.addAll(resultFeed.getEntries());
+				nextLink = resultFeed.getLink(Link.Rel.NEXT,
+						Link.Type.ATOM);
+				if (nextLink != null) {
+					retrieveUrl = new URL(nextLink.getHref());
+				}
+				
+				} while (nextLink != null);
+			
+			
+			if (!contactGroupEntries.isEmpty()) {
 				String titleTmp = null;
 				TextConstruct tc = null;
-				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-					ContactGroupEntry groupEntry = resultFeed.getEntries().get(
-							i);
+				for (ContactGroupEntry groupEntry : contactGroupEntries) {
 					tc = groupEntry.getTitle();
 					if (tc != null) {
 						titleTmp = tc.getPlainText();
@@ -773,9 +794,10 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.severe("e.getMessage: " + e.getMessage());
-			// throw new AppException();
+			// e.printStackTrace();
+			// logger.severe("e.getMessage: " + e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			throw new AppException();
 		}
 		return result;
 	}
