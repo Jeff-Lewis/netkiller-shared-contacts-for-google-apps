@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -126,29 +127,50 @@ public class UploadContactsBlobstoreMapper extends
 		try {
 			String feedurl = getFeedUrl("https://www.google.com/m8/feeds/groups/",email);
 			String scGrpName = name;
-			
+//			logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
-			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl), ContactGroupFeed.class);
-			if (resultFeed != null) {
+			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			URL retrieveUrl = new URL(feedurl);
+			Link nextLink = null;
+			
+			
+/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+					ContactGroupFeed.class);*/
+			
+			do {
+				
+				ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
+						ContactGroupFeed.class);
+				contactGroupEntries.addAll(resultFeed.getEntries());
+				nextLink = resultFeed.getLink(Link.Rel.NEXT,
+						Link.Type.ATOM);
+				if (nextLink != null) {
+					retrieveUrl = new URL(nextLink.getHref());
+				}
+				
+				} while (nextLink != null);
+			
+			
+			if (!contactGroupEntries.isEmpty()) {
 				String titleTmp = null;
 				TextConstruct tc = null;
-				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-					ContactGroupEntry groupEntry = resultFeed.getEntries().get(i);
+				for (ContactGroupEntry groupEntry : contactGroupEntries) {
 					tc = groupEntry.getTitle();
 					if (tc != null) {
 						titleTmp = tc.getPlainText();
 						// logger.info("Id: " + groupEntry.getId());
 						if (titleTmp.equals(scGrpName)) {
 							result = groupEntry.getId();
-							
+						
 							break;
 						}
 					}
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-		
+			// e.printStackTrace();
+			// logger.severe("e.getMessage: " + e.getMessage());
+	//		logger.log(Level.SEVERE, e.getMessage(), e);
 			throw new AppException();
 		}
 		return result;
@@ -601,29 +623,51 @@ public class UploadContactsBlobstoreMapper extends
 		try {
 			String feedurl = getUserFeedUrl("https://www.google.com/m8/feeds/groups/",userEmail);
 			String scGrpName = name;
-			
+		//	logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
-			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl), ContactGroupFeed.class);
-			if (resultFeed != null) {
+			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			URL retrieveUrl = new URL(feedurl);
+			Link nextLink = null;
+			
+			
+/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+					ContactGroupFeed.class);*/
+			
+			do {
+				
+				ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
+						ContactGroupFeed.class);
+				contactGroupEntries.addAll(resultFeed.getEntries());
+				nextLink = resultFeed.getLink(Link.Rel.NEXT,
+						Link.Type.ATOM);
+				if (nextLink != null) {
+					retrieveUrl = new URL(nextLink.getHref());
+				}
+				
+				} while (nextLink != null);
+			
+			
+			if (!contactGroupEntries.isEmpty()) {
 				String titleTmp = null;
 				TextConstruct tc = null;
-				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-					ContactGroupEntry groupEntry = resultFeed.getEntries().get(i);
+				for (ContactGroupEntry groupEntry : contactGroupEntries) {
 					tc = groupEntry.getTitle();
 					if (tc != null) {
 						titleTmp = tc.getPlainText();
 						// logger.info("Id: " + groupEntry.getId());
 						if (titleTmp.equals(scGrpName)) {
 							result = groupEntry.getId();
-							
+					//		logger.info("Group Name: " + titleTmp);
+					//		logger.info("Group Id: " + result);
 							break;
 						}
 					}
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			
+			// e.printStackTrace();
+			// logger.severe("e.getMessage: " + e.getMessage());
+		//	logger.log(Level.SEVERE, e.getMessage(), e);
 			throw new AppException();
 		}
 		return result;
