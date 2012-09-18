@@ -20,6 +20,7 @@ import jxl.write.Label;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.MessageSource;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -712,9 +713,15 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 	public ContactGroupEntry create(ContactGroupEntry entry) throws AppException {
 		try {
-			ContactsService service = getContactsService();
+			System.out.println("creating group");
+			String groupId = getSharedContactsGroupId(entry.getTitle().getPlainText());
+			if(StringUtils.isEmpty(groupId)){
+			ContactsService service = getContactsService();			
 			entry =service.insert(
-					new URL(getFeedUrl(appProperties.getGroupFeedUrl())), entry);
+					new URL(getFeedUrl(appProperties.getGroupFeedUrl())), entry);			
+			}else{
+				entry.setId(groupId);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.log(Level.SEVERE, "e.getMessage: " + e.getMessage(), e);
