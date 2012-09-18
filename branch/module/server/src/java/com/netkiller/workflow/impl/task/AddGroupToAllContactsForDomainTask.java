@@ -255,10 +255,9 @@ public class AddGroupToAllContactsForDomainTask extends AbstractWorkflowTask {
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
 				// sharedContactsService.createGroup(group,
 				// getCurrentUser(request).getEmail());
-				service.createGroup(group, email);
+				group = service.createGroup(group, email);
 
-				groupId = service.getUserContactsGroupId(
-						sharedContactsGroupName, email);
+				groupId =group.getId();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

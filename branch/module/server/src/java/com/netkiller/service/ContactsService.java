@@ -1423,13 +1423,14 @@ public class ContactsService extends AbstractService {
 		return url;
 	}
 
-	public void createGroup(ContactGroupEntry entry, String userEmail)
+	public ContactGroupEntry createGroup(ContactGroupEntry entry, String userEmail)
 			throws AppException {
 		try {
 			com.google.gdata.client.contacts.ContactsService service = getContactsService();
-			service.insert(
+			entry = service.insert(
 					new URL(getUserFeedUrl(domainConfig.getGroupFeedUrl(),
 							userEmail)), entry);
+			return entry;
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error("e.getMessage: " + e.getMessage());
