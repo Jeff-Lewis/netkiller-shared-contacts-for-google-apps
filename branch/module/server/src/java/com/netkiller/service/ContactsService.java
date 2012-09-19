@@ -1387,31 +1387,47 @@ public class ContactsService extends AbstractService {
 			String scGrpName = name;
 			log.info("scGrpName: " + scGrpName);
 			com.google.gdata.client.contacts.ContactsService service = getContactsService();
-			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-					ContactGroupFeed.class);
-			if (resultFeed != null) {
+			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			URL retrieveUrl = new URL(feedurl);
+			Link nextLink = null;
+			
+			
+/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+					ContactGroupFeed.class);*/
+			
+			do {
+				
+				ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
+						ContactGroupFeed.class);
+				contactGroupEntries.addAll(resultFeed.getEntries());
+				nextLink = resultFeed.getLink(Link.Rel.NEXT,
+						Link.Type.ATOM);
+				if (nextLink != null) {
+					retrieveUrl = new URL(nextLink.getHref());
+				}
+				
+				} while (nextLink != null);
+			
+			
+			if (!contactGroupEntries.isEmpty()) {
 				String titleTmp = null;
 				TextConstruct tc = null;
-				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-					ContactGroupEntry groupEntry = resultFeed.getEntries().get(
-							i);
+				for (ContactGroupEntry groupEntry : contactGroupEntries) {
 					tc = groupEntry.getTitle();
 					if (tc != null) {
 						titleTmp = tc.getPlainText();
 						// logger.info("Id: " + groupEntry.getId());
 						if (titleTmp.equals(scGrpName)) {
 							result = groupEntry.getId();
-							log.info("Group Name: " + titleTmp);
-							log.info("Group Id: " + result);
 							break;
 						}
 					}
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			log.error("e.getMessage: " + e.getMessage());
-			// throw new AppException();
+			// e.printStackTrace();
+			// logger.severe("e.getMessage: " + e.getMessage());
+e.printStackTrace();
 		}
 		return result;
 	}
