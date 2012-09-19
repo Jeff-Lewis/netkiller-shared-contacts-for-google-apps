@@ -50,9 +50,9 @@ public class UserContactManager extends AbstractManager implements
 		return service.getAllGlobalFilteredUserContacts(dataContext);
 	}
 
-	public UserContact createUserContact(UserContact userContact)
+	public UserContact createUserContact(UserContact userContact,String domain)
 			throws AppException {
-		return service.createUserContact(userContact);
+		return service.createUserContact(userContact,domain);
 	}
 
 	public UserContact updateUserContact(UserContact userContacts)

@@ -79,7 +79,7 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 								+ contactEntry.getEditLink().getHref());
 				userContact.setContactId(contactEntry.getEditLink().getHref());
 				try {
-					userContactService.createUserContact(userContact);
+					userContactService.createUserContact(userContact,domain);
 				} catch (AppException e1) {
 					e1.printStackTrace();
 				}

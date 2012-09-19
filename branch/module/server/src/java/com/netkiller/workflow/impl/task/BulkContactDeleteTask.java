@@ -56,14 +56,23 @@ public class BulkContactDeleteTask extends AbstractWorkflowTask {
 					&& !filteredUserContactList.isEmpty()) {
 				try {
 					List<ContactEntry> tobeDeletedContactEntryList = new ArrayList<ContactEntry>();
+					String userEmailString = userId + "@"
+							+ CommonWebUtil.getDomain(userEmail);
 					for (UserContact userContact : filteredUserContactList) {
 						ContactEntry tobeDeletedContactEntry = null;
 						try {
-							tobeDeletedContactEntry = service.getContact(
-									userContact.getContactId(),
-									userContact.getUserEmail());
-							tobeDeletedContactEntryList
-									.add(tobeDeletedContactEntry);
+
+							if (userEmailString.equalsIgnoreCase(userContact
+									.getUserEmail())) {
+								tobeDeletedContactEntry = service.getContact(
+										userContact.getContactId(),
+										userId
+												+ "@"
+												+ CommonWebUtil
+														.getDomain(userEmail));
+								tobeDeletedContactEntryList
+										.add(tobeDeletedContactEntry);
+							}
 						} catch (ResourceNotFoundException e) {
 							log.error("Can not find contact for usercontact "
 									+ userContact);
@@ -71,8 +80,7 @@ public class BulkContactDeleteTask extends AbstractWorkflowTask {
 						}
 					}
 					service.multipleDeleteUserContacts(
-							tobeDeletedContactEntryList, userId + "@"
-									+ CommonWebUtil.getDomain(userEmail));
+							tobeDeletedContactEntryList, userEmailString);
 				} catch (AppException e) {
 					log.error("Contact Deletion failed");
 					e.printStackTrace();

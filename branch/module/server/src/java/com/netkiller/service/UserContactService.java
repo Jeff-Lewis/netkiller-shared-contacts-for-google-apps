@@ -77,7 +77,7 @@ public class UserContactService extends AbstractService {
 		}
 	}
 
-	public UserContact createUserContact(UserContact userContact)
+	public UserContact createUserContact(UserContact userContact,String domain)
 			throws AppException {
 		try {
 
@@ -85,8 +85,8 @@ public class UserContactService extends AbstractService {
 					globalFilterSearchService, null);
 
 			userContact = userContactDao.create(userContact);
-			UserService userService = UserServiceFactory.getUserService();
-			User user = userService.getCurrentUser();
+			/*UserService userService = UserServiceFactory.getUserService();
+			User user = userService.getCurrentUser();*/
 			EntityCounter entityCounter = entityCounterDao
 					.getByEntityName(UserContact.class.getSimpleName());
 			if (entityCounter == null) {
@@ -94,7 +94,7 @@ public class UserContactService extends AbstractService {
 				entityCounter.setCount(1);
 				entityCounter.setEntityName(Contact.class.getSimpleName());
 				entityCounter
-						.setDomain(CommonWebUtil.getDomain(user.getEmail()));
+						.setDomain(domain);
 				entityCounter = entityCounterManager.create(entityCounter);
 
 			} else {
