@@ -91,7 +91,7 @@ public class ContactsController extends AbstractController {
 
 	@Autowired
 	private ConnectContactManager connectContactManager;
-	
+
 	@Autowired
 	private EntityCounterManager entityCounterManager;
 
@@ -349,8 +349,8 @@ public class ContactsController extends AbstractController {
 			try {
 
 				Contact createdcontact = contactsManager.createContact(contact);
-				/*entityCounterManager.create(entityCounter);*/
-				
+				/* entityCounterManager.create(entityCounter); */
+
 				String email = null;
 				String urlId = request.getParameter("urlId");
 				if (StringUtils.isBlank(urlId)) {
@@ -608,8 +608,14 @@ public class ContactsController extends AbstractController {
 			}
 
 		}
+
 		List<Contact> contactList = new ArrayList<Contact>();
 		if (contactKeyList != null && !contactKeyList.isEmpty()) {
+			contactsManager.deleteContactandExecuteWorkflow(
+					contactKeyList,
+					userEmail,
+					(DataContext) request.getSession().getAttribute(
+							UICommonConstants.DATA_CONTEXT));
 			contactList = (List<Contact>) contactsManager
 					.getByKeys(contactKeyList);
 		}
@@ -619,9 +625,7 @@ public class ContactsController extends AbstractController {
 						contact,
 						(DataContext) request.getSession().getAttribute(
 								UICommonConstants.DATA_CONTEXT));
-				contactsManager.deleteContactandExecuteWorkflow(contact,
-						userEmail, (DataContext) request.getSession()
-								.getAttribute(UICommonConstants.DATA_CONTEXT));
+
 			}
 		}
 		/*

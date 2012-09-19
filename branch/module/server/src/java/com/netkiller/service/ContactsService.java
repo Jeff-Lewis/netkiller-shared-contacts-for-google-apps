@@ -292,6 +292,12 @@ public class ContactsService extends AbstractService {
 		return userContactDao.getUserContactListForDomain(domain);
 	}
 
+	
+	
+	public List<UserContact> getUserContactListForUserEmail(String userEmail) {
+		return userContactDao.getUserContactListForUserEmail(userEmail);
+	}
+
 	/*
 	 * public Contacts createContactForAllDomainUsers(){
 	 * 
@@ -599,9 +605,9 @@ public class ContactsService extends AbstractService {
 	@Autowired
 	private WorkflowService workflowService;
 
-	public void deleteContactandExecuteWorkflow(Contact contact,
+	public void deleteContactandExecuteWorkflow(List<Key> contactKeyList,
 			String userEmail, DataContext dataContext) throws AppException {
-		Workflow workflow = deleteContactWorkflow(contact, userEmail,
+		Workflow workflow = deleteContactWorkflow(contactKeyList, userEmail,
 				dataContext);
 		if (workflow != null) {
 			workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS.toString());
@@ -610,10 +616,10 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
-	public Workflow deleteContactWorkflow(Contact contact, String userEmail,
+	public Workflow deleteContactWorkflow(List<Key> contactKeyList, String userEmail,
 			DataContext dataContext) throws AppException {
 		BulkContactDeleteWorkflowContext context = new BulkContactDeleteWorkflowContext();
-		context.setContact(contact);
+		context.setContactKeyList(contactKeyList);
 		context.setUserEmail(userEmail);
 		WorkflowInfo info = new WorkflowInfo(
 				"bulkdeleteContactWorkflowProcessor");
@@ -734,9 +740,11 @@ public class ContactsService extends AbstractService {
 		GoogleOAuthParameters oauthParameters = new GoogleOAuthParameters();
 		oauthParameters.setOAuthConsumerKey(consumerKey);
 		oauthParameters.setOAuthConsumerSecret(consumerSecret);
-		oauthParameters
-				.setScope("http://www.google.com/m8/feeds/contacts/default/full");
-
+		/*
+		 * oauthParameters
+		 * .setScope("http://www.google.com/m8/feeds/contacts/default/full");
+		 * oauthParameters.setOAuthType(OAuthType.TWO_LEGGED_OAUTH);
+		 */
 		try {
 			contactsService.setOAuthCredentials(oauthParameters,
 					new OAuthHmacSha1Signer());

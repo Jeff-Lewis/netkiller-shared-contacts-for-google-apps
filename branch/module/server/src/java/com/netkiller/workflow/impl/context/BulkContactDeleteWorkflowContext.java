@@ -16,6 +16,8 @@ public class BulkContactDeleteWorkflowContext implements WorkflowContext,
 	WorkflowInfo workflowInfo;
 
 	Contact contact;
+	
+	List<Key> contactKeyList;
 
 	DataContext dataContext;
 
@@ -31,6 +33,16 @@ public class BulkContactDeleteWorkflowContext implements WorkflowContext,
 	public String getUserEmail() {
 		return userEmail;
 	}
+	
+	public List<Key> getContactKeyList(){
+		return contactKeyList;
+	}
+	
+	public void setContactKeyList(List<Key> contactKeyList){
+		this.contactKeyList = contactKeyList;
+	}
+	
+	
 
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;

@@ -12,7 +12,6 @@ import com.netkiller.core.AppException;
 import com.netkiller.core.DataContext;
 import com.netkiller.entity.Contact;
 import com.netkiller.entity.UserContact;
-import com.netkiller.manager.ContactsManager;
 import com.netkiller.service.ContactsService;
 import com.netkiller.util.AppLogger;
 import com.netkiller.util.CommonWebUtil;
@@ -34,6 +33,8 @@ public class BulkContactDeleteTask extends AbstractWorkflowTask {
 			throws WorkflowExecutionException {
 		BulkContactDeleteWorkflowContext bulkContactDeleteWorkflowContext = (BulkContactDeleteWorkflowContext) context;
 		Contact contact = bulkContactDeleteWorkflowContext.getContact();
+		List<Key> contactKeyList = bulkContactDeleteWorkflowContext
+				.getContactKeyList();
 		DataContext dataContext = bulkContactDeleteWorkflowContext
 				.getDataContext();
 		String userEmail = bulkContactDeleteWorkflowContext.getUserEmail();
@@ -42,35 +43,67 @@ public class BulkContactDeleteTask extends AbstractWorkflowTask {
 		List<UserContact> filteredUserContactList = new ArrayList<UserContact>();
 		if (userContactList != null && !userContactList.isEmpty()) {
 			for (UserContact userContact : userContactList) {
-				if (userContact.getContactKey().equals(contact.getKey())) {
+				if (contactKeyList.contains(userContact.getContactKey())) {
 					filteredUserContactList.add(userContact);
 				}
 			}
 		}
-		if (filteredUserContactList != null
-				&& !filteredUserContactList.isEmpty()) {
-			try {
-				for (UserContact userContact : filteredUserContactList) {
 
-					ContactEntry tobeDeletedContactEntry = null;
-					try {
-						tobeDeletedContactEntry = service.getContact(
-								userContact.getContactId(),
-								userContact.getUserEmail());
-					} catch (ResourceNotFoundException e) {
-						log.error("Can not find contact for usercontact "
-								+ userContact);
-						continue;
+		for (String userId : service
+				.getAllDomainUsersWithReadAndWritePErmissionIncludingAdmin(CommonWebUtil
+						.getDomain(userEmail))) {
+			if (filteredUserContactList != null
+					&& !filteredUserContactList.isEmpty()) {
+				try {
+					List<ContactEntry> tobeDeletedContactEntryList = new ArrayList<ContactEntry>();
+					for (UserContact userContact : filteredUserContactList) {
+						ContactEntry tobeDeletedContactEntry = null;
+						try {
+							tobeDeletedContactEntry = service.getContact(
+									userContact.getContactId(),
+									userContact.getUserEmail());
+							tobeDeletedContactEntryList
+									.add(tobeDeletedContactEntry);
+						} catch (ResourceNotFoundException e) {
+							log.error("Can not find contact for usercontact "
+									+ userContact);
+							continue;
+						}
 					}
-					service.delete(tobeDeletedContactEntry,
-							userContact.getUserEmail());
-
+					service.multipleDeleteUserContacts(
+							tobeDeletedContactEntryList, userId + "@"
+									+ CommonWebUtil.getDomain(userEmail));
+				} catch (AppException e) {
+					log.error("Contact Deletion failed");
+					e.printStackTrace();
 				}
-			} catch (AppException e) {
-				log.error("Contact Deletion failed");
-				e.printStackTrace();
 			}
+
 		}
+
+		/*
+		 * if (filteredUserContactList != null &&
+		 * !filteredUserContactList.isEmpty()) { try { List<ContactEntry>
+		 * tobeDeletedContactEntryList = new ArrayList<ContactEntry>(); for
+		 * (UserContact userContact : filteredUserContactList) {
+		 * 
+		 * ContactEntry tobeDeletedContactEntry = null; try {
+		 * tobeDeletedContactEntry = service.getContact(
+		 * userContact.getContactId(), userContact.getUserEmail());
+		 * tobeDeletedContactEntryList .add(tobeDeletedContactEntry); } catch
+		 * (ResourceNotFoundException e) {
+		 * log.error("Can not find contact for usercontact " + userContact);
+		 * continue; } service.delete(tobeDeletedContactEntry,
+		 * userContact.getUserEmail());
+		 * 
+		 * }
+		 * 
+		 * service.multipleDeleteUserContacts(tobeDeletedContactEntryList ,
+		 * userEmail);
+		 * 
+		 * } catch (AppException e) { log.error("Contact Deletion failed");
+		 * e.printStackTrace(); } }
+		 */
 		/*
 		 * if (contactKeyList == null || contactKeyList.isEmpty()) { throw new
 		 * WorkflowExecutionException("NO contacts to be deleted"); }

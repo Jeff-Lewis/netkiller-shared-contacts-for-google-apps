@@ -20,4 +20,5 @@ public interface UserContactDao {
 	
 	public List<UserContact> getUserContactListForDomain(String domain);
 
+	public List<UserContact> getUserContactListForUserEmail(String userName);
 }

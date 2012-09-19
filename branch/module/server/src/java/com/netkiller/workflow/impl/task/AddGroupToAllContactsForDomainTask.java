@@ -25,6 +25,7 @@ import com.google.gdata.data.extensions.StructuredPostalAddress;
 import com.netkiller.core.AppException;
 import com.netkiller.service.ContactsService;
 import com.netkiller.util.AppLogger;
+import com.netkiller.util.CommonWebUtil;
 import com.netkiller.vo.StaticProperties;
 import com.netkiller.workflow.AbstractWorkflowTask;
 import com.netkiller.workflow.WorkflowContext;
@@ -51,8 +52,7 @@ public class AddGroupToAllContactsForDomainTask extends AbstractWorkflowTask {
 		for (String userId : service.getAllDomainUsersIncludingAdmin(domain)) {
 			List<ContactEntry> contactEntries = new ArrayList<ContactEntry>();
 			for (ContactEntry entry : makeInitialContacts()) {
-				String userGroupId = getUserGroupId(userId + "@" + domain,
-						group); // added
+				String userGroupId = getUserGroupId(userId + "@" + domain,group); // added
 				GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
 				userGmInfo.setHref(userGroupId); // added
 				entry.addGroupMembershipInfo(userGmInfo);
@@ -60,7 +60,8 @@ public class AddGroupToAllContactsForDomainTask extends AbstractWorkflowTask {
 			}
 
 			try {
-				service.multipleCreateUserContacts(contactEntries, email);
+				service.multipleCreateUserContacts(contactEntries, userId + "@"
+						+ CommonWebUtil.getDomain(email));
 			} catch (AppException e) {
 				log.error("Error while creating multiple Contact entries");
 			}
@@ -257,7 +258,7 @@ public class AddGroupToAllContactsForDomainTask extends AbstractWorkflowTask {
 				// getCurrentUser(request).getEmail());
 				group = service.createGroup(group, email);
 
-				groupId =group.getId();
+				groupId = group.getId();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

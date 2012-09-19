@@ -80,4 +80,29 @@ public class UserContactDaoImpl extends AbstractDao<UserContact> implements
 
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<UserContact> getUserContactListForUserEmail(String mail) {
+		PersistenceManager pm = null;
+		List<UserContact> userContactList = new ArrayList<UserContact>();
+		try {
+			pm = getPersistenceManager();
+			javax.jdo.Query query = pm.newQuery(UserContact.class);
+			query.setFilter("userEmail == mail1");
+			// query.setFilter("");
+			query.declareParameters("String mail1");
+			// query.declareParameters("");
+			Collection<UserContact> users = (Collection<UserContact>) query
+					.execute(mail);
+			if (users != null && !users.isEmpty()) {
+				userContactList.addAll(users);
+			}
+
+			return userContactList;
+		} finally {
+			releasePersistenceManager(pm);
+		}
+
+	}
+
 }
