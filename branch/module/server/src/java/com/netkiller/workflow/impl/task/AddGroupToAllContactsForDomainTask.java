@@ -51,8 +51,9 @@ public class AddGroupToAllContactsForDomainTask extends AbstractWorkflowTask {
 
 		for (String userId : service.getAllDomainUsersIncludingAdmin(domain)) {
 			List<ContactEntry> contactEntries = new ArrayList<ContactEntry>();
+			String userGroupId = getUserGroupId(userId + "@" + domain,
+					group); // added
 			for (ContactEntry entry : makeInitialContacts()) {
-				String userGroupId = getUserGroupId(userId + "@" + domain,group); // added
 				GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
 				userGmInfo.setHref(userGroupId); // added
 				entry.addGroupMembershipInfo(userGmInfo);
