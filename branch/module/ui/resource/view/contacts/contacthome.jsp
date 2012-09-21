@@ -1058,7 +1058,7 @@ background:none !important;
 			the file here. Upload time depends on the number of contacts, but
 			normally takes between a few seconds and a few minutes. <br /> <br />
 			Please select an CSV file(.csv) to upload: <br />
-		<form id="uploadForm" method="post"
+		<form id="uploadForm" method="post" onsubmit="$('#ImportDialog').hide();"
 			action="<%= blobstoreService.createUploadUrl("/contact/import.do") %>"
 			enctype="multipart/form-data" target="resultFrm">
 			<div style="font-size: 12px; width: 480px; text-align: middle;">
