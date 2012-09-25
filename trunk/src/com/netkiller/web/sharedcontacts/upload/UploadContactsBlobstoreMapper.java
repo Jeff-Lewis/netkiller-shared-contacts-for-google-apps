@@ -27,6 +27,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.tools.mapreduce.AppEngineMapper;
 import com.google.appengine.tools.mapreduce.BlobstoreRecordKey;
+import com.google.gdata.client.Query;
 import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
 import com.google.gdata.client.authn.oauth.OAuthException;
 import com.google.gdata.client.authn.oauth.OAuthHmacSha1Signer;
@@ -125,17 +126,19 @@ public class UploadContactsBlobstoreMapper extends
 	public String getSharedContactsGroupId(String name,String email) throws AppException {
 		String result = null;
 		try {
-			String feedurl = getFeedUrl("https://www.google.com/m8/feeds/groups/",email);
+			//String feedurl = getFeedUrl("https://www.google.com/m8/feeds/groups/",email);
+			String feedurl ="https://www.google.com/m8/feeds/groups/" + CommonWebUtil.getDomain(email)
+			+ "/full";
 			String scGrpName = name;
 //			logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
-			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			//Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
 			URL retrieveUrl = new URL(feedurl);
-			Link nextLink = null;
+			/*Link nextLink = null;
 			
 			
-/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-					ContactGroupFeed.class);*/
+			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+					ContactGroupFeed.class);
 			
 			do {
 				
@@ -148,7 +151,18 @@ public class UploadContactsBlobstoreMapper extends
 					retrieveUrl = new URL(nextLink.getHref());
 				}
 				
-				} while (nextLink != null);
+				} while (nextLink != null);*/
+			
+			Query query = new Query(retrieveUrl);
+			query.setMaxResults(100000); // paging
+			query.setStartIndex(1);
+			query.setStringCustomParameter("showdeleted", "false");
+			query.setStringCustomParameter("xoauth_requestor_id", email);
+
+			ContactGroupFeed resultFeed = service.query(query,
+					ContactGroupFeed.class);
+			Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+					.getEntries();
 			
 			
 			if (!contactGroupEntries.isEmpty()) {

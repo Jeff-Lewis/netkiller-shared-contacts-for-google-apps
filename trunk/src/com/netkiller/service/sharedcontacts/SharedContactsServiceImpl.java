@@ -615,55 +615,66 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 	public String getSharedContactsGroupId(String name) throws AppException {
 		String result = null;
-		try {
-			String feedurl = getFeedUrl(appProperties.getGroupFeedUrl());
-			String scGrpName = name;
-			logger.info("scGrpName: " + scGrpName);
-			ContactsService service = getContactsService();
-			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
-			URL retrieveUrl = new URL(feedurl);
-			Link nextLink = null;
-			
-			
-/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-					ContactGroupFeed.class);*/
-			
-			do {
-				
-				ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
+		if (!StringUtils.isBlank(name)) {
+			try {
+				String feedurl =appProperties.getGroupFeedUrl() + CommonWebUtil.getDomain(userEmail)
+				+ "/full";
+				String scGrpName = name;
+				logger.info("scGrpName: " + scGrpName);
+				ContactsService service = getContactsService();
+				//	Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+				URL retrieveUrl = new URL(feedurl);
+				//Link nextLink = null;
+				Query query = new Query(retrieveUrl);
+				query.setMaxResults(100000); // paging
+				query.setStartIndex(1);
+				query.setStringCustomParameter("showdeleted", "false");
+				query.setStringCustomParameter("xoauth_requestor_id", userEmail);
+
+				ContactGroupFeed resultFeed = service.query(query,
 						ContactGroupFeed.class);
-				contactGroupEntries.addAll(resultFeed.getEntries());
-				nextLink = resultFeed.getLink(Link.Rel.NEXT,
-						Link.Type.ATOM);
-				if (nextLink != null) {
-					retrieveUrl = new URL(nextLink.getHref());
-				}
+				Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+						.getEntries();
+				/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+				 ContactGroupFeed.class);
 				
-				} while (nextLink != null);
-			
-			
-			if (!contactGroupEntries.isEmpty()) {
-				String titleTmp = null;
-				TextConstruct tc = null;
-				for (ContactGroupEntry groupEntry : contactGroupEntries) {
-					tc = groupEntry.getTitle();
-					if (tc != null) {
-						titleTmp = tc.getPlainText();
-						// logger.info("Id: " + groupEntry.getId());
-						if (titleTmp.equals(scGrpName)) {
-							result = groupEntry.getId();
-							logger.info("Group Name: " + titleTmp);
-							logger.info("Group Id: " + result);
-							break;
+				 do {
+				
+				 ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
+				 ContactGroupFeed.class);
+				 contactGroupEntries.addAll(resultFeed.getEntries());
+				 nextLink = resultFeed.getLink(Link.Rel.NEXT,
+				 Link.Type.ATOM);
+				 if (nextLink != null) {
+				 retrieveUrl = new URL(nextLink.getHref());
+				 }
+				
+				 } while (nextLink != null);
+				
+				 */
+				if (!contactGroupEntries.isEmpty()) {
+					String titleTmp = null;
+					TextConstruct tc = null;
+					for (ContactGroupEntry groupEntry : contactGroupEntries) {
+						tc = groupEntry.getTitle();
+						if (tc != null) {
+							titleTmp = tc.getPlainText();
+							// logger.info("Id: " + groupEntry.getId());
+							if (titleTmp.equals(scGrpName)) {
+								result = groupEntry.getId();
+								logger.info("Group Name: " + titleTmp);
+								logger.info("Group Id: " + result);
+								break;
+							}
 						}
 					}
 				}
+			} catch (Exception e) {
+				// e.printStackTrace();
+				// logger.severe("e.getMessage: " + e.getMessage());
+				logger.log(Level.SEVERE, e.getMessage(), e);
+				throw new AppException();
 			}
-		} catch (Exception e) {
-			// e.printStackTrace();
-			// logger.severe("e.getMessage: " + e.getMessage());
-			logger.log(Level.SEVERE, e.getMessage(), e);
-			throw new AppException();
 		}
 		return result;
 	}
@@ -755,19 +766,30 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			throws AppException {
 		String result = null;
 		try {
-			String feedurl = getUserFeedUrl(appProperties.getGroupFeedUrl(),
-					userEmail);
+			String feedurl = appProperties.getGroupFeedUrl()+ CommonWebUtil.getDomain(userEmail)
+					+ "/full";
 			String scGrpName = name;
 			logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
 			
-			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			URL retrieveUrl = new URL(feedurl);
+			Query query = new Query(retrieveUrl);
+			query.setMaxResults(100000); // paging
+			query.setStartIndex(1);
+			query.setStringCustomParameter("showdeleted", "false");
+			query.setStringCustomParameter("xoauth_requestor_id", userEmail);
+
+			ContactGroupFeed resultFeed = service.query(query,
+					ContactGroupFeed.class);
+			Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+					.getEntries();
+		/*	Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
 			URL retrieveUrl = new URL(feedurl);
 			Link nextLink = null;
 			
 			
-/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-					ContactGroupFeed.class);*/
+			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+					ContactGroupFeed.class);
 			
 			do {
 				
@@ -781,7 +803,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 				}
 				
 				} while (nextLink != null);
-			
+			*/
 			
 			if (!contactGroupEntries.isEmpty()) {
 				String titleTmp = null;
@@ -1787,14 +1809,24 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	public void removeDuplicateGroups(String groupName, String userEmail) {
 		String result = null;
 		try {
-			String feedurl = getUserFeedUrl(appProperties.getGroupFeedUrl(),
-					userEmail);
+			String feedurl = appProperties.getGroupFeedUrl()+ CommonWebUtil.getDomain(userEmail)
+			+ "/full";
 			String scGrpName = groupName;
 			logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
-			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			//Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
 			URL retrieveUrl = new URL(feedurl);
-			Link nextLink = null;
+			Query query = new Query(retrieveUrl);
+			query.setMaxResults(100000); // paging
+			query.setStartIndex(1);
+			query.setStringCustomParameter("showdeleted", "false");
+			query.setStringCustomParameter("xoauth_requestor_id", userEmail);
+
+			ContactGroupFeed resultFeed = service.query(query,
+					ContactGroupFeed.class);
+			Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+					.getEntries();
+			/*Link nextLink = null;
 			
 			do {
 			
@@ -1807,7 +1839,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 				retrieveUrl = new URL(nextLink.getHref());
 			}
 			
-			} while (nextLink != null);
+			} while (nextLink != null);*/
 			
 			
 			if (!contactGroupEntries.isEmpty()) {
@@ -1817,14 +1849,14 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 				for (ContactGroupEntry groupEntry : contactGroupEntries) {
 					tc = groupEntry.getTitle();
 					/* To delete all uncomment this, and comment lines following this block
-					  try {
+					*/  try {
 						groupEntry.delete();
 						System.out.println("deleting " +  tc.getPlainText());
 					} catch (Exception e) {
 						System.out.println(tc.getPlainText() + "delete failed");
-					}	*/
+					}	
 					
-					if (tc != null) {
+					/*if (tc != null) {
 						titleTmp = tc.getPlainText();
 						//System.out.println("Contacts group Name:" + titleTmp);
 						// logger.info("Id: " + groupEntry.getId());
@@ -1836,7 +1868,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 							}
 							count++;
 						}
-					}
+					}*/
 				}
 			}
 		} catch (Exception e) {
