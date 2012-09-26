@@ -33,9 +33,14 @@ public class AddInitialContactsAndGroupTask extends AbstractWorkflowTask{
 		String group = groupContext.getGroup();
 		String email = groupContext.getEmail();
 		
+		System.out.println(sharedContactsService.getAllDomainUsersIncludingAdmin(domain));
 		for (String userId : sharedContactsService.getAllDomainUsersIncludingAdmin(domain)) {
+			if(userId.equals("jitender")){
+				System.out.println("boga");
+			}
 			List<ContactEntry> contactEntries = new ArrayList<ContactEntry>();
-			String userGroupId = getUserGroupId(userId + "@" + domain,group); // added
+			String thisEmail = userId + "@" + domain;
+			String userGroupId = getUserGroupId(thisEmail,group); // added
 			for (ContactEntry entry : makeInitialContacts()) {
 				GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
 				userGmInfo.setHref(userGroupId); // added
@@ -44,7 +49,7 @@ public class AddInitialContactsAndGroupTask extends AbstractWorkflowTask{
 			}
 			
 			try {
-				sharedContactsService.multipleCreateUserContacts(contactEntries, email);
+				sharedContactsService.multipleCreateUserContacts(contactEntries, thisEmail);
 			} catch (AppException e) {
 				logger.log(Level.SEVERE,"Error while creating multiple Contact entries");
 			}

@@ -200,6 +200,7 @@ public class SharedContactsController {
 		try {
 			UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();
+			if(user!=null){
 			String sharedContactsGroupName = sharedContactsService
 					.getGroupName(CommonWebUtil.getDomain(user.getEmail()));
 
@@ -214,8 +215,8 @@ public class SharedContactsController {
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
 				group = sharedContactsService.create(group);
 				groupId = group.getId();
+//				System.out.println("created group : " + sharedContactsGroupName + "\t with id : " +groupId);
 				if(!StringUtils.isBlank(groupId)){
-
 				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
 				gmInfo.setHref(groupId); // added
 				for (ContactEntry entry : makeInitialContacts()) {
@@ -223,7 +224,9 @@ public class SharedContactsController {
 					sharedContactsService.create(entry);
 				}
 				}
-
+			}else{
+				System.out.println("!!!!!!!!!!!!!!!!!!!user is null");
+			}
 			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
@@ -458,6 +461,7 @@ public class SharedContactsController {
 				&& CommonWebUtil.getParameter(request, "cmd").equals(
 						"initializeContacts")) {
 			String domain = CommonWebUtil.getDomain(user.getEmail());
+			System.out.println("init contacts");
 			getGroupId();
 			// Create a workflow to create the initial contacts and groups
 			AddInitialContactsAndGroupContext context = new AddInitialContactsAndGroupContext();
@@ -513,10 +517,14 @@ public class SharedContactsController {
 							request, "groupName"));
 		}
 		if (getGroupId() == null) {
+			String sharedContactsGroupName = sharedContactsService
+			.getGroupName(CommonWebUtil.getDomain(user.getEmail()));
+			if(StringUtils.isBlank(sharedContactsGroupName)){
 			groupCreationRetry++;
 			return new ModelAndView(
 					"/sharedcontacts/promptSharedContactsGroupName", "result",
 					null);
+			}
 		}
 
 		String cmd = CommonWebUtil.getParameter(request, "cmd");
@@ -909,7 +917,7 @@ public class SharedContactsController {
 		String dateString = formatter.format(date);
 		String email = getCurrentUser(request).getEmail();
 		UserSync userSync = sharedContactsService.getUserSync(
-				getCurrentUser(request).getEmail(), dateString);
+				email, dateString);
 		if (userSync != null) {
 			if (userSync.getDate().equals(dateString)) {
 				noOfSyncs = userSync.getNoOfSyncs();

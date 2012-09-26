@@ -210,7 +210,7 @@ public class SharedContactsFileUpload {
 					}
 				}
 			}// end while
-			String message = messageSource.getMessage("creation.success", null,
+			String message = messageSource.getMessage("upload.success", null,
 					Locale.US);
 			result.put("code", "success");
 			result.put("message", message);
