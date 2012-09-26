@@ -510,6 +510,95 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		}
 	}
 
+/*	public void multipleCreateUserContacts(List<ContactEntry> contactEntries,
+			String userEmail) throws AppException {
+		try {
+			ContactEntry contactEntry = null;
+					String feedurlStr = appProperties.getFeedurl() + userEmail + "/full";
+			ContactFeed batchFeed = null;
+			URL feedUrl = new URL(feedurlStr);
+			ContactsService service = getContactsService();
+			//ContactFeed feed = service.getFeed(feedUrl, ContactFeed.class);
+
+			List<List> container = split(contactEntries);
+			logger.info("==> container size: " + container.size());
+
+			int batchCnt = 0;
+			int batchCnt1 = 0;
+
+			for (int i = 0; i < container.size(); i++) {
+
+				batchFeed = new ContactFeed();
+
+				List<ContactEntry> splittedList = (List) container.get(i); // ÃƒÂ«Ã‚Â¶Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¯Â¿Â½Ã…â€œ
+																			// List
+																			// ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â»ÃƒÂªÃ‚Â¸Ã‚Â°
+				logger.info("==> splittedList size: " + splittedList.size());
+
+				for (int j = 0; j < splittedList.size(); j++) {
+					contactEntry = (ContactEntry) splittedList.get(j);
+					BatchUtils.setBatchId(contactEntry,
+							String.valueOf(batchCnt++));
+					BatchUtils.setBatchOperationType(contactEntry,
+							BatchOperationType.INSERT);
+					batchFeed.getEntries().add(contactEntry);
+
+				}
+
+				Link batchLink = feed.getLink(Link.Rel.FEED_BATCH,
+						Link.Type.ATOM);
+				String url = batchLink.getHref() + "?xoauth_requestor_id="
+						+ userEmail;
+				Query query = new Query(feedUrl);
+					query.setMaxResults(1); // paging
+					query.setStartIndex(30000); // paging
+				query.setStringCustomParameter("orderby", "lastmodified");
+				query.setStringCustomParameter("sortorder", "descending"); // "ascending"
+																			// or
+																			// "descending"
+				query.setStringCustomParameter("showdeleted", "false");
+				query.setStringCustomParameter("xoauth_requestor_id", userEmail);
+
+				// ContactFeed resultFeed = service.getFeed(feedUrl,
+				// ContactFeed.class);
+				ContactFeed batchResultFeed = service.query(query, ContactFeed.class);
+				
+				List<ContactEntry> batches = batchResultFeed.getEntries();
+				
+				for (ContactEntry ent : batches) {
+					String batchId = BatchUtils.getBatchId(ent);
+					if (!BatchUtils.isSuccess(ent)) {
+						logger.info("===> Insert Failed!");
+						BatchStatus status = BatchUtils.getBatchStatus(ent);
+						logger.info("\t" + batchId + " failed ("
+								+ status.getReason() + ") "
+								+ status.getContent());
+					} else {
+						logger.info("===> Inserted Sucessfully!" + "("
+								+ batchId + ")");
+					}
+				}// end of inner for loop
+				System.out.println("Created batch" + i);
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+
+			}// end of outer for loop
+			logger.info("====================================");
+			logger.info("Total " + batchCnt + " inserted!!");
+			logger.info("====================================");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			throw new AppException();
+		}
+	}
+*/
+	
+
 	public void multipleCreateUserContacts(List<ContactEntry> contactEntries,
 			String userEmail) throws AppException {
 		try {
@@ -531,9 +620,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 				batchFeed = new ContactFeed();
 
-				List<ContactEntry> splittedList = (List) container.get(i); // ÃƒÂ«Ã‚Â¶Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¯Â¿Â½Ã…â€œ
+				List<ContactEntry> splittedList = (List) container.get(i); // Ã«Â¶â€žÃ«Â¦Â¬Ã«ï¿½Å“
 																			// List
-																			// ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â»ÃƒÂªÃ‚Â¸Ã‚Â°
+																			// Ã¬â€“Â»ÃªÂ¸Â°
 				logger.info("==> splittedList size: " + splittedList.size());
 
 				for (int j = 0; j < splittedList.size(); j++) {
@@ -766,8 +855,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			throws AppException {
 		String result = null;
 		try {
-			String feedurl = appProperties.getGroupFeedUrl()+ CommonWebUtil.getDomain(userEmail)
+			String feedurl = appProperties.getGroupFeedUrl()+ userEmail
 					+ "/full";
+			
 			String scGrpName = name;
 			logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
@@ -1693,6 +1783,94 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 	}
 
+	/*@Override
+	public void syncUserContacts(String userEmail, List<ContactEntry> entries) {
+		String groupName = getGroupName(CommonWebUtil.getDomain(userEmail));
+		try {
+			String groupId = getUserContactsGroupId(groupName, userEmail);
+			while (groupId == null || groupId.equals("")) {
+				ContactGroupEntry group = new ContactGroupEntry();
+				group.setSummary(new PlainTextConstruct(groupName));
+				group.setTitle(new PlainTextConstruct(groupName));
+				createGroup(group, userEmail);
+
+				groupId = getUserContactsGroupId(groupName, userEmail);
+			}
+			List<ContactEntry> contacts = null;
+
+			contacts = getUserContacts(1, 30000, groupId, userEmail);
+			if(contacts!=null){
+			System.out.println("Fteched " + contacts.size() + " to be deleted");
+			
+			for(ContactEntry ce : contacts){
+				ce.delete();
+			}
+			int currentSize = contacts.size();
+			List<List> container = split(contacts);
+			for (int i = 0; i < container.size(); i++) {
+				multipleDeleteUserContacts(container.get(i), userEmail);
+				int retry = 0;
+				if (currentSize == getUserContacts(1, 30000, groupId, userEmail)
+						.size() && currentSize != 0 & retry <= 5) {
+					i--;
+					retry++;
+				} else {
+					if (retry > 5) {
+						continue;
+					}
+					if (currentSize - 100 >= 0) {
+						currentSize = currentSize - 100;
+					} else
+						currentSize = 0;
+
+				}
+			
+			}
+			System.out.println(" Successfully deleted");
+			System.out.println("GroupId is" + groupId);
+			if(entries!=null){
+			for (ContactEntry entry : entries) {
+				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
+				gmInfo.setHref(groupId); // added
+				entry.getGroupMembershipInfos().remove(0);
+				entry.addGroupMembershipInfo(gmInfo);
+				createUserContact(entry, userEmail);
+			}
+			}
+
+			List<List> container1 = split(entries);
+			for (int i = 0; i < container1.size(); i++) {
+				System.out.println("Creating batch" + i);
+				multipleCreateUserContacts(container1.get(i), userEmail);
+				int retry = 0;
+				if (currentSize == getUserContacts(1, 30000, groupId, userEmail)
+						.size() && currentSize != contacts.size() & retry <= 5) {
+					i--;
+					retry++;
+					System.out.println("will retry for batch" + i);
+				} else {
+					if (retry > 5) {
+						continue;
+					}
+					if (currentSize + 100 < contacts.size()) {
+						currentSize = currentSize + 100;
+					} else
+						currentSize = contacts.size();
+
+				}}
+			}
+
+		} catch (AppException e) {
+			System.out.println("Exception caught");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}*/
+	
 	@Override
 	public void syncUserContacts(String userEmail, List<ContactEntry> entries) {
 		String groupName = getGroupName(CommonWebUtil.getDomain(userEmail));
@@ -1732,39 +1910,42 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			}
 			System.out.println(" Successfully deleted");
 			System.out.println("GroupId is" + groupId);
-			for (ContactEntry entry : entries) {
-				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
-				gmInfo.setHref(groupId); // added
-				entry.getGroupMembershipInfos().remove(0);
+			if (entries!=null) {
+				for (ContactEntry entry : entries) {
+					GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
+					gmInfo.setHref(groupId); // added
+					entry.getGroupMembershipInfos().remove(0);
+					entry.addGroupMembershipInfo(gmInfo);
+				
 
-				entry.addGroupMembershipInfo(gmInfo);
+				}
+				List<List> container1 = split(entries);
+				
+				for (int i = 0; i < container1.size(); i++) {
+					System.out.println("Creating batch" + i);
+					multipleCreateUserContacts(container1.get(i), userEmail);
+					int retry = 0;
+					if (currentSize == getUserContacts(1, 30000, groupId,
+							userEmail).size()
+							&& currentSize != contacts.size() & retry <= 5) {
+						i--;
+						retry++;
+						System.out.println("will retry for batch" + i);
+					} else {
+						if (retry > 5) {
+							continue;
+						}
+						if (currentSize + 100 < contacts.size()) {
+							currentSize = currentSize + 100;
+						} else
+							currentSize = contacts.size();
 
-			}
-
-			List<List> container1 = split(entries);
-			for (int i = 0; i < container1.size(); i++) {
-				System.out.println("Creating batch" + i);
-				multipleCreateUserContacts(container1.get(i), userEmail);
-				int retry = 0;
-				if (currentSize == getUserContacts(1, 30000, groupId, userEmail)
-						.size() && currentSize != contacts.size() & retry <= 5) {
-					i--;
-					retry++;
-					System.out.println("will retry for batch" + i);
-				} else {
-					if (retry > 5) {
-						continue;
 					}
-					if (currentSize + 100 < contacts.size()) {
-						currentSize = currentSize + 100;
-					} else
-						currentSize = contacts.size();
-
 				}
 			}
 
 		} catch (AppException e) {
-			System.out.println("Exception caught");
+System.out.println("Exception caught");
 		}
 	}
 
@@ -1849,14 +2030,14 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 				for (ContactGroupEntry groupEntry : contactGroupEntries) {
 					tc = groupEntry.getTitle();
 					/* To delete all uncomment this, and comment lines following this block
-					*/  try {
-						groupEntry.delete();
+					  try {
+						//groupEntry.delete();
 						System.out.println("deleting " +  tc.getPlainText());
 					} catch (Exception e) {
 						System.out.println(tc.getPlainText() + "delete failed");
-					}	
+					}	*/
 					
-					/*if (tc != null) {
+					if (tc != null) {
 						titleTmp = tc.getPlainText();
 						//System.out.println("Contacts group Name:" + titleTmp);
 						// logger.info("Id: " + groupEntry.getId());
@@ -1868,7 +2049,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 							}
 							count++;
 						}
-					}*/
+					}
 				}
 			}
 		} catch (Exception e) {

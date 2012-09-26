@@ -1,6 +1,5 @@
 package com.netkiller.workflow.impl.task;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,12 +28,16 @@ public class SyncUserContactsTask extends AbstractWorkflowTask{
 		String usermail = syncUserContactsContext.getUserEmail();
 		List<ContactEntry> entries = null;
 		try {
+			System.out.println("group Id = " +   syncUserContactsContext.getGroupId());
 			entries = sharedContactsService.getContacts(1, syncUserContactsContext.getTotalLimit(), syncUserContactsContext.getGroupId(), syncUserContactsContext.getIsUseForSharedContacts(), null);
+			System.out.println("sync contacts " + entries);
 		} catch (AppException e) {
 			logger.log(Level.SEVERE,"Error while fecthing Contact entries");
 		}
 		
-		sharedContactsService.syncUserContacts(usermail, entries);
+		if (entries!=null) {
+			sharedContactsService.syncUserContacts(usermail, entries);
+		}
 		return context;	
 	}
 
