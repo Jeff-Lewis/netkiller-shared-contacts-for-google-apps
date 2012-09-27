@@ -1390,33 +1390,22 @@ public class ContactsService extends AbstractService {
 			throws AppException {
 		String result = null;
 		try {
-			String feedurl = getUserFeedUrl(domainConfig.getGroupFeedUrl(),
-					userEmail);
+			String feedurl = domainConfig.getGroupFeedUrl()+ userEmail
+			+ "/full";
 			String scGrpName = name;
-			log.info("scGrpName: " + scGrpName);
 			com.google.gdata.client.contacts.ContactsService service = getContactsService();
-			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			
 			URL retrieveUrl = new URL(feedurl);
-			Link nextLink = null;
-			
-			
-/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-					ContactGroupFeed.class);*/
-			
-			do {
-				
-				ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
-						ContactGroupFeed.class);
-				contactGroupEntries.addAll(resultFeed.getEntries());
-				nextLink = resultFeed.getLink(Link.Rel.NEXT,
-						Link.Type.ATOM);
-				if (nextLink != null) {
-					retrieveUrl = new URL(nextLink.getHref());
-				}
-				
-				} while (nextLink != null);
-			
-			
+			Query query = new Query(retrieveUrl);
+			query.setMaxResults(100000); // paging
+			query.setStartIndex(1);
+			query.setStringCustomParameter("showdeleted", "false");
+			query.setStringCustomParameter("xoauth_requestor_id", userEmail);
+
+			ContactGroupFeed resultFeed = service.query(query,
+					ContactGroupFeed.class);
+			Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+					.getEntries();
 			if (!contactGroupEntries.isEmpty()) {
 				String titleTmp = null;
 				TextConstruct tc = null;
