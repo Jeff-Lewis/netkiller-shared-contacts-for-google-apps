@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.appengine.api.datastore.Key;
+import com.netkiller.core.AppException;
 import com.netkiller.dao.AbstractDao;
 import com.netkiller.dao.EntityCounterDao;
 import com.netkiller.entity.DomainAdmin;
@@ -61,15 +62,15 @@ public class EntityCounterDaoImpl extends AbstractDao<EntityCounter> implements
 	}
 
 	@Transactional(readOnly = true)
-	public EntityCounter getByEntityName(String entityname) {
+	public EntityCounter getByEntityName(String entityname, String domain) {
 		PersistenceManager pm = null;
 		try {
 			pm = getPersistenceManager();
 			Query query = pm.newQuery(EntityCounter.class,
-					"entityName == entityname");
-			query.declareParameters("String entityname");
+					"entityName == entityname && domain == domainName");
+			query.declareParameters("String entityname,String domainName");
 			Collection<EntityCounter> users = (Collection<EntityCounter>) query
-					.execute(entityname);
+					.execute(entityname, domain);
 			EntityCounter entityCounter = null;
 			if (users != null && users.size() > 0) {
 				List<EntityCounter> entityCounters = (List<EntityCounter>) pm

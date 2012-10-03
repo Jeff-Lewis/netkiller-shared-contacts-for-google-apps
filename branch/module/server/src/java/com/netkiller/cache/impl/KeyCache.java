@@ -1,6 +1,5 @@
 package com.netkiller.cache.impl;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.Map;
 
 import com.google.appengine.api.datastore.Key;
 import com.netkiller.cache.AppCache;
-import com.netkiller.entity.Student;
 
 public class KeyCache extends MemCache implements AppCache {
 	

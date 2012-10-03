@@ -82,7 +82,6 @@ import com.netkiller.entity.EntityCounter;
 import com.netkiller.entity.UserContact;
 import com.netkiller.entity.Workflow;
 import com.netkiller.entity.metadata.EntityMetaData;
-import com.netkiller.mail.impl.GoogleMailService;
 import com.netkiller.manager.EntityCounterManager;
 import com.netkiller.security.DomainConfig;
 import com.netkiller.security.acl.Permission.PermissionType;
@@ -112,9 +111,6 @@ public class ContactsService extends AbstractService {
 	@Autowired
 	@Qualifier("ContactsMetaData")
 	private EntityMetaData entityMetaData;
-
-	@Autowired
-	private GoogleMailService mailService;
 
 	@Autowired
 	private ContactsDao contactsDao;
@@ -245,8 +241,9 @@ public class ContactsService extends AbstractService {
 			contacts = contactsDao.create(contacts);
 			UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();
-			EntityCounter entityCounter = entityCounterDao
-					.getByEntityName(Contact.class.getSimpleName());
+			EntityCounter entityCounter = entityCounterDao.getByEntityName(
+					Contact.class.getSimpleName(),
+					CommonWebUtil.getDomain(user.getEmail()));
 			if (entityCounter == null) {
 				entityCounter = new EntityCounter();
 				entityCounter.setCount(1);
@@ -292,8 +289,6 @@ public class ContactsService extends AbstractService {
 		return userContactDao.getUserContactListForDomain(domain);
 	}
 
-	
-	
 	public List<UserContact> getUserContactListForUserEmail(String userEmail) {
 		return userContactDao.getUserContactListForUserEmail(userEmail);
 	}
@@ -429,8 +424,33 @@ public class ContactsService extends AbstractService {
 			throws AppException {
 		log.debug("Calling delete Contact for contact id: " + contacts.getKey());
 		try {
-
+			UserService userService = UserServiceFactory.getUserService();
+			User user = userService.getCurrentUser();
 			contactsDao.remove(contacts);
+			EntityCounter entityCounter = entityCounterDao.getByEntityName(
+					Contact.class.getSimpleName(),
+					CommonWebUtil.getDomain(user.getEmail()));
+			int count = entityCounter.getCount();
+			count--;
+			entityCounter.setCount(count);
+			try {
+				entityCounter = (EntityCounter) BeanUtils
+						.cloneBean(entityCounter);
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			entityCounterManager.update(entityCounter);
+
 		} catch (DataAccessException dae) {
 			String message = "Unable to delete contact:" + contacts;
 			log.error(message, dae);
@@ -616,8 +636,8 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
-	public Workflow deleteContactWorkflow(List<Key> contactKeyList, String userEmail,
-			DataContext dataContext) throws AppException {
+	public Workflow deleteContactWorkflow(List<Key> contactKeyList,
+			String userEmail, DataContext dataContext) throws AppException {
 		BulkContactDeleteWorkflowContext context = new BulkContactDeleteWorkflowContext();
 		context.setContactKeyList(contactKeyList);
 		context.setUserEmail(userEmail);
@@ -1386,15 +1406,57 @@ public class ContactsService extends AbstractService {
 		}
 	}
 
+	/*
+	 * public String getUserContactsGroupId(String name, String userEmail)
+	 * throws AppException { String result = null; try { String feedurl =
+	 * domainConfig.getGroupFeedUrl()+ userEmail + "/full"; String scGrpName =
+	 * name; com.google.gdata.client.contacts.ContactsService service =
+	 * getContactsService();
+	 * 
+	 * 
+	 * ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+	 * ContactGroupFeed.class);
+	 * 
+	 * 
+	 * do {
+	 * 
+	 * ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
+	 * ContactGroupFeed.class);
+	 * contactGroupEntries.addAll(resultFeed.getEntries()); nextLink =
+	 * resultFeed.getLink(Link.Rel.NEXT, Link.Type.ATOM); if (nextLink != null)
+	 * { retrieveUrl = new URL(nextLink.getHref()); }
+	 * 
+	 * } while (nextLink != null);
+	 * 
+	 * 
+	 * URL retrieveUrl = new URL(feedurl); Query query = new Query(retrieveUrl);
+	 * query.setMaxResults(100000); // paging query.setStartIndex(1);
+	 * query.setStringCustomParameter("showdeleted", "false");
+	 * query.setStringCustomParameter("xoauth_requestor_id", userEmail);
+	 * 
+	 * ContactGroupFeed resultFeed = service.query(query,
+	 * ContactGroupFeed.class); Collection<ContactGroupEntry>
+	 * contactGroupEntries = resultFeed .getEntries();
+	 * 
+	 * if (!contactGroupEntries.isEmpty()) { String titleTmp = null;
+	 * TextConstruct tc = null; for (ContactGroupEntry groupEntry :
+	 * contactGroupEntries) { tc = groupEntry.getTitle(); if (tc != null) {
+	 * titleTmp = tc.getPlainText(); // logger.info("Id: " +
+	 * groupEntry.getId()); if (titleTmp.equals(scGrpName)) { result =
+	 * groupEntry.getId(); break; } } } } } catch (Exception e) { //
+	 * e.printStackTrace(); // logger.severe("e.getMessage: " + e.getMessage());
+	 * e.printStackTrace(); } return result; }
+	 */
+
 	public String getUserContactsGroupId(String name, String userEmail)
 			throws AppException {
 		String result = null;
 		try {
-			String feedurl = domainConfig.getGroupFeedUrl()+ userEmail
-			+ "/full";
+			String feedurl = domainConfig.getGroupFeedUrl() + userEmail
+					+ "/full";
 			String scGrpName = name;
 			com.google.gdata.client.contacts.ContactsService service = getContactsService();
-			
+
 			URL retrieveUrl = new URL(feedurl);
 			Query query = new Query(retrieveUrl);
 			query.setMaxResults(100000); // paging
@@ -1424,7 +1486,7 @@ public class ContactsService extends AbstractService {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			// logger.severe("e.getMessage: " + e.getMessage());
-e.printStackTrace();
+			e.printStackTrace();
 		}
 		return result;
 	}
@@ -1436,8 +1498,8 @@ e.printStackTrace();
 		return url;
 	}
 
-	public ContactGroupEntry createGroup(ContactGroupEntry entry, String userEmail)
-			throws AppException {
+	public ContactGroupEntry createGroup(ContactGroupEntry entry,
+			String userEmail) throws AppException {
 		try {
 			com.google.gdata.client.contacts.ContactsService service = getContactsService();
 			entry = service.insert(
@@ -1623,4 +1685,131 @@ e.printStackTrace();
 
 	}
 
+	public List<Contact> doSearch(GridRequest filterInfo) {
+		return contactsDao.doSearch(filterInfo);
+	}
+
+	public String getSharedContactsGroupId(String name) throws AppException {
+		String result = null;
+		try {
+			String feedurl = domainConfig.getFeedurl();
+			String scGrpName = name;
+			log.info("scGrpName: " + scGrpName);
+			com.google.gdata.client.contacts.ContactsService service = getContactsService();
+			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
+					ContactGroupFeed.class);
+			if (resultFeed != null) {
+				String titleTmp = null;
+				TextConstruct tc = null;
+				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
+					ContactGroupEntry groupEntry = resultFeed.getEntries().get(
+							i);
+					tc = groupEntry.getTitle();
+					if (tc != null) {
+						titleTmp = tc.getPlainText();
+						// logger.info("Id: " + groupEntry.getId());
+						if (titleTmp.equals(scGrpName)) {
+							result = groupEntry.getId();
+							log.info("Group Name: " + titleTmp);
+							log.info("Group Id: " + result);
+							break;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			// e.printStackTrace();
+			// logger.severe("e.getMessage: " + e.getMessage());
+			log.error(e.getMessage(), e);
+			throw new AppException(e.getMessage());
+		}
+		return result;
+	}
+
+	/*
+	 * Method to get the admin by any logged in user for a domain
+	 * 
+	 * @param email(Email ID of logged in user)
+	 */
+	public String getAdminEmailForFirstTimeByLoginWithAnyUserOfDomain(
+			String email) {
+		boolean isAdmin = false;
+		String adminEmail = null;
+		// List<String> users = new ArrayList<String>();
+		com.google.gdata.client.appsforyourdomain.UserService guserService = new com.google.gdata.client.appsforyourdomain.UserService(
+				"ykko-test");
+		String consumerKey = domainConfig.getConsumerkey();
+		String consumerSecret = domainConfig.getConsumerKeySecret();
+		String urlEscopo = "http://apps-apis.google.com/a/feeds/user/#readonly";
+		GoogleOAuthParameters oauthParameters = new GoogleOAuthParameters();
+		oauthParameters.setOAuthConsumerKey(consumerKey);
+		oauthParameters.setOAuthConsumerSecret(consumerSecret);
+		oauthParameters.setOAuthType(OAuthType.TWO_LEGGED_OAUTH);
+
+		oauthParameters.setScope(urlEscopo);
+
+		try {
+			guserService.setOAuthCredentials(oauthParameters,
+					new OAuthHmacSha1Signer());
+			guserService.setReadTimeout(20000);
+			guserService.setConnectTimeout(20000);
+			final String APPS_FEEDS_URL_BASE = "https://apps-apis.google.com/a/feeds/";
+			final String SERVICE_VERSION = "2.0";
+
+			String domainUrlBase = APPS_FEEDS_URL_BASE
+					+ CommonWebUtil.getDomain(email) + "/";
+
+			URL retrieveUrl = new URL(domainUrlBase + "user/" + SERVICE_VERSION);
+			UserFeed genericFeed = new UserFeed();
+
+			Link nextLink = null;
+
+			do {
+				try {
+					UserFeed newGenericFeed = guserService.getFeed(retrieveUrl,
+							UserFeed.class);
+
+					genericFeed.getEntries()
+							.addAll(newGenericFeed.getEntries());
+					nextLink = newGenericFeed.getLink(Link.Rel.NEXT,
+							Link.Type.ATOM);
+					if (nextLink != null) {
+						retrieveUrl = new URL(nextLink.getHref());
+					}
+				} catch (AppsForYourDomainException e) {
+
+					e.printStackTrace();
+				} catch (ServiceException e) {
+
+					e.printStackTrace();
+				} catch (IOException e) {
+
+					e.printStackTrace();
+				}
+			} while (nextLink != null);
+
+			if (genericFeed != null && genericFeed.getEntries() != null
+					&& !genericFeed.getEntries().isEmpty()) {
+
+				for (UserEntry genericEntry : genericFeed.getEntries()) {
+					System.out.println(genericEntry.getLogin().getUserName());
+
+					if (genericEntry.getLogin().getAdmin()) {
+						isAdmin = true;
+						adminEmail = genericEntry.getLogin().getUserName()
+								+ "@" + CommonWebUtil.getDomain(email);
+						break;
+					}
+				}
+
+			}
+		} catch (OAuthException e) {
+			e.printStackTrace();
+
+		} catch (MalformedURLException e) {
+
+			e.printStackTrace();
+		}
+		return adminEmail;
+	}
 }

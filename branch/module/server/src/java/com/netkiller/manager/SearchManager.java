@@ -10,7 +10,6 @@ import com.netkiller.FilterInfo;
 import com.netkiller.GridRequest;
 import com.netkiller.core.AppException;
 import com.netkiller.core.DataContext;
-import com.netkiller.entity.Subject;
 import com.netkiller.entity.metadata.EntityMetaData;
 import com.netkiller.manager.util.SearchRequestAssembler;
 import com.netkiller.search.SearchRequest;

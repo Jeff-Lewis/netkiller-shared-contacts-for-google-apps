@@ -25,7 +25,6 @@ import com.netkiller.service.ContactsService;
 @Component
 public class ContactsManager extends AbstractManager implements EntityManager {
 
-
 	@Autowired
 	private ContactsService service;
 
@@ -51,6 +50,10 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 		SearchResult searchResult = searchManager.doSearch(Contact.class,
 				service.getEntityMetaData(), filterInfo, null);
 		return searchResult;
+	}
+
+	public List<Contact> doSearch(GridRequest filerInfo) {
+		return service.doSearch(filerInfo);
 	}
 
 	@Override
@@ -86,10 +89,11 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 		// super.updateGlobalFilterProperties(contacts, this);
 		return service.updateContact(contacts);
 	}
-	
-	
-	public void updateContactAndExecuteWorkflow(Contact contacts,String userEmail, DataContext dataContext) throws AppException{
-		service.updateContactAndExecuteWorkflow(contacts,userEmail,dataContext);
+
+	public void updateContactAndExecuteWorkflow(Contact contacts,
+			String userEmail, DataContext dataContext) throws AppException {
+		service.updateContactAndExecuteWorkflow(contacts, userEmail,
+				dataContext);
 	}
 
 	public void deleteContact(Contact contacts, DataContext dataContext)
@@ -108,14 +112,15 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 			ServletOutputStream outputStream) throws AppException {
 		service.exportContacts(null, outputStream);
 	}
-	
-	public void generateCSVMail( String toEmail, String toName, String fromEmail) throws AppException{
+
+	public void generateCSVMail(String toEmail, String toName, String fromEmail)
+			throws AppException {
 		service.generateCSVMail(toEmail, toName, fromEmail);
 	}
 
-	public void deleteContactandExecuteWorkflow(List<Key> contactKeyList,String userEmail,
-			DataContext dataContext) throws AppException {
-		service.deleteContactandExecuteWorkflow(contactKeyList, userEmail,null);
+	public void deleteContactandExecuteWorkflow(List<Key> contactKeyList,
+			String userEmail, DataContext dataContext) throws AppException {
+		service.deleteContactandExecuteWorkflow(contactKeyList, userEmail, null);
 
 	}
 
@@ -139,8 +144,10 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 	}
 
 	public void duplicateContactandExecuteWorkflow(List<Key> contactKeyList,
-			DataContext dataContext,String domain, String urlId) throws AppException {
-		service.duplicateContactandExecuteWorkflow(contactKeyList, null,domain, urlId);
+			DataContext dataContext, String domain, String urlId)
+			throws AppException {
+		service.duplicateContactandExecuteWorkflow(contactKeyList, null,
+				domain, urlId);
 
 	}
 
@@ -170,5 +177,9 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 	public void sendMailToSelectedContacts() throws IOException {
 		service.sendMailToSelectedContacts();
 
+	}
+
+	public String getMyContactGroupId(String grpName) throws AppException {
+		return service.getSharedContactsGroupId(grpName);
 	}
 }

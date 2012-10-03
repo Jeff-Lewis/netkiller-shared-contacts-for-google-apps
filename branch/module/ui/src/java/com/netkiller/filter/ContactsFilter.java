@@ -40,15 +40,13 @@ import com.netkiller.util.CommonWebUtil;
 @Component
 public class ContactsFilter implements Filter {
 	private static final AppLogger log = AppLogger
-	.getLogger(ContactsFilter.class);
-	
+			.getLogger(ContactsFilter.class);
+
 	@Autowired
 	private AppUserEntityService appUserEntityService;
 
 	@Autowired
 	private ContactsService contactsService;
-
-	
 
 	@Autowired
 	private SetManager setManager;
@@ -58,7 +56,7 @@ public class ContactsFilter implements Filter {
 
 	@Autowired
 	private DomainAdminManager domainAdminManager;
-	
+
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
@@ -72,18 +70,18 @@ public class ContactsFilter implements Filter {
 
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
-		if (user == null) {			
+		if (user == null) {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
 		} else {
 			AppUserEntity appUser = appUserEntityService.getAppUserByEmail(user
 					.getEmail());
-			if (appUser == null) {				
+			if (appUser == null) {
 				DomainAdmin domainAdmin = domainAdminManager
 						.getDomainAdminByDomainName(CommonWebUtil
 								.getDomain(user.getEmail()));
 				if (domainAdmin == null) {
 					Boolean isAdmin = contactsService.isAdmin(user.getEmail());
-					if(isAdmin){
+					if (isAdmin) {
 						AppUserEntity appUserEntity = new AppUserEntity(
 								user.getUserId(), user.getEmail(), "", "",
 								user.getNickname(),
@@ -104,25 +102,25 @@ public class ContactsFilter implements Filter {
 							e.printStackTrace();
 						}
 						resp.sendRedirect("/resource/createGroupHome.do");
-						
-					}else{
-						resp.getWriter().print("An admin must log in the first time from a new domain");
+
+					} else {
+						resp.getWriter()
+								.print("An admin must log in the first time from a new domain");
 					}
-					
-				}else{
+
+				} else {
 					AppUserEntity appUserEntity = new AppUserEntity(
 							user.getUserId(), user.getEmail(), "", "",
-							user.getNickname(),
-							CommonWebUtil.getDomain(user.getEmail()));
+							user.getNickname(), CommonWebUtil.getDomain(user
+									.getEmail()));
 					appUserEntityService.createAppUser(appUserEntity);
 					chain.doFilter(request, response);
 				}
-				
-				
-			}else{
+
+			} else {
 				chain.doFilter(request, response);
 			}
-			
+
 		}
 	}
 
@@ -139,14 +137,14 @@ public class ContactsFilter implements Filter {
 		}
 		return null;
 	}
-	
+
 	private FilterConfig filterConfig;
-	
+
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		System.out.println("in init");
 		filterConfig = config;
-	System.out.println(config);
+		System.out.println(config);
 
 		ServletContext servletContext = config.getServletContext();
 		System.out.println(servletContext);
@@ -156,15 +154,12 @@ public class ContactsFilter implements Filter {
 		System.out.println(webApplicationContext);
 		AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext
 				.getAutowireCapableBeanFactory();
-System.out.println(autowireCapableBeanFactory);
-		
+		System.out.println(autowireCapableBeanFactory);
+
 		autowireCapableBeanFactory.configureBean(this, "setManager");
 		autowireCapableBeanFactory.configureBean(this, "appUserEntityService");
 
-
 		autowireCapableBeanFactory.configureBean(this, "contactsService");
-
-		
 
 		autowireCapableBeanFactory.configureBean(this, "valueManager");
 		autowireCapableBeanFactory.configureBean(this, "domainAdminManager");

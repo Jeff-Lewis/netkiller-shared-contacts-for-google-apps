@@ -2,7 +2,6 @@ package com.netkiller.entity.metadata.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.netkiller.entity.AcademicYear;
 import com.netkiller.entity.Set;
 import com.netkiller.entity.metadata.ColumnMetaData;
 import com.netkiller.entity.metadata.FilterMetaData;

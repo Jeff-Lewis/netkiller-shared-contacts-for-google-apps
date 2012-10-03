@@ -63,4 +63,8 @@ public class EntityCounterManager extends AbstractManager implements
 		return service.getByKeys(entityCounterKeyList);
 	}
 
+	public EntityCounter getByEntityName(String entityname, String domain) {
+		return service.getByEntityName(entityname, domain);
+	}
+
 }

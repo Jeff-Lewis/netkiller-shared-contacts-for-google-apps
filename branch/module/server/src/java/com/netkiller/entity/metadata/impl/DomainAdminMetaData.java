@@ -8,11 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.netkiller.entity.AcademicYear;
 import com.netkiller.entity.DomainAdmin;
-import com.netkiller.entity.MyClass;
-import com.netkiller.entity.Parent;
-import com.netkiller.entity.Student;
 import com.netkiller.entity.Value;
 import com.netkiller.entity.metadata.ColumnMetaData;
 import com.netkiller.entity.metadata.ColumnRelationShipMetaData;

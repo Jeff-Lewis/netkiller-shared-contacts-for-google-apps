@@ -30,8 +30,6 @@ import javax.activation.MimetypesFileTypeMap;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.google.gdata.client.sites.ContentQuery;
 import com.google.gdata.client.sites.SitesService;
@@ -74,7 +72,6 @@ import com.netkiller.core.AppException;
 import com.netkiller.core.EmptyFileException;
 import com.netkiller.core.UniqueValidationException;
 import com.netkiller.core.UserRoleType;
-import com.netkiller.entity.MyClass;
 import com.netkiller.security.DomainConfig;
 import com.netkiller.service.googleservice.gdatatype.EntryContainerType;
 import com.netkiller.service.googleservice.gdatatype.EntryType;

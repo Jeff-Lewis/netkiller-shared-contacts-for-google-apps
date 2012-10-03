@@ -3,7 +3,6 @@ package com.netkiller.filter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.Filter;
@@ -61,7 +60,7 @@ public class InitializationFilter implements Filter {
 
 			AppUser currentUser = (AppUser) currentSession
 					.getAttribute(AppUser.APPUSER_SESSION_VAR);
-			List<com.netkiller.entity.AcademicYear> userAcademicYearList = null;
+			//List<com.netkiller.entity.AcademicYear> userAcademicYearList = null;
 			/*
 			 * if (currentSession
 			 * .getAttribute(UICommonConstants.USER_ACADEMIC_YEAR_LIST) == null)

@@ -20,5 +20,5 @@ public interface EntityCounterDao {
 
 	public void remove(Object id);
 
-	public EntityCounter getByEntityName(String entityname);
+	public EntityCounter getByEntityName(String entityname,String domain);
 }

@@ -49,6 +49,7 @@ import com.netkiller.entity.ConnectContact;
 import com.netkiller.entity.Contact;
 import com.netkiller.entity.DomainAdmin;
 import com.netkiller.entity.DomainGroup;
+import com.netkiller.entity.EntityCounter;
 import com.netkiller.entity.Workflow;
 import com.netkiller.entity.metadata.impl.ConnectContactMetaData;
 import com.netkiller.entity.metadata.impl.ContactsMetaData;
@@ -279,7 +280,7 @@ public class ContactsController extends AbstractController {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		Boolean isAdmin = contactsManager.isAdmin(user.getEmail());
-		if (!StringUtils.isBlank(groupName) && isAdmin) {
+		if (!StringUtils.isBlank(groupName)) {
 
 			DomainGroup domainGroup = new DomainGroup();
 			domainGroup.setDomainName(CommonWebUtil.getDomain(user.getEmail()));
@@ -526,6 +527,21 @@ public class ContactsController extends AbstractController {
 		String otherAddress = request.getParameter("otherAddr");
 		String notes = request.getParameter("notes");
 		List<Key> contactKeyList = getContactKeyList(request);
+
+		/*
+		 * List<Contact> contactList = new ArrayList<Contact>(); if
+		 * (contactKeyList != null && !contactKeyList.isEmpty()) {
+		 * contactsManager.deleteContactandExecuteWorkflow( contactKeyList,
+		 * userEmail, (DataContext) request.getSession().getAttribute(
+		 * UICommonConstants.DATA_CONTEXT)); contactList = (List<Contact>)
+		 * contactsManager .getByKeys(contactKeyList); } if (contactList != null
+		 * && !contactList.isEmpty()) { for (Contact contact : contactList) {
+		 * contactsManager.deleteContact( contact, (DataContext)
+		 * request.getSession().getAttribute( UICommonConstants.DATA_CONTEXT));
+		 * 
+		 * } }
+		 */
+
 		if (!contactKeyList.isEmpty() && contactKeyList != null) {
 			List<Contact> contactsList = (List<Contact>) contactsManager
 					.getByKeys(contactKeyList);
@@ -1084,25 +1100,32 @@ public class ContactsController extends AbstractController {
 	public @ResponseBody
 	Map<String, Object> searchContactsData(HttpServletRequest request,
 			HttpSession session) throws AppException {
-
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
 		Map<String, Object> modalMap = new HashMap<String, Object>();
 		GridRequest gridRequest = gridRequestParser.parseDataCriteria(request);
-		gridRequest = addIsDeletedChecktoGridRequest(gridRequest, false);
+		// gridRequest = addIsDeletedChecktoGridRequest(gridRequest, false);
 		if (gridRequest.getSortInfo() == null) {
 			SortInfo sortInfo = new SortInfo();
 			sortInfo.setSortField("key");
 			sortInfo.setSortOrder(InputOrderByOperatorType.ASC);
 		}
 
-		SearchResult searchResult = contactsManager.doSearch(gridRequest,
-				(DataContext) session.getAttribute("dataContext"));
-		List<Object> contactsList = searchResult.getResultObjects();
-		int totalRecords = Integer.parseInt(String.valueOf(searchResult
-				.getTotalRecordSize()));
+		// FilterInfo filterInfo = new FilterInfo();
+		/*
+		 * SearchResult searchResult = contactsManager.doSearch(gridRequest,
+		 * (DataContext) session.getAttribute("dataContext")); List<Object>
+		 * contactsList = searchResult.getResultObjects();
+		 */
+		List<Contact> contactList = contactsManager.doSearch(gridRequest);
+		EntityCounter entityCounter = entityCounterManager.getByEntityName(
+				Contact.class.getSimpleName(),
+				CommonWebUtil.getDomain(user.getEmail()));
+		int totalRecords = entityCounter.getCount();
 		ArrayList<HashMap<String, Object>> rows = new ArrayList<HashMap<String, Object>>();
 		int id = 0;
 		String activeValue;
-		for (Iterator iterator = contactsList.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = contactList.iterator(); iterator.hasNext();) {
 			Contact contact = (Contact) iterator.next();
 			HashMap<String, Object> data = new HashMap<String, Object>();
 			data.put("key", ++id);
@@ -1170,7 +1193,7 @@ public class ContactsController extends AbstractController {
 			FilterInfo.Rule rule = new FilterInfo.Rule();
 			rule.setField(ContactsMetaData.COL_IS_DELETED);
 			rule.setOp(InputFilterOperatorType.EQUAL);
-			rule.setData("n");
+			rule.setData(String.valueOf(showDeleted));
 			rules.add(rule);
 		}
 		return gridRequest;
@@ -1248,4 +1271,18 @@ public class ContactsController extends AbstractController {
 	 * } catch (MalformedURLException e) { // TODO Auto-generated catch block
 	 * e.printStackTrace(); } return isAdmin; }
 	 */
+
+	@RequestMapping("/contact/MyContactGroupId.do")
+	@ResponseBody
+	public String getMyContactGroupId(HttpServletRequest request)
+			throws AppException {
+		String grpName = request.getParameter("grpName");
+
+		String grpId = contactsManager.getMyContactGroupId(grpName);
+		System.out
+				.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!MYCONTACT GROUP ID IS :"
+						+ grpId);
+		return grpId;
+	}
+
 }

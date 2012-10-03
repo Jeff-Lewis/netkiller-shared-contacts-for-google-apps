@@ -3,22 +3,17 @@
 package com.netkiller.dao.impl;
 
 import java.util.Collection;
-import java.util.Iterator;
 
-import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.appengine.api.datastore.Key;
 import com.netkiller.dao.AbstractDao;
 import com.netkiller.dao.CacheSettingDao;
 import com.netkiller.entity.CacheSetting;
-import com.netkiller.entity.ClassSubjectTeacher;
 
 /**
  * DAO containing object access methods specific to CacheSetting entity.

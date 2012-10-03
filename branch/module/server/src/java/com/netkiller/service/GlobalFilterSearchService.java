@@ -11,10 +11,9 @@ import org.springframework.stereotype.Service;
 import com.google.appengine.api.datastore.Key;
 import com.netkiller.core.AppException;
 import com.netkiller.core.DataContext;
-import com.netkiller.entity.MyClass;
+import com.netkiller.entity.metadata.ColumnMetaData.ColumnType;
 import com.netkiller.entity.metadata.EntityMetaData;
 import com.netkiller.entity.metadata.FilterMetaData;
-import com.netkiller.entity.metadata.ColumnMetaData.ColumnType;
 import com.netkiller.entity.metadata.impl.GlobalFilterType;
 import com.netkiller.entity.metadata.impl.GlobalFilterValueType;
 import com.netkiller.globalfilter.AcademicYear;
@@ -210,12 +209,12 @@ public class GlobalFilterSearchService {
 									FilterOperatorType.EQUAL,false);
 						}
 						// TODO : Need to validate this step.
-						else if(columnType.equals(ColumnType.Key) && metaData.getColumnMetaData(propertyName).getRelationShip()!=null
+						/*else if(columnType.equals(ColumnType.Key) && metaData.getColumnMetaData(propertyName).getRelationShip()!=null
 								&& metaData.getColumnMetaData(propertyName).getRelationShip().getRelatedEntityMetaData().getEntityClass().equals(MyClass.class)){
 							propertyValue = student.getClassKey();
 							searchProperty = new KeySearchProperty(propertyName, (Key) propertyValue,
 									FilterOperatorType.EQUAL);
-						}		
+						}	*/	
 						else if(columnType.equals(ColumnType.Key)){
 							propertyValue = student.getKey();
 							searchProperty = new KeySearchProperty(propertyName, (Key) propertyValue,

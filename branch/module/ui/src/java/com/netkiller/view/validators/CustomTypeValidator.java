@@ -31,8 +31,6 @@ import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.Var;
 import org.apache.commons.validator.util.ValidatorUtils;
 
-import com.netkiller.UICommonConstants;
-import com.netkiller.entity.EvaluationScheme;
 import com.netkiller.util.AppLogger;
 
 /**
@@ -483,7 +481,7 @@ public class CustomTypeValidator {
 	 */
 	
 	//TODO change constant value according to scale name for grade or numeric scale
-	public static boolean isNotNumericScale(Object bean, Field field) throws Exception, InvocationTargetException, NoSuchMethodException {
+	/*public static boolean isNotNumericScale(Object bean, Field field) throws Exception, InvocationTargetException, NoSuchMethodException {
 		EvaluationScheme evaluationScheme = (EvaluationScheme)bean;
 		boolean returnValue = true;
 		if(evaluationScheme.getSchemeEvalType()!=null){
@@ -492,16 +490,19 @@ public class CustomTypeValidator {
 			}
 		}
 		return returnValue;
-	}
+	}*/
 	
-	public static boolean isNumericScale(Object bean, Field field) throws Exception, InvocationTargetException, NoSuchMethodException {
-		EvaluationScheme evaluationScheme = (EvaluationScheme)bean;
-		boolean returnValue = true;
-		
-		if(evaluationScheme.getSchemeEvalType()!=null){
-			if(evaluationScheme.getSchemeEvalType().getValue().equalsIgnoreCase(UICommonConstants.EVALUATION_SCHEME_NUMERIC) && evaluationScheme.getPassPercentage()==null){
-				returnValue = false;
-		}}
-		return returnValue;
-	}	
+	/*
+	 * public static boolean isNumericScale(Object bean, Field field) throws
+	 * Exception, InvocationTargetException, NoSuchMethodException {
+	 * EvaluationScheme evaluationScheme = (EvaluationScheme)bean; boolean
+	 * returnValue = true;
+	 * 
+	 * if(evaluationScheme.getSchemeEvalType()!=null){
+	 * if(evaluationScheme.getSchemeEvalType
+	 * ().getValue().equalsIgnoreCase(UICommonConstants
+	 * .EVALUATION_SCHEME_NUMERIC) &&
+	 * evaluationScheme.getPassPercentage()==null){ returnValue = false; }}
+	 * return returnValue; }
+	 */
 }

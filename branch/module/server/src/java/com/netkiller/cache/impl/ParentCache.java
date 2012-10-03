@@ -3,12 +3,9 @@
 package com.netkiller.cache.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.netkiller.cache.AppCache;
-import com.netkiller.entity.Parent;
 
 
 public class ParentCache extends MemCache implements AppCache {
@@ -47,7 +44,7 @@ public class ParentCache extends MemCache implements AppCache {
 	
 	
 	public void addCacheValue(Object object)	{
-		Parent parent = (Parent)object;
+		/*Parent parent = (Parent)object;
 		Map<String,Object> propertyMap = new HashMap<String, Object>();
 		propertyMap.put(COL_PARENT_KEY, parent.getKey());
 		propertyMap.put(COL_FATHER_FIRST_NAME, parent.getFatherFirstName());
@@ -56,7 +53,7 @@ public class ParentCache extends MemCache implements AppCache {
 		propertyMap.put(COL_FROM_DATE, parent.getFromDate());
 		propertyMap.put(COL_MOTHER_FIRST_NAME, parent.getMotherFirstName());
 		propertyMap.put(COL_FATHER_EMAIL_ADDRESS, parent.getFatherEmailAddress());
-		this.setCacheValue(parent.getKey(), new EntityCacheVO(propertyMap));
+		this.setCacheValue(parent.getKey(), new EntityCacheVO(propertyMap));*/
 		
 		
 	}

@@ -1,9 +1,12 @@
 package com.netkiller.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,6 +14,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.appengine.api.datastore.Key;
+import com.netkiller.FilterInfo;
+import com.netkiller.GridRequest;
 import com.netkiller.dao.AbstractDao;
 import com.netkiller.dao.ContactsDao;
 import com.netkiller.entity.Contact;
@@ -57,7 +62,69 @@ public class ContactsDaoImpl extends AbstractDao<Contact> implements
 		super.remove(Contact.class, id);
 
 	}
-	
 
+	@Override
+	public List<Contact> doSearch(GridRequest gridRequest) {
+		int maxResults = 0;
+		int start = 0;
+		String sortIndex = null;
+		String sortOrder = null;
+		String filters = "isDeleted==false && ";
 
+		if (gridRequest.getPaginationInfo() != null) {
+			maxResults = gridRequest.getPaginationInfo().getRecordsPerPage();
+			start = (gridRequest.getPaginationInfo().getPageNumber() - 1)
+					* maxResults;
+		}
+		if (gridRequest.getSortInfo() != null) {
+			sortIndex = gridRequest.getSortInfo().getSortField();
+			sortOrder = gridRequest.getSortInfo().getSortOrder();
+		}
+		if (gridRequest.getFilterInfo() != null) {
+			List<FilterInfo.Rule> ruleList = gridRequest.getFilterInfo()
+					.getRules();
+			if (ruleList != null && !ruleList.isEmpty()) {
+				for (FilterInfo.Rule rule : ruleList) {
+					filters += rule.getField() + ">='" + rule.getData() + "' && ";
+					filters += rule.getField() + "<'" + rule.getData() + "\ufffd' && ";
+				}
+			}
+			
+		}
+		filters = filters.substring(0, filters.length() - 3);
+		// String type = gridRequest.getSearchBean().getType();
+		/*
+		 * UserService userService = UserServiceFactory.getUserService(); User
+		 * user = userService.getCurrentUser(); String domainName =
+		 * CommonWebUtil.getDomain(user.getEmail()); String filter =
+		 * "domainName=='" + domainName + "'";
+		 */
+		PersistenceManager pm = getPersistenceManager();
+		Query query = pm.newQuery(Contact.class);
+		query.setRange(start, start + maxResults);
+		query.setFilter(filters);
+		if (sortIndex != null) {
+			// query.setOrdering(sortIndex + " " + sortOrder);
+		}
+		List<Contact> objectList = new ArrayList<Contact>();
+
+		try {
+			List<Contact> results = (List<Contact>) query.execute();
+			if (!results.isEmpty()) {
+				for (Contact template : results) {
+					Contact detached = pm.detachCopy(template);
+					objectList.add(detached);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			query.closeAll();
+			pm.close();
+		}
+
+		return objectList;
+	}
 }

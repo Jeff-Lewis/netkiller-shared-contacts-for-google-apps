@@ -10,8 +10,6 @@ import com.netkiller.FilterInfo;
 import com.netkiller.GridRequest;
 import com.netkiller.core.AppException;
 import com.netkiller.core.DataContext;
-import com.netkiller.entity.AcademicYear;
-import com.netkiller.entity.Period;
 import com.netkiller.entity.Set;
 import com.netkiller.entity.metadata.EntityMetaData;
 import com.netkiller.search.SearchResult;

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
@@ -35,7 +34,6 @@ import com.netkiller.entity.Value;
 import com.netkiller.manager.DomainAdminManager;
 import com.netkiller.manager.SetManager;
 import com.netkiller.manager.ValueManager;
-import com.netkiller.security.AppUserService;
 import com.netkiller.service.AppUserEntityService;
 import com.netkiller.service.ContactsService;
 import com.netkiller.util.AppLogger;
@@ -83,69 +81,68 @@ public class AuthorisationFilter implements Filter {
 		User user = userService.getCurrentUser();
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
+
 		if (StringUtils.indexOfAny(req.getRequestURI(), skipResources) >= 0) {
 			chain.doFilter(request, response);
-		}else if (user == null) {			
+		} else if (user == null) {
 			resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
 		} else {
 			HttpSession session = req.getSession();
 			AppUserEntity appUser = null;
-			if(session.getAttribute("appUser")!=null){
+			if (session.getAttribute("appUser") != null) {
 				appUser = (AppUserEntity) session.getAttribute("appUser");
-			}else{
-				 appUser = appUserEntityService.getAppUserByEmail(user
-							.getEmail());
-				 session.setAttribute("appUser",appUser);
+			} else {
+				appUser = appUserEntityService.getAppUserByEmail(user
+						.getEmail());
+				session.setAttribute("appUser", appUser);
 			}
-			
-			
-			
-			if (appUser == null) {				
+
+			if (appUser == null) {
 				DomainAdmin domainAdmin = domainAdminManager
 						.getDomainAdminByDomainName(CommonWebUtil
 								.getDomain(user.getEmail()));
 				if (domainAdmin == null) {
 					Boolean isAdmin = contactsService.isAdmin(user.getEmail());
-					if(isAdmin){
+					if (isAdmin) {
 						AppUserEntity appUserEntity = new AppUserEntity(
 								user.getUserId(), user.getEmail(), "", "",
 								user.getNickname(),
 								CommonWebUtil.getDomain(user.getEmail()));
 						appUserEntityService.createAppUser(appUserEntity);
-						DomainAdmin newDomainAdmin = new DomainAdmin();
-						newDomainAdmin.setAdminEmail(user.getEmail());
-						newDomainAdmin.setDomainName(CommonWebUtil
-								.getDomain(user.getEmail()));
-						newDomainAdmin.setRegisteredDate(new Date());
-						newDomainAdmin.setTotalCounts(0);
-						newDomainAdmin.setAccountTypeKey(getAccountTypeKey());
-						try {
-							domainAdminManager
-									.createDomainAdmin(newDomainAdmin);
-						} catch (AppException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						resp.sendRedirect("/resource/createGroupHome.do");
-						
-					}else{
-						resp.getWriter().print("An admin must log in the first time from a new domain");
+						createDomainAdmin(user.getEmail());
+
+					} else {
+						String adminEmail = contactsService
+								.getAdminEmailForFirstTimeByLoginWithAnyUserOfDomain(user
+										.getEmail());
+						AppUserEntity appUserEntity = new AppUserEntity(
+								CommonWebUtil.getUserId(adminEmail),
+								adminEmail, "", "", "",
+								CommonWebUtil.getDomain(user.getEmail()));
+						appUserEntityService.createAppUser(appUserEntity);
+						createDomainAdmin(adminEmail);
+
+						/*
+						 * resp.getWriter() .print(
+						 * "An admin must log in the first time from a new domain"
+						 * );
+						 */
 					}
-					
-				}else{
+					resp.sendRedirect("/resource/createGroupHome.do");
+
+				} else {
 					AppUserEntity appUserEntity = new AppUserEntity(
 							user.getUserId(), user.getEmail(), "", "",
-							user.getNickname(),
-							CommonWebUtil.getDomain(user.getEmail()));
+							user.getNickname(), CommonWebUtil.getDomain(user
+									.getEmail()));
 					appUserEntityService.createAppUser(appUserEntity);
 					chain.doFilter(request, response);
 				}
-				
-				
-			}else{
+
+			} else {
 				chain.doFilter(request, response);
 			}
-			
+
 		}
 	}
 
@@ -163,15 +160,30 @@ public class AuthorisationFilter implements Filter {
 		return null;
 	}
 
+	private void createDomainAdmin(String adminEmail) {
+		DomainAdmin domainAdmin = new DomainAdmin();
+		domainAdmin.setAdminEmail(adminEmail);
+		domainAdmin.setDomainName(CommonWebUtil.getDomain(adminEmail));
+		domainAdmin.setRegisteredDate(new Date());
+		domainAdmin.setTotalCounts(0);
+		domainAdmin.setAccountTypeKey(getAccountTypeKey());
+		try {
+			domainAdminManager.createDomainAdmin(domainAdmin);
+		} catch (AppException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private FilterConfig filterConfig;
 
 	private String[] skipResources;
-	
+
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		filterConfig = config;
-		skipResources = StringUtils.split(filterConfig.getInitParameter("skipResources"), ",");
+		skipResources = StringUtils.split(
+				filterConfig.getInitParameter("skipResources"), ",");
 		ServletContext servletContext = config.getServletContext();
 		WebApplicationContext webApplicationContext = WebApplicationContextUtils
 				.getWebApplicationContext(servletContext);
@@ -181,7 +193,6 @@ public class AuthorisationFilter implements Filter {
 
 		autowireCapableBeanFactory.configureBean(this, "appUserEntityService");
 
-
 		autowireCapableBeanFactory.configureBean(this, "contactsService");
 
 		autowireCapableBeanFactory.configureBean(this, "setManager");
@@ -190,4 +201,5 @@ public class AuthorisationFilter implements Filter {
 		autowireCapableBeanFactory.configureBean(this, "domainAdminManager");
 
 	}
+
 }

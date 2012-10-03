@@ -68,12 +68,13 @@ public class UserSyncService extends AbstractService {
 			userSync = userSyncDao.create(userSync);
 			UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();
-			EntityCounter entityCounter = entityCounterDao
-					.getByEntityName(UserSync.class.getSimpleName());
+			EntityCounter entityCounter = entityCounterDao.getByEntityName(
+					UserSync.class.getSimpleName(),
+					CommonWebUtil.getDomain(user.getEmail()));
 			if (entityCounter == null) {
 				entityCounter = new EntityCounter();
 				entityCounter.setCount(1);
-				entityCounter.setEntityName(Contact.class.getSimpleName());
+				entityCounter.setEntityName(UserSync.class.getSimpleName());
 				entityCounter
 						.setDomain(CommonWebUtil.getDomain(user.getEmail()));
 				entityCounter = entityCounterManager.create(entityCounter);

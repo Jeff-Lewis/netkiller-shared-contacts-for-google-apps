@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.netkiller.entity.Parent;
 import com.netkiller.entity.Set;
 import com.netkiller.entity.Value;
 import com.netkiller.entity.metadata.ColumnMetaData;

@@ -1,15 +1,9 @@
 package com.netkiller.cache.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.netkiller.cache.AppCache;
-import com.netkiller.cache.AppCacheManager;
-import com.netkiller.entity.Student;
 
 
 public class StudentCache extends MemCache implements AppCache {
@@ -46,7 +40,7 @@ public class StudentCache extends MemCache implements AppCache {
 	
 	
 	public void addCacheValue(Object object)	{
-		Student student = (Student)object;
+	/*	Student student = (Student)object;
 		Map<String,Object> propertyMap = new HashMap<String, Object>();
 		propertyMap.put(COL_STUDENT_KEY, student.getKey());
 		propertyMap.put(COL_ENROLLMENT_NUMBER, student.getEnrollmentNumber());
@@ -54,7 +48,7 @@ public class StudentCache extends MemCache implements AppCache {
 		propertyMap.put(COL_TO_DATE, student.getToDate());
 		propertyMap.put(COL_FIRST_NAME, student.getFirstName());
 		propertyMap.put(COL_FIRST_NAME_UPPER_CASE, student.getFirstNameUpperCase());
-		this.setCacheValue(student.getKey(), new EntityCacheVO(propertyMap));
+		this.setCacheValue(student.getKey(), new EntityCacheVO(propertyMap));*/
 		
 		
 	}

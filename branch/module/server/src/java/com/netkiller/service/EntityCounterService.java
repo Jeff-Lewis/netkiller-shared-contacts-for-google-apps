@@ -48,7 +48,7 @@ public class EntityCounterService extends AbstractService {
 
 			super.validate(entityCounter, entityMetaData,
 					globalFilterSearchService, null);
-			
+
 			return entityCounterDao.create(entityCounter);
 		} catch (DataAccessException dae) {
 			String message = "Unable to create EntityCounter:" + entityCounter;
@@ -56,6 +56,10 @@ public class EntityCounterService extends AbstractService {
 			throw new AppException(message, dae);
 		}
 
+	}
+
+	public EntityCounter getByEntityName(String entityname,String domain) {
+		return entityCounterDao.getByEntityName(entityname,domain);
 	}
 
 	public EntityCounter update(EntityCounter entityCounter)
@@ -70,8 +74,6 @@ public class EntityCounterService extends AbstractService {
 			throw new AppException(message, dae);
 		}
 	}
-	
-	
 
 	public void delete(EntityCounter entityCounter) throws AppException {
 		try {

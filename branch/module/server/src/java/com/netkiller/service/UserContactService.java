@@ -88,11 +88,11 @@ public class UserContactService extends AbstractService {
 			/*UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();*/
 			EntityCounter entityCounter = entityCounterDao
-					.getByEntityName(UserContact.class.getSimpleName());
+					.getByEntityName(UserContact.class.getSimpleName(),domain);
 			if (entityCounter == null) {
 				entityCounter = new EntityCounter();
 				entityCounter.setCount(1);
-				entityCounter.setEntityName(Contact.class.getSimpleName());
+				entityCounter.setEntityName(UserContact.class.getSimpleName());
 				entityCounter
 						.setDomain(domain);
 				entityCounter = entityCounterManager.create(entityCounter);
