@@ -182,4 +182,8 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 	public String getMyContactGroupId(String grpName) throws AppException {
 		return service.getSharedContactsGroupId(grpName);
 	}
+
+	/*public String getAllContactOfAUser(String userEmailDec) {
+		return service.getAllContactOfAUser(userEmailDec);
+	}*/
 }

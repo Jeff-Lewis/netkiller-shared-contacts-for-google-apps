@@ -18,10 +18,15 @@ public class DomainAdmin {
 	private Key key;
 
 	@Persistent
-	private Key accountTypeKey;
+	private String accountType;
 
-	@Persistent
-	private Value accountTypeValue;
+	public String getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
 
 	@Persistent
 	private String domainName;
@@ -37,10 +42,10 @@ public class DomainAdmin {
 
 	@Override
 	public String toString() {
-		return "DomainAdmin [key=" + key + ", accountTypeKey=" + accountTypeKey
-				+ ", accountTypeValue=" + accountTypeValue + ", domainName="
-				+ domainName + ", adminEmail=" + adminEmail + ", totalCounts="
-				+ totalCounts + ", registeredDate=" + registeredDate + "]";
+		return "DomainAdmin [key=" + key + ", accountType=" + accountType
+				+ ", domainName=" + domainName + ", adminEmail=" + adminEmail
+				+ ", totalCounts=" + totalCounts + ", registeredDate="
+				+ registeredDate + "]";
 	}
 
 	public Key getKey() {
@@ -49,22 +54,6 @@ public class DomainAdmin {
 
 	public void setKey(Key key) {
 		this.key = key;
-	}
-
-	public Key getAccountTypeKey() {
-		return accountTypeKey;
-	}
-
-	public void setAccountTypeKey(Key accountTypeKey) {
-		this.accountTypeKey = accountTypeKey;
-	}
-
-	public Value getAccountTypeValue() {
-		return accountTypeValue;
-	}
-
-	public void setAccountTypeValue(Value accountTypeValue) {
-		this.accountTypeValue = accountTypeValue;
 	}
 
 	public String getDomainName() {

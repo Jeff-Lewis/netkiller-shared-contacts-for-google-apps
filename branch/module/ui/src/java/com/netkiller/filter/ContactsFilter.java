@@ -34,6 +34,7 @@ import com.netkiller.manager.SetManager;
 import com.netkiller.manager.ValueManager;
 import com.netkiller.service.AppUserEntityService;
 import com.netkiller.service.ContactsService;
+import com.netkiller.util.AccountType;
 import com.netkiller.util.AppLogger;
 import com.netkiller.util.CommonWebUtil;
 
@@ -93,7 +94,8 @@ public class ContactsFilter implements Filter {
 								.getDomain(user.getEmail()));
 						newDomainAdmin.setRegisteredDate(new Date());
 						newDomainAdmin.setTotalCounts(0);
-						newDomainAdmin.setAccountTypeKey(getAccountTypeKey());
+						newDomainAdmin.setAccountType(AccountType.FREE
+								.toString());
 						try {
 							domainAdminManager
 									.createDomainAdmin(newDomainAdmin);
@@ -124,19 +126,14 @@ public class ContactsFilter implements Filter {
 		}
 	}
 
-	private Key getAccountTypeKey() {
-		Set set = setManager.getBySetName("AccountType");
-		List<Value> valueList = (List<Value>) valueManager
-				.getValueBySetKey(set);
-		if (valueList != null && !valueList.isEmpty()) {
-			for (Value value : valueList) {
-				if (value.getValue().equalsIgnoreCase("Free")) {
-					return value.getKey();
-				}
-			}
-		}
-		return null;
-	}
+	/*
+	 * private Key getAccountTypeKey() { Set set =
+	 * setManager.getBySetName("AccountType"); List<Value> valueList =
+	 * (List<Value>) valueManager .getValueBySetKey(set); if (valueList != null
+	 * && !valueList.isEmpty()) { for (Value value : valueList) { if
+	 * (value.getValue().equalsIgnoreCase("Free")) { return value.getKey(); } }
+	 * } return null; }
+	 */
 
 	private FilterConfig filterConfig;
 

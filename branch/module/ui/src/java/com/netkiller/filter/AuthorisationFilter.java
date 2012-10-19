@@ -36,6 +36,7 @@ import com.netkiller.manager.SetManager;
 import com.netkiller.manager.ValueManager;
 import com.netkiller.service.AppUserEntityService;
 import com.netkiller.service.ContactsService;
+import com.netkiller.util.AccountType;
 import com.netkiller.util.AppLogger;
 import com.netkiller.util.CommonWebUtil;
 
@@ -115,6 +116,9 @@ public class AuthorisationFilter implements Filter {
 						String adminEmail = contactsService
 								.getAdminEmailForFirstTimeByLoginWithAnyUserOfDomain(user
 										.getEmail());
+						System.out
+								.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Admin Email is : "
+										+ adminEmail);
 						AppUserEntity appUserEntity = new AppUserEntity(
 								CommonWebUtil.getUserId(adminEmail),
 								adminEmail, "", "", "",
@@ -166,7 +170,7 @@ public class AuthorisationFilter implements Filter {
 		domainAdmin.setDomainName(CommonWebUtil.getDomain(adminEmail));
 		domainAdmin.setRegisteredDate(new Date());
 		domainAdmin.setTotalCounts(0);
-		domainAdmin.setAccountTypeKey(getAccountTypeKey());
+		domainAdmin.setAccountType(AccountType.FREE.toString());
 		try {
 			domainAdminManager.createDomainAdmin(domainAdmin);
 		} catch (AppException e) {

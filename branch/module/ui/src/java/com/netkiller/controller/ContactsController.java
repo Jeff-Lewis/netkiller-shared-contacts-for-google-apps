@@ -1102,6 +1102,8 @@ public class ContactsController extends AbstractController {
 			HttpSession session) throws AppException {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
+		System.out.println("!!!!!!!!!!!!!!!!User is :" + user);
+
 		Map<String, Object> modalMap = new HashMap<String, Object>();
 		GridRequest gridRequest = gridRequestParser.parseDataCriteria(request);
 		// gridRequest = addIsDeletedChecktoGridRequest(gridRequest, false);
@@ -1121,7 +1123,10 @@ public class ContactsController extends AbstractController {
 		EntityCounter entityCounter = entityCounterManager.getByEntityName(
 				Contact.class.getSimpleName(),
 				CommonWebUtil.getDomain(user.getEmail()));
-		int totalRecords = entityCounter.getCount();
+		int totalRecords = 0;
+		if (entityCounter != null) {
+			totalRecords = entityCounter.getCount();
+		}
 		ArrayList<HashMap<String, Object>> rows = new ArrayList<HashMap<String, Object>>();
 		int id = 0;
 		String activeValue;
@@ -1284,5 +1289,20 @@ public class ContactsController extends AbstractController {
 						+ grpId);
 		return grpId;
 	}
+
+	/*
+	 * @RequestMapping("/contact/getContactStringForAnEncryptedEmail.do")
+	 * 
+	 * @ResponseBody public String
+	 * getContactStringForAnEncryptedEmail(HttpServletRequest request) throws
+	 * Exception { String contactEmailList = ""; String userEmail =
+	 * request.getParameter("email"); // String userEmailDec =
+	 * AESencrp.decrypt(userEmail); contactEmailList =
+	 * contactsManager.getAllContactOfAUser(userEmail);
+	 * System.out.println("Contact Email List String  is:" + contactEmailList);
+	 * contactEmailList = AESencrp.encrypt(contactEmailList);
+	 * System.out.println("Encrypted Email String is :" + contactEmailList);
+	 * return contactEmailList; }
+	 */
 
 }

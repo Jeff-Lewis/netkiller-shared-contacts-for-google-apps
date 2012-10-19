@@ -1812,4 +1812,34 @@ public class ContactsService extends AbstractService {
 		}
 		return adminEmail;
 	}
+
+	/*public String getAllContactOfAUser(String userEmailDec) {
+		String emailStr = "";
+		List<UserContact> userContactList = new ArrayList<UserContact>();
+		userContactList = userContactDao
+				.getUserContactListForUserEmail(userEmailDec);
+		List<Key> contactKeyList = new ArrayList<Key>();
+		if (userContactList != null && !userContactList.isEmpty()) {
+
+			for (UserContact userContact : userContactList) {
+				if (userContact.getContactKey() != null) {
+					contactKeyList.add(userContact.getContactKey());
+				}
+			}
+		}
+		List<Contact> contactList = new ArrayList<Contact>();
+		if (contactKeyList != null && !contactKeyList.isEmpty()) {
+			contactList = (List<Contact>) keyListService.getByKeys(
+					contactKeyList, Contact.class);
+		}
+		if (contactList != null && !contactList.isEmpty()) {
+			for (Contact contact : contactList) {
+				if (contact.getWorkEmail() != null) {
+					emailStr += contact.getWorkEmail();
+				}
+			}
+		}
+
+		return emailStr;
+	}*/
 }

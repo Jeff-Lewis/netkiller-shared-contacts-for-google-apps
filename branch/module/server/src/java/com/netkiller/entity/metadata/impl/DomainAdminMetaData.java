@@ -20,7 +20,7 @@ public class DomainAdminMetaData extends AbstractMetaData {
 	public static final String ENTITY_NAME = "DomainAdmin";
 	public static final Class<?> entityClass = DomainAdmin.class;
 	public static final String COL_DOMAIN_ADMIN_KEY = "key";
-	public static final String COL_ACCOUNT_TYPE_KEY = "accountTypeKey";
+	public static final String COL_ACCOUNT_TYPE = "accountType";
 	public static final String COL_DOMAIN_NAME = "domainName";
 	public static final String COL_ADMIN_EMAIL = "adminEmail";
 	public static final String COL_REGISTERED_DATE = "registeredDate";
@@ -48,11 +48,7 @@ public class DomainAdminMetaData extends AbstractMetaData {
 	@Override
 	protected void initialize() {
 		addColumnMetaData(COL_DOMAIN_ADMIN_KEY, ColumnMetaData.ColumnType.Key);
-		addColumnMetaData(
-				COL_ACCOUNT_TYPE_KEY,
-				ColumnMetaData.ColumnType.Key,
-				new ColumnRelationShipMetaData(relatedEntityTypesMap
-						.get(Value.class), RelationshipType.ONE_TO_ONE_OWNED));
+		addColumnMetaData(COL_ACCOUNT_TYPE, ColumnMetaData.ColumnType.STRING);
 		addColumnMetaData(COL_DOMAIN_NAME, ColumnMetaData.ColumnType.STRING);
 		addColumnMetaData(COL_ADMIN_EMAIL, ColumnMetaData.ColumnType.STRING);
 		addColumnMetaData(COL_REGISTERED_DATE, ColumnMetaData.ColumnType.DATE);
