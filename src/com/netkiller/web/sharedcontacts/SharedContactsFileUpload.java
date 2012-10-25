@@ -116,7 +116,7 @@ public class SharedContactsFileUpload {
 			groupId = sharedContactsService.getSharedContactsGroupId(sharedContactsGroupName);
 			logger.info("sharedContactsGroupName ===> " + sharedContactsGroupName);
 			logger.info("groupId ===> " + groupId);
-			if (groupId == null || groupId.equals("")) {
+			if ((groupId == null || groupId.equals("") )&& !StringUtils.isBlank(sharedContactsGroupName)) {
 				ContactGroupEntry group = new ContactGroupEntry();
 				group.setSummary(new PlainTextConstruct(sharedContactsGroupName));
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));

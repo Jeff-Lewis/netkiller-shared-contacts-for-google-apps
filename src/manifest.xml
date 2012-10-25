@@ -31,7 +31,7 @@
   <!-- Show this link in Google's universal navigation for all users -->
   <Extension id="navLink" type="link">
     <Name>NetKiller Shared Contacts</Name>
-    <Url>http://netkillersc1.appspot.com/openid?domain=${DOMAIN_NAME}</Url>
+    <Url>http://netkillersc2.appspot.com/openid?domain=${DOMAIN_NAME}</Url>
     
     <Scope ref="contactsAPI"/>
     <Scope ref="spreadsheetAPI" />
@@ -41,7 +41,7 @@
 
   <!-- Declare our OpenID realm so our app is white listed -->
   <Extension id="realm" type="openIdRealm">
-    <Url>http://netkillersc1.appspot.com</Url>
+    <Url>http://netkillersc2.appspot.com</Url>
   </Extension>
 
   <!-- Need access to the Contacts API -->

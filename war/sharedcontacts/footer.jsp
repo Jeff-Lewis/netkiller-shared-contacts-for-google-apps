@@ -37,7 +37,7 @@
  | 
 <a href="http://www.netkiller.com/contact" target="_blank" style="text-decoration:none;color:#42426F;">Contact</a>
  | 
-<a href="https://groups.google.com/forum/?hl=en&fromgroups#!forum/netkillersc" target="_blank" style="text-decoration:none;color:#42426F;">Public Forum</a>
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#!forum/netkillersc" target="_blank" style="text-decoration:none;color:#42426F;">Support</a>
  | 
 <a href="http://code.google.com/p/netkiller-shared-contacts-for-google-apps/" target="_blank" style="text-decoration:none;color:#42426F;">Open Source</a>
  | 
@@ -45,6 +45,9 @@
 </div>
 <!-- OggChat Tab Button : Contact Us for Help Customizing -->
 <div id="oggchat"></div>
+
+
+
 <div id="oggwindowholder"><span style="display:none"></span></div>
 <script type="text/javascript">
 var page ={/*Modify or uncomment the variables below to customize*/

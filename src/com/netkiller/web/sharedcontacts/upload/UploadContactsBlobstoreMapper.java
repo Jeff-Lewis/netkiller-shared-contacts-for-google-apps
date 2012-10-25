@@ -15,7 +15,10 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.io.NullWritable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -59,6 +62,7 @@ import com.google.gdata.data.extensions.StructuredPostalAddress;
 import com.google.gdata.util.ServiceException;
 import com.netkiller.exception.AppException;
 import com.netkiller.security.acl.PermissionType;
+import com.netkiller.service.sharedcontacts.SharedContactsService;
 import com.netkiller.util.CommonUtil;
 import com.netkiller.util.CommonWebUtil;
 import com.netkiller.vo.StaticProperties;
@@ -72,9 +76,12 @@ import com.netkiller.vo.UserPermission;
  * @author MUNAWAR
  *
  */
+
 public class UploadContactsBlobstoreMapper extends
 		AppEngineMapper<BlobstoreRecordKey, byte[], NullWritable, NullWritable> {
 	private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	
+	
 	
 	public String getGroupName(String domainName )	{
 		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query("DomainGroup");
@@ -114,6 +121,11 @@ public class UploadContactsBlobstoreMapper extends
 				group.setSummary(new PlainTextConstruct(sharedContactsGroupName));
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
 				create(group,userEmail);
+				try {
+					Thread.sleep(5000);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 				groupId = getSharedContactsGroupId(sharedContactsGroupName,userEmail);
 			}
 		} catch (Exception e) {
@@ -202,18 +214,27 @@ public class UploadContactsBlobstoreMapper extends
 		gmInfo.setHref(getGroupId(userEmail));
 		contact.addGroupMembershipInfo(gmInfo);
 		
+		
 		try {
 			create(contact, userEmail);
 			
 			for(String userId:getAllDomainUsersWithReadAndWritePErmissionIncludingAdmin(domain))	{
 				System.out.println("File upload  NO restricted user shopuld be there : " + userId);
 				ContactEntry newentry = makeContact(line);
-				String userGroupId = getUserGroupId(userId+"@"+domain); // added
-			System.out.println("userGroupId is"+userGroupId); 
+				String email = userId+"@"+domain;
+				String userGroupId = getUserGroupId(email); // added
+			//System.out.println("userGroupId is"+userGroupId); 
 				GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
 				userGmInfo.setHref(userGroupId); // added
 				newentry.addGroupMembershipInfo(userGmInfo);
-				createUserContact(newentry,userId+"@"+domain);
+				String myContactsGroupId = getMyContactsGroupId(email);
+				System.out.println("my group id for " +  userId + " + " + myContactsGroupId) ;
+				if (!StringUtils.isBlank(myContactsGroupId)) {
+					GroupMembershipInfo myContactsGmInfo = new GroupMembershipInfo(); // added
+					myContactsGmInfo.setHref(myContactsGroupId); // added
+					newentry.addGroupMembershipInfo(myContactsGmInfo);
+				}
+				createUserContact(newentry,email);
 			}
 			log.warning("-----------------------------------------------------> uploaded..");
 		} catch (AppException e) {
@@ -235,6 +256,59 @@ public class UploadContactsBlobstoreMapper extends
 		}
 	}
 	
+	public String getMyContactsGroupId(String email) {
+		String result = null;
+
+		try {
+
+			String feedurl = "https://www.google.com/m8/feeds/groups/" + email + "/full";
+
+			String scGrpName = "System Group: My Contacts";
+			ContactsService service = getContactsService();
+
+			URL retrieveUrl = new URL(feedurl);
+			Query query = new Query(retrieveUrl);
+			query.setMaxResults(100000); // paging
+			query.setStartIndex(1);
+			query.setStringCustomParameter("showdeleted", "false");
+			query.setStringCustomParameter("xoauth_requestor_id", email);
+
+			for (int counter = 0; counter < 5; counter++) {
+				try {					
+					ContactGroupFeed resultFeed = service.query(query,
+							ContactGroupFeed.class);
+					Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+							.getEntries();
+					if (!contactGroupEntries.isEmpty()) {
+						String titleTmp = null;
+						TextConstruct tc = null;
+						for (ContactGroupEntry groupEntry : contactGroupEntries) {
+							tc = groupEntry.getTitle();
+							if (tc != null) {
+								titleTmp = tc.getPlainText();
+								// logger.info("Id: " + groupEntry.getId());
+								if (titleTmp.equals(scGrpName)) {
+									result = groupEntry.getId();
+									break;
+								}
+							}
+						}
+					}
+					break;
+				} catch (IOException e) {
+					System.out.println("retrying due to IO Error : "
+							+ e.getMessage());
+					System.out.println("sleeping!!!!!!!!!!!!!!!!!1111");
+					Thread.sleep(800);
+				}
+			}
+		} catch (Exception e) {
+			// e.printStackTrace();
+			// logger.severe("e.getMessage: " + e.getMessage());
+		}
+
+		return result;
+	}
 	public void create(ContactEntry contact, String userEmail) throws AppException{
 		try{
 			ContactsService service = getContactsService();
@@ -588,7 +662,11 @@ public class UploadContactsBlobstoreMapper extends
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
 			//	sharedContactsService.createGroup(group, getCurrentUser(request).getEmail());
 				createGroup(group, email);
-				
+				try {
+					Thread.sleep(5000);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 				groupId = getUserContactsGroupId(sharedContactsGroupName, email);
 			}
 		} catch (Exception e) {
@@ -632,35 +710,29 @@ public class UploadContactsBlobstoreMapper extends
 	}
 	
 	
-	public String getUserContactsGroupId(String name, String userEmail) throws AppException {
-		String result = null;
+	public String getUserContactsGroupId(String name, String userEmail)
+	 {
+String result = null;
+try {
+	String feedurl = "https://www.google.com/m8/feeds/groups/" + userEmail
+			+ "/full";
+
+	String scGrpName = name;
+	ContactsService service = getContactsService();
+
+	URL retrieveUrl = new URL(feedurl);
+	Query query = new Query(retrieveUrl);
+	query.setMaxResults(100000); // paging
+	query.setStartIndex(1);
+	query.setStringCustomParameter("showdeleted", "false");
+	query.setStringCustomParameter("xoauth_requestor_id", userEmail);
+
+	for (int i = 0; i < 5; i++) {
 		try {
-			String feedurl = getUserFeedUrl("https://www.google.com/m8/feeds/groups/",userEmail);
-			String scGrpName = name;
-		//	logger.info("scGrpName: " + scGrpName);
-			ContactsService service = getContactsService();
-			Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
-			URL retrieveUrl = new URL(feedurl);
-			Link nextLink = null;
-			
-			
-/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-					ContactGroupFeed.class);*/
-			
-			do {
-				
-				ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
-						ContactGroupFeed.class);
-				contactGroupEntries.addAll(resultFeed.getEntries());
-				nextLink = resultFeed.getLink(Link.Rel.NEXT,
-						Link.Type.ATOM);
-				if (nextLink != null) {
-					retrieveUrl = new URL(nextLink.getHref());
-				}
-				
-				} while (nextLink != null);
-			
-			
+			ContactGroupFeed resultFeed = service.query(query,
+					ContactGroupFeed.class);
+			Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+					.getEntries();
 			if (!contactGroupEntries.isEmpty()) {
 				String titleTmp = null;
 				TextConstruct tc = null;
@@ -671,21 +743,28 @@ public class UploadContactsBlobstoreMapper extends
 						// logger.info("Id: " + groupEntry.getId());
 						if (titleTmp.equals(scGrpName)) {
 							result = groupEntry.getId();
-					//		logger.info("Group Name: " + titleTmp);
-					//		logger.info("Group Id: " + result);
 							break;
 						}
 					}
 				}
 			}
+			break;
 		} catch (Exception e) {
-			// e.printStackTrace();
-			// logger.severe("e.getMessage: " + e.getMessage());
-		//	logger.log(Level.SEVERE, e.getMessage(), e);
-			throw new AppException();
+			System.out.println("sleeping!!!!!!!!!!!!!!!!!1111");
+			Thread.sleep(800);
+			
 		}
-		return result;
 	}
+} catch (Exception e) {
+	// e.printStackTrace();
+	// logger.severe("e.getMessage: " + e.getMessage());
+	//throw new AppException();
+	System.out.println("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+	System.out.println(e.getMessage());
+	System.out.println(e.getCause().getMessage());
+}
+return result;
+}
 	
 	private String getUserFeedUrl(String url,String email) {
 		url = url + email + "/full?xoauth_requestor_id=" + email;

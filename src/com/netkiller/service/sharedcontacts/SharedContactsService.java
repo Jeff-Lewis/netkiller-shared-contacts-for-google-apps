@@ -8,6 +8,7 @@ import javax.servlet.ServletOutputStream;
 import org.springframework.context.MessageSource;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.netkiller.exception.AppException;
@@ -15,6 +16,7 @@ import com.netkiller.search.GridRequest;
 import com.netkiller.vo.AppProperties;
 import com.netkiller.vo.Customer;
 import com.netkiller.vo.DomainSettings;
+import com.netkiller.vo.UserLogging;
 import com.netkiller.vo.UserPermission;
 import com.netkiller.vo.UserSync;
 
@@ -31,15 +33,20 @@ public interface SharedContactsService {
 	
 	public ContactEntry getContact(String url) throws AppException;
 	
+	UserLogging updateUserLogging(UserLogging userLogging)throws AppException;
+	UserLogging getUserLogging(String domainName, String userId)throws AppException;
+	
+	
 	public void create(ContactEntry contact) throws AppException;
 	
 	public void createUserContact(ContactEntry contact, String userEmail) throws AppException;
 	
 	public boolean hasSharedContactsGroup(String name) throws AppException;
 	
-	public String getSharedContactsGroupId(String name) throws AppException;
+	public String getSharedContactsGroupId(String name) ;
+	public Customer getDomainAdminEmail(String domain) ;
 	
-	public String getUserContactsGroupId(String name, String userEmail) throws AppException;
+	public String getUserContactsGroupId(String name, String userEmail) ;
 	
 	public ContactGroupEntry create(ContactGroupEntry entry) throws AppException;
 	public ContactGroupEntry createGroup(ContactGroupEntry entry, String userEmail) throws AppException;
@@ -63,6 +70,10 @@ public interface SharedContactsService {
 	
 	public Boolean updateMembership(Long customerId,String accountType);
 	public List<Customer> getAllCustomers();
+	
+	public Boolean updateTotalContacts(Long customerId, Integer contacts);
+	
+	public Boolean updateCustomers(String domainName,String field, Object value);
 
 	public List<String> getAllDomainUsers(String domain);
 	
@@ -78,6 +89,8 @@ public interface SharedContactsService {
 			String domain);
 
 	public DomainSettings getDomainSettings(String domain);
+	
+	public List<String> getDomainList();
 
 	public DomainSettings updateDomainSettings(DomainSettings domainSettings);
 	
@@ -96,7 +109,11 @@ public interface SharedContactsService {
 	public String getGroupName(String domainName );
 
 	public void syncUserContacts(String email, List<ContactEntry> entries);
+	public List<ContactEntry> getUserContacts(int start, int limit,
+			String groupId, String userEmail) throws AppException;
 	public UserSync getUserSync(String userEmail, String date);
+	public List<String> getEmailFromUserLoggingForDomain(String domainName)
+	throws AppException;
 	public UserSync getUserSync(String userEmail);
 	public void updateUserSync(UserSync userSync);
 	public UserSync updateExistingUserSync(UserSync userSync);
@@ -112,5 +129,5 @@ public interface SharedContactsService {
 	public ContactEntry makeContact(String fullname, String givenname, String familyname, String companydept,
 			String workemail, String workphone, String workaddress);
 	public void removeDuplicateGroups(String groupName, String userEmail);
-	
+	public String getMyContactsGroupId(String email)  ;
 }

@@ -52,6 +52,36 @@ public class DomainSettings implements Serializable {
 	
 	private String domain;
 
+	private String syncUserBlobKey;
+	
+	private String allUserBlobKey;
+	
+	private String nscUserBlobKey;
+	
+	
+	public String getAllUserBlobKey() {
+		return allUserBlobKey;
+	}
+
+	public void setAllUserBlobKey(String allUserBlobKey) {
+		this.allUserBlobKey = allUserBlobKey;
+	}
+
+	public String getNscUserBlobKey() {
+		return nscUserBlobKey;
+	}
+
+	public void setNscUserBlobKey(String nscUserBlobKey) {
+		this.nscUserBlobKey = nscUserBlobKey;
+	}
+
+	public String getSyncUserBlobKey() {
+		return syncUserBlobKey;
+	}
+
+	public void setSyncUserBlobKey(String syncUserBlobKey) {
+		this.syncUserBlobKey = syncUserBlobKey;
+	}
 
 	public String getDomain() {
 		return domain;

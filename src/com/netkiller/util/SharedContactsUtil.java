@@ -74,6 +74,9 @@ public class SharedContactsUtil {
 		String domain = null;
 		String email = null;
 		String totalContacts = null;
+		String totalUsers = null;
+		String syncedUsers= null;
+		String nscUsers= null;
 		String accountType = null;
 		String registeredDate = null;
 		String upgradedDate = null;
@@ -87,6 +90,9 @@ public class SharedContactsUtil {
 			email = entry.getAdminEmail();
 			accountType = entry.getAccountType();
 			totalContacts = entry.getTotalContacts().toString();
+			totalUsers = entry.getTotalUsers().toString();
+			syncedUsers = entry.getSyncedUsers().toString();
+			nscUsers = entry.getNscUsers().toString();
 			if (entry.getRegisteredDate() != null) {
 				registeredDate = DateFormat.getDateInstance(DateFormat.SHORT)
 						.format(entry.getRegisteredDate());
@@ -116,6 +122,9 @@ public class SharedContactsUtil {
 			jsonObj.put("endDate", endDate);
 			jsonObj.put("accountType", accountType);
 			jsonObj.put("totalContacts", totalContacts);
+			jsonObj.put("totalUsers", totalUsers);
+			jsonObj.put("syncedUsers", syncedUsers);
+			jsonObj.put("nscUsers", nscUsers);
 			jsonArray.add(jsonObj);
 		}
 		List<Map> list = makeListWithMap(jsonArray, sidx); // ÃƒÂ¬Ã‚Â Ã¢â‚¬Â¢ÃƒÂ«Ã‚Â Ã‚Â¬ÃƒÂ­Ã¢â‚¬Â¢Ã‚Â 

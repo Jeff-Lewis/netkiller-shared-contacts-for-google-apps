@@ -126,7 +126,7 @@ $(document).ready(function() {
 	jQuery("#list2").jqGrid({ 
 		url:'/sharedcontacts/main.do?cmd=customers-list-data<%=queryString%>',
 		datatype: "json",
-		colNames:['id', 'Domain', 'Admin Email', 'Type', 'Registered<br/>Date', 'Upgraded<br/>Date','End<br/>Date', 'Total<br/>Contacts','Actions','Domain Status'],
+		colNames:['id', 'Domain', 'Admin Email', 'Type', 'Install<br/>Date', 'Upgrade<br/>Date','End<br/>Date', 'Total<br/>Contacts', 'Apps<br/>Users','Synced<br/>Users','NSC<br/>Users','Actions','Domain<br/>Status'],
 		colModel:[
 		          
 		           {name:'id',index:'id', width:0, hidden:true, hidedlg:true,width:200},		           
@@ -137,8 +137,12 @@ $(document).ready(function() {
 		           {name:'upgradedDate',index:'upgradedDate', align:"center", width:100}, 
 		           {name:'endDate',index:'endDate', align:"center", width:100},
 		           {name:'totalContacts',index:'totalContacts', width:100, align:"right",sorttype: 'int'},
-		           {name:'act',index:'act', width:210,sortable:false},
-		           {name:'checkStatus',index:'checkStatus', align:"center", width:125,sortable:false,formatter:editLinkFormatter}
+		           {name:'totalUsers',index:'totalUsers', align:"center", width:100,sortable:false,formatter:totalFormatter},
+		           {name:'syncedUsers',index:'syncedUsers', align:"center", width:100,sortable:false,formatter:syncedFormatter,hidden:true},
+		           {name:'nscUsers',index:'nscUsers', align:"center", width:100,sortable:false,formatter:userFormatter},
+		           {name:'act',index:'act', width:290,sortable:false},
+		           {name:'checkStatus',index:'checkStatus', align:"center", width:125,sortable:false,formatter:editLinkFormatter,hidden:true},		           
+		           
 		],
      	jsonReader:{
   	   	  root: "rows",
@@ -170,9 +174,9 @@ $(document).ready(function() {
 		gridComplete: function(){
 			var ids = jQuery("#list2").jqGrid('getDataIDs');
 			for(var i=0;i < ids.length;i++){ var cl = ids[i]; 
-			be = "<input  type='button' value='Edit' onclick=\"jQuery('#list2').editRow('"+cl+"');\" />"; 
-			se = "<input  type='button' value='Save' onclick=\"jQuery('#list2').saveRow('"+cl+"');\" />"; 
-			ce = "<input  type='button' value='Cancel' onclick=\"jQuery('#list2').restoreRow('"+cl+"');\" />"; 
+			be = "<input class='row_bt' type='button' title='Edit' value='Edit' onclick=\"jQuery('#list2').editRow('"+cl+"');\" />"; 
+			se = "<input class='row_bt'  type='button' title='Save' value='Save' onclick=\"jQuery('#list2').saveRow('"+cl+"');\" />"; 
+			ce = "<input class='row_bt'  type='button' title='Cancel' value='Cancel' onclick=\"jQuery('#list2').restoreRow('"+cl+"');\" />"; 
 			jQuery("#list2").jqGrid('setRowData',ids[i],{act:be+se+ce}); } },
 			editurl: "/sharedcontacts/main.do?cmd=updateStatus",
 		//cellEdit: true, //if true, onSelectRow event can not be used
@@ -207,6 +211,69 @@ function editLinkFormatter (cellvalue, options, rowObject)
 {
 	
    return '<a href="/sharedcontacts/main.do?cmd=customers&domain=' + rowObject.domain + '">Check Status </a>';
+}
+function totalFormatter (cellvalue, options, rowObject)
+{
+	
+   return '<span style="text-decoration:underline;" onclick="showTotalUsers(\'' + rowObject.domain + '\')">'+ cellvalue+'</a>';
+}
+function syncedFormatter (cellvalue, options, rowObject)
+{
+	 return '<span style="text-decoration:underline;" onclick="showSyncUsers(\'' + rowObject.domain + '\')">'+ cellvalue+'</a>';
+}
+function userFormatter (cellvalue, options, rowObject)
+{
+	return '<span style="text-decoration:underline;" onclick="showActiveUsers(\'' + rowObject.domain + '\')">'+ cellvalue+'</a>';
+}
+
+function showTotalUsers(domain){
+	makeAjax("/getTotalUsers.do",domain,"All Domain Users");
+}
+
+function showSyncUsers(domain){
+	makeAjax("/getSyncUsers.do",domain,"Synced Users");
+}
+
+function showActiveUsers(domain){
+	makeAjax("/getNscUsers.do",domain,"Active Users");
+}
+
+function makeAjax(callUrl,domain,title){
+	$("#formTitleBar .title").html(title);
+	$("#loadingImg").show();
+	$.ajax({
+		url : callUrl,
+		data:{"domainName":domain},
+		success:function(result){
+			$("#loadingImg").hide();
+			if(!result){
+				alert("No records fetched")
+			}else{
+			//var arr = result.split(",")
+			var tbl ="";
+			var arr = result.split(",")
+			var len = arr.length-1;
+			if(len>1){
+				for( var s in arr){
+					if(s!=len){
+					tbl += "<li>" + arr[s] +"</li>" ;
+					}
+				}
+				tbl += "<p>Total Users : " + len +"</p>" ;
+			}	else if(len==1){
+				tbl += "<p>" + arr[0] +"</p>" ;
+			}		
+			tbl += "<p><b>" + arr[len] +"</b></p>" ;	
+				$("#userList ul").html(tbl);
+				$("#userList").show();
+			}
+		},
+		error:function(result){
+			$("#loadingImg").hide();
+			alert("Error while retreiving list. Please try again later")
+		}
+	});
+	
 }
 </script>
 
@@ -253,6 +320,48 @@ function editLinkFormatter (cellvalue, options, rowObject)
 		</td>
 	</tr>	
 </table>
+<div id="userList">
+<div id="formTitleBar">
+<div class='title'>abcd</div>
+<div onclick="$('#userList').hide();" class='windowButtons'>X</div>
+</div>
+<ul></ul>
+</div>
+<img id="loadingImg" src="/img/319.gif" style="display:none;left: 47%;position: absolute;top: 30%;" />
 
 </body>
 </html>
+<style>
+#userList{
+display:none;
+		   background: none repeat scroll 0 0 white;
+    border: 3px outset gray;
+    left: 40%;
+    padding: 5px;
+    position: absolute;
+    top: 25%;
+    width: 250px;       
+    }
+  #userList ul{  
+     overflow-x: hidden;
+    overflow-y: scroll;
+    height:300px;
+    }
+    #formTitleBar{
+border:2px solid black;
+ height: 22px;
+ padding:0 3px; 
+}
+
+#formTitleBar .title {
+float:left;
+}
+#formTitleBar .windowButtons {
+float:right;
+padding: 0 3px;
+ border: 2px solid black;
+ line-height: 15px;
+ margin-top: 1px;
+ cursor:pointer;
+}
+</style>

@@ -71,6 +71,7 @@ import com.netkiller.vo.Customer;
 import com.netkiller.vo.DomainSettings;
 import com.netkiller.vo.StaticProperties;
 import com.netkiller.vo.UserInfo;
+import com.netkiller.vo.UserLogging;
 import com.netkiller.vo.UserSync;
 import com.netkiller.workflow.WorkflowInfo;
 import com.netkiller.workflow.impl.context.AddContactForAllDomainUsersContext;
@@ -200,33 +201,37 @@ public class SharedContactsController {
 		try {
 			UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();
-			if(user!=null){
-			String sharedContactsGroupName = sharedContactsService
-					.getGroupName(CommonWebUtil.getDomain(user.getEmail()));
+			if (user != null) {
+				String sharedContactsGroupName = sharedContactsService
+						.getGroupName(CommonWebUtil.getDomain(user.getEmail()));
 
-			groupId = sharedContactsService
-					.getSharedContactsGroupId(sharedContactsGroupName);
-			logger.info("sharedContactsGroupName ===> "
-					+ sharedContactsGroupName);
-			logger.info("groupId ===> " + groupId);
-			if ((groupId == null || groupId.equals(""))&& !StringUtils.isBlank(sharedContactsGroupName)) {
-				ContactGroupEntry group = new ContactGroupEntry();
-				group.setSummary(new PlainTextConstruct(sharedContactsGroupName));
-				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
-				group = sharedContactsService.create(group);
-				groupId = group.getId();
-//				System.out.println("created group : " + sharedContactsGroupName + "\t with id : " +groupId);
-				if(!StringUtils.isBlank(groupId)){
-				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
-				gmInfo.setHref(groupId); // added
-				for (ContactEntry entry : makeInitialContacts()) {
-					entry.addGroupMembershipInfo(gmInfo);
-					sharedContactsService.create(entry);
+				groupId = sharedContactsService
+						.getSharedContactsGroupId(sharedContactsGroupName);
+				logger.info("sharedContactsGroupName ===> "
+						+ sharedContactsGroupName);
+				logger.info("groupId ===> " + groupId);
+				if ((groupId == null || groupId.equals(""))
+						&& !StringUtils.isBlank(sharedContactsGroupName)) {
+					ContactGroupEntry group = new ContactGroupEntry();
+					group.setSummary(new PlainTextConstruct(
+							sharedContactsGroupName));
+					group.setTitle(new PlainTextConstruct(
+							sharedContactsGroupName));
+					group = sharedContactsService.create(group);
+					groupId = group.getId();
+					// System.out.println("created group : " +
+					// sharedContactsGroupName + "\t with id : " +groupId);
+					if (!StringUtils.isBlank(groupId)) {
+						GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
+						gmInfo.setHref(groupId); // added
+						for (ContactEntry entry : makeInitialContacts()) {
+							entry.addGroupMembershipInfo(gmInfo);
+							sharedContactsService.create(entry);
+						}
+					}
+				} else {
+					System.out.println("!!!!!!!!!!!!!!!!!!!user is null");
 				}
-				}
-			}else{
-				System.out.println("!!!!!!!!!!!!!!!!!!!user is null");
-			}
 			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
@@ -365,42 +370,54 @@ public class SharedContactsController {
 	 * �Â¡Ã¢â‚¬ï¿½ÃƒÂ¬Ã‚Â²Ã‚Â­ÃƒÂ¬Ã¯Â
 	 * ¿Â½Ã¢â‚¬Å¾
 	 * ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
+	 * 
+	 * @throws AppException
 	 */
 	@RequestMapping("/sharedcontacts/main.do")
 	public ModelAndView handleRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException,
-			ParseException {
+			ParseException, AppException {
 
 		ModelAndView mnv = null;
 		UserService userService = UserServiceFactory.getUserService();
 		Customer currentCustomer = null;
 		User user = userService.getCurrentUser();
 		if (user != null) {
-			request.getSession()
-					.setAttribute(
-							"user",
-							new UserInfo(user.getUserId(), user.getEmail(),
-									null, null));
-		}
-		// set User Email in contact service
-		try {
-			currentCustomer = sharedContactsService.verifyUser(getCurrentUser(
-					request).getEmail());
-			// sharedContactsService.setUserEamil(getCurrentUser(request).getEmail());
-		} catch (Exception e) {
-			// response.sendRedirect("/login.jsp");
-			// String loginURL =
-			// userService.createLoginURL(request.getRequestURI());
-			// response.sendRedirect(loginURL);
-			// //ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
-			// ÃƒÂ¬Ã¢â‚¬Â¢Ã‹â€ ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´
-			// ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
-			// ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â°
-			// ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
-			// ÃƒÂ­Ã…Â½Ã‹Å“ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¡Ã…â€œ
-			// ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ«Ã‚Â Ã¢â‚¬Â°ÃƒÂ­Ã…Â Ã‚Â¸
-		}
 
+			String email = user.getEmail();
+			String userId = CommonWebUtil.getUserId(email);
+			String domain = CommonWebUtil.getDomain(email);
+
+			try {
+				request.getSession().setAttribute("user",
+						new UserInfo(userId, email, null, null));
+
+				// set User Email in contact service
+				currentCustomer = sharedContactsService.verifyUser(email);
+				UserLogging userLogging = sharedContactsService.getUserLogging(
+						domain, userId);
+				if (userLogging == null) {
+					userLogging = new UserLogging();
+					userLogging.setDomain(domain);
+					userLogging.setUserId(userId);
+					sharedContactsService.updateUserLogging(userLogging);
+				}
+
+				// sharedContactsService.setUserEamil(getCurrentUser(request).getEmail());
+			} catch (Exception e) {
+				// response.sendRedirect("/login.jsp");
+				// String loginURL =
+				// userService.createLoginURL(request.getRequestURI());
+				// response.sendRedirect(loginURL);
+				// //ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
+				// ÃƒÂ¬Ã¢â‚¬Â¢Ã‹â€ ÃƒÂ«Ã¯Â¿Â½Ã‹Å“ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´
+				// ÃƒÂ¬Ã…Â¾Ã‹â€ ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾
+				// ÃƒÂªÃ‚Â²Ã‚Â½ÃƒÂ¬Ã…Â¡Ã‚Â°
+				// ÃƒÂ«Ã‚Â¡Ã…â€œÃƒÂªÃ‚Â·Ã‚Â¸ÃƒÂ¬Ã¯Â¿Â½Ã‚Â¸
+				// ÃƒÂ­Ã…Â½Ã‹Å“ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ¬Ã‚Â§Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¡Ã…â€œ
+				// ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¤ÃƒÂ¬Ã¯Â¿Â½Ã‚Â´ÃƒÂ«Ã‚Â Ã¢â‚¬Â°ÃƒÂ­Ã…Â Ã‚Â¸
+			}
+		}
 		if (user == null) {
 			String loginURL = userService.createLoginURL(request
 					.getRequestURI());
@@ -516,14 +533,14 @@ public class SharedContactsController {
 							request).getEmail()), CommonWebUtil.getParameter(
 							request, "groupName"));
 		}
-		if (getGroupId() == null) {
+		if (user != null && getGroupId() == null) {
 			String sharedContactsGroupName = sharedContactsService
-			.getGroupName(CommonWebUtil.getDomain(user.getEmail()));
-			if(StringUtils.isBlank(sharedContactsGroupName)){
-			groupCreationRetry++;
-			return new ModelAndView(
-					"/sharedcontacts/promptSharedContactsGroupName", "result",
-					null);
+					.getGroupName(CommonWebUtil.getDomain(user.getEmail()));
+			if (StringUtils.isBlank(sharedContactsGroupName)) {
+				groupCreationRetry++;
+				return new ModelAndView(
+						"/sharedcontacts/promptSharedContactsGroupName",
+						"result", null);
 			}
 		}
 
@@ -603,13 +620,14 @@ public class SharedContactsController {
 			}
 		} else if (cmd.equals("customers")) {
 			Map<String, String> result = new HashMap<String, String>();
-			if (!StringUtils.isBlank(CommonWebUtil.getParameter(request,
-					"domain"))) {
-				if (sharedContactsService.getAllDomainUsers(CommonWebUtil
-						.getParameter(request, "domain")) == null) {
+			String domainName = CommonWebUtil.getParameter(request, "domain");
+			if (!StringUtils.isBlank(domainName)) {
+				List<String> list = sharedContactsService
+						.getAllDomainUsers(domainName);
+				System.out.println("list is 888888888888" + list);
+				if (list == null || list.isEmpty()) {
 					result.put("domainStatus", "notInUse");
-					result.put("domainToBeDeleted",
-							CommonWebUtil.getParameter(request, "domain"));
+					result.put("domainToBeDeleted", domainName);
 				} else
 					result.put("domainStatus", "inUse");
 			}
@@ -916,8 +934,8 @@ public class SharedContactsController {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		String dateString = formatter.format(date);
 		String email = getCurrentUser(request).getEmail();
-		UserSync userSync = sharedContactsService.getUserSync(
-				email, dateString);
+		UserSync userSync = sharedContactsService
+				.getUserSync(email, dateString);
 		if (userSync != null) {
 			if (userSync.getDate().equals(dateString)) {
 				noOfSyncs = userSync.getNoOfSyncs();
@@ -1714,10 +1732,9 @@ public class SharedContactsController {
 
 	public ModelAndView create(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+		String email = getCurrentUser(request).getEmail();
 		Map result = new HashMap();
-		String domain = CommonWebUtil.getDomain(getCurrentUser(request)
-				.getEmail());
+		String domain = CommonWebUtil.getDomain(email);
 
 		try {
 
@@ -1730,7 +1747,7 @@ public class SharedContactsController {
 				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
 				gmInfo.setHref(groupId); // added
 				entry.addGroupMembershipInfo(gmInfo); // added
-
+			
 				// TEST
 				// entry.getUserDefinedFields().add(new
 				// UserDefinedField("ÃƒÂ«Ã‚Â¶Ã¢â€šÂ¬ÃƒÂ«Ã‚Â¬Ã‚Â¸",
