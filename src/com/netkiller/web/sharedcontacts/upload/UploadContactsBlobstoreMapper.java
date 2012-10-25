@@ -528,7 +528,7 @@ public class UploadContactsBlobstoreMapper extends
 	}
 	
 	private String getValue(String value){
-		if(value.equals("&&&&")){
+		if (value.equals("&&&&") || value.equals("-")) {
 			return "";
 		}else {
 			return value;
