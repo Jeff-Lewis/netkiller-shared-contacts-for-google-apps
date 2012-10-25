@@ -112,7 +112,7 @@ public class SharedContactsController {
 	@Resource
 	private GridRequestParser gridRequestParser;
 
-	public static final Integer SYNC_LIMIT = 10;
+	public static final Integer SYNC_LIMIT = 1000;
 
 	public void setGridRequestParser(GridRequestParser gridRequestParser) {
 		this.gridRequestParser = gridRequestParser;

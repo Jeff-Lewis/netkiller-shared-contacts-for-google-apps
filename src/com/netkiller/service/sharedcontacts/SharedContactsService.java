@@ -30,7 +30,9 @@ public interface SharedContactsService {
 	
 	//public List<ContactEntry> getContacts(String page, String rows, String sidx, String sord) throws AppException;
 	public List<ContactEntry> getContacts(int start, int limit, String groupId, boolean isUseForSharedContacts, GridRequest gridRequest) throws AppException;
-	
+	public List<ContactEntry> getContacts(int start, int limit, String groupId,
+			boolean isUseForSharedContacts, GridRequest gridRequest,String email)
+			throws AppException ;
 	public ContactEntry getContact(String url) throws AppException;
 	
 	UserLogging updateUserLogging(UserLogging userLogging)throws AppException;
