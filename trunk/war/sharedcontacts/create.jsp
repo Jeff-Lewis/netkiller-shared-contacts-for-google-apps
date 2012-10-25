@@ -33,6 +33,7 @@ font-size: 15px;
 <script type="text/javascript" src='/js/jquery-ui-1.8.12.custom.min.js'></script>
 <script type="text/javascript" src='/js/i18n/grid.locale-en.js'></script>
 <script type="text/javascript" src='/js/jquery.jqGrid.min.js'></script>
+<script type="text/javascript" src='/js/jquery.numeric.js'></script>
 
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 <script type="text/javascript">
@@ -40,6 +41,11 @@ function checkDuplicateEmail()	{
 	var $workemail = $("#workemail").val();
 	var $homeemail = $("#homeemail").val();
 	var $otheremail = $("#otheremail").val();
+	if($otheremail == "" && $homeemail =="" && $workemail == ""){
+		alert("No Email Entered!");
+		$("#workemail").focus();
+		return;
+	}
 	
 	if(isDuplicateEmail($workemail)||isDuplicateEmail($homeemail)||isDuplicateEmail($otheremail))	{
 		alert('Duplicate email found');
@@ -48,6 +54,13 @@ function checkDuplicateEmail()	{
 	}
 	
 }
+
+function isEmail(email) {
+	  var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	  return regex.test(email);
+	}
+	
+	
 function isDuplicateEmail(email){
 	var result = false;
 	var $duplicateCheckData = { 
@@ -95,7 +108,23 @@ function isDuplicateEmail(email){
 	}); //end ajax		
 	return result;
 }
+
+function hasNumbers(t)
+{
+return /\d/.test(t);
+}
+
+function hasWhiteSpace(str){
+	var whiteSpaceExp = /^\s+$/g;
+	if (whiteSpaceExp.test(str))	
+		return true;
+	else
+		return false;
+	
+}
+
 $(document).ready ( function () {
+	//$("#workphone,#homephone,#mobilephone").numeric({ decimal: false, negative: false });
 	
 	$('#givenname').change(function(){
 		$('#fullname').val($('#givenname').val()+" "+$('#familyname').val());
@@ -114,23 +143,46 @@ $(document).ready ( function () {
 		var $givenname = $("#givenname").val();
 		var $familyname = $("#familyname").val();
 		
-		if($fullname == ""){
+		/* if($fullname == "" ){
 			alert("Full Name is necessary!");
 			$("#fullname").focus();
 			return;
-		}
+		} */
 		
-		if($givenname == ""){
+		if($givenname == "" || hasWhiteSpace($givenname)){
 			alert("First Name is necessary!");
 			$("#givenname").focus();
 			return;
 		}
 		
-		if($familyname == ""){
+		if($givenname.length > 32){
+			alert("First Name cannot be more than 32 characters!");
+			$("#givenname").focus();
+			return;
+		}
+		
+		/* if(hasNumbers($givenname)){
+			alert("First Name cannot contain numbers!");
+			$("#givenname").focus();
+			return;
+		}
+ */		if($familyname == "" || hasWhiteSpace($familyname)){
 			alert("Last Name is necessary!");
 			$("#familyname").focus();
 			return;
 		}
+		
+		if($familyname.length > 32){
+			alert("Last Name cannot be more than 32 characters!");
+			$("#familyname").focus();
+			return;
+		}
+		
+/* 		if(hasNumbers($familyname)){
+			alert("Last Name cannot contain numbers!");
+			$("#familyname").focus();
+			return;
+		} */
 		
 		var $companyname = $("#companyname").val();
 		var $companydept = $("#companydept").val();
@@ -138,11 +190,36 @@ $(document).ready ( function () {
 		var $workemail = $("#workemail").val();
 		var $homeemail = $("#homeemail").val();
 		var $otheremail = $("#otheremail").val();
+		
+		if($companyname && $companyname.length > 32){
+			alert("Company Name cannot be more than 32 characters!");
+			$("#companyname").focus();
+			return;
+		}
+		
 		if($otheremail == "" && $homeemail =="" && $workemail == ""){
 			alert("Email is necessary!");
 			$("#workemail").focus();
 			return;
 		}
+		
+		if($otheremail && !isEmail($otheremail) ){
+			alert("Please enter valid email!");
+			$("#otheremail").focus();
+			return;
+		}
+		if($homeemail &&  !isEmail($homeemail) ){
+			alert("Please enter valid email!");
+			$("#homeemail").focus();
+			return;
+		}
+		
+		if($workemail && !isEmail($workemail) ){
+			alert("Please enter valid email!");
+			$("#workemail").focus();
+			return;
+		}
+		
 		var $workphone = $("#workphone").val();
 		var $homephone = $("#homephone").val();
 		var $mobilephone = $("#mobilephone").val();
@@ -150,6 +227,13 @@ $(document).ready ( function () {
 		var $homeaddress = $("#homeaddress").val();
 		var $otheraddress = $("#otheraddress").val();
 		var $notes = $("#notes").val();
+		
+		if(($workphone == "" || hasWhiteSpace($workphone)) && ($homephone =="" || hasWhiteSpace($homephone)) && ($mobilephone == "" || hasWhiteSpace($mobilephone))  ){
+			alert("Phone Number is necessary!");
+			$("#workphone").focus();
+			return;
+		}
+		
 		var $data = { 
 				cmd: 'actcreate', 
 				fullname: $fullname, 
@@ -209,11 +293,11 @@ $(document).ready ( function () {
 	
 	
 	//$( "#Edit" ).button();
-	$( "#Edit" ).attr("disabled", true );
+	//$( "#Edit" ).attr("disabled", true );
 	
 	
-	$( "#Cancel" ).click(function() {
-		//alert("Cancel");
+	$( "#Cancel1" ).click(function() {
+	//	alert("Cancel");
 		$("#fullname").val("");
 		$("#givenname").val("");
 		$("#familyname").val("");
@@ -355,16 +439,17 @@ function backToContacts(){
 		<div style="margin:10px 0px 10px 0px;">
 			<!-- button id="SelectAll" style="font-family:Arial;font-size:12px;height:30px;width:80px;text-align:center;">Select All</button-->
 			<table border="0" width="100%">
+				<tr><td><span class="required" style="margin-left:30px;">* </span><span style="color:red;font-size:14px;">Required Field</span></td></tr>
 				<tr>
 					<td valign="middle" style="font-family:Arial;font-size:13px;">
-						<a href="javascript:backToContacts();" style="color:#3B5323;text-decoration: none;"><< &nbsp; Back to contacts</a>
-				<span class="required">* </span><span style="color:red;font-size:14px;">Required Field</span></td>
+						<a href="javascript:backToContacts();" style="font-weight: bold;text-decoration: none;"><< &nbsp; Back to contacts</a>
+				</td>
 					<td align="right">
 						<table border="0">
 							<tr>
 								<td><button id="Save" style="font-family:Arial;font-size:11px;height:20px;width:75px;text-align:center;padding:0px 0px 0px 0px;">Save now</button></td>
-								<td><button id="Edit" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Edit</button></td>
-								<td><button id="Cancel" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Cancel</button></td>
+								<!-- <td><button id="Edit" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Edit</button></td> -->
+								<td><button id="Cancel" onclick="javascript:backToContacts();" style="font-family:Arial;font-size:11px;height:20px;width:72px;text-align:center;padding:0px 0px 0px 0px;">Cancel</button></td>
 							</tr>
 						</table>
 					</td>
@@ -382,7 +467,7 @@ function backToContacts(){
 	  								
 	  								<td width="33%"><b>First Name<span class="required">*&nbsp</span>:</b> <input id="givenname"  type="text" class="txtBox" value="" style="margin-left:5px;"/></td>
 	  								<td width="33%"><b>Last Name<span class="required">*&nbsp</span>:</b> <input id="familyname" type="text" class="txtBox" value=""/></td>
-									<td width="33%"><b>Full Name:</b> <input readonly="readonly" id="fullname" type="text" class="txtBox" value=""/></td>	  						
+									<td width="33%"><b>Full Name:</b> <input style="margin-left:7px;" readonly="readonly" id="fullname" type="text" class="txtBox" value=""/></td>	  						
 	  							</tr>
 	  						</table>
 					</div>
@@ -390,18 +475,18 @@ function backToContacts(){
 						<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Company</h5>
 	  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
 	  							<tr>
-	  								<td width="33%"><b>Name:</b> <input id="companyname" type="text" class="txtBox" value="" style="margin-left:20px" /></td>
-	  								<td width="33%"><b>Department:</b> <input id="companydept" type="text" class="txtBox" value=""/></td>
+	  								<td width="33%"><b>Name:</b> <input id="companyname" type="text" class="txtBox" value="" style="margin-left:41px;" /></td>
+	  								<td width="33%"><b>Department:</b> <input style="margin-left:4px;" id="companydept" type="text" class="txtBox" value=""/></td>
 	  								<td width="33%"><b>Title:</b> <input id="companytitle" type="text" class="txtBox" value="" style="margin-left:39px;"/></td>
 	  							</tr>
 	  						</table>
 					</div>
 					<div id=subbox class="ui-widget-content" style="font-family:Arial;font-size:15px; margin:7px 0px 0px 3px;width:900px;">
 						<div style="float:left;"><h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Email</h5></div><div style="float:left;">&nbsp;<input class='row_bt' type='button' value='Check Duplicates' onclick='checkDuplicateEmail();'  style="margin-left:32px;"/></div>
-	  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
+	  						<table width="100%" height="15px" style="margin:29px 0px 0px 0px">
 	  							<tr>
-	  								<td width="33%"><b>Work<span class="required">*&nbsp</span>:</b> <input id="workemail" type="text" class="txtBox" value="" style="margin-left:25px"/></td>
-	  								<td width="33%"><b>Home:</b> <input id="homeemail" type="text" class="txtBox" value="" style="margin-left:32px;"/></td>
+	  								<td width="33%"><b>Work<span class="required">*&nbsp</span>:</b> <input id="workemail" type="text" class="txtBox" value="" style="margin-left:36px"/></td>
+	  								<td width="33%"><b>Home:</b> <input id="homeemail" type="text" class="txtBox" value="" style="margin-left:37px;"/></td>
 	  								<td width="33%"><b>Other:</b> <input id="otheremail" type="text" class="txtBox" value="" style="margin-left:32px;"/></td>
 	  								
 	  							</tr>
@@ -411,8 +496,8 @@ function backToContacts(){
 						<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Phone</h5>
 	  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
 	  							<tr>
-	  								<td width="33%"><b>Work<span class="required">*&nbsp</span>:</b> <input id="workphone" type="text" class="txtBox" value="" style="margin-left:25px"/></td>
-	  								<td width="33%"><b>Home:</b> <input id="homephone" type="text" class="txtBox" value="" style="margin-left:32px;"/></td>
+	  								<td width="33%"><b>Work<span class="required">*&nbsp</span>:</b> <input id="workphone" type="text" class="txtBox" value="" style="margin-left:36px"/></td>
+	  								<td width="33%"><b>Home:</b> <input id="homephone" type="text" class="txtBox" value="" style="margin-left:37px;"/></td>
 	  								<td width="33%"><b>Mobile:</b> <input id="mobilephone" type="text" class="txtBox" value="" style="margin-left:28px;"/></td>
 	  							</tr>
 	  						</table>
@@ -421,13 +506,13 @@ function backToContacts(){
 						<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Address</h5>
 	  						<table width="100%" style="margin:2px 0px 0px 0px">
 	  							<tr>
-	  								<td width="40px" height="25px"><b>Work:</b> </td><td align="left"><input id="workaddress" type="text" class="txtBox" value="" size="100" style="margin-left:22px"/></td>
+	  								<td width="40px" height="25px"><b>Work:</b> </td><td align="left"><input id="workaddress" type="text" class="txtBox" value="" size="100" style="margin-left:41px"/></td>
 	  							</tr>
 	  							<tr>
-	  								<td height="25px"><b>Home:</b> </td><td align="left"><input id="homeaddress" type="text" class="txtBox" value="" size="100" style="margin-left:22px"/></td>
+	  								<td height="25px"><b>Home:</b> </td><td align="left"><input id="homeaddress" type="text" class="txtBox" value="" size="100" style="margin-left:41px"/></td>
 	  							</tr>
 	  							<tr>
-	  								<td height="25px"><b>Other:</b> </td><td align="left"><input id="otheraddress" type="text" class="txtBox" value="" size="100" style="margin-left:22px"/></td>
+	  								<td height="25px"><b>Other:</b> </td><td align="left"><input id="otheraddress" type="text" class="txtBox" value="" size="100" style="margin-left:41px"/></td>
 	  							</tr>
 	  						</table>
 					</div>

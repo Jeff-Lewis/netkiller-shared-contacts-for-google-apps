@@ -146,7 +146,7 @@ $(document).ready ( function () {
 		window.location.href = "/sharedcontacts/main.do?cmd=modify&id=" + $id + "<%=queryString%>";
 	});
 	
-	$( "#Cancel" ).attr("disabled",true);
+	//$( "#Cancel" ).attr("disabled",true);
 	//$( "#Cancel" ).button();
 
 	//$("#Cancel").attr("disabled", true);
@@ -156,7 +156,7 @@ $(document).ready ( function () {
 	
 	
 	
-	$( "#Back" ).click(function() {
+	$( "#Back,#Cancel" ).click(function() {
 		window.location.href = "/sharedcontacts/main.do?cmd=list" + "<%=queryString%>";
 	});	
 	
@@ -221,7 +221,7 @@ function backToContacts(){
 			<table border="0" width="100%">
 			<tr>			
 			<td valign="middle" style="font-family:Arial;font-size:13px;">
-				<a href="javascript:backToContacts();" style="color:#3B5323;text-decoration: none;"><< &nbsp; Back to contacts</a>
+				<a href="javascript:backToContacts();" style="text-decoration: none;font-weight: bold;"><< &nbsp; Back to contacts</a>
 			</td>
 			<td align="right">
 			

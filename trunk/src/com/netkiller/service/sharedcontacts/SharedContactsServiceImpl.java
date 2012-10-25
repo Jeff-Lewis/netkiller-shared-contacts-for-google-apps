@@ -77,6 +77,7 @@ import com.netkiller.vo.AppProperties;
 import com.netkiller.vo.Customer;
 import com.netkiller.vo.DomainSettings;
 import com.netkiller.vo.StaticProperties;
+import com.netkiller.vo.UserLogging;
 import com.netkiller.vo.UserPermission;
 import com.netkiller.vo.UserSync;
 
@@ -198,7 +199,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		return result;
 	}
 
-	private Customer getDomainAdminEmail(String domain) {
+	public Customer getDomainAdminEmail(String domain) {
 		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
 				"domain-admin");
 		query.addFilter("domain", FilterOperator.EQUAL, domain);
@@ -239,6 +240,8 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		entity.setProperty("registeredData", new Date());
 		entity.setProperty("accountType", "Free");
 		entity.setProperty("totalContacts", 0);
+		entity.setProperty("nscUsers", 0);
+		entity.setProperty("syncedContacts", 0);
 		entity.setProperty("upgradedDate", null);
 
 		datastore.put(entity);
@@ -296,6 +299,28 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		}
 	}
 
+	public Boolean updateCustomers(String domainName, String field, Object value) {
+		if (!StringUtils.isBlank(domainName)) {
+			Customer customer = getDomainAdminEmail(domainName);
+			if (customer != null) {
+				Key customerKey = KeyFactory.createKey("domain-admin",
+						customer.getId());
+				Entity entity;
+				try {
+					entity = datastore.get(customerKey);
+					entity.setProperty(field, value);
+					datastore.put(entity);
+					return true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.log(Level.SEVERE, e.getMessage(), e);
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+
 	public List<Customer> getAllCustomers() {
 		List<Customer> result = new ArrayList<Customer>();
 		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
@@ -312,7 +337,19 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	}
 
 	/**
-	 * ÃƒÂ¬Ã…Â¾Ã¢â‚¬Â¦ÃƒÂ«Ã‚Â Ã‚Â¥ÃƒÂ«Ã¯Â�
+	 * <<<<<<< .mine
+	 * ÃƒÂ¬Ã…Â¾Ã¢â‚¬Â¦ÃƒÂ«Ã‚Â Ã‚Â¥ÃƒÂ«Ã¯Â�
+	 * �Â½Ã…â€œ List ElementsÃƒÂ«Ã‚Â¥Ã‚Â¼
+	 * 100ÃƒÂªÃ‚Â°Ã…â€œ ÃƒÂ¬Ã¢â‚¬ï¿½Ã‚Â©
+	 * ÃƒÂ«Ã‚Â¬Ã‚Â¶ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´
+	 * ListÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
+	 * ÃƒÂ«Ã¢â‚¬Å¾Ã‚Â£ÃƒÂ¬Ã¯Â¿Â½Ã¢â€šÂ¬
+	 * ÃƒÂ­Ã¢â‚¬ÂºÃ¢â‚¬Å¾ Container
+	 * ListÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
+	 * ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â´ÃƒÂ¬Ã¢â‚¬Â¢Ã¢â‚¬Å¾
+	 * ÃƒÂ«Ã‚Â°Ã‹Å“ÃƒÂ­Ã¢â€žÂ¢Ã‹Å“ =======
+	 * Ãƒ�
+	 * �¬Ã…Â¾Ã¢â‚¬Â¦ÃƒÂ«Ã‚Â Ã‚Â¥ÃƒÂ«Ã¯Â�
 	 * �Â½Ã…â€œ List ElementsÃƒÂ«Ã‚Â¥Ã‚Â¼
 	 * 100ÃƒÂªÃ‚Â°Ã…â€œ ÃƒÂ¬Ã¢â‚¬ï¿½Ã‚Â©
 	 * ÃƒÂ«Ã‚Â¬Ã‚Â¶ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â´
@@ -321,7 +358,8 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	 * ÃƒÂ­Ã¢â‚¬ÂºÃ¢â‚¬Å¾ Container
 	 * ListÃƒÂ¬Ã¢â‚¬â€�Ã¯Â¿Â½
 	 * ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â´ÃƒÂ¬Ã¢â‚¬Â¢Ã¢â‚¬Å¾
-	 * ÃƒÂ«Ã‚Â°Ã‹Å“ÃƒÂ­Ã¢â€žÂ¢Ã‹Å“
+	 * ÃƒÂ«Ã‚Â°Ã‹Å“ÃƒÂ­Ã¢â€žÂ¢Ã‹Å“ >>>>>>>
+	 * .r108
 	 * 
 	 * @param list
 	 * @return
@@ -510,94 +548,71 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		}
 	}
 
-/*	public void multipleCreateUserContacts(List<ContactEntry> contactEntries,
-			String userEmail) throws AppException {
-		try {
-			ContactEntry contactEntry = null;
-					String feedurlStr = appProperties.getFeedurl() + userEmail + "/full";
-			ContactFeed batchFeed = null;
-			URL feedUrl = new URL(feedurlStr);
-			ContactsService service = getContactsService();
-			//ContactFeed feed = service.getFeed(feedUrl, ContactFeed.class);
-
-			List<List> container = split(contactEntries);
-			logger.info("==> container size: " + container.size());
-
-			int batchCnt = 0;
-			int batchCnt1 = 0;
-
-			for (int i = 0; i < container.size(); i++) {
-
-				batchFeed = new ContactFeed();
-
-				List<ContactEntry> splittedList = (List) container.get(i); // ÃƒÂ«Ã‚Â¶Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¯Â¿Â½Ã…â€œ
-																			// List
-																			// ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â»ÃƒÂªÃ‚Â¸Ã‚Â°
-				logger.info("==> splittedList size: " + splittedList.size());
-
-				for (int j = 0; j < splittedList.size(); j++) {
-					contactEntry = (ContactEntry) splittedList.get(j);
-					BatchUtils.setBatchId(contactEntry,
-							String.valueOf(batchCnt++));
-					BatchUtils.setBatchOperationType(contactEntry,
-							BatchOperationType.INSERT);
-					batchFeed.getEntries().add(contactEntry);
-
-				}
-
-				Link batchLink = feed.getLink(Link.Rel.FEED_BATCH,
-						Link.Type.ATOM);
-				String url = batchLink.getHref() + "?xoauth_requestor_id="
-						+ userEmail;
-				Query query = new Query(feedUrl);
-					query.setMaxResults(1); // paging
-					query.setStartIndex(30000); // paging
-				query.setStringCustomParameter("orderby", "lastmodified");
-				query.setStringCustomParameter("sortorder", "descending"); // "ascending"
-																			// or
-																			// "descending"
-				query.setStringCustomParameter("showdeleted", "false");
-				query.setStringCustomParameter("xoauth_requestor_id", userEmail);
-
-				// ContactFeed resultFeed = service.getFeed(feedUrl,
-				// ContactFeed.class);
-				ContactFeed batchResultFeed = service.query(query, ContactFeed.class);
-				
-				List<ContactEntry> batches = batchResultFeed.getEntries();
-				
-				for (ContactEntry ent : batches) {
-					String batchId = BatchUtils.getBatchId(ent);
-					if (!BatchUtils.isSuccess(ent)) {
-						logger.info("===> Insert Failed!");
-						BatchStatus status = BatchUtils.getBatchStatus(ent);
-						logger.info("\t" + batchId + " failed ("
-								+ status.getReason() + ") "
-								+ status.getContent());
-					} else {
-						logger.info("===> Inserted Sucessfully!" + "("
-								+ batchId + ")");
-					}
-				}// end of inner for loop
-				System.out.println("Created batch" + i);
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					logger.log(Level.SEVERE, e.getMessage(), e);
-				}
-
-			}// end of outer for loop
-			logger.info("====================================");
-			logger.info("Total " + batchCnt + " inserted!!");
-			logger.info("====================================");
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.log(Level.SEVERE, e.getMessage(), e);
-			throw new AppException();
-		}
-	}
-*/
-	
+	/*
+	 * public void multipleCreateUserContacts(List<ContactEntry> contactEntries,
+	 * String userEmail) throws AppException { try { ContactEntry contactEntry =
+	 * null; String feedurlStr = appProperties.getFeedurl() + userEmail +
+	 * "/full"; ContactFeed batchFeed = null; URL feedUrl = new URL(feedurlStr);
+	 * ContactsService service = getContactsService(); //ContactFeed feed =
+	 * service.getFeed(feedUrl, ContactFeed.class);
+	 * 
+	 * List<List> container = split(contactEntries);
+	 * logger.info("==> container size: " + container.size());
+	 * 
+	 * int batchCnt = 0; int batchCnt1 = 0;
+	 * 
+	 * for (int i = 0; i < container.size(); i++) {
+	 * 
+	 * batchFeed = new ContactFeed();
+	 * 
+	 * List<ContactEntry> splittedList = (List) container.get(i); //
+	 * ÃƒÂ«Ã‚�
+	 * �¶Ã¢â‚¬Å¾ÃƒÂ«Ã‚Â¦Ã‚Â¬ÃƒÂ«Ã¯Â¿
+	 * Â½Ã…â€œ // List //
+	 * ÃƒÂ¬Ã¢â‚¬â€œÃ‚Â»ÃƒÂªÃ‚Â¸Ã‚Â°
+	 * logger.info("==> splittedList size: " + splittedList.size());
+	 * 
+	 * for (int j = 0; j < splittedList.size(); j++) { contactEntry =
+	 * (ContactEntry) splittedList.get(j); BatchUtils.setBatchId(contactEntry,
+	 * String.valueOf(batchCnt++));
+	 * BatchUtils.setBatchOperationType(contactEntry,
+	 * BatchOperationType.INSERT); batchFeed.getEntries().add(contactEntry);
+	 * 
+	 * }
+	 * 
+	 * Link batchLink = feed.getLink(Link.Rel.FEED_BATCH, Link.Type.ATOM);
+	 * String url = batchLink.getHref() + "?xoauth_requestor_id=" + userEmail;
+	 * Query query = new Query(feedUrl); query.setMaxResults(1); // paging
+	 * query.setStartIndex(30000); // paging
+	 * query.setStringCustomParameter("orderby", "lastmodified");
+	 * query.setStringCustomParameter("sortorder", "descending"); // "ascending"
+	 * // or // "descending" query.setStringCustomParameter("showdeleted",
+	 * "false"); query.setStringCustomParameter("xoauth_requestor_id",
+	 * userEmail);
+	 * 
+	 * // ContactFeed resultFeed = service.getFeed(feedUrl, //
+	 * ContactFeed.class); ContactFeed batchResultFeed = service.query(query,
+	 * ContactFeed.class);
+	 * 
+	 * List<ContactEntry> batches = batchResultFeed.getEntries();
+	 * 
+	 * for (ContactEntry ent : batches) { String batchId =
+	 * BatchUtils.getBatchId(ent); if (!BatchUtils.isSuccess(ent)) {
+	 * logger.info("===> Insert Failed!"); BatchStatus status =
+	 * BatchUtils.getBatchStatus(ent); logger.info("\t" + batchId + " failed ("
+	 * + status.getReason() + ") " + status.getContent()); } else {
+	 * logger.info("===> Inserted Sucessfully!" + "(" + batchId + ")"); } }//
+	 * end of inner for loop System.out.println("Created batch" + i); try {
+	 * Thread.sleep(500); } catch (InterruptedException e) {
+	 * e.printStackTrace(); logger.log(Level.SEVERE, e.getMessage(), e); }
+	 * 
+	 * }// end of outer for loop
+	 * logger.info("===================================="); logger.info("Total "
+	 * + batchCnt + " inserted!!");
+	 * logger.info("===================================="); } catch (Exception
+	 * e) { e.printStackTrace(); logger.log(Level.SEVERE, e.getMessage(), e);
+	 * throw new AppException(); } }
+	 */
 
 	public void multipleCreateUserContacts(List<ContactEntry> contactEntries,
 			String userEmail) throws AppException {
@@ -702,18 +717,19 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		}
 	}
 
-	public String getSharedContactsGroupId(String name) throws AppException {
+	public String getSharedContactsGroupId(String name){
 		String result = null;
 		if (!StringUtils.isBlank(name)) {
 			try {
-				String feedurl =appProperties.getGroupFeedUrl() + CommonWebUtil.getDomain(userEmail)
-				+ "/full";
+				String feedurl = appProperties.getGroupFeedUrl()
+						+ CommonWebUtil.getDomain(userEmail) + "/full";
 				String scGrpName = name;
 				logger.info("scGrpName: " + scGrpName);
 				ContactsService service = getContactsService();
-				//	Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+				// Collection<ContactGroupEntry> contactGroupEntries = new
+				// ArrayList<ContactGroupEntry>();
 				URL retrieveUrl = new URL(feedurl);
-				//Link nextLink = null;
+				// Link nextLink = null;
 				Query query = new Query(retrieveUrl);
 				query.setMaxResults(100000); // paging
 				query.setStartIndex(1);
@@ -724,22 +740,20 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 						ContactGroupFeed.class);
 				Collection<ContactGroupEntry> contactGroupEntries = resultFeed
 						.getEntries();
-				/*			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-				 ContactGroupFeed.class);
-				
-				 do {
-				
-				 ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
-				 ContactGroupFeed.class);
-				 contactGroupEntries.addAll(resultFeed.getEntries());
-				 nextLink = resultFeed.getLink(Link.Rel.NEXT,
-				 Link.Type.ATOM);
-				 if (nextLink != null) {
-				 retrieveUrl = new URL(nextLink.getHref());
-				 }
-				
-				 } while (nextLink != null);
-				
+				/*
+				 * ContactGroupFeed resultFeed = service.getFeed(new
+				 * URL(feedurl), ContactGroupFeed.class);
+				 * 
+				 * do {
+				 * 
+				 * ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
+				 * ContactGroupFeed.class);
+				 * contactGroupEntries.addAll(resultFeed.getEntries()); nextLink
+				 * = resultFeed.getLink(Link.Rel.NEXT, Link.Type.ATOM); if
+				 * (nextLink != null) { retrieveUrl = new
+				 * URL(nextLink.getHref()); }
+				 * 
+				 * } while (nextLink != null);
 				 */
 				if (!contactGroupEntries.isEmpty()) {
 					String titleTmp = null;
@@ -762,7 +776,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 				// e.printStackTrace();
 				// logger.severe("e.getMessage: " + e.getMessage());
 				logger.log(Level.SEVERE, e.getMessage(), e);
-				throw new AppException();
+			
 			}
 		}
 		return result;
@@ -811,15 +825,18 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		return url;
 	}
 
-	public ContactGroupEntry create(ContactGroupEntry entry) throws AppException {
+	public ContactGroupEntry create(ContactGroupEntry entry)
+			throws AppException {
 		try {
 			System.out.println("creating group");
-			String groupId = getSharedContactsGroupId(entry.getTitle().getPlainText());
-			if(StringUtils.isEmpty(groupId)){
-			ContactsService service = getContactsService();			
-			entry =service.insert(
-					new URL(getFeedUrl(appProperties.getGroupFeedUrl())), entry);			
-			}else{
+			String groupId = getSharedContactsGroupId(entry.getTitle()
+					.getPlainText());
+			if (StringUtils.isEmpty(groupId)) {
+				ContactsService service = getContactsService();
+				entry = service.insert(
+						new URL(getFeedUrl(appProperties.getGroupFeedUrl())),
+						entry);
+			} else {
 				entry.setId(groupId);
 			}
 		} catch (Exception e) {
@@ -830,9 +847,8 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		return entry;
 	}
 
-	public ContactGroupEntry createGroup(ContactGroupEntry entry, String userEmail)
-			throws AppException {
-		ContactGroupEntry groupEntry = null;
+	public ContactGroupEntry createGroup(ContactGroupEntry entry,
+			String userEmail) throws AppException {
 		try {
 			ContactsService service = getContactsService();
 			// System.out.println("Url:"+appProperties.getGroupFeedUrl()+"agent_noreply@netkiller.com/full?xoauth_requestor_id="
@@ -840,28 +856,35 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			// service.insert(new
 			// URL(appProperties.getGroupFeedUrl()+"agent_noreply@netkiller.com/full?xoauth_requestor_id="
 			// + "agent_noreply@netkiller.com"), entry);
-			groupEntry = service.insert(
-					new URL(getUserFeedUrl(appProperties.getGroupFeedUrl(),
-							userEmail)), entry);
+
+			String groupId = getUserContactsGroupId(entry.getTitle()
+					.getPlainText(), userEmail);
+			if (StringUtils.isBlank(groupId)) {
+				entry = service.insert(
+						new URL(getUserFeedUrl(appProperties.getGroupFeedUrl(),
+								userEmail)), entry);
+			} else {
+				entry.setId(groupId);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe("e.getMessage: " + e.getMessage());
 			throw new AppException();
 		}
-		return groupEntry;
+		return entry;
 	}
 
 	public String getUserContactsGroupId(String name, String userEmail)
-			throws AppException {
+			 {
 		String result = null;
 		try {
-			String feedurl = appProperties.getGroupFeedUrl()+ userEmail
+			String feedurl = appProperties.getGroupFeedUrl() + userEmail
 					+ "/full";
-			
+
 			String scGrpName = name;
 			logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
-			
+
 			URL retrieveUrl = new URL(feedurl);
 			Query query = new Query(retrieveUrl);
 			query.setMaxResults(100000); // paging
@@ -869,54 +892,44 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			query.setStringCustomParameter("showdeleted", "false");
 			query.setStringCustomParameter("xoauth_requestor_id", userEmail);
 
-			ContactGroupFeed resultFeed = service.query(query,
-					ContactGroupFeed.class);
-			Collection<ContactGroupEntry> contactGroupEntries = resultFeed
-					.getEntries();
-		/*	Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
-			URL retrieveUrl = new URL(feedurl);
-			Link nextLink = null;
-			
-			
-			ContactGroupFeed resultFeed = service.getFeed(new URL(feedurl),
-					ContactGroupFeed.class);
-			
-			do {
-				
-				ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
-						ContactGroupFeed.class);
-				contactGroupEntries.addAll(resultFeed.getEntries());
-				nextLink = resultFeed.getLink(Link.Rel.NEXT,
-						Link.Type.ATOM);
-				if (nextLink != null) {
-					retrieveUrl = new URL(nextLink.getHref());
-				}
-				
-				} while (nextLink != null);
-			*/
-			
-			if (!contactGroupEntries.isEmpty()) {
-				String titleTmp = null;
-				TextConstruct tc = null;
-				for (ContactGroupEntry groupEntry : contactGroupEntries) {
-					tc = groupEntry.getTitle();
-					if (tc != null) {
-						titleTmp = tc.getPlainText();
-						// logger.info("Id: " + groupEntry.getId());
-						if (titleTmp.equals(scGrpName)) {
-							result = groupEntry.getId();
-							logger.info("Group Name: " + titleTmp);
-							logger.info("Group Id: " + result);
-							break;
+			for (int i = 0; i < 5; i++) {
+				try {
+					ContactGroupFeed resultFeed = service.query(query,
+							ContactGroupFeed.class);
+					Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+							.getEntries();
+					if (!contactGroupEntries.isEmpty()) {
+						String titleTmp = null;
+						TextConstruct tc = null;
+						for (ContactGroupEntry groupEntry : contactGroupEntries) {
+							tc = groupEntry.getTitle();
+							if (tc != null) {
+								titleTmp = tc.getPlainText();
+								// logger.info("Id: " + groupEntry.getId());
+								if (titleTmp.equals(scGrpName)) {
+									result = groupEntry.getId();
+									logger.info("Group Name: " + titleTmp);
+									logger.info("Group Id: " + result);
+									break;
+								}
+							}
 						}
 					}
+					break;
+				} catch (Exception e) {
+					System.out.println("sleeping!!!!!!!!!!!!!!!!!1111");
+					Thread.sleep(800);
+					
 				}
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
 			// logger.severe("e.getMessage: " + e.getMessage());
 			logger.log(Level.SEVERE, e.getMessage(), e);
-			throw new AppException();
+			//throw new AppException();
+			System.out.println("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+			System.out.println(e.getMessage());
+			System.out.println(e.getCause().getMessage());
 		}
 		return result;
 	}
@@ -1123,6 +1136,13 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		cust.setTotalContacts(entity.getProperty("totalContacts") == null ? 0
 				: Integer.parseInt(entity.getProperty("totalContacts")
 						.toString()));
+		cust.setTotalUsers(entity.getProperty("totalUsers") == null ? 0
+				: Integer.parseInt(entity.getProperty("totalUsers").toString()));
+		cust.setSyncedUsers(entity.getProperty("syncedUsers") == null ? 0
+				: Integer
+						.parseInt(entity.getProperty("syncedUsers").toString()));
+		cust.setNscUsers(entity.getProperty("nscUsers") == null ? 0 : Integer
+				.parseInt(entity.getProperty("nscUsers").toString()));
 		cust.setId(entity.getKey().getId());
 		return cust;
 	}
@@ -1336,7 +1356,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 			do {
 				try {
-					System.out.println("retrieveUrl" + retrieveUrl);
+					// System.out.println("retrieveUrl" + retrieveUrl);
 					UserFeed newGenericFeed = guserService.getFeed(retrieveUrl,
 							UserFeed.class);
 
@@ -1361,9 +1381,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 			if (genericFeed != null && genericFeed.getEntries() != null
 					&& !genericFeed.getEntries().isEmpty()) {
-				System.out.println("$$$$$$$$$$$$$$$$");
+				// System.out.println("$$$$$$$$$$$$$$$$");
 				for (UserEntry genericEntry : genericFeed.getEntries()) {
-					System.out.println(genericEntry.getLogin().getUserName());
+					// System.out.println(genericEntry.getLogin().getUserName());
 					if (!genericEntry.getLogin().getAdmin()) {
 						users.add(genericEntry.getLogin().getUserName());
 					}
@@ -1382,7 +1402,6 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		return users;
 	}
 
-	@Override
 	public List<String> getAllDomainUsersIncludingAdmin(String domain) {
 		List<String> users = new ArrayList<String>();
 		com.google.gdata.client.appsforyourdomain.UserService guserService = new com.google.gdata.client.appsforyourdomain.UserService(
@@ -1412,14 +1431,16 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			UserFeed genericFeed = new UserFeed();
 
 			Link nextLink = null;
+			Collection<UserEntry> userEntries = new ArrayList<UserEntry>();
 
 			do {
 				try {
-					System.out.println("retrieveUrl" + retrieveUrl);
+					// System.out.println("retrieveUrl" + retrieveUrl);
 					genericFeed = guserService.getFeed(retrieveUrl,
 							UserFeed.class);
 
-					genericFeed.getEntries().addAll(genericFeed.getEntries());
+					// genericFeed.getEntries().addAll(genericFeed.getEntries());
+					userEntries.addAll(genericFeed.getEntries());
 					nextLink = genericFeed.getLink(Link.Rel.NEXT,
 							Link.Type.ATOM);
 					if (nextLink != null) {
@@ -1437,14 +1458,16 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 				}
 			} while (nextLink != null);
 
-			if (genericFeed != null && genericFeed.getEntries() != null
-					&& !genericFeed.getEntries().isEmpty()) {
+			if (userEntries != null && !userEntries.isEmpty()) {
 
-				for (UserEntry genericEntry : genericFeed.getEntries()) {
-					System.out.println(genericEntry.getLogin().getUserName());
+				for (UserEntry genericEntry : userEntries) {
+					/*
+					 * System.out.println(genericEntry.getLogin().getUserName());
+					 * 
+					 * System.out.println("USer:" +
+					 * genericEntry.getLogin().getUserName());
+					 */
 
-					System.out.println("USer:"
-							+ genericEntry.getLogin().getUserName());
 					users.add(genericEntry.getLogin().getUserName());
 
 					// appUsers.add(appUser);
@@ -1691,6 +1714,12 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 				.getProperty("onlyAdminPermitted"));
 		domainSettings.setAllUserPermitted((Boolean) entity
 				.getProperty("allUserPermitted"));
+		domainSettings.setAllUserBlobKey(CommonUtil.getNotNullValue(entity
+				.getProperty("allUserBlobKey")));
+		domainSettings.setNscUserBlobKey(CommonUtil.getNotNullValue(entity
+				.getProperty("nscUserBlobKey")));
+		domainSettings.setSyncUserBlobKey(CommonUtil.getNotNullValue(entity
+				.getProperty("syncUserBlobKey")));
 		return domainSettings;
 	}
 
@@ -1709,6 +1738,12 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 				domainSettings.isOnlyAdminPermitted());
 		currentSettings.setProperty("allUserPermitted",
 				domainSettings.isAllUserPermitted());
+		currentSettings.setProperty("syncUserBlobKey",
+				domainSettings.getSyncUserBlobKey());
+		currentSettings.setProperty("allUserBlobKey",
+				domainSettings.getAllUserBlobKey());
+		currentSettings.setProperty("nscUserBlobKey",
+				domainSettings.getNscUserBlobKey());
 
 		try {
 			return getDomainSettings(datastore.get(datastore
@@ -1783,6 +1818,57 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 	}
 
+	/*
+	 * @Override public void syncUserContacts(String userEmail,
+	 * List<ContactEntry> entries) { String groupName =
+	 * getGroupName(CommonWebUtil.getDomain(userEmail)); try { String groupId =
+	 * getUserContactsGroupId(groupName, userEmail); while (groupId == null ||
+	 * groupId.equals("")) { ContactGroupEntry group = new ContactGroupEntry();
+	 * group.setSummary(new PlainTextConstruct(groupName)); group.setTitle(new
+	 * PlainTextConstruct(groupName)); createGroup(group, userEmail);
+	 * 
+	 * groupId = getUserContactsGroupId(groupName, userEmail); }
+	 * List<ContactEntry> contacts = null;
+	 * 
+	 * contacts = getUserContacts(1, 30000, groupId, userEmail);
+	 * if(contacts!=null){ System.out.println("Fteched " + contacts.size() +
+	 * " to be deleted");
+	 * 
+	 * for(ContactEntry ce : contacts){ ce.delete(); } int currentSize =
+	 * contacts.size(); List<List> container = split(contacts); for (int i = 0;
+	 * i < container.size(); i++) { multipleDeleteUserContacts(container.get(i),
+	 * userEmail); int retry = 0; if (currentSize == getUserContacts(1, 30000,
+	 * groupId, userEmail) .size() && currentSize != 0 & retry <= 5) { i--;
+	 * retry++; } else { if (retry > 5) { continue; } if (currentSize - 100 >=
+	 * 0) { currentSize = currentSize - 100; } else currentSize = 0;
+	 * 
+	 * }
+	 * 
+	 * } System.out.println(" Successfully deleted");
+	 * System.out.println("GroupId is" + groupId); if(entries!=null){ for
+	 * (ContactEntry entry : entries) { GroupMembershipInfo gmInfo = new
+	 * GroupMembershipInfo(); // added gmInfo.setHref(groupId); // added
+	 * entry.getGroupMembershipInfos().remove(0);
+	 * entry.addGroupMembershipInfo(gmInfo); createUserContact(entry,
+	 * userEmail); } }
+	 * 
+	 * List<List> container1 = split(entries); for (int i = 0; i <
+	 * container1.size(); i++) { System.out.println("Creating batch" + i);
+	 * multipleCreateUserContacts(container1.get(i), userEmail); int retry = 0;
+	 * if (currentSize == getUserContacts(1, 30000, groupId, userEmail) .size()
+	 * && currentSize != contacts.size() & retry <= 5) { i--; retry++;
+	 * System.out.println("will retry for batch" + i); } else { if (retry > 5) {
+	 * continue; } if (currentSize + 100 < contacts.size()) { currentSize =
+	 * currentSize + 100; } else currentSize = contacts.size();
+	 * 
+	 * }} }
+	 * 
+	 * } catch (AppException e) { System.out.println("Exception caught"); }
+	 * catch (IOException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } catch (ServiceException e) { // TODO
+	 * Auto-generated catch block e.printStackTrace(); } }
+	 */
+
 	/*@Override
 	public void syncUserContacts(String userEmail, List<ContactEntry> entries) {
 		String groupName = getGroupName(CommonWebUtil.getDomain(userEmail));
@@ -1799,12 +1885,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			List<ContactEntry> contacts = null;
 
 			contacts = getUserContacts(1, 30000, groupId, userEmail);
-			if(contacts!=null){
 			System.out.println("Fteched " + contacts.size() + " to be deleted");
-			
-			for(ContactEntry ce : contacts){
-				ce.delete();
-			}
 			int currentSize = contacts.size();
 			List<List> container = split(contacts);
 			for (int i = 0; i < container.size(); i++) {
@@ -1824,66 +1905,72 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 						currentSize = 0;
 
 				}
-			
 			}
 			System.out.println(" Successfully deleted");
 			System.out.println("GroupId is" + groupId);
-			if(entries!=null){
-			for (ContactEntry entry : entries) {
-				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
-				gmInfo.setHref(groupId); // added
-				entry.getGroupMembershipInfos().remove(0);
-				entry.addGroupMembershipInfo(gmInfo);
-				createUserContact(entry, userEmail);
-			}
-			}
+			if (entries != null) {
+				for (ContactEntry entry : entries) {
+					GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
+					gmInfo.setHref(groupId); // added
+					entry.getGroupMembershipInfos().remove(0);
+					entry.addGroupMembershipInfo(gmInfo);
+					String myContactsGroupId = getMyContactsGroupId(userEmail);
+					GroupMembershipInfo myContactsGmInfo = new GroupMembershipInfo(); // added
+					myContactsGmInfo.setHref(myContactsGroupId); // added
+					entry.addGroupMembershipInfo(myContactsGmInfo);
 
-			List<List> container1 = split(entries);
-			for (int i = 0; i < container1.size(); i++) {
-				System.out.println("Creating batch" + i);
-				multipleCreateUserContacts(container1.get(i), userEmail);
-				int retry = 0;
-				if (currentSize == getUserContacts(1, 30000, groupId, userEmail)
-						.size() && currentSize != contacts.size() & retry <= 5) {
-					i--;
-					retry++;
-					System.out.println("will retry for batch" + i);
-				} else {
-					if (retry > 5) {
-						continue;
+				}
+				List<List> container1 = split(entries);
+
+				for (int i = 0; i < container1.size(); i++) {
+					System.out.println("Creating batch" + i);
+					multipleCreateUserContacts(container1.get(i), userEmail);
+					int retry = 0;
+					if (currentSize == getUserContacts(1, 30000, groupId,
+							userEmail).size()
+							&& currentSize != contacts.size() & retry <= 5) {
+						i--;
+						retry++;
+						System.out.println("will retry for batch" + i);
+					} else {
+						if (retry > 5) {
+							continue;
+						}
+						if (currentSize + 100 < contacts.size()) {
+							currentSize = currentSize + 100;
+						} else
+							currentSize = contacts.size();
+
 					}
-					if (currentSize + 100 < contacts.size()) {
-						currentSize = currentSize + 100;
-					} else
-						currentSize = contacts.size();
-
-				}}
+				}
 			}
 
 		} catch (AppException e) {
 			System.out.println("Exception caught");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}*/
-	
+
 	@Override
 	public void syncUserContacts(String userEmail, List<ContactEntry> entries) {
 		String groupName = getGroupName(CommonWebUtil.getDomain(userEmail));
 		try {
+			System.out.println("00000000000000000 start sync");
 			String groupId = getUserContactsGroupId(groupName, userEmail);
+			int counter =0;
 			while (groupId == null || groupId.equals("")) {
 				ContactGroupEntry group = new ContactGroupEntry();
 				group.setSummary(new PlainTextConstruct(groupName));
 				group.setTitle(new PlainTextConstruct(groupName));
 				createGroup(group, userEmail);
-
+				try {
+					Thread.sleep(5000);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 				groupId = getUserContactsGroupId(groupName, userEmail);
+				System.out.println(++counter + "id : " + groupId);
 			}
+			System.out.println("00000000000000000 gid" + groupId);
 			List<ContactEntry> contacts = null;
 
 			contacts = getUserContacts(1, 30000, groupId, userEmail);
@@ -1911,36 +1998,42 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			System.out.println(" Successfully deleted");
 			System.out.println("GroupId is" + groupId);
 			if (entries!=null) {
-				for (ContactEntry entry : entries) {
-					GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
-					gmInfo.setHref(groupId); // added
+				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
+				gmInfo.setHref(groupId); // added
+				for (ContactEntry entry : entries) {					
 					entry.getGroupMembershipInfos().remove(0);
 					entry.addGroupMembershipInfo(gmInfo);
-				
-
+					String myContactsGroupId = getMyContactsGroupId(userEmail);
+					GroupMembershipInfo myContactsGmInfo = new GroupMembershipInfo(); // added
+					myContactsGmInfo.setHref(myContactsGroupId); // added
+					entry.addGroupMembershipInfo(myContactsGmInfo);
 				}
+				System.out.println("size77777777777777777:" + entries.size());
 				List<List> container1 = split(entries);
-				
+				int retry = 0;
 				for (int i = 0; i < container1.size(); i++) {
 					System.out.println("Creating batch" + i);
 					multipleCreateUserContacts(container1.get(i), userEmail);
-					int retry = 0;
-					if (currentSize == getUserContacts(1, 30000, groupId,
-							userEmail).size()
-							&& currentSize != contacts.size() & retry <= 5) {
+					
+					/*int userContactsSize = getUserContacts(1, 30000, groupId,
+							userEmail).size();
+					if (currentSize == userContactsSize
+							&& currentSize != entries.size() && retry <= 5) {
 						i--;
 						retry++;
-						System.out.println("will retry for batch" + i);
+						System.out.println("will retry for batch" + i + "\t currentSize : " +
+								currentSize +"\t userContactsSize : " + userContactsSize + "\t retry : " + retry + "\t entries(): " +entries.size() );
 					} else {
 						if (retry > 5) {
+							retry = 0;
 							continue;
 						}
-						if (currentSize + 100 < contacts.size()) {
+						if (currentSize + 100 < entries.size()) {
 							currentSize = currentSize + 100;
 						} else
-							currentSize = contacts.size();
+							currentSize = entries.size();
 
-					}
+					}*/
 				}
 			}
 
@@ -1948,7 +2041,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 System.out.println("Exception caught");
 		}
 	}
-
+	
 	private void removeGroup(String groupName, String userEmail) {
 		String result = null;
 		try {
@@ -1990,12 +2083,13 @@ System.out.println("Exception caught");
 	public void removeDuplicateGroups(String groupName, String userEmail) {
 		String result = null;
 		try {
-			String feedurl = appProperties.getGroupFeedUrl()+ CommonWebUtil.getDomain(userEmail)
-			+ "/full";
+			String feedurl = appProperties.getGroupFeedUrl()
+					+ userEmail + "/full";
 			String scGrpName = groupName;
 			logger.info("scGrpName: " + scGrpName);
 			ContactsService service = getContactsService();
-			//Collection<ContactGroupEntry> contactGroupEntries = new ArrayList<ContactGroupEntry>();
+			// Collection<ContactGroupEntry> contactGroupEntries = new
+			// ArrayList<ContactGroupEntry>();
 			URL retrieveUrl = new URL(feedurl);
 			Query query = new Query(retrieveUrl);
 			query.setMaxResults(100000); // paging
@@ -2007,45 +2101,45 @@ System.out.println("Exception caught");
 					ContactGroupFeed.class);
 			Collection<ContactGroupEntry> contactGroupEntries = resultFeed
 					.getEntries();
-			/*Link nextLink = null;
-			
-			do {
-			
-			ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
-					ContactGroupFeed.class);
-			contactGroupEntries.addAll(resultFeed.getEntries());
-			nextLink = resultFeed.getLink(Link.Rel.NEXT,
-					Link.Type.ATOM);
-			if (nextLink != null) {
-				retrieveUrl = new URL(nextLink.getHref());
-			}
-			
-			} while (nextLink != null);*/
-			
-			
+			/*
+			 * Link nextLink = null;
+			 * 
+			 * do {
+			 * 
+			 * ContactGroupFeed resultFeed = service.getFeed(retrieveUrl,
+			 * ContactGroupFeed.class);
+			 * contactGroupEntries.addAll(resultFeed.getEntries()); nextLink =
+			 * resultFeed.getLink(Link.Rel.NEXT, Link.Type.ATOM); if (nextLink
+			 * != null) { retrieveUrl = new URL(nextLink.getHref()); }
+			 * 
+			 * } while (nextLink != null);
+			 */
+
 			if (!contactGroupEntries.isEmpty()) {
 				String titleTmp = null;
 				TextConstruct tc = null;
 				int count = 0;
 				for (ContactGroupEntry groupEntry : contactGroupEntries) {
 					tc = groupEntry.getTitle();
-					/* To delete all uncomment this, and comment lines following this block
-					  try {
-						//groupEntry.delete();
-						System.out.println("deleting " +  tc.getPlainText());
-					} catch (Exception e) {
-						System.out.println(tc.getPlainText() + "delete failed");
-					}	*/
-					
+					/*
+					 * To delete all uncomment this, and comment lines following
+					 * this block try { //groupEntry.delete();
+					 * System.out.println("deleting " + tc.getPlainText()); }
+					 * catch (Exception e) {
+					 * System.out.println(tc.getPlainText() + "delete failed");
+					 * }
+					 */
+
 					if (tc != null) {
 						titleTmp = tc.getPlainText();
-						//System.out.println("Contacts group Name:" + titleTmp);
+						// System.out.println("Contacts group Name:" +
+						// titleTmp);
 						// logger.info("Id: " + groupEntry.getId());
 						if (titleTmp.equals(scGrpName)) {
 							if (count != 0) {
 								groupEntry.delete();
 								logger.info("Deleted Group Name: " + titleTmp);
-								//logger.info("Deleted Group Id: " + result);
+								// logger.info("Deleted Group Id: " + result);
 							}
 							count++;
 						}
@@ -2395,6 +2489,98 @@ System.out.println("Exception caught");
 	}
 
 	@Override
+	public List<String> getDomainList() {
+		List<String> domains = new ArrayList<String>();
+		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
+				"domain-admin");
+		List<Entity> list = datastore.prepare(query).asList(
+				FetchOptions.Builder.withDefaults());
+		if (list != null && list.size() > 0) {
+			for (Entity entity : list) {
+				domains.add((String) entity.getProperty("domain"));
+			}
+		}
+		return domains;
+	}
+
+	@Override
+	public UserLogging updateUserLogging(UserLogging userLogging)
+			throws AppException {
+		Entity currentSettings = null;
+		if (currentSettings == null) {
+			currentSettings = new Entity("UserLogging");
+		} else {
+			try {
+				currentSettings = datastore.get(userLogging.getKey());
+			} catch (EntityNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		currentSettings.setProperty("domain", userLogging.getDomain());
+		currentSettings.setProperty("userId", userLogging.getUserId());
+
+		try {
+			return getUserLogging(datastore.get(datastore.put(currentSettings)));
+		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	UserLogging getUserLogging(Entity userLoggingEntity) {
+		UserLogging userLogging = new UserLogging();
+		userLogging.setKey(userLoggingEntity.getKey());
+		userLogging.setDomain((String) userLoggingEntity.getProperty("domain"));
+		userLogging.setUserId((String) userLoggingEntity.getProperty("userId"));
+		return userLogging;
+	}
+
+	@Override
+	public UserLogging getUserLogging(String domainName, String userId)
+			throws AppException {
+		UserLogging userLogging = null;
+		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
+				"UserLogging");
+		query.addFilter("domain",
+				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
+				domainName);
+		query.addFilter("userId",
+				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
+				userId);
+		PreparedQuery preparedQuery = datastore.prepare(query);
+		List<Entity> userLoggings = preparedQuery.asList(FetchOptions.Builder
+				.withDefaults());
+		if (userLoggings != null && !userLoggings.isEmpty()) {
+			userLogging = getUserLogging(userLoggings.get(0));
+		}
+		return userLogging;
+
+	}
+
+	public List<String> getEmailFromUserLoggingForDomain(String domainName)
+			throws AppException {
+		List<String> list = new ArrayList<String>();
+		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
+				"UserLogging");
+		query.addFilter("domain",
+				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
+				domainName);
+		PreparedQuery preparedQuery = datastore.prepare(query);
+		List<Entity> userLoggings = preparedQuery.asList(FetchOptions.Builder
+				.withDefaults());
+		if (userLoggings != null && !userLoggings.isEmpty()) {
+			for (Entity e : userLoggings) {
+				list.add((String) e.getProperty("userId"));
+			}
+		}
+		return list;
+
+	}
+
+	@Override
 	public UserSync updateExistingUserSync(UserSync userSync) {
 		Entity currentSync = null;
 		try {
@@ -2416,5 +2602,63 @@ System.out.println("Exception caught");
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public String getMyContactsGroupId(String email) {
+		String result = null;
+
+		try {
+
+			String feedurl = appProperties.getGroupFeedUrl() + email + "/full";
+
+			String scGrpName = "System Group: My Contacts";
+			logger.info("scGrpName: " + scGrpName);
+			ContactsService service = getContactsService();
+
+			URL retrieveUrl = new URL(feedurl);
+			Query query = new Query(retrieveUrl);
+			query.setMaxResults(100000); // paging
+			query.setStartIndex(1);
+			query.setStringCustomParameter("showdeleted", "false");
+			query.setStringCustomParameter("xoauth_requestor_id", email);
+
+			for (int counter = 0; counter < 5; counter++) {
+				try {					
+					ContactGroupFeed resultFeed = service.query(query,
+							ContactGroupFeed.class);
+					Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+							.getEntries();
+					if (!contactGroupEntries.isEmpty()) {
+						String titleTmp = null;
+						TextConstruct tc = null;
+						for (ContactGroupEntry groupEntry : contactGroupEntries) {
+							tc = groupEntry.getTitle();
+							if (tc != null) {
+								titleTmp = tc.getPlainText();
+								// logger.info("Id: " + groupEntry.getId());
+								if (titleTmp.equals(scGrpName)) {
+									result = groupEntry.getId();
+									logger.info("Group Name: " + titleTmp);
+									logger.info("Group Id: " + result);
+									break;
+								}
+							}
+						}
+					}
+					break;
+				} catch (Exception e) {
+					System.out.println("retrying due to IO Error : "
+							+ e.getMessage());
+					System.out.println("sleeping!!!!!!!!!!!!!!!!!1111");
+					Thread.sleep(800);
+				}
+			}
+		} catch (Exception e) {
+			// e.printStackTrace();
+			// logger.severe("e.getMessage: " + e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+
+		return result;
 	}
 }

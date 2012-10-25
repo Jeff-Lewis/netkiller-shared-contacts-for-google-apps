@@ -3,6 +3,7 @@ package com.netkiller.workflow.impl.task;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gdata.data.PlainTextConstruct;
@@ -31,43 +32,56 @@ import com.netkiller.workflow.WorkflowContext;
 import com.netkiller.workflow.WorkflowExecutionException;
 import com.netkiller.workflow.impl.context.AddContactForAllDomainUsersContext;
 
-public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask{
+public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 
 	@Autowired
 	private SharedContactsService sharedContactsService;
-	
-	protected final Logger logger = Logger.getLogger(getClass().getName());
-	
-	@Override
-	public WorkflowContext execute(WorkflowContext context) throws WorkflowExecutionException {
-		 AddContactForAllDomainUsersContext userContext = ( AddContactForAllDomainUsersContext) context;
-		 String domain = userContext.getDomain();
-		 ContactInfo contactInfo = userContext.getContactInfo();
-		 
-		 for (String userId : sharedContactsService.getAllDomainUsersWithReadAndWritePErmissionIncludingAdmin(domain)) {
-				System.out.println("contacts creation  uiser id  = " + userId);
-				ContactEntry newentry = makeContact(contactInfo);
-				String userGroupId = getUserGroupId(userId + "@" + domain,domain); // added
 
+	protected final Logger logger = Logger.getLogger(getClass().getName());
+
+	@Override
+	public WorkflowContext execute(WorkflowContext context)
+			throws WorkflowExecutionException {
+		AddContactForAllDomainUsersContext userContext = (AddContactForAllDomainUsersContext) context;
+		String domain = userContext.getDomain();
+		ContactInfo contactInfo = userContext.getContactInfo();
+
+		for (String userId : sharedContactsService
+				.getAllDomainUsersWithReadAndWritePErmissionIncludingAdmin(domain)) {
+			System.out.println("contacts creation  uiser id  = " + userId);
+			ContactEntry newentry = makeContact(contactInfo);
+			String email = userId + "@" + domain;
+			String userGroupId = getUserGroupId(email, domain); // added
+			// String userGroupId =
+			// sharedContactsService.getMyContactsGroupId(userId + "@" +
+			// domain);
+			if (!StringUtils.isBlank(userGroupId)) {
 				GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
 				userGmInfo.setHref(userGroupId); // added
 				newentry.addGroupMembershipInfo(userGmInfo);
+				String myContactsGroupId = sharedContactsService
+						.getMyContactsGroupId(email);
+				GroupMembershipInfo myContactsGmInfo = new GroupMembershipInfo(); // added
+				myContactsGmInfo.setHref(myContactsGroupId); // added
+				newentry.addGroupMembershipInfo(myContactsGmInfo);
 				try {
-					sharedContactsService.createUserContact(newentry, userId + "@" + domain);
+					sharedContactsService.createUserContact(newentry, email);
 				} catch (AppException e) {
-					logger.log(Level.SEVERE,"Unable to Create user in workflow");
+					logger.log(Level.SEVERE,
+							"Unable to Create user in workflow");
 				}
 			}
-		 
-		 return userContext;
+		}
+
+		return userContext;
 	}
 
 	private ContactEntry makeContact(ContactInfo contactInfo) {
-		String fullname =contactInfo.getFullname();
+		String fullname = contactInfo.getFullname();
 		String givenname = contactInfo.getGivenname();
 		String familyname = contactInfo.getFamilyname();
 		String companyname = contactInfo.getCompanyname();
-		String companydept =contactInfo.getCompanydept();
+		String companydept = contactInfo.getCompanydept();
 		String companytitle = contactInfo.getCompanytitle();
 		String workemail = contactInfo.getWorkemail();
 		String homeemail = contactInfo.getHomeemail();
@@ -75,10 +89,10 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask{
 		String workphone = contactInfo.getWorkphone();
 		String homephone = contactInfo.getHomephone();
 		String mobilephone = contactInfo.getMobilephone();
-		String workaddress =contactInfo.getWorkaddress();
+		String workaddress = contactInfo.getWorkaddress();
 		String homeaddress = contactInfo.getHomeaddress();
-		String otheraddress =contactInfo.getOtheraddress();
-		String notes =contactInfo.getNotes();
+		String otheraddress = contactInfo.getOtheraddress();
+		String notes = contactInfo.getNotes();
 
 		logger.info("fullname: " + fullname);
 		logger.info("givenname: " + givenname);
@@ -187,7 +201,8 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask{
 		 */
 
 		if (!workaddress.equals("")) {
-			FormattedAddress formattedAddress = new FormattedAddress(workaddress);
+			FormattedAddress formattedAddress = new FormattedAddress(
+					workaddress);
 			StructuredPostalAddress postalAddress = new StructuredPostalAddress();
 			postalAddress.setFormattedAddress(formattedAddress);
 			postalAddress.setRel(StaticProperties.WORK_REL);
@@ -196,7 +211,8 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask{
 		}
 
 		if (!homeaddress.equals("")) {
-			FormattedAddress formattedAddress = new FormattedAddress(homeaddress);
+			FormattedAddress formattedAddress = new FormattedAddress(
+					homeaddress);
 			StructuredPostalAddress postalAddress = new StructuredPostalAddress();
 			postalAddress.setFormattedAddress(formattedAddress);
 			postalAddress.setRel(StaticProperties.HOME_REL);
@@ -205,7 +221,8 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask{
 		}
 
 		if (!otheraddress.equals("")) {
-			FormattedAddress formattedAddress = new FormattedAddress(otheraddress);
+			FormattedAddress formattedAddress = new FormattedAddress(
+					otheraddress);
 			StructuredPostalAddress postalAddress = new StructuredPostalAddress();
 			postalAddress.setFormattedAddress(formattedAddress);
 			postalAddress.setRel(StaticProperties.OTHER_REL);
@@ -230,13 +247,14 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask{
 
 		if (!notes.equals("")) {
 			// contact.setContent(new PlainTextConstruct(notes));
-			contact.getUserDefinedFields().add(new UserDefinedField("Notes", notes));
+			contact.getUserDefinedFields().add(
+					new UserDefinedField("Notes", notes));
 		}
 
 		return contact;
-	} 
-	
-	private String getUserGroupId(String email,String domain) {
+	}
+
+	private String getUserGroupId(String email, String domain) {
 
 		String groupId = null;
 
@@ -244,18 +262,27 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask{
 			String sharedContactsGroupName = sharedContactsService
 					.getGroupName(domain);
 
-			groupId = sharedContactsService.getUserContactsGroupId(sharedContactsGroupName, email);
-			logger.info("sharedContactsGroupName ===> " + sharedContactsGroupName);
+			groupId = sharedContactsService.getUserContactsGroupId(
+					sharedContactsGroupName, email);
+			logger.info("sharedContactsGroupName ===> "
+					+ sharedContactsGroupName);
 			logger.info("groupId ===> " + groupId);
 			while (groupId == null || groupId.equals("")) {
 				ContactGroupEntry group = new ContactGroupEntry();
 				group.setSummary(new PlainTextConstruct(sharedContactsGroupName));
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
+				try {
+					Thread.sleep(5000);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+
 				// sharedContactsService.createGroup(group,
 				// getCurrentUser(request).getEmail());
 				sharedContactsService.createGroup(group, email);
 
-				groupId = sharedContactsService.getUserContactsGroupId(sharedContactsGroupName, email);
+				groupId = sharedContactsService.getUserContactsGroupId(
+						sharedContactsGroupName, email);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -6,10 +6,10 @@
 	<!-- <application>perezarndtsc</application> -->
 	<!-- <application>netkillersc</application> -->
 	<application>netkillersc1</application>
-	<version>3</version>
+	<version>7</version>
 	
 	<sessions-enabled>true</sessions-enabled>
-	
+	<precompilation-enabled>true</precompilation-enabled>
 	<!-- Configure java.util.logging -->
 	<system-properties>
 		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>

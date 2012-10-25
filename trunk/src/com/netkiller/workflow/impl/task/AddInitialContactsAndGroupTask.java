@@ -35,16 +35,19 @@ public class AddInitialContactsAndGroupTask extends AbstractWorkflowTask{
 		
 		System.out.println(sharedContactsService.getAllDomainUsersIncludingAdmin(domain));
 		for (String userId : sharedContactsService.getAllDomainUsersIncludingAdmin(domain)) {
-			if(userId.equals("jitender")){
-				System.out.println("boga");
-			}
 			List<ContactEntry> contactEntries = new ArrayList<ContactEntry>();
 			String thisEmail = userId + "@" + domain;
 			String userGroupId = getUserGroupId(thisEmail,group); // added
-			for (ContactEntry entry : makeInitialContacts()) {
-				GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
-				userGmInfo.setHref(userGroupId); // added
+			GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
+			userGmInfo.setHref(userGroupId); // added
+			
+			String myContactsGroupId = sharedContactsService.getMyContactsGroupId(thisEmail);
+			GroupMembershipInfo myContactsGmInfo = new GroupMembershipInfo(); // added
+			myContactsGmInfo.setHref(myContactsGroupId); // added
+			
+			for (ContactEntry entry : makeInitialContacts()) {				
 				entry.addGroupMembershipInfo(userGmInfo);
+				entry.addGroupMembershipInfo(myContactsGmInfo);
 				contactEntries.add(entry);
 			}
 			
@@ -86,6 +89,12 @@ public class AddInitialContactsAndGroupTask extends AbstractWorkflowTask{
 				group.setTitle(new PlainTextConstruct(sharedContactsGroupName));
 				// sharedContactsService.createGroup(group,
 				// getCurrentUser(request).getEmail());
+				try {
+					Thread.sleep(5000);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+
 				ContactGroupEntry groupEntry = sharedContactsService.createGroup(group, email);
 				if(groupEntry!=null)	
 				groupId = groupEntry.getId();

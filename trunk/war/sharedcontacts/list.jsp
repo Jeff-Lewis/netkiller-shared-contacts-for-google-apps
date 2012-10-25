@@ -115,11 +115,40 @@ document.getElementById('container').style.display="";
 <script type="text/javascript" src='/js/i18n/grid.locale-en.js'></script>
 <script type="text/javascript" src='/js/jquery.jqGrid.min.js'></script>
 <script type="text/javascript" src="/js/jquery.fileinput.min.js"></script>
-
+<script type="text/javascript" src='/js/jquery.numeric.js'></script>
 <script type="text/javascript">
+function hasNumbers(t,a)
+{
+	
+var returnValue = /\d/.test(t);
+var msg="";
+returnValue = !returnValue;
+if(!returnValue){
+	msg=" cannot contain numbers"
+}
 
+return [returnValue,msg];
+}
 
+function isEmail(email,a) {
+	  var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		var returnValue = regex.test(email);
+		var msg="";
+		
+		if(!returnValue){
+			msg="is not a valid email"
+		}
+		
+	  return [returnValue,msg];
+	}
 
+function beforeEdit(e){
+	$(".editable:lt(4)").each(function(){
+		console.log($(this));
+		$(this).attr('maxlength',32);		
+	});
+//	$(".editable:eq(5)").numeric({ decimal: false, negative: false });
+}
 function submitForm(e)
 {
 
@@ -383,8 +412,8 @@ $(document).ready(function() {
 		           {name:'givenname',index:'givenname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:80},
 		           {name:'familyname',index:'familyname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:80,  searchoptions:{sopt:['eq','bw']}},
 		           {name:'company',index:'company',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100}, 
-		           {name:'email',index:'email',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:130, align:"left"}, 
-		           {name:'phone',index:'phone',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100, align:"left"}, 
+		           {name:'email',index:'email',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true, custom:true,    custom_func:isEmail}, editable:true, width:130, align:"left"}, 
+		           {name:'phone',index:'phone',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:100, align:"left"}, 
 		           {name:'address',index:'address', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:225,align:"left",sortable:false},
 		           {name:'act',index:'act', width:118,search:false, sortable:false}		           
 		           
@@ -405,7 +434,7 @@ $(document).ready(function() {
 			for(var i=0;i < ids.length;i++){
 				var cl = ids[i];
 				div1 = "<div align='center'>";
-				be = "<input class='row_bt' type='button' value='Edit' onclick=\"resetEdit();jQuery('#list2').editRow('"+cl+"');\"  />"; 
+				be = "<input class='row_bt' type='button' value='Edit' onclick=\"resetEdit();jQuery('#list2').editRow('"+cl+"',null,beforeEdit);\"  />"; 
 				se = "<input class='row_bt' type='button' value='Save' onclick=\"jQuery('#list2').saveRow('"+cl+"');\"  />"; 
 				
 				//ce = "<input style='height:22px;width:50px;' type='button' value='Cancel' onclick=\"jQuery('#list2').restoreRow('"+cl+"');\" />"; 
@@ -716,6 +745,16 @@ function getCellValue(rowId, cellId) {
 						</tr>
 					</table>
 					<%
+						}else{
+					%>
+						<table border="0">
+						<tr>
+						<td>
+								<button id="Sync" >Sync
+									</button></td>
+									</tr>
+					</table>
+						<%
 						}
 					%>
 				</div>
@@ -882,9 +921,9 @@ function getCellValue(rowId, cellId) {
 			<div style="font-size: 12px; width: 480px; text-align: middle;">
 				<table width="100%" border="0">
 					<tr>
-						<td width="18%"><input id="syncButton" value="Ok" type="button" name="syncButton" />
+						<td width="18%"><input id="syncButton" style=" width: 70px;" value="Ok" type="button" name="syncButton" />
 						</td>
-						<td ><input id="cancelButton" type="button"
+						<td ><input id="cancelButton" type="button" class="ui-button ui-widget ui-state-default ui-corner-all"
 							name="Submit" value="Cancel" />
 						</td>
 					</tr>

@@ -85,8 +85,10 @@ if(!queryParams.toString().equals("")){
  <%} %>
   <a style="text-decoration: none;" href="javascript:deleteDuplicate()">Delete Duplicate Groups</a>
 &nbsp;|&nbsp;
+ <a style="text-decoration: none;" target="_blank" href="https://groups.google.com/forum/?hl=en&fromgroups#!forum/netkillersc">Support</a>
+&nbsp;|&nbsp;
 <% if( !logoutUrl.equals("") ){ %>
-<a href="<%= logoutUrl %>" style="text-decoration: none;">Sign out</a>&nbsp;&nbsp;
+<a href="<%= logoutUrl %>" style="text-decoration: none;">Log out</a>&nbsp;&nbsp;
 <% } %>
 </td>
 </tr>

@@ -111,10 +111,19 @@ font-size: 15px;
 <script type="text/javascript" src='/js/jquery-ui-1.8.12.custom.min.js'></script>
 <script type="text/javascript" src='/js/i18n/grid.locale-en.js'></script>
 <script type="text/javascript" src='/js/jquery.jqGrid.min.js'></script>
+<script type="text/javascript" src='/js/jquery.numeric.js'></script>
 <script type="text/javascript">
-
-$(document).ready ( function () {
+function isEmail(email) {
+	  var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	  return regex.test(email);
+	}
 	
+function hasNumbers(t)
+{
+return /\d/.test(t);
+}
+$(document).ready ( function () {
+	//$("#workphone,#homephone,#mobilephone").numeric({ decimal: false, negative: false });
 	$('#givenname').change(function(){
 		$('#fullname').val($('#givenname').val()+" "+$('#familyname').val());
 		});
@@ -147,10 +156,35 @@ $(document).ready ( function () {
 			$("#givenname").focus();
 			return;
 		}
+		if($givenname.length > 32){
+			alert("First Name cannot be more than 32 characters!");
+			$("#givenname").focus();
+			return;
+		}
+		/* if(hasNumbers($givenname)){
+			alert("First Name cannot contain numbers!");
+			$("#givenname").focus();
+			return;
+		} */
 		
 		if($familyname == ""){
 			alert("Last Name is necessary!");
 			$("#familyname").focus();
+			return;
+		}
+		if($familyname.length > 32){
+			alert("Last Name cannot be more than 32 characters!");
+			$("#familyname").focus();
+			return;
+		}
+		/* if(hasNumbers($familyname)){
+			alert("Last Name cannot contain numbers!");
+			$("#familyname").focus();
+			return;
+		}
+ */		if($companyname && $companyname.length > 32){
+			alert("Company Name cannot be more than 32 characters!");
+			$("#companyname").focus();
 			return;
 		}
 		
@@ -159,6 +193,24 @@ $(document).ready ( function () {
 			$("#workemail").focus();
 			return;
 		}
+		
+		if($otheremail && !isEmail($otheremail) ){
+			alert("Please enter valid email!");
+			$("#otheremail").focus();
+			return;
+		}
+		if($homeemail &&  !isEmail($homeemail) ){
+			alert("Please enter valid email!");
+			$("#homeemail").focus();
+			return;
+		}
+		
+		if($workemail && !isEmail($workemail) ){
+			alert("Please enter valid email!");
+			$("#workemail").focus();
+			return;
+		}
+		
 		var $workphone = $("#workphone").val();
 		var $homephone = $("#homephone").val();
 		var $mobilephone = $("#mobilephone").val();
@@ -166,6 +218,14 @@ $(document).ready ( function () {
 		var $homeaddress = $("#homeaddress").val();
 		var $otheraddress = $("#otheraddress").val();
 		var $notes = $("#notes").val();
+		
+		if($workphone == "" && $homephone =="" && $mobilephone == ""){
+			alert("Phone Number is necessary!");
+			$("#workphone").focus();
+			return;
+		}
+		
+		
 		var $data = { 
 				cmd: 'actmodify', 
 				id: $id, 
@@ -371,10 +431,11 @@ function backToContacts(){
 		<div style="text-align:left;margin:10px 0px 10px 0px;">
 			<!-- button id="SelectAll" style="font-family:Arial;font-size:12px;height:30px;width:80px;text-align:center;">Select All</button-->
 			<table border="0" width="100%">
+			<tr><td><span class="required" style="margin-left:30px;">* </span><span style="color:red;font-size:14px;">Required Field</span></td></tr>
 			<tr>
 			<td valign="middle" style="font-family:Arial;font-size:13px;">
-				<a href="javascript:backToContacts();" style="color:#3B5323;text-decoration: none;"><< &nbsp; Back to contacts</a>
-			<span class="required">* </span><span style="color:red;font-size:14px;">Required Field</span></td>
+				<a href="javascript:backToContacts();" style="text-decoration: none;font-weight: bold;"><< &nbsp; Back to contacts</a>
+			</td>
 			<td align="right">
 				<table border="0">
 				<tr><td>
@@ -400,8 +461,8 @@ function backToContacts(){
  							<tr>
  								
  								<td width="33%">First Name<span class="required">*&nbsp</span>:&nbsp;<input id="givenname" type="text" class="txtBox" value="<%= givenName %>" style="margin-left:5px;"/></td>
- 								<td width="33%">Last Name<span class="required">*&nbsp</span>: <input id="familyname" type="text" class="txtBox" value="<%= familyName %>"/></td>
- 								<td width="33%">Full Name: <input id="fullname" type="text" class="txtBox" value="<%= fullName %>"/></td>
+ 								<td width="33%">Last Name<span class="required">*&nbsp</span>: <input id="familyname" type="text" class="txtBox"  value="<%= familyName %>"/></td>
+ 								<td width="33%">Full Name: <input id="fullname" type="text" class="txtBox" style="margin-left:7px;" value="<%= fullName %>"/></td>
  							</tr>
  						</table>
 			</div>
@@ -409,8 +470,8 @@ function backToContacts(){
 				<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Company</h5>
  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
  							<tr>
- 								<td width="33%" >Name: <input id="companyname" type="text" class="txtBox" value="<%= orgName %>" style="margin-left:20px" /></td>
- 								<td width="33%" >Department: <input id="companydept" type="text" class="txtBox" value="<%= orgDept %>"/></td>
+ 								<td width="33%" >Name: <input id="companyname" type="text" class="txtBox" value="<%= orgName %>" style="margin-left:41px" /></td>
+ 								<td width="33%" >Department: <input id="companydept" type="text" class="txtBox" style="margin-left:4px;" value="<%= orgDept %>"/></td>
  								<td width="33%" >Title: <input id="companytitle" type="text" class="txtBox" value="<%= orgTitle %>" style="margin-left:39px" /></td>
  							</tr>
  						</table>
@@ -419,8 +480,8 @@ function backToContacts(){
 				<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Email</h5>
  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
  							<tr>
- 								<td width="33%">Work<span class="required">*&nbsp</span>: <input id="workemail" type="text" class="txtBox" value="<%= workEmail %>" style="margin-left:25px"/></td>
- 								<td width="33%">Home: <input id="homeemail" type="text" class="txtBox" value="<%= homeEmail %>" style="margin-left:32px"/></td>
+ 								<td width="33%">Work<span class="required">*&nbsp</span>: <input id="workemail" type="text" class="txtBox" value="<%= workEmail %>" style="margin-left:36px"/></td>
+ 								<td width="33%">Home: <input id="homeemail" type="text" class="txtBox" value="<%= homeEmail %>" style="margin-left:37px"/></td>
  								<td width="33%">Other: <input id="otheremail" type="text" class="txtBox" value="<%= otherEmail %>" style="margin-left:32px"/></td>
  							</tr>
  						</table>
@@ -429,8 +490,8 @@ function backToContacts(){
 				<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Phone</h5>
  						<table width="100%" height="15px" style="margin:5px 0px 0px 0px">
  							<tr>
- 								<td width="33%">Work<span class="required">*&nbsp</span>: <input id="workphone" type="text" class="txtBox" value="<%= workPhoneNumber %>" style="margin-left:25px"/></td>
- 								<td width="33%">Home: <input id="homephone" type="text" class="txtBox" value="<%= homePhoneNumber %>" style="margin-left:32px"/></td>
+ 								<td width="33%">Work<span class="required">*&nbsp</span>: <input id="workphone" type="text" class="txtBox" value="<%= workPhoneNumber %>" style="margin-left:36px"/></td>
+ 								<td width="33%">Home: <input id="homephone" type="text" class="txtBox" value="<%= homePhoneNumber %>" style="margin-left:37px"/></td>
  								<td width="33%">Mobile: <input id="mobilephone" type="text" class="txtBox" value="<%= mobilePhoneNumber %>" style="margin-left:28px"/></td>
  							</tr>
  						</table>
@@ -439,13 +500,13 @@ function backToContacts(){
 				<h5 class="ui-widget-header" style="font-family:Arial;text-align:center;width:120px;font-size:17px">Address</h5>
  						<table width="100%" height="15px" style="margin:2px 0px 0px 0px">
  							<tr>
- 								<td width="40px" height="25px" >Work: </td><td align="left"><input id="workaddress" type="text" class="txtBox" value="<%= workAddress %>" size="100" style="margin-left:22px" /></td>
+ 								<td width="40px" height="25px" >Work: </td><td align="left"><input id="workaddress" type="text" class="txtBox" value="<%= workAddress %>" size="100" style="margin-left:41px" /></td>
  							</tr>
  							<tr>
- 								<td height="25px">Home: </td><td align="left"><input id="homeaddress" type="text" class="txtBox" value="<%= homeAddress %>" size="100" style="margin-left:22px"/></td>
+ 								<td height="25px">Home: </td><td align="left"><input id="homeaddress" type="text" class="txtBox" value="<%= homeAddress %>" size="100" style="margin-left:41px"/></td>
  							</tr>
  							<tr>
- 								<td height="25px">Other: </td><td align="left"><input id="otheraddress" type="text" class="txtBox" value="<%= otherAddress %>" size="100" style="margin-left:22px"/></td>
+ 								<td height="25px">Other: </td><td align="left"><input id="otheraddress" type="text" class="txtBox" value="<%= otherAddress %>" size="100" style="margin-left:41px"/></td>
  							</tr>
  						</table>
 			</div>
