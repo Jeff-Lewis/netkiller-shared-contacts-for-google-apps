@@ -976,7 +976,8 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		try {
 
 			ContactsService service = getContactsService();
-
+			Customer cust = getDomainAdminEmail(CommonWebUtil
+					.getDomain(email));
 			logger.info("start ==> " + start);
 			String feedurl = appProperties.getFeedurl();
 			feedurl = feedurl + CommonWebUtil.getDomain(email) + "/full";
@@ -995,7 +996,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 																		// "descending"
 			query.setStringCustomParameter("showdeleted", "false");
 			// query.setStringCustomParameter("q", "saurab");
-			query.setStringCustomParameter("xoauth_requestor_id", email);
+			query.setStringCustomParameter("xoauth_requestor_id", cust.getAdminEmail());
 			if (isUseForSharedContacts) {
 				query.setStringCustomParameter("group", groupId);
 			}
@@ -1006,8 +1007,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 			contactVOs = resultFeed.getEntries();
 			System.out.println("Total size contactsVO" + contactVOs.size());
-			Customer cust = getDomainAdminEmail(CommonWebUtil
-					.getDomain(email));
+
 			if (cust != null && contactVOs.size() != cust.getTotalContacts()) {
 				updateTotalContacts(cust.getId(), contactVOs.size());
 			}
