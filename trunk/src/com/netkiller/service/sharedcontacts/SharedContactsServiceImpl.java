@@ -623,7 +623,15 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			ContactFeed batchFeed = null;
 			URL feedUrl = new URL(feedurlStr);
 			ContactsService service = getContactsService();
-			ContactFeed feed = service.getFeed(feedUrl, ContactFeed.class);
+			ContactFeed feed = null;
+			for (int i = 0; i < 5; i++) {
+				try {
+					feed = service.getFeed(feedUrl, ContactFeed.class);
+					break;
+				} catch (Exception e) {
+					Thread.sleep(800);
+				}
+			}
 
 			List<List> container = split(contactEntries);
 			logger.info("==> container size: " + container.size());
@@ -958,6 +966,64 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	 * e.printStackTrace(); logger.severe(e.getMessage()); throw new
 	 * AppException(); } return contactVOs; } //
 	 */
+	
+	public List<ContactEntry> getContacts(int start, int limit, String groupId,
+			boolean isUseForSharedContacts, GridRequest gridRequest,String email)
+			throws AppException {
+		
+		
+		List<ContactEntry> contactVOs = null;
+		try {
+
+			ContactsService service = getContactsService();
+
+			logger.info("start ==> " + start);
+			String feedurl = appProperties.getFeedurl();
+			feedurl = feedurl + CommonWebUtil.getDomain(email) + "/full";
+			// feedurl = feedurl + userEmail + "/full";
+			URL feedUrl = new URL(feedurl); // Contacts
+			Query query = new Query(feedUrl);
+			if (limit != -1 || start != -1) {
+				query.setMaxResults(limit); // paging
+				query.setStartIndex(start); // paging
+			}
+			// query.setStartIndex(1); //paging
+			// query.setStringCustomParameter("showdeleted","true");
+			query.setStringCustomParameter("orderby", "lastmodified");
+			query.setStringCustomParameter("sortorder", "descending"); // "ascending"
+																		// or
+																		// "descending"
+			query.setStringCustomParameter("showdeleted", "false");
+			// query.setStringCustomParameter("q", "saurab");
+			query.setStringCustomParameter("xoauth_requestor_id", email);
+			if (isUseForSharedContacts) {
+				query.setStringCustomParameter("group", groupId);
+			}
+
+			// ContactFeed resultFeed = service.getFeed(feedUrl,
+			// ContactFeed.class);
+			ContactFeed resultFeed = service.query(query, ContactFeed.class);
+
+			contactVOs = resultFeed.getEntries();
+			System.out.println("Total size contactsVO" + contactVOs.size());
+			Customer cust = getDomainAdminEmail(CommonWebUtil
+					.getDomain(email));
+			if (cust != null && contactVOs.size() != cust.getTotalContacts()) {
+				updateTotalContacts(cust.getId(), contactVOs.size());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// logger.log(Level.SEVERE, e.getMessage(), e);
+			// throw new AppException();
+			System.out.println("error : " + e.getMessage() );
+			if(e.getCause()!=null){
+				System.out.println(e.getCause().getMessage());
+			}
+		}
+		return contactVOs;
+	}
+	
+	
 	public List<ContactEntry> getContacts(int start, int limit, String groupId,
 			boolean isUseForSharedContacts, GridRequest gridRequest)
 			throws AppException {
@@ -1004,6 +1070,10 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			e.printStackTrace();
 			// logger.log(Level.SEVERE, e.getMessage(), e);
 			// throw new AppException();
+			System.out.println("error : " + e.getMessage() );
+			if(e.getCause()!=null){
+				System.out.println(e.getCause().getMessage());
+			}
 		}
 		return contactVOs;
 	}

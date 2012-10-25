@@ -13,7 +13,7 @@
   </queue>
   <queue>
     <name>call-workflow</name>
-    <rate>1/m</rate>
+    <rate>1/s</rate>
     <retry-parameters>
     	<task-retry-limit>3</task-retry-limit>
     	<min-backoff-seconds>10</min-backoff-seconds>
