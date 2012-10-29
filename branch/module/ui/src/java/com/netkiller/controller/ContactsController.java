@@ -414,6 +414,8 @@ public class ContactsController extends AbstractController {
 	public Boolean updateContactFromGrid(HttpServletRequest request)
 			throws AppException {
 		String keyLong = request.getParameter("keyLong");
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
 		if (!StringUtils.isBlank(keyLong)) {
 			String lastName = request.getParameter("lastName");
 			String companyName = request.getParameter("cmpnyName");
@@ -430,7 +432,7 @@ public class ContactsController extends AbstractController {
 			contact.setWorkPhone(workPhone);
 			contact.setWorkAddress(workAddress);
 
-			contactsManager.createContact(contact);
+			contactsManager.createContact(contact, user.getEmail());
 
 		}
 		return true;

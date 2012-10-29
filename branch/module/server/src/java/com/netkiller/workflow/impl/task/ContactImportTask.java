@@ -71,7 +71,8 @@ public class ContactImportTask extends AbstractWorkflowTask {
 			ArrayList<String> row = storedValueList.get(i);
 			Contact contact = createNewContact(row);
 			if (contact != null) {
-				contact = contactsManager.createContact(contact);
+				contact = contactsManager.createContact(contact,
+						CommonWebUtil.getDomain(email));
 				contactsManager.addContactForAllDomainUsers(
 						CommonWebUtil.getDomain(email), contact);
 			}

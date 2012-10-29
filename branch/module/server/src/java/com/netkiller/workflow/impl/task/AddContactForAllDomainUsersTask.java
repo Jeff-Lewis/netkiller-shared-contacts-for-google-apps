@@ -60,7 +60,7 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 			String userGroupId = getUserGroupId(userId + "@" + domain, domain); // added
 			UserContact userContact = new UserContact();
 			userContact.setContactKey(contacts.getKey());
-			userContact.setUserEmail(userId+"@"+domain);
+			userContact.setUserEmail(userId + "@" + domain);
 			// userContact.setContactId(newentry.getId());
 			userContact.setContacts(contacts);
 			userContact.setDomainName(domain);
@@ -79,7 +79,7 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 								+ contactEntry.getEditLink().getHref());
 				userContact.setContactId(contactEntry.getEditLink().getHref());
 				try {
-					userContactService.createUserContact(userContact,domain);
+					userContactService.createUserContact(userContact, domain);
 				} catch (AppException e1) {
 					e1.printStackTrace();
 				}
@@ -248,6 +248,7 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 				// sharedContactsService.createGroup(group,
 				// getCurrentUser(request).getEmail());
 				service.createGroup(group, email);
+				Thread.sleep(5000);
 
 				groupId = service.getUserContactsGroupId(
 						sharedContactsGroupName, email);

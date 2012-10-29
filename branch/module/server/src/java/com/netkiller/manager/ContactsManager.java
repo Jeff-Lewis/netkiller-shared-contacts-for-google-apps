@@ -84,6 +84,14 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 		 */return service.createContact(contacts);
 	}
 
+	public Contact createContact(Contact contacts, String domain)
+			throws AppException {
+		/*
+		 * super.setGlobalFilterProperties(contacts, dataContext,
+		 * this.getEntityMetaData());
+		 */return service.createContact(contacts, domain);
+	}
+
 	public Contact updateContact(Contact contacts, DataContext dataContext)
 			throws AppException {
 		// super.updateGlobalFilterProperties(contacts, this);
@@ -183,7 +191,8 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 		return service.getSharedContactsGroupId(grpName);
 	}
 
-	/*public String getAllContactOfAUser(String userEmailDec) {
-		return service.getAllContactOfAUser(userEmailDec);
-	}*/
+	/*
+	 * public String getAllContactOfAUser(String userEmailDec) { return
+	 * service.getAllContactOfAUser(userEmailDec); }
+	 */
 }

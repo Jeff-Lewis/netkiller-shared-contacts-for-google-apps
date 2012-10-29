@@ -23,6 +23,7 @@ import com.google.gdata.data.extensions.Organization;
 import com.google.gdata.data.extensions.PhoneNumber;
 import com.google.gdata.data.extensions.StructuredPostalAddress;
 import com.netkiller.core.AppException;
+import com.netkiller.entity.Contact;
 import com.netkiller.service.ContactsService;
 import com.netkiller.util.AppLogger;
 import com.netkiller.util.CommonWebUtil;
@@ -51,8 +52,7 @@ public class AddGroupToAllContactsForDomainTask extends AbstractWorkflowTask {
 
 		for (String userId : service.getAllDomainUsersIncludingAdmin(domain)) {
 			List<ContactEntry> contactEntries = new ArrayList<ContactEntry>();
-			String userGroupId = getUserGroupId(userId + "@" + domain,
-					group); // added
+			String userGroupId = getUserGroupId(userId + "@" + domain, group); // added
 			for (ContactEntry entry : makeInitialContacts()) {
 				GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
 				userGmInfo.setHref(userGroupId); // added
@@ -88,6 +88,7 @@ public class AddGroupToAllContactsForDomainTask extends AbstractWorkflowTask {
 		return contactEntries;
 	}
 
+	
 	public ContactEntry makeContact(String fullname, String givenname,
 			String familyname, String companydept, String workemail,
 			String workphone, String workaddress) {
@@ -258,7 +259,7 @@ public class AddGroupToAllContactsForDomainTask extends AbstractWorkflowTask {
 				// sharedContactsService.createGroup(group,
 				// getCurrentUser(request).getEmail());
 				group = service.createGroup(group, email);
-
+				Thread.sleep(5000);
 				groupId = group.getId();
 			}
 		} catch (Exception e) {

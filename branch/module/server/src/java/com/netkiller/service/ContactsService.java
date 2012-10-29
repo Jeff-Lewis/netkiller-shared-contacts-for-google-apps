@@ -285,6 +285,55 @@ public class ContactsService extends AbstractService {
 
 	}
 
+	public Contact createContact(Contact contacts, String domain)
+			throws AppException {
+		try {
+
+			super.validate(contacts, entityMetaData, globalFilterSearchService,
+					null);
+			contacts = contactsDao.create(contacts);
+			EntityCounter entityCounter = entityCounterDao.getByEntityName(
+					Contact.class.getSimpleName(), domain);
+			if (entityCounter == null) {
+				entityCounter = new EntityCounter();
+				entityCounter.setCount(1);
+				entityCounter.setEntityName(Contact.class.getSimpleName());
+				entityCounter.setDomain(domain);
+				entityCounter = entityCounterManager.create(entityCounter);
+
+			} else {
+				int count = entityCounter.getCount();
+				count++;
+				entityCounter.setCount(count);
+				try {
+					entityCounter = (EntityCounter) BeanUtils
+							.cloneBean(entityCounter);
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				entityCounterManager.update(entityCounter);
+			}
+
+			return contacts;
+
+		} catch (DataAccessException dae) {
+			String message = "Unable to create contact:" + contacts;
+			log.error(message, dae);
+			throw new AppException(message, dae);
+		}
+
+	}
+
 	public List<UserContact> getUserContactForDomain(String domain) {
 		return userContactDao.getUserContactListForDomain(domain);
 	}
@@ -722,6 +771,7 @@ public class ContactsService extends AbstractService {
 
 	public void addGroupToAllContactForDomain(String domain, String group,
 			String email) throws AppException {
+		createInitialContacts(domain);
 		Workflow workflow = addGroupToAllContactForDomainWorkflow(domain,
 				group, email);
 		if (workflow != null) {
@@ -729,6 +779,40 @@ public class ContactsService extends AbstractService {
 			workflowService.updateWorkflow(workflow);
 			workflowService.triggerWorkflow(workflow);
 		}
+	}
+
+	public void createInitialContacts(String domain) throws AppException {
+		makeContactInDB("Netkiller", "Support", "Support",
+				"support@netkiller.com", "1-424-785-0180",
+				"2033 Gateway Place, Ste 500, San Jose, CA 95110", domain);
+		makeContactInDB("Netkiller", "Sales", "Sales", "sales@netkiller.com",
+				"1-424-785-0180",
+				"2033 Gateway Place, Ste 500, San Jose, CA 95110", domain);
+		makeContactInDB(
+				"Netkiller",
+				"Korea",
+				"Support",
+				"support@netkiller.com",
+				"82-2-2052-0453",
+				"16F, Gangnam BLDG.,1321-1 Seocho-dong, Seocho-gu, Seoul 137070, South Korea",
+				domain);
+
+	}
+
+	public Contact makeContactInDB(String firstName, String lastName,
+			String companydept, String workemail, String workphone,
+			String workaddress, String domain) throws AppException {
+		Contact contact = new Contact();
+		contact.setFirstName(firstName);
+		contact.setLastName(lastName);
+		contact.setFullName(firstName + "" + lastName);
+		contact.setCmpnyDepartment(companydept);
+		contact.setWorkEmail(workemail);
+		contact.setWorkPhone(workphone);
+		contact.setWorkAddress(workaddress);
+		contact = createContact(contact, domain);
+		return contact;
+
 	}
 
 	private Workflow addGroupToAllContactForDomainWorkflow(String domain,
@@ -1266,7 +1350,12 @@ public class ContactsService extends AbstractService {
 				group.setSummary(new PlainTextConstruct(groupName));
 				group.setTitle(new PlainTextConstruct(groupName));
 				createGroup(group, userEmail);
-
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.out.println("InterruptedException");
+				}
 				groupId = getUserContactsGroupId(groupName, userEmail);
 			}
 			List<ContactEntry> contacts = null;
@@ -1328,6 +1417,7 @@ public class ContactsService extends AbstractService {
 
 		} catch (AppException e) {
 			System.out.println("Exception caught");
+			e.printStackTrace();
 		}
 	}
 
@@ -1813,33 +1903,82 @@ public class ContactsService extends AbstractService {
 		return adminEmail;
 	}
 
-	/*public String getAllContactOfAUser(String userEmailDec) {
-		String emailStr = "";
-		List<UserContact> userContactList = new ArrayList<UserContact>();
-		userContactList = userContactDao
-				.getUserContactListForUserEmail(userEmailDec);
-		List<Key> contactKeyList = new ArrayList<Key>();
-		if (userContactList != null && !userContactList.isEmpty()) {
+	public String getMyContactsGroupId(String email) {
+		String result = null;
 
-			for (UserContact userContact : userContactList) {
-				if (userContact.getContactKey() != null) {
-					contactKeyList.add(userContact.getContactKey());
+		try {
+
+			String feedurl = domainConfig.getGroupFeedUrl() + email + "/full";
+
+			String scGrpName = "System Group: My Contacts";
+			log.info("scGrpName: " + scGrpName);
+			com.google.gdata.client.contacts.ContactsService service = getContactsService();
+
+			URL retrieveUrl = new URL(feedurl);
+			Query query = new Query(retrieveUrl);
+			query.setMaxResults(100000); // paging
+			query.setStartIndex(1);
+			query.setStringCustomParameter("showdeleted", "false");
+			query.setStringCustomParameter("xoauth_requestor_id", email);
+
+			for (int counter = 0; counter < 5; counter++) {
+				try {
+					ContactGroupFeed resultFeed = service.query(query,
+							ContactGroupFeed.class);
+					Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+							.getEntries();
+					if (!contactGroupEntries.isEmpty()) {
+						String titleTmp = null;
+						TextConstruct tc = null;
+						for (ContactGroupEntry groupEntry : contactGroupEntries) {
+							tc = groupEntry.getTitle();
+							if (tc != null) {
+								titleTmp = tc.getPlainText();
+								// logger.info("Id: " + groupEntry.getId());
+								if (titleTmp.equals(scGrpName)) {
+									result = groupEntry.getId();
+									log.info("Group Name: " + titleTmp);
+									log.info("Group Id: " + result);
+									break;
+								}
+							}
+						}
+					}
+					break;
+				} catch (Exception e) {
+					System.out.println("retrying due to IO Error : "
+							+ e.getMessage());
+					System.out.println("sleeping!!!!!!!!!!!!!!!!!1111");
+					Thread.sleep(800);
 				}
 			}
-		}
-		List<Contact> contactList = new ArrayList<Contact>();
-		if (contactKeyList != null && !contactKeyList.isEmpty()) {
-			contactList = (List<Contact>) keyListService.getByKeys(
-					contactKeyList, Contact.class);
-		}
-		if (contactList != null && !contactList.isEmpty()) {
-			for (Contact contact : contactList) {
-				if (contact.getWorkEmail() != null) {
-					emailStr += contact.getWorkEmail();
-				}
-			}
+		} catch (Exception e) {
+			// e.printStackTrace();
+			// logger.severe("e.getMessage: " + e.getMessage());
+			log.error(e.getMessage(), e);
 		}
 
-		return emailStr;
-	}*/
+		return result;
+	}
+
+	/*
+	 * public String getAllContactOfAUser(String userEmailDec) { String emailStr
+	 * = ""; List<UserContact> userContactList = new ArrayList<UserContact>();
+	 * userContactList = userContactDao
+	 * .getUserContactListForUserEmail(userEmailDec); List<Key> contactKeyList =
+	 * new ArrayList<Key>(); if (userContactList != null &&
+	 * !userContactList.isEmpty()) {
+	 * 
+	 * for (UserContact userContact : userContactList) { if
+	 * (userContact.getContactKey() != null) {
+	 * contactKeyList.add(userContact.getContactKey()); } } } List<Contact>
+	 * contactList = new ArrayList<Contact>(); if (contactKeyList != null &&
+	 * !contactKeyList.isEmpty()) { contactList = (List<Contact>)
+	 * keyListService.getByKeys( contactKeyList, Contact.class); } if
+	 * (contactList != null && !contactList.isEmpty()) { for (Contact contact :
+	 * contactList) { if (contact.getWorkEmail() != null) { emailStr +=
+	 * contact.getWorkEmail(); } } }
+	 * 
+	 * return emailStr; }
+	 */
 }

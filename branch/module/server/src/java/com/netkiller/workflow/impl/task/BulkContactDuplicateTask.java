@@ -7,9 +7,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.netkiller.core.AppException;
 import com.netkiller.core.DataContext;
 import com.netkiller.entity.ConnectContact;
@@ -17,7 +14,6 @@ import com.netkiller.entity.Contact;
 import com.netkiller.manager.ConnectContactManager;
 import com.netkiller.manager.ContactsManager;
 import com.netkiller.util.AppLogger;
-import com.netkiller.util.CommonWebUtil;
 import com.netkiller.workflow.AbstractWorkflowTask;
 import com.netkiller.workflow.WorkflowContext;
 import com.netkiller.workflow.WorkflowExecutionException;
@@ -30,8 +26,9 @@ public class BulkContactDuplicateTask extends AbstractWorkflowTask {
 
 	@Autowired
 	private ContactsManager contactsManager;
-	
-	@Autowired ConnectContactManager connectContactManager;
+
+	@Autowired
+	ConnectContactManager connectContactManager;
 
 	@Override
 	public WorkflowContext execute(WorkflowContext context)
@@ -70,17 +67,18 @@ public class BulkContactDuplicateTask extends AbstractWorkflowTask {
 				}
 				contacts.setKey(null);
 				contacts.setFirstName(contacts.getFirstName() + "-copy");
-				contacts = contactsManager.createContact(contacts);
+				contacts = contactsManager.createContact(contacts, domain);
 				contactsManager.addContactForAllDomainUsers(domain, contacts);
-				if(bulkContactDplicateWorkflowContext.getAddToConnect()){
+				if (bulkContactDplicateWorkflowContext.getAddToConnect()) {
 					ConnectContact connectContact = new ConnectContact();
-					connectContact.setRandomUrl(bulkContactDplicateWorkflowContext.getUrlId());
+					connectContact
+							.setRandomUrl(bulkContactDplicateWorkflowContext
+									.getUrlId());
 					connectContact.setContactKey(contacts.getKey());
 					connectContact.setDomainName(domain);
 					connectContactManager.create(connectContact);
 				}
 
-				
 			}
 		} catch (AppException e) {
 			String msg = "duplicate operation failed";
