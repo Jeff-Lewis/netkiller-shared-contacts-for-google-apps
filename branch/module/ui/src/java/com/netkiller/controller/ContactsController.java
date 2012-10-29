@@ -416,7 +416,7 @@ public class ContactsController extends AbstractController {
 		String keyLong = request.getParameter("keyLong");
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		if (!StringUtils.isBlank(keyLong)) {
+		if (!StringUtils.isBlank(keyLong) && user != null) {
 			String lastName = request.getParameter("lastName");
 			String companyName = request.getParameter("cmpnyName");
 			String workEmail = request.getParameter("workEmail");
