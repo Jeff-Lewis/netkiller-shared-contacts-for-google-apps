@@ -398,7 +398,7 @@ $(document).ready(function() {
 	jQuery("#list2").jqGrid({ 
 		url:'/sharedcontacts/main.do?cmd=list_data<%=queryString%><%=defaultGridOrderQueryString%>',
 		datatype: "json",
-		<%if (isAdmin) {%>
+		<%if (isAdmin||isUserPermitted) {%>
 		colNames:['id', 'No.', '&nbsp;<input type="checkbox" onclick="checkBox(event)" /> ', 'First Name', 'Last Name', 'Company', 'Email', 'Phone', 'Address', 'Action'],
 		<%} else {%>
 		colNames:['id', 'No.', '&nbsp;<input type="checkbox" onclick="checkBox(event)" /> ', 'First Name', 'Last Name', 'Company', 'Email', 'Phone', 'Address'],
@@ -406,7 +406,7 @@ $(document).ready(function() {
 		colModel:[                   
 		           {name:'id',index:'id', width:0, hidden:true,search:false, hidedlg:true},		           
 		          
-		           <%if (isAdmin) {%>
+		           <%if (isAdmin||isUserPermitted) {%>
 		           {name:'no',index:'no', width:32, align:"center",search:false, sortable:false},
                    {name:'delete',index:'delete', sortable:false,search:false, formatter: "checkbox", formatoptions: {disabled : false}, editable: true, edittype:"checkbox", align:"center", width:32},		            
 		           {name:'givenname',index:'givenname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:80},
