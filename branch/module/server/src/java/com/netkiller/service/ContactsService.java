@@ -1961,6 +1961,18 @@ public class ContactsService extends AbstractService {
 		return result;
 	}
 
+	public void updateCounter(String domain, int counter,
+			int totalRecordsCounter) throws AppException {
+		EntityCounter entityCounter = entityCounterDao.getByEntityName(
+				Contact.class.getSimpleName(), domain);
+		entityCounter.setCount(counter);
+		entityCounterDao.update(entityCounter);
+	}
+
+	public List<Contact> getTotalContact() {
+		return contactsDao.getTotalContactList();
+	}
+
 	/*
 	 * public String getAllContactOfAUser(String userEmailDec) { String emailStr
 	 * = ""; List<UserContact> userContactList = new ArrayList<UserContact>();

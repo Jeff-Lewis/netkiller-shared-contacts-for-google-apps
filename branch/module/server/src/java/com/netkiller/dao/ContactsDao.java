@@ -24,4 +24,6 @@ public interface ContactsDao {
 
 	public List<Contact> doSearch(GridRequest gridRequest);
 
+	public List<Contact> getTotalContactList();
+
 }

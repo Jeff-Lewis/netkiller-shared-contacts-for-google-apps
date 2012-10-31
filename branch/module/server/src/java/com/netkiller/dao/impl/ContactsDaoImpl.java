@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springmodules.validation.bean.conf.loader.annotation.handler.MaxSize;
 
 import com.google.appengine.api.datastore.Key;
 import com.netkiller.FilterInfo;
@@ -85,11 +86,13 @@ public class ContactsDaoImpl extends AbstractDao<Contact> implements
 					.getRules();
 			if (ruleList != null && !ruleList.isEmpty()) {
 				for (FilterInfo.Rule rule : ruleList) {
-					filters += rule.getField() + ">='" + rule.getData() + "' && ";
-					filters += rule.getField() + "<'" + rule.getData() + "\ufffd' && ";
+					filters += rule.getField() + ">='" + rule.getData()
+							+ "' && ";
+					filters += rule.getField() + "<'" + rule.getData()
+							+ "\ufffd' && ";
 				}
 			}
-			
+
 		}
 		filters = filters.substring(0, filters.length() - 3);
 		// String type = gridRequest.getSearchBean().getType();
@@ -126,5 +129,43 @@ public class ContactsDaoImpl extends AbstractDao<Contact> implements
 		}
 
 		return objectList;
+	}
+
+	@Override
+	public List<Contact> getTotalContactList() {
+		int maxResults = 1000;
+		int start = 0;
+		int resultSize = 0;
+		String filters = "isDeleted==false";
+		List<Contact> contactList = new ArrayList<Contact>();
+		PersistenceManager pm = getPersistenceManager();
+		while (resultSize >= start) {
+			Query query = pm.newQuery(Contact.class);
+			query.setRange(start, start + maxResults);
+			query.setResult("key");
+			query.setResultClass(Key.class);
+			query.setFilter(filters);
+			List<Contact> results;
+			try {
+				results = (List<Contact>) query.execute();
+
+				if (!results.isEmpty()) {
+
+					resultSize += results.size();
+					start = maxResults;
+					maxResults += 1000;
+					contactList.addAll(results);
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				query.closeAll();
+
+			}
+		}
+
+		return contactList;
+
 	}
 }

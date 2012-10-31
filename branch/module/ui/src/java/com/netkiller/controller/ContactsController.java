@@ -1,6 +1,8 @@
 package com.netkiller.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -36,6 +40,7 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gdata.data.contacts.ContactLink;
 import com.netkiller.FilterInfo;
 import com.netkiller.FilterInfo.Rule;
 import com.netkiller.GridRequest;
@@ -64,6 +69,7 @@ import com.netkiller.search.property.operator.InputOrderByOperatorType;
 import com.netkiller.service.IPathshalaQueueService;
 import com.netkiller.service.WorkflowService;
 import com.netkiller.util.AppLogger;
+import com.netkiller.util.CSVFileReader;
 import com.netkiller.util.CommonWebUtil;
 import com.netkiller.util.GridRequestParser;
 import com.netkiller.view.validators.EntityValidator;
@@ -780,6 +786,7 @@ public class ContactsController extends AbstractController {
 	@RequestMapping({ "/contact/import.do", "/connect/import.do" })
 	public String importContacts(HttpServletRequest request, Model model,
 			HttpServletResponse response) throws AppException, IOException {
+		int taskCount = 0;
 		BlobstoreService blobstoreService = BlobstoreServiceFactory
 				.getBlobstoreService();
 		Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(request);
@@ -793,31 +800,67 @@ public class ContactsController extends AbstractController {
 
 		if (blobKey != null) {
 			blobKeyStr = blobKey.getKeyString();
-			String email = UserServiceFactory.getUserService().getCurrentUser()
-					.getEmail();
-			ContactImportContext workflowContext = new ContactImportContext();
-			workflowContext.setBlobKeyStr(blobKeyStr);
-			workflowContext.setEmail(email);
-			WorkflowInfo info = new WorkflowInfo(
-					"contactImportWorkflowProcessor");
 
-			info.setIsNewWorkflow(true);
-			workflowContext.setWorkflowInfo(info);
-			Workflow workflow = new Workflow();
-			workflow.setWorkflowName("ContactsUplaod");
-			workflow.setWorkflowInstanceId(info.getWorkflowInstance());
-			workflow.setContext(workflowContext);
-			workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
-			workflow = workflowService.createWorkflow(workflow);
-			System.out.println(workflow.getWorkflowInstanceId());
-			if (workflow != null) {
-				workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS
-						.toString());
-				workflowService.updateWorkflow(workflow);
-				workflowService.triggerWorkflow(workflow);
+			/*
+			 * BlobstoreService blobstoreService = BlobstoreServiceFactory
+			 * .getBlobstoreService();
+			 */
+			// BlobKey blobKey = new BlobKey(blobKeyStr);
+			BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
+			byte[] data = blobstoreService.fetchData(blobKey, 0,
+					blobInfo.getSize());
+			InputStream stream = new ByteArrayInputStream(data);
+
+			CSVFileReader x = new CSVFileReader(stream);
+			x.ReadFile();
+			int totalRecords = x.getStoreValuesList().size();
+			System.out
+					.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Total records are :"
+							+ totalRecords);
+			int startCount = 1;
+			int maxCount = 1000;
+			while (totalRecords > 0) {
+				String email = UserServiceFactory.getUserService()
+						.getCurrentUser().getEmail();
+				ContactImportContext workflowContext = new ContactImportContext();
+				workflowContext.setBlobKeyStr(blobKeyStr);
+				workflowContext.setEmail(email);
+				workflowContext.setStartLimit(startCount);
+				if (totalRecords < maxCount) {
+					workflowContext.setEndLimit(totalRecords);
+				} else {
+					workflowContext.setEndLimit(maxCount);
+				}
+				WorkflowInfo info = new WorkflowInfo(
+						"contactImportWorkflowProcessor");
+
+				info.setIsNewWorkflow(true);
+				workflowContext.setWorkflowInfo(info);
+				Workflow workflow = new Workflow();
+				workflow.setWorkflowName("ContactsUplaod");
+				workflow.setWorkflowInstanceId(info.getWorkflowInstance());
+				workflow.setContext(workflowContext);
+				workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
+				workflow = workflowService.createWorkflow(workflow);
+				System.out.println(workflow.getWorkflowInstanceId());
+				if (workflow != null) {
+					workflow.setWorkflowStatus(WorkflowStatusType.INPROGRESS
+							.toString());
+					workflowService.updateWorkflow(workflow);
+					workflowService.triggerWorkflow(workflow);
+					taskCount++;
+				}
+				if (totalRecords > maxCount) {
+					totalRecords = totalRecords - maxCount;
+					startCount = maxCount + 1;
+					maxCount += maxCount;
+				} else {
+					totalRecords = -1;
+				}
 			}
-		}
 
+		}
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Total task created is :" + taskCount);
 		return showContacts(request, model, response);
 
 	}
@@ -1306,5 +1349,33 @@ public class ContactsController extends AbstractController {
 	 * System.out.println("Encrypted Email String is :" + contactEmailList);
 	 * return contactEmailList; }
 	 */
+
+	@RequestMapping("/test.do")
+	@ResponseBody
+	public String getCounter(HttpServletRequest request) throws AppException {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		List<Contact> contactsList = contactsManager.getTotalContact();
+		EntityCounter entityCounter = entityCounterManager.getByEntityName(
+				Contact.class.getSimpleName(),
+				CommonWebUtil.getDomain(user.getEmail()));
+		int totalRecordsCounter = entityCounter.getCount();
+		if (contactsList != null && !contactsList.isEmpty()) {
+			int totalRecords = contactsList.size();
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!List Size:"
+					+ totalRecords);
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Counter:"
+					+ totalRecordsCounter);
+			if (totalRecordsCounter != totalRecords) {
+				contactsManager.updateCounter(
+						CommonWebUtil.getDomain(user.getEmail()), totalRecords,
+						totalRecordsCounter);
+			}
+
+		}
+
+		return UICommonConstants.VIEW_INDEX;
+
+	}
 
 }

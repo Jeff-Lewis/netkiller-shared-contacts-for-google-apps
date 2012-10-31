@@ -57,10 +57,12 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 				.getAllDomainUsersWithReadAndWritePErmissionIncludingAdmin(domain)) {
 			System.out.println("contacts creation  user id  = " + userId);
 			ContactEntry newentry = makeContact(contacts);
-			String userGroupId = getUserGroupId(userId + "@" + domain, domain); // added
+			String email = userId + "@" + domain;
+			String userGroupId = getUserGroupId(email, domain); // added
 			UserContact userContact = new UserContact();
 			userContact.setContactKey(contacts.getKey());
-			userContact.setUserEmail(userId + "@" + domain);
+
+			userContact.setUserEmail(email);
 			// userContact.setContactId(newentry.getId());
 			userContact.setContacts(contacts);
 			userContact.setDomainName(domain);
@@ -71,6 +73,11 @@ public class AddContactForAllDomainUsersTask extends AbstractWorkflowTask {
 			GroupMembershipInfo userGmInfo = new GroupMembershipInfo(); // added
 			userGmInfo.setHref(userGroupId); // added
 			newentry.addGroupMembershipInfo(userGmInfo);
+			/* add contacts to my contacts */
+			String myContactsGroupId = service.getMyContactsGroupId(email);
+			GroupMembershipInfo myContactsGmInfo = new GroupMembershipInfo(); // added
+			myContactsGmInfo.setHref(myContactsGroupId); // added
+			newentry.addGroupMembershipInfo(myContactsGmInfo);
 			try {
 				ContactEntry contactEntry = service.createUserContact(newentry,
 						userId + "@" + domain);

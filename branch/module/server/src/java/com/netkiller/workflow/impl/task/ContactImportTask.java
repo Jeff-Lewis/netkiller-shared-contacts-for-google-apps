@@ -43,6 +43,8 @@ public class ContactImportTask extends AbstractWorkflowTask {
 		ContactImportContext workflowContext = (ContactImportContext) context;
 		String blobKeyStr = workflowContext.getBlobKeyStr();
 		String email = workflowContext.getEmail();
+		int startCount = workflowContext.getStartLimit();
+		int maxCount = workflowContext.getEndLimit();
 		BlobstoreService blobstoreService = BlobstoreServiceFactory
 				.getBlobstoreService();
 		BlobKey blobKey = new BlobKey(blobKeyStr);
@@ -50,10 +52,11 @@ public class ContactImportTask extends AbstractWorkflowTask {
 		byte[] data = blobstoreService
 				.fetchData(blobKey, 0, blobInfo.getSize());
 		InputStream stream = new ByteArrayInputStream(data);
+
 		CSVFileReader x = new CSVFileReader(stream);
 		x.ReadFile();
 		try {
-			doSomething(x.getStoreValuesList(), email);
+			doSomething(x.getStoreValuesList(), startCount, maxCount, email);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("contacts import failed");
@@ -65,9 +68,9 @@ public class ContactImportTask extends AbstractWorkflowTask {
 	}
 
 	private void doSomething(ArrayList<ArrayList<String>> storedValueList,
-			String email) throws Exception {
+			int startCount, int maxCount, String email) throws Exception {
 		// StringBuffer sb = new StringBuffer();
-		for (int i = 1; i < storedValueList.size(); i++) {
+		for (int i = startCount; i <= maxCount; i++) {
 			ArrayList<String> row = storedValueList.get(i);
 			Contact contact = createNewContact(row);
 			if (contact != null) {

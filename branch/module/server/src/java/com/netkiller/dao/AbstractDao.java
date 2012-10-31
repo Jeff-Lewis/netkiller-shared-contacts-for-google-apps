@@ -146,7 +146,7 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 		 * exist.
 		 */
 		setSystemProperties(object, (Class<E>) object.getClass());
-		updatedEntity = getPersistenceManager().makePersistent(object);
+		updatedEntity = getJdoTemplate().makePersistent(object);
 		log.debug("Update Method ended for: " + object);
 
 		return updatedEntity;

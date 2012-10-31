@@ -191,6 +191,16 @@ public class ContactsManager extends AbstractManager implements EntityManager {
 		return service.getSharedContactsGroupId(grpName);
 	}
 
+	public void updateCounter(String domain, int counter,
+			int totalRecordsCounter) throws AppException {
+		service.updateCounter(domain, counter, totalRecordsCounter);
+
+	}
+
+	public List<Contact> getTotalContact() {
+		return service.getTotalContact();
+	}
+
 	/*
 	 * public String getAllContactOfAUser(String userEmailDec) { return
 	 * service.getAllContactOfAUser(userEmailDec); }
