@@ -40,7 +40,6 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gdata.data.contacts.ContactLink;
 import com.netkiller.FilterInfo;
 import com.netkiller.FilterInfo.Rule;
 import com.netkiller.GridRequest;
@@ -818,7 +817,8 @@ public class ContactsController extends AbstractController {
 					.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Total records are :"
 							+ totalRecords);
 			int startCount = 1;
-			int maxCount = 1000;
+			final int window = 1000;
+			int maxCount = window;
 			while (totalRecords > 0) {
 				String email = UserServiceFactory.getUserService()
 						.getCurrentUser().getEmail();
@@ -826,14 +826,16 @@ public class ContactsController extends AbstractController {
 				workflowContext.setBlobKeyStr(blobKeyStr);
 				workflowContext.setEmail(email);
 				workflowContext.setStartLimit(startCount);
-				if (totalRecords < maxCount) {
+				if (totalRecords < window) {
 					workflowContext.setEndLimit(totalRecords);
 				} else {
 					workflowContext.setEndLimit(maxCount);
 				}
 				WorkflowInfo info = new WorkflowInfo(
 						"contactImportWorkflowProcessor");
-
+				System.out.println("Total Records : " + totalRecords
+						+ "Start Count " + startCount + "MaxCount : "
+						+ maxCount);
 				info.setIsNewWorkflow(true);
 				workflowContext.setWorkflowInfo(info);
 				Workflow workflow = new Workflow();
@@ -850,17 +852,19 @@ public class ContactsController extends AbstractController {
 					workflowService.triggerWorkflow(workflow);
 					taskCount++;
 				}
-				if (totalRecords > maxCount) {
-					totalRecords = totalRecords - maxCount;
+				if (totalRecords > window) {
+					totalRecords = totalRecords - window;
 					startCount = maxCount + 1;
-					maxCount += maxCount;
+					maxCount += window;
 				} else {
 					totalRecords = -1;
 				}
 			}
 
 		}
-		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Total task created is :" + taskCount);
+		System.out
+				.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Total task created is :"
+						+ taskCount);
 		return showContacts(request, model, response);
 
 	}

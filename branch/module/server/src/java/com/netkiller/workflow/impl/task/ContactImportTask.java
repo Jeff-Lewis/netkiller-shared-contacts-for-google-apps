@@ -13,6 +13,7 @@ import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.netkiller.core.AppException;
 import com.netkiller.entity.Contact;
 import com.netkiller.manager.ContactsManager;
 import com.netkiller.security.DomainConfig;
@@ -55,29 +56,39 @@ public class ContactImportTask extends AbstractWorkflowTask {
 
 		CSVFileReader x = new CSVFileReader(stream);
 		x.ReadFile();
-		try {
-			doSomething(x.getStoreValuesList(), startCount, maxCount, email);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println("contacts import failed");
-			e.printStackTrace();
-		}
+
+		doSomething(x.getStoreValuesList(), startCount, maxCount, email);
+
 		System.out.println("contacts imported");
 		blobstoreService.delete(blobKey);
 		return workflowContext;
 	}
 
 	private void doSomething(ArrayList<ArrayList<String>> storedValueList,
-			int startCount, int maxCount, String email) throws Exception {
+			int startCount, int maxCount, String email) {
 		// StringBuffer sb = new StringBuffer();
 		for (int i = startCount; i <= maxCount; i++) {
 			ArrayList<String> row = storedValueList.get(i);
 			Contact contact = createNewContact(row);
 			if (contact != null) {
-				contact = contactsManager.createContact(contact,
-						CommonWebUtil.getDomain(email));
-				contactsManager.addContactForAllDomainUsers(
-						CommonWebUtil.getDomain(email), contact);
+				synchronized (this) {
+
+					try {
+						contact = contactsManager.createContact(contact,
+								CommonWebUtil.getDomain(email));
+					} catch (AppException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					try {
+						contactsManager.addContactForAllDomainUsers(
+								CommonWebUtil.getDomain(email), contact);
+					} catch (AppException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}

@@ -292,6 +292,12 @@ public class ContactsService extends AbstractService {
 			super.validate(contacts, entityMetaData, globalFilterSearchService,
 					null);
 			contacts = contactsDao.create(contacts);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			EntityCounter entityCounter = entityCounterDao.getByEntityName(
 					Contact.class.getSimpleName(), domain);
 			if (entityCounter == null) {

@@ -87,7 +87,11 @@ public class UserContactService extends AbstractService {
 			userContact = userContactDao.create(userContact);
 			/*UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();*/
-			EntityCounter entityCounter = entityCounterDao
+			/*
+			 * try { Thread.sleep(1000); } catch (InterruptedException e1) { //
+			 * TODO Auto-generated catch block e1.printStackTrace(); }
+			 */
+			/*EntityCounter entityCounter = entityCounterDao
 					.getByEntityName(UserContact.class.getSimpleName(),domain);
 			if (entityCounter == null) {
 				entityCounter = new EntityCounter();
@@ -118,7 +122,7 @@ public class UserContactService extends AbstractService {
 					e.printStackTrace();
 				}
 				entityCounterManager.update(entityCounter);
-			}
+			}*/
 			return userContact;
 
 		} catch (DataAccessException dae) {
