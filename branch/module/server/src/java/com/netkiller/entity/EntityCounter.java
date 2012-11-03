@@ -31,10 +31,22 @@ public class EntityCounter implements Serializable {
 	@Persistent
 	private int count;
 
+	@Persistent
+	private int shardNumber;
+
+	public int getShardNumber() {
+		return shardNumber;
+	}
+
+	public void setShardNumber(int shardNumber) {
+		this.shardNumber = shardNumber;
+	}
+
 	@Override
 	public String toString() {
 		return "EntityCounter [key=" + key + ", domain=" + domain
-				+ ", entityName=" + entityName + ", count=" + count + "]";
+				+ ", entityName=" + entityName + ", count=" + count
+				+ ", shardNumber=" + shardNumber + "]";
 	}
 
 	public Key getKey() {

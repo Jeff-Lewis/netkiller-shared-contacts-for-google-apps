@@ -58,8 +58,8 @@ public class EntityCounterService extends AbstractService {
 
 	}
 
-	public EntityCounter getByEntityName(String entityname,String domain) {
-		return entityCounterDao.getByEntityName(entityname,domain);
+	public EntityCounter getByEntityName(String entityname, String domain) {
+		return entityCounterDao.getByEntityName(entityname, domain);
 	}
 
 	public EntityCounter update(EntityCounter entityCounter)
@@ -99,6 +99,15 @@ public class EntityCounterService extends AbstractService {
 			log.error(message, dae);
 			throw new AppException(message, dae);
 		}
+	}
+
+	public int getCount() {
+		return entityCounterDao.getCount();
+	}
+
+	public void increment() {
+		entityCounterDao.increment();
+
 	}
 
 }

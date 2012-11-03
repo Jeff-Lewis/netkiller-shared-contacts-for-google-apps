@@ -36,7 +36,7 @@ import com.netkiller.util.StringUtil;
  * @author vnarang
  */
 public abstract class AbstractDao<E> extends JdoDaoSupport {
-	
+
 	@Autowired
 	private AppUserService appUserService;
 
@@ -47,7 +47,6 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 	private DomainConfig domainConfig;
 
 	protected final AppLogger log = AppLogger.getLogger(getClass());
-
 
 	/**
 	 * Create an object in the persistence storage.
@@ -67,7 +66,25 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 		return newEntity;
 
 	}
-	
+
+	/**
+	 * Method to create a batch of objects in a single transaction Without using
+	 * system properties
+	 * 
+	 * @param objectList
+	 * @return
+	 */
+	public Collection<E> createInBatch(Collection<E> objectList) {
+		log.debug("Create Method started for: " + objectList);
+		Collection<E> newEntity = null;
+		/*
+		 * Persist the new entry in store.
+		 */
+		// setSystemProperties(object, (Class<E>) object.getClass());
+		newEntity = getJdoTemplate().makePersistentAll(objectList);
+		return newEntity;
+	}
+
 	public E createWithoutSystemProperties(E object) {
 		log.debug("Create Method started for: " + object);
 		E newEntity = null;
@@ -78,8 +95,7 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 		return newEntity;
 
 	}
-	
-	
+
 	/**
 	 * Create objects at once in the persistence storage.
 	 * 
@@ -89,15 +105,16 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 	 */
 	public Collection<E> createAll(Collection<E> entities) {
 		log.debug("Create method started for all entities in collection.");
-		for(Object obj : entities)
-			setSystemProperties(obj, (Class<E>)obj.getClass());
+		for (Object obj : entities)
+			setSystemProperties(obj, (Class<E>) obj.getClass());
 		return getJdoTemplate().makePersistentAll(entities);
 	}
 
 	/**
 	 * Remove an object from the persistence storage, Big Table in this case.
 	 * 
-	 * @param object to remove.
+	 * @param object
+	 *            to remove.
 	 */
 	public void remove(Class<E> type, Object id) {
 		getJdoTemplate().deletePersistent(id);
@@ -141,9 +158,9 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 		log.debug("Update Method started for: " + object);
 
 		E updatedEntity = null;
-		 /* Update the existing entry in the store, or will persist if does not
-		 /*
-		 * exist.
+		/*
+		 * Update the existing entry in the store, or will persist if does not
+		 * /* exist.
 		 */
 		setSystemProperties(object, (Class<E>) object.getClass());
 		updatedEntity = getJdoTemplate().makePersistent(object);
@@ -171,16 +188,16 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 			releasePersistenceManager(pm);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public Collection<E> getByKeys (Class<E> type, Collection<Key> keyList) {
+	public Collection<E> getByKeys(Class<E> type, Collection<Key> keyList) {
 		PersistenceManager pm = null;
 		if (keyList == null || keyList.size() == 0) {
 			return null;
 		}
-		for(Iterator<Key> iterator = keyList.iterator();iterator.hasNext();) {
+		for (Iterator<Key> iterator = keyList.iterator(); iterator.hasNext();) {
 			Key key = iterator.next();
-			if(key==null) {
+			if (key == null) {
 				iterator.remove();
 			}
 		}
@@ -190,27 +207,30 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 			query.declareImports("import com.google.appengine.api.datastore.Key");
 			pm = getPersistenceManager();
 			Collection<E> classList = new ArrayList<E>();
-			int i=0;
-			for (Iterator<Key> valueKeyListIterator = keyList.iterator(); valueKeyListIterator.hasNext();) {
+			int i = 0;
+			for (Iterator<Key> valueKeyListIterator = keyList.iterator(); valueKeyListIterator
+					.hasNext();) {
 				query.setFilter("key == currentkey");
-				query.declareParameters("Key currentkey"+i);
-				Key key= valueKeyListIterator.next();
+				query.declareParameters("Key currentkey" + i);
+				Key key = valueKeyListIterator.next();
 				i++;
 			}
-			classList.addAll(pm.detachCopyAll((Collection<E>) query.executeWithArray(keyList)));
+			classList.addAll(pm.detachCopyAll((Collection<E>) query
+					.executeWithArray(keyList)));
 			return classList;
 		} finally {
 			releasePersistenceManager(pm);
 		}
-		
 
 	}
-	
+
 	public void setSystemProperties(Object object, Class<E> type) {
 		try {
 			String entityName = type.getSimpleName();
-		/*	entityName = entityName.substring(0, 1).toLowerCase()
-					+ entityName.substring(1, entityName.length());*/
+			/*
+			 * entityName = entityName.substring(0, 1).toLowerCase() +
+			 * entityName.substring(1, entityName.length());
+			 */
 			EntityMetaData entityMetaData = (EntityMetaData) applicationContext
 					.getBean(entityName + "MetaData");
 			ColumnMetaData columnMetaData;
@@ -221,7 +241,7 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 								.getDomainAdminEmail()),
 						domainConfig.getDomainAdminEmail(), null, null,
 						StringUtil.getUserNameOutOfEmail(domainConfig
-								.getDomainAdminEmail()),null);
+								.getDomainAdminEmail()), null);
 			}
 
 			String currentUserId = currentUser.getUserId();
@@ -280,5 +300,5 @@ public abstract class AbstractDao<E> extends JdoDaoSupport {
 		}
 
 	}
-	
+
 }

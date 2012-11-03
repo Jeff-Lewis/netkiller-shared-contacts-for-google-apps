@@ -16,6 +16,7 @@ public class EntityCounterMetaData extends AbstractMetaData {
 	public static final String COL_DOMAIN_NAME = "domain";
 	public static final String COL_ENTITY_NAME = "entityName";
 	public static final String COL_COUNT = "count";
+	public static final String COL_SHARD_COUNTER = "shardNumber";
 
 	public EntityCounterMetaData() {
 		super(ENTITY_NAME, new String[] { COL_DOMAIN_NAME }, COL_DOMAIN_NAME,
@@ -30,7 +31,7 @@ public class EntityCounterMetaData extends AbstractMetaData {
 		addColumnMetaData(COL_DOMAIN_NAME, ColumnMetaData.ColumnType.STRING);
 		addColumnMetaData(COL_ENTITY_NAME, ColumnMetaData.ColumnType.STRING);
 		addColumnMetaData(COL_COUNT, ColumnMetaData.ColumnType.INT);
-
+		addColumnMetaData(COL_SHARD_COUNTER, ColumnMetaData.ColumnType.INT);
 	}
 
 }

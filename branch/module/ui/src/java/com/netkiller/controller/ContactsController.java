@@ -295,7 +295,9 @@ public class ContactsController extends AbstractController {
 					CommonWebUtil.getDomain(user.getEmail()), groupName,
 					user.getEmail());
 			/* contactsManager.addGroupToAllDomainUsers(); */
+			//response.sendRedirect("/contacts.do");
 			return showContacts(request, model, response);
+			
 		}
 		return UICommonConstants.VIEW_INDEX;
 	}
@@ -1169,13 +1171,11 @@ public class ContactsController extends AbstractController {
 		 * contactsList = searchResult.getResultObjects();
 		 */
 		List<Contact> contactList = contactsManager.doSearch(gridRequest);
-		EntityCounter entityCounter = entityCounterManager.getByEntityName(
-				Contact.class.getSimpleName(),
-				CommonWebUtil.getDomain(user.getEmail()));
-		int totalRecords = 0;
-		if (entityCounter != null) {
-			totalRecords = entityCounter.getCount();
-		}
+		int totalRecords = entityCounterManager.getCount();
+		/*
+		 * if (entityCounter != null) { totalRecords = entityCounter.getCount();
+		 * }
+		 */
 		ArrayList<HashMap<String, Object>> rows = new ArrayList<HashMap<String, Object>>();
 		int id = 0;
 		String activeValue;

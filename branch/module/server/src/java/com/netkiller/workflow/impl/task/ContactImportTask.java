@@ -71,24 +71,23 @@ public class ContactImportTask extends AbstractWorkflowTask {
 			ArrayList<String> row = storedValueList.get(i);
 			Contact contact = createNewContact(row);
 			if (contact != null) {
-				synchronized (this) {
 
-					try {
-						contact = contactsManager.createContact(contact,
-								CommonWebUtil.getDomain(email));
-					} catch (AppException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-					try {
-						contactsManager.addContactForAllDomainUsers(
-								CommonWebUtil.getDomain(email), contact);
-					} catch (AppException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				try {
+					contact = contactsManager.createContact(contact,
+							CommonWebUtil.getDomain(email));
+				} catch (AppException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+
+				try {
+					contactsManager.addContactForAllDomainUsers(
+							CommonWebUtil.getDomain(email), contact);
+				} catch (AppException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 		}
 	}

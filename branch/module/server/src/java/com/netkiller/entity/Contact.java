@@ -259,7 +259,7 @@ public class Contact implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Contacts [key=" + key + ", firstName=" + firstName
+		return "Contact [key=" + key + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", fullName=" + fullName
 				+ ", cmpnyName=" + cmpnyName + ", cmpnyTitle=" + cmpnyTitle
 				+ ", cmpnyDepartment=" + cmpnyDepartment + ", workEmail="

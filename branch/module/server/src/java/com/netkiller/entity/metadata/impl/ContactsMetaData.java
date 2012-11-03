@@ -29,6 +29,7 @@ public class ContactsMetaData extends AbstractMetaData {
 	public static final String COL_HOME_ADDRESS = "homeAddress";
 	public static final String COL_OTHER_ADDRESS = "otherAddress";
 	public static final String COL_NOTES = "notes";
+	
 
 	public static final String COL_ACTIVE = "active";
 	public static final String COL_IS_DELETED = "isDeleted";
@@ -65,6 +66,7 @@ public class ContactsMetaData extends AbstractMetaData {
 		addColumnMetaData(COL_HOME_ADDRESS, ColumnMetaData.ColumnType.STRING);
 		addColumnMetaData(COL_OTHER_ADDRESS, ColumnMetaData.ColumnType.STRING);
 		addColumnMetaData(COL_NOTES, ColumnMetaData.ColumnType.STRING);
+		
 
 		addColumnMetaData(COL_IS_DELETED, ColumnMetaData.ColumnType.BOOL,
 				new FilterMetaData(GlobalFilterType.DELETE,

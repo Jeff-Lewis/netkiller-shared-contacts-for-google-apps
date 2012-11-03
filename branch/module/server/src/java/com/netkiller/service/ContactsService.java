@@ -241,39 +241,29 @@ public class ContactsService extends AbstractService {
 			contacts = contactsDao.create(contacts);
 			UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();
-			EntityCounter entityCounter = entityCounterDao.getByEntityName(
-					Contact.class.getSimpleName(),
-					CommonWebUtil.getDomain(user.getEmail()));
-			if (entityCounter == null) {
-				entityCounter = new EntityCounter();
-				entityCounter.setCount(1);
-				entityCounter.setEntityName(Contact.class.getSimpleName());
-				entityCounter
-						.setDomain(CommonWebUtil.getDomain(user.getEmail()));
-				entityCounter = entityCounterManager.create(entityCounter);
-
-			} else {
-				int count = entityCounter.getCount();
-				count++;
-				entityCounter.setCount(count);
-				try {
-					entityCounter = (EntityCounter) BeanUtils
-							.cloneBean(entityCounter);
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				entityCounterManager.update(entityCounter);
-			}
+			/*
+			 * EntityCounter entityCounter = entityCounterDao.getByEntityName(
+			 * Contact.class.getSimpleName(),
+			 * CommonWebUtil.getDomain(user.getEmail())); if (entityCounter ==
+			 * null) { entityCounter = new EntityCounter();
+			 * entityCounter.setCount(1);
+			 * entityCounter.setEntityName(Contact.class.getSimpleName());
+			 * entityCounter
+			 * .setDomain(CommonWebUtil.getDomain(user.getEmail()));
+			 * entityCounter = entityCounterManager.create(entityCounter);
+			 * 
+			 * } else { int count = entityCounter.getCount(); count++;
+			 * entityCounter.setCount(count); try { entityCounter =
+			 * (EntityCounter) BeanUtils .cloneBean(entityCounter); } catch
+			 * (IllegalAccessException e) { // TODO Auto-generated catch block
+			 * e.printStackTrace(); } catch (InstantiationException e) { // TODO
+			 * Auto-generated catch block e.printStackTrace(); } catch
+			 * (InvocationTargetException e) { // TODO Auto-generated catch
+			 * block e.printStackTrace(); } catch (NoSuchMethodException e) { //
+			 * TODO Auto-generated catch block e.printStackTrace(); }
+			 * entityCounterManager.update(entityCounter); }
+			 */
+			entityCounterDao.increment();
 
 			return contacts;
 

@@ -67,4 +67,12 @@ public class EntityCounterManager extends AbstractManager implements
 		return service.getByEntityName(entityname, domain);
 	}
 
+	public int getCount() {
+		return service.getCount();
+	}
+
+	public void increment() {
+		service.increment();
+	}
+
 }

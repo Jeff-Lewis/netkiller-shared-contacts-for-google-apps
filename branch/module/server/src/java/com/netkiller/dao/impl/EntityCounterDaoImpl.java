@@ -2,6 +2,7 @@ package com.netkiller.dao.impl;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
@@ -16,6 +17,7 @@ import com.google.appengine.api.datastore.Key;
 import com.netkiller.core.AppException;
 import com.netkiller.dao.AbstractDao;
 import com.netkiller.dao.EntityCounterDao;
+import com.netkiller.entity.Contact;
 import com.netkiller.entity.DomainAdmin;
 import com.netkiller.entity.EntityCounter;
 
@@ -23,6 +25,8 @@ import com.netkiller.entity.EntityCounter;
 @Transactional(propagation = Propagation.REQUIRED)
 public class EntityCounterDaoImpl extends AbstractDao<EntityCounter> implements
 		EntityCounterDao {
+
+	private static final int NUM_SHARDS = 20;
 
 	@Autowired
 	public EntityCounterDaoImpl(
@@ -59,6 +63,68 @@ public class EntityCounterDaoImpl extends AbstractDao<EntityCounter> implements
 	@Override
 	public EntityCounter update(EntityCounter entityCounter) {
 		return super.update(entityCounter);
+	}
+
+	@Override
+	public int getCount() {
+		int sum = 0;
+		PersistenceManager pm = null;
+
+		try {
+			pm = getPersistenceManager();
+			String query = "select from " + EntityCounter.class.getName();
+			List<EntityCounter> shards = (List<EntityCounter>) pm.newQuery(
+					query).execute();
+			if (shards != null && !shards.isEmpty()) {
+				for (EntityCounter shard : shards) {
+					sum += shard.getCount();
+				}
+			}
+		} finally {
+			pm.close();
+		}
+
+		return sum;
+	}
+
+	/**
+	 * Increment the value of this sharded counter.
+	 */
+	@Override
+	public void increment() {
+		PersistenceManager pm = null;
+
+		Random generator = new Random();
+		int shardNum = generator.nextInt(NUM_SHARDS);
+
+		try {
+			pm = getPersistenceManager();
+			Query shardQuery = pm.newQuery(EntityCounter.class);
+			shardQuery.setFilter("shardNumber == numParam");
+			shardQuery.declareParameters("int numParam");
+
+			List<EntityCounter> shards = (List<EntityCounter>) shardQuery
+					.execute(shardNum);
+			EntityCounter entityCounter;
+
+			// If the shard with the passed shard number exists, increment its
+			// count
+			// by 1. Otherwise, create a new shard object, set its count to 1,
+			// and
+			// persist it.
+			if (shards != null && !shards.isEmpty()) {
+				entityCounter = shards.get(0);
+				entityCounter.setCount(entityCounter.getCount() + 1);
+			} else {
+				entityCounter = new EntityCounter();
+				entityCounter.setShardNumber(shardNum);
+				entityCounter.setCount(1);
+			}
+
+			pm.makePersistent(entityCounter);
+		} finally {
+			pm.close();
+		}
 	}
 
 	@Transactional(readOnly = true)
