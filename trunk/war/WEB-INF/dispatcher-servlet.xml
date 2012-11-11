@@ -112,6 +112,17 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
      </list>
 	</property>
 	</bean>
+	<bean id="domainUpdateTask" name="domainUpdateTask" class="com.netkiller.workflow.impl.task.DomainUpdateTask"  scope="prototype" >
+		<property name="taskName" value="DomainUpdateTask"></property>
+	   <property name="retryCount" value="1"></property>
+	</bean>
+	<bean id="domainUpdateWorkflowProcessor" name="domainUpdateWorkflowProcessor" class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor" scope="prototype" lazy-init="true">
+	<property name="workflowTasks">
+	 <list>
+            <ref bean="domainUpdateTask"/>
+     </list>
+	</property>
+	</bean>
 	
 	<bean id="addGroupsAndContactsByUsersTask" name="addGroupsAndContactsByUsersTask" class="com.netkiller.workflow.impl.task.AddGroupsAndContactsByUsersTask"  scope="prototype" >
 		<property name="taskName" value="addGroupsAndContactsByUsersTask"></property>

@@ -736,8 +736,14 @@ public class SharedContactsController {
 			result.put("sord", sord);
 			result.put("contact", contact);
 			result.put("userEmail", getCurrentUser(request).getEmail());
-			// String adminUserName = appProperties.getUsername();
+			// String adminUserName = appProperties.getUsername();			
 			result.put("adminUserName", currentCustomer.getAdminEmail());
+			if (sharedContactsService.isUserPermitted(getCurrentUser(request)
+					.getEmail()))
+				result.put("isUserPermitted", true);
+			else
+				result.put("isUserPermitted", false);
+			result.put("isUserAdmin", sharedContactsService.isUserAdmin());
 			mnv = new ModelAndView("/sharedcontacts/details", "result", result);
 		} else if (cmd.equals("create")) { // Contact
 											// ÃƒÂ¬Ã†â€™Ã¯Â¿Â½ÃƒÂ¬Ã¢â‚¬Å¾Ã‚Â±ÃƒÂ¬Ã¯Â¿Â½Ã¢â‚¬Å¾

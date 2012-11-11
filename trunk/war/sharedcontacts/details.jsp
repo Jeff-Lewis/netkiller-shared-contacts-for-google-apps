@@ -21,7 +21,8 @@
 	ContactEntry contact = null;
 	
 	Map result = (Map)request.getAttribute("result");
-		
+	boolean isUserPermitted = (Boolean)result.get("isUserPermitted");
+	boolean isAdmin = (Boolean)result.get("isUserAdmin");
 	if(result != null){
 		contact = (ContactEntry)result.get("contact");
 		adminUserName = CommonUtil.getNotNullString((String)result.get("adminUserName"));
@@ -32,12 +33,6 @@
 
 
 
-<%	
-	boolean isAdmin = false;
-	if(userEmail.equals(adminUserName)){
-		isAdmin = true;
-	}
-%>
 
 
 <%  
@@ -224,7 +219,7 @@ function backToContacts(){
 				<a href="javascript:backToContacts();" style="text-decoration: none;font-weight: bold;"><< &nbsp; Back to contacts</a>
 			</td>
 			<td align="right">
-			
+				<% if(isUserPermitted || isAdmin){ %>
 				<table border="0">
 				<tr><td>
 				<button id="Save" style="font-family:Arial;font-size:11px;height:20px;width:75px;text-align:center;padding:0px 0px 0px 0px;">Save now</button>			
@@ -237,7 +232,7 @@ function backToContacts(){
 				</td>
 				</tr>
 				</table>
-			
+			<%} %>
 			</td>
 			</tr>		
 			</table>			
