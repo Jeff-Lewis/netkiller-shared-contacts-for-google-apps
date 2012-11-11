@@ -43,12 +43,17 @@ import com.google.gdata.data.TextConstruct;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.google.gdata.data.contacts.ContactGroupFeed;
+import com.netkiller.entity.Workflow;
 import com.netkiller.exception.AppException;
+import com.netkiller.manager.WorkflowManager;
 import com.netkiller.service.sharedcontacts.SharedContactsService;
 import com.netkiller.util.CommonWebUtil;
 import com.netkiller.vo.AppProperties;
 import com.netkiller.vo.Customer;
 import com.netkiller.vo.DomainSettings;
+import com.netkiller.workflow.WorkflowInfo;
+import com.netkiller.workflow.impl.context.DomainUpdateContext;
+import com.netkiller.workflow.impl.processor.WorkflowStatusType;
 
 @Controller
 public class StatisticsController {
@@ -60,6 +65,9 @@ public class StatisticsController {
 
 	@Autowired
 	AppProperties appProperties;
+
+	@Autowired
+	private WorkflowManager workflowManager;
 
 	@Autowired
 	SharedContactsService sharedContactsService;
@@ -163,8 +171,9 @@ public class StatisticsController {
 			data = list.toString();
 			data = data.substring(1, data.length() - 1);
 			Integer total = list.size();
-			sharedContactsService.updateCustomers(domainName, "nscUsers", total);
-			
+			sharedContactsService
+					.updateCustomers(domainName, "nscUsers", total);
+
 		}
 		String nscUserBlobKey = saveFileToBlobStore(data, "totalNSCUsers.txt");
 		DomainSettings settings = sharedContactsService
@@ -189,7 +198,8 @@ public class StatisticsController {
 			data = list.toString();
 			data = data.substring(1, data.length() - 1);
 			Integer total = list.size();
-			sharedContactsService.updateCustomers(domainName, "totalUsers", total);
+			sharedContactsService.updateCustomers(domainName, "totalUsers",
+					total);
 		}
 		String allUserBlobKey = saveFileToBlobStore(data, "totalUsers.txt");
 		DomainSettings settings = sharedContactsService
@@ -213,17 +223,18 @@ public class StatisticsController {
 			data = list.toString();
 			data = data.substring(1, data.length() - 1);
 			Integer total = list.size();
-			sharedContactsService.updateCustomers(domainName, "syncedUsers", total);
+			sharedContactsService.updateCustomers(domainName, "syncedUsers",
+					total);
 		}
-			String syncUserBlobKey = saveFileToBlobStore(data, "syncUsers.txt");
-			DomainSettings settings = sharedContactsService
-					.getDomainSettings(domainName);
-			if (settings != null) {
-				deleteFileFromBlobStore(settings.getSyncUserBlobKey());
-				settings.setSyncUserBlobKey(syncUserBlobKey);
-				sharedContactsService.updateDomainSettings(settings);
-			}
-		
+		String syncUserBlobKey = saveFileToBlobStore(data, "syncUsers.txt");
+		DomainSettings settings = sharedContactsService
+				.getDomainSettings(domainName);
+		if (settings != null) {
+			deleteFileFromBlobStore(settings.getSyncUserBlobKey());
+			settings.setSyncUserBlobKey(syncUserBlobKey);
+			sharedContactsService.updateDomainSettings(settings);
+		}
+
 		return true;
 	}
 
@@ -286,7 +297,7 @@ public class StatisticsController {
 			throws IOException {
 
 		FileService fileService = FileServiceFactory.getFileService();
-		AppEngineFile aeF = fileService.createNewBlobFile("", "suncUsers.txt");
+		AppEngineFile aeF = fileService.createNewBlobFile("", fileName);
 		FileWriteChannel writeChannel = (FileWriteChannel) fileService
 				.openWriteChannel(aeF, true);
 		BufferedOutputStream bos = new BufferedOutputStream(
@@ -307,11 +318,12 @@ public class StatisticsController {
 
 			BlobKey blobKey = new BlobKey(blobKeyStr);
 			BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
-			
+
 			byte[] ob = blobstoreService.fetchData(blobKey, 0, new Long(
 					blobInfo.getSize()));
-			returnStr = new String(ob) ;
-			returnStr += ", Last Updated On : " + blobInfo.getCreation().toString();
+			returnStr = new String(ob);
+			returnStr += ", Last Updated On : "
+					+ blobInfo.getCreation().toString();
 			System.out.println(returnStr);
 		}
 		return returnStr;
@@ -373,6 +385,23 @@ public class StatisticsController {
 			throw new Exception("Unable to create domain client.", e);
 		}
 		return domainClient;
+	}
+
+	@RequestMapping("/async/updateDomains.do")
+	@ResponseBody
+	public boolean updateDomains() {
+		WorkflowInfo workflowInfo = new WorkflowInfo(
+				"domainUpdateWorkflowProcessor");
+		workflowInfo.setIsNewWorkflow(true);
+		DomainUpdateContext domainUpdateContext = new DomainUpdateContext();
+		Workflow workflow = new Workflow();
+		workflow.setContext(domainUpdateContext);
+		workflow.setWorkflowName(workflowInfo.getWorkflowName());
+		workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
+		workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
+		domainUpdateContext.setWorkflowInfo(workflowInfo);
+		workflowManager.triggerWorkflow(workflow);
+		return true;
 	}
 
 	@RequestMapping("/deleteAll.do")
@@ -481,49 +510,5 @@ public class StatisticsController {
 
 		return service;
 	}
-	
-	/* public static String SCOPE = "https://mail.google.com/mail/feed/atom";
-	@RequestMapping("/test.do")
-	public boolean test() throws net.oauth.OAuthException, IOException, URISyntaxException{
-		boolean debug = true;  
-		
-		String user = "jitender@nicefact.co.in";
 
-        OAuthConsumer consumer = new OAuthConsumer(null, appProperties.getConsumerKey(),appProperties.getConsumerKeySecret(), null);
-        OAuthAccessor accessor = new OAuthAccessor(consumer);                                 
-
-        // HMAC uses the access token secret as a factor,
-        // and it's a little less compute-intensive than RSA.
-        accessor.consumer.setProperty("oauth_signature_method", "HMAC-SHA1");
-
-        // Gmail only supports an atom feed
-        URL atomFeedUrl = new URL(SCOPE +"?xoauth_requestor_id=" + user);
-
-        System.out.println("=====================================================");
-        System.out.println("Building new request message...");
-
-        OAuthMessage request = accessor.newRequestMessage(OAuthMessage.GET, atomFeedUrl.toString(),null);
-
-        if (debug) {
-            List<Map.Entry<String, String>> params = request.getParameters();
-            for (Map.Entry<String, String> p : params) {
-                System.out.println("'" + p.getKey() + "' =  <" + p.getValue() + ">");
-            }
-            System.out.println("Validating message...");
-            SimpleOAuthValidator validator=new SimpleOAuthValidator();
-            validator.validateMessage(request,accessor);
-        }
-
-        OAuthClient client = new OAuthClient(new HttpClient3());
-
-        System.out.println("Client invoking request message...");
-        System.out.println(" request: " + request);
-        OAuthMessage message = client.invoke(request, ParameterStyle.AUTHORIZATION_HEADER);
-
-        System.out.println("=====================================================");
-        System.out.println(" message: " + message.readBodyAsString());
-        System.out.println("=====================================================");
-        return true;
-	}*/
-	
 }
