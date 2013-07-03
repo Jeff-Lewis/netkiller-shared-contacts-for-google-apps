@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,9 +26,12 @@ import javax.servlet.http.HttpUtils;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.appengine.api.users.User;
@@ -642,24 +646,19 @@ public class SharedContactsController {
 												// ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´
 												// ÃƒÂ­Ã¢â‚¬Â¢Ã‹Å“ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨
 			Map<String, String> result = new HashMap<String, String>();
-
-			try {
-				int limit = 100;
-				if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
-					limit = 30000;
-				} else {
-					if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
-						limit = 50;
-					}
+			/*	
+			int limit = 100;
+			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
+				limit = 30000;
+			} else {
+				if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+					limit = 50;
 				}
-
-				List<ContactEntry> list = sharedContactsService.getContacts(1,
-						limit, getGroupId(), isUseForSharedContacts, null);
-				count = list.size();
-
-			} catch (AppException e) {
-				e.printStackTrace();
 			}
+
+			List<ContactEntry> list = sharedContactsService.getContacts(1,
+					limit, getGroupId(), isUseForSharedContacts, null);*/
+			count = sharedContactsService.getContactCount(CommonWebUtil.getDomain(getCurrentUser(request).getEmail()));
 
 			result.put("total", (int) count + "");
 			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
@@ -904,7 +903,7 @@ public class SharedContactsController {
 	private ModelAndView syncContacts(HttpServletRequest request,
 			HttpServletResponse response, Customer currentCustomer) {
 		// TODO Auto-generated method stub
-		List<ContactEntry> entries = null;
+		//List<ContactEntry> entries = null;
 		int total_pages = 0;
 		double start = 0;
 		String groupId = null;
@@ -926,9 +925,9 @@ public class SharedContactsController {
 				}
 			}
 
-			entries = sharedContactsService.getContacts(1, totalLimit, groupId,
+			/*entries = sharedContactsService.getContacts(1, totalLimit, groupId,
 					isUseForSharedContacts, null);
-			logger.info("### 1. entries.size() ===> " + entries.size());
+			logger.info("### 1. entries.size() ===> " + entries.size());*/
 
 		} catch (Exception e) {
 			logger.severe(e.getMessage());
@@ -1390,7 +1389,9 @@ public class SharedContactsController {
 			// entry.setContent(new PlainTextConstruct(notes));
 			// }
 
-			sharedContactsService.update(entry);
+			entry = sharedContactsService.update(entry);
+			ContactInfo contactInfo = util.makeContactInfo(entry);
+			sharedContactsService.createContactInfo(contactInfo);
 			String message = messageSource.getMessage("modification.success",
 					null, Locale.US);
 
@@ -1423,7 +1424,9 @@ public class SharedContactsController {
 			logger.info("contact.getEditLink().getHref()? "
 					+ contact.getEditLink().getHref());
 			update(request, contact);
-			sharedContactsService.update(contact);
+			contact = sharedContactsService.update(contact);
+			ContactInfo contactInfo = SharedContactsUtil.getInstance().makeContactInfo(contact);
+			sharedContactsService.createContactInfo(contactInfo);
 			String message = messageSource.getMessage("modification.success",
 					null, Locale.US);
 			result.put("code", "success");
@@ -1769,11 +1772,14 @@ public class SharedContactsController {
 				// UserDefinedField("Bumun", "Management"));
 			}
 
-			sharedContactsService.create(entry);
-
+			entry = sharedContactsService.create(entry);
+			ContactInfo contactInfo = getContactInfo(request);
+			contactInfo.setId(entry.getEditLink().getHref());
+			contactInfo.setDomain(domain);
+			sharedContactsService.createContactInfo(contactInfo);
 			AddContactForAllDomainUsersContext context = new AddContactForAllDomainUsersContext();
 
-			context.setContactInfo(getContactInfo(request));
+			context.setContactInfo(contactInfo);
 			context.setDomain(domain);
 			context.setIsUseForSharedContacts(isUseForSharedContacts);
 
@@ -2100,8 +2106,11 @@ public class SharedContactsController {
 					totalLimit = 50;
 				}
 			}
-			List<ContactEntry> contacts = sharedContactsService.getContacts(1,
-					totalLimit, getGroupId(), isUseForSharedContacts, null);
+			/*List<ContactEntry> contacts = sharedContactsService.getContacts(1,
+					totalLimit, getGroupId(), isUseForSharedContacts, null);*/
+			
+			List<ContactEntry> contacts = SharedContactsUtil.getInstance().getContactEntriesFromContactInfo(sharedContactsService.getAllDomainContacts(currentCustomer.getDomain(), totalLimit, "givenname", "asc"));
+			
 			String sheetName = "SharedContacts";
 			/*
 			 * response.setContentType("application/vnd.ms-excel");
@@ -2511,5 +2520,172 @@ public class SharedContactsController {
 		result.put("success", true);
 		return new ModelAndView("/sharedcontacts/unauthorize", "result", result);
 
+	}
+	
+	Set<String> domainWithContactsBeingUpdated = new HashSet<String>();
+	
+	@RequestMapping("/sharedcontacts/griddata.do")
+	public void getGridData(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		JSONArray jsonArray = new JSONArray();
+		GridRequest gridRequest = gridRequestParser.parseDataCriteria(request);
+		String page = CommonWebUtil.getParameter(request, "page"); // get the
+																	// requested
+																	// page
+		String page1 = CommonWebUtil.getParameter(request, "page1"); // get the
+																		// requested
+																		// page
+
+		logger.info("===> page: " + page + ", " + "page1: " + page1);
+		if (!page1.equals("")) {
+			page = page1;
+		}
+		
+		String rows = CommonWebUtil.getParameter(request, "rows"); // get how
+																	// many rows
+																	// we want
+																	// to have
+																	// into the
+																	// grid
+		String sidx = CommonWebUtil.getParameter(request, "sidx"); // orderby
+																	// Sorting
+																	// criterion.
+																	// The only
+																	// supported
+																	// value is
+																	// lastmodified.
+		String sord = CommonWebUtil.getParameter(request, "sord"); // ascending
+																	// or
+																	// descending.
+
+		int pageNum = Integer.parseInt(page);
+		int limit = Integer.parseInt(rows);
+		
+		int total_pages = 0;
+		int start = ((pageNum-1) * limit) ;
+		int totalRecords = 0;
+		
+	
+			Customer currentCustomer =  sharedContactsService
+						.verifyUser(getCurrentUser(request).getEmail());
+			// entries = sharedContactsService.getContacts(page, rows, sidx,
+			// sord);
+			String groupId = null;
+			if (isUseForSharedContacts) {
+				groupId = getGroupId();
+			}
+
+			int totalLimit = 100;
+			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
+				totalLimit = 30000;
+			} else {
+				if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+					totalLimit = 50;
+				}
+			}
+			boolean isSearch = (gridRequest != null && gridRequest.isSearch());
+			SharedContactsUtil util = SharedContactsUtil.getInstance();
+			List<ContactInfo> entries = null;
+			if(!isSearch){
+				entries =sharedContactsService.getDomainContacts(currentCustomer.getDomain(), limit,start,sidx,sord);
+				totalRecords = sharedContactsService.getContactCount(currentCustomer.getDomain());
+			}else{
+				entries =sharedContactsService.getAllDomainContacts(currentCustomer.getDomain(), totalLimit,sidx,sord);
+			}
+			
+			if(entries.size()<=0){
+				if(domainWithContactsBeingUpdated.add(currentCustomer.getDomain())){
+					triggerDBContactUpdateTask(currentCustomer);
+				}
+			}
+			
+			int counter = -1;
+			int rowNum =  totalRecords - start;
+			for(ContactInfo contactInfo : entries){
+				JSONObject jsonObj = new JSONObject();
+				if(!isSearch){
+					jsonObj.put("no", rowNum--);
+				}
+				jsonObj.put("id", contactInfo.getId());
+				jsonObj.put("editlink", contactInfo.getId());
+				jsonObj.put("name", contactInfo.getFullname());
+				jsonObj.put("givenname", contactInfo.getGivenname());
+				jsonObj.put("familyname", contactInfo.getFamilyname());
+				jsonObj.put("company", contactInfo.getCompanyname());
+				jsonObj.put("email", contactInfo.getWorkemail());
+				jsonObj.put("phone", contactInfo.getWorkphone());
+				jsonObj.put("address", contactInfo.getWorkaddress());
+				jsonObj.put("notes", contactInfo.getNotes());
+				jsonObj.put("delete", "False");
+				if (isSearch) {
+					if (!util.isValidSearchObject(jsonObj, gridRequest.getFilterInfo())){
+						continue;
+					}
+					counter++;
+					if(counter >= start && counter < start + limit){
+						jsonArray.add(jsonObj);
+					}
+				}else{
+					jsonArray.add(jsonObj);
+				}
+				
+				
+			}
+			
+			if(isSearch){
+				count = counter+1;
+				util.insertNo(jsonArray);
+			}
+			
+			
+			if(count>totalLimit){
+				count = totalLimit;
+			}
+			total_pages = (int) Math.ceil(count / limit);
+
+			/*
+			 * paymentGateway.makeRequest("http://www.google.com",request,
+			 * response);
+			 */
+
+			if (pageNum > total_pages)
+				pageNum = total_pages;
+
+			
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("total",total_pages );
+		jsonObj.put("page",pageNum );
+		jsonObj.put("records", count);
+		jsonObj.put("rows",jsonArray );
+		response.setContentType("application/json; charset=UTF-8");
+		response.getWriter().print(jsonObj);
+	}
+	
+	@RequestMapping("/sharedcontacts/triggerDBContactUpdateTask.do")
+	@ResponseBody
+	public boolean triggerDBContactUpdateTask(HttpServletRequest request){
+		Customer currentCustomer =  sharedContactsService
+		.verifyUser(getCurrentUser(request).getEmail());
+		triggerDBContactUpdateTask(currentCustomer);
+		return true;
+	}
+	
+	private void triggerDBContactUpdateTask(Customer currentCustomer){
+		AddContactForAllDomainUsersContext context = new AddContactForAllDomainUsersContext();
+
+		context.setDomain(currentCustomer.getDomain());
+		context.setIsUseForSharedContacts(isUseForSharedContacts);
+
+		WorkflowInfo workflowInfo = new WorkflowInfo(
+				"CreateContactsInDBWorkflowProcessor");
+		workflowInfo.setIsNewWorkflow(true);
+
+		Workflow workflow = new Workflow();
+		workflow.setContext(context);
+		workflow.setWorkflowName(workflowInfo.getWorkflowName());
+		workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
+		workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
+
+		context.setWorkflowInfo(workflowInfo);
+		workflowManager.triggerWorkflow(workflow);
 	}
 }

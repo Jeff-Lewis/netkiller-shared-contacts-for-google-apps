@@ -172,4 +172,17 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 	</property>
 	</bean>
 	
+	<bean id="CreateContactsInDBTask" name="CreateContactsInDBTask" class="com.netkiller.workflow.impl.task.CreateContactsInDBTask"  scope="prototype" >
+		<property name="taskName" value="CreateContactsInDBTask"></property>
+	   <property name="retryCount" value="1"></property>
+	</bean>
+	
+	<bean id="CreateContactsInDBWorkflowProcessor" name="CreateContactsInDBWorkflowProcessor" class="com.netkiller.workflow.impl.processor.WorkflowSequenceProcessor" scope="prototype" lazy-init="true">
+	<property name="workflowTasks">
+	 <list>
+            <ref bean="CreateContactsInDBTask"/>
+     </list>
+	</property>
+	</bean>
+	
 </beans>	
