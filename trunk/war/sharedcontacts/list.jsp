@@ -474,7 +474,7 @@ $(document).ready(function() {
 		pager: '#pager2', 
 		sortname: 'modifiedDate', 
 		viewrecords: true, 
-		sortorder: "asc", 
+		sortorder: "desc", 
 		width: 942,
 		height: '100%',
 		//cellEdit: true, //if true, onSelectRow event can not be used

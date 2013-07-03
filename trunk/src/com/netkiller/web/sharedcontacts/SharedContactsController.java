@@ -646,20 +646,23 @@ public class SharedContactsController {
 												// ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ï¿½ÃƒÂ«Ã‚Â©Ã‚Â´
 												// ÃƒÂ­Ã¢â‚¬Â¢Ã‹Å“ÃƒÂ«Ã¢â‚¬Â¹Ã‚Â¨
 			Map<String, String> result = new HashMap<String, String>();
-			/*	
-			int limit = 100;
-			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
-				limit = 30000;
-			} else {
-				if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
-					limit = 50;
-				}
-			}
-
+				
+	
+/*
 			List<ContactEntry> list = sharedContactsService.getContacts(1,
 					limit, getGroupId(), isUseForSharedContacts, null);*/
 			count = sharedContactsService.getContactCount(CommonWebUtil.getDomain(getCurrentUser(request).getEmail()));
-
+			
+			if (!currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
+				int limit = 100;
+				if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+					limit = 50;
+				}
+				if(count> limit){
+					count = limit;
+				}
+			}
+			
 			result.put("total", (int) count + "");
 			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
 				Date subscribedDate = currentCustomer.getUpgradedDate();
@@ -1777,6 +1780,7 @@ public class SharedContactsController {
 			contactInfo.setId(entry.getEditLink().getHref());
 			contactInfo.setDomain(domain);
 			sharedContactsService.createContactInfo(contactInfo);
+			sharedContactsService.incrementContactCount(domain);
 			AddContactForAllDomainUsersContext context = new AddContactForAllDomainUsersContext();
 
 			context.setContactInfo(contactInfo);
@@ -2581,6 +2585,10 @@ public class SharedContactsController {
 				if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
 					totalLimit = 50;
 				}
+				
+				if(start+limit > totalLimit){
+					limit = totalLimit - start;
+				}
 			}
 			boolean isSearch = (gridRequest != null && gridRequest.isSearch());
 			SharedContactsUtil util = SharedContactsUtil.getInstance();
@@ -2599,7 +2607,13 @@ public class SharedContactsController {
 			}
 			
 			int counter = -1;
-			int rowNum =  totalRecords - start;
+			int rowNum = 0;
+			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
+			rowNum =  totalRecords - start;
+			} else {
+				rowNum =  totalLimit - start;
+			}
+			
 			for(ContactInfo contactInfo : entries){
 				JSONObject jsonObj = new JSONObject();
 				if(!isSearch){
