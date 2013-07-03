@@ -325,12 +325,46 @@ public class UploadContactsBlobstoreMapper extends
 			contactInfo.setId(contact.getEditLink().getHref());
 			contactInfo.setDomain(CommonWebUtil.getDomain(userEmail));
 			createContactInfo(contactInfo);
+			incrementContactCount(CommonWebUtil.getDomain(userEmail));
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new AppException();
 		}
+	}
+	private Entity getDomainGroupEntity(String domainName) {
+		Entity entity = null;
+		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
+				"DomainGroup");
+		query.addFilter("domainName",
+				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
+				domainName);
+
+		PreparedQuery preparedQuery = datastore.prepare(query);
+		List<Entity> groupNames = preparedQuery.asList(FetchOptions.Builder
+				.withDefaults());
+		if (groupNames != null && !groupNames.isEmpty()) {
+			entity = groupNames.get(0);
+		}
+		return entity;
+	}
+	public void incrementContactCount(String domainName) {
+		Integer count = 0;
+		Entity entity = getDomainGroupEntity(domainName);
+
+		if (entity != null ) {
+			count =  entity.getProperty("count")==null? null :((Long) entity.getProperty("count")).intValue();
+			if(count==null || count <0){
+				count = 1;
+			}else{
+				count++;
+			}
+			entity.setProperty("count", count);
+			datastore.put(entity);
+		}
+
+		
 	}
 	
 	public void createContactInfo(ContactInfo  contactInfo) {
