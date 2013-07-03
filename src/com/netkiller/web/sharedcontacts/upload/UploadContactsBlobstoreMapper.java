@@ -23,7 +23,10 @@ import org.springframework.stereotype.Component;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -61,10 +64,12 @@ import com.google.gdata.data.extensions.PhoneNumber;
 import com.google.gdata.data.extensions.StructuredPostalAddress;
 import com.google.gdata.util.ServiceException;
 import com.netkiller.exception.AppException;
+import com.netkiller.googleUtil.ContactInfo;
 import com.netkiller.security.acl.PermissionType;
 import com.netkiller.service.sharedcontacts.SharedContactsService;
 import com.netkiller.util.CommonUtil;
 import com.netkiller.util.CommonWebUtil;
+import com.netkiller.util.SharedContactsUtil;
 import com.netkiller.vo.StaticProperties;
 import com.netkiller.vo.UserPermission;
 
@@ -314,13 +319,43 @@ public class UploadContactsBlobstoreMapper extends
 			ContactsService service = getContactsService();
 			String feedurl  = "https://www.google.com/m8/feeds/contacts/"+CommonWebUtil.getDomain(userEmail)+"/full?xoauth_requestor_id="+userEmail;
 			URL postUrl = new URL(feedurl);
-			service.insert(postUrl, contact);
+			contact = service.insert(postUrl, contact);
+			// save entry to db
+			ContactInfo contactInfo = SharedContactsUtil.getInstance().makeContactInfo(contact);
+			contactInfo.setId(contact.getEditLink().getHref());
+			contactInfo.setDomain(CommonWebUtil.getDomain(userEmail));
+			createContactInfo(contactInfo);
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			log.log(Level.SEVERE, e.getMessage(), e);
 			throw new AppException();
 		}
+	}
+	
+	public void createContactInfo(ContactInfo  contactInfo) {
+		Key key = KeyFactory.createKey(ContactInfo.class.getSimpleName(), contactInfo.getId());
+		Entity entity = new Entity(key);
+		entity.setProperty("domain", contactInfo.getDomain());
+		entity.setProperty("id", contactInfo.getId());
+		
+		entity.setProperty("fullname",contactInfo.getFullname());
+		entity.setProperty("givenname",contactInfo.getGivenname());
+		entity.setProperty("familyname",contactInfo.getFamilyname());
+		entity.setProperty("companyname",contactInfo.getCompanyname());
+		entity.setProperty("companydept",contactInfo.getCompanydept());
+		entity.setProperty("companytitle",contactInfo.getCompanytitle());
+		entity.setProperty("workemail",contactInfo.getWorkemail());
+		entity.setProperty("homeemail",contactInfo.getHomeemail());
+		entity.setProperty("otheremail",contactInfo.getOtheremail());
+		entity.setProperty("workphone",contactInfo.getWorkphone());
+		entity.setProperty("homephone",contactInfo.getHomephone());
+		entity.setProperty("mobilephone",contactInfo.getMobilephone());
+		entity.setProperty("workaddress",contactInfo.getWorkaddress());
+		entity.setProperty("homeaddress",contactInfo.getHomeaddress());
+		entity.setProperty("otheraddress",contactInfo.getOtheraddress());
+		entity.setProperty("notes",contactInfo.getNotes());
+		datastore.put(entity);
 	}
 	
 	private ContactsService getContactsService() throws Exception{

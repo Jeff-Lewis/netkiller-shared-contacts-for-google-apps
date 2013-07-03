@@ -1,0 +1,113 @@
+
+<datastore-indexes autoGenerate="true">
+
+ <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="modifiedDate" direction="asc"/>
+    </datastore-index>
+    
+   <!-- Used 2 times in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="modifiedDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="givenname" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="givenname" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="familyname" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="familyname" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="company" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="company" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="email" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="email" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="phone" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="phone" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="companyname" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="companyname" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="workemail" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="workemail" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="workphone" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="ContactInfo" ancestor="false" source="auto">
+        <property name="domain" direction="asc"/>
+        <property name="workphone" direction="desc"/>
+    </datastore-index>
+
+
+</datastore-indexes>
+

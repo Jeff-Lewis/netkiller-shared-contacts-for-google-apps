@@ -12,9 +12,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.apache.tools.ant.types.resources.First;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gdata.data.Link;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.UserDefinedField;
@@ -33,6 +35,7 @@ import com.google.gdata.data.extensions.PhoneNumber;
 import com.google.gdata.data.extensions.PostalAddress;
 import com.google.gdata.data.extensions.StructuredPostalAddress;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
+import com.netkiller.googleUtil.ContactInfo;
 import com.netkiller.search.FilterInfo;
 import com.netkiller.search.GridRequest;
 import com.netkiller.search.property.InputFilterOperatorType;
@@ -42,6 +45,11 @@ import com.netkiller.vo.StaticProperties;
 public class SharedContactsUtil {
 
 	protected final Logger logger = Logger.getLogger(getClass().getName());
+	
+	private static final String HOME_REL = "http://schemas.google.com/g/2005#home";
+	private static final String WORK_REL = "http://schemas.google.com/g/2005#work";
+	private static final String CONTINUE_REL = "http://schemas.google.com/g/2005#other";
+	private static final String MOBILE_REL = "http://schemas.google.com/g/2005#mobile";
 
 	private static SharedContactsUtil instance;
 
@@ -269,11 +277,11 @@ public class SharedContactsUtil {
 			insertNo(jsonArray);
 		}
 		// logger.info("#CCC-3 ==> jsonArray.size(): " + jsonArray.size());
-		System.out.println("Json"+ jsonArray.toJSONString());
+	//	System.out.println("Json"+ jsonArray.toJSONString());
 		return jsonArray;
 	}
 
-	private boolean isValidSearchObject(JSONObject jsonObj,
+	public boolean isValidSearchObject(JSONObject jsonObj,
 			FilterInfo filterInfo) {
 		// TODO Auto-generated method stub
 		if (filterInfo != null) {
@@ -331,7 +339,7 @@ public class SharedContactsUtil {
 		return sortedJsonObjs;
 	}
 
-	private void insertNo(JSONArray jsonArray) {
+	public void insertNo(JSONArray jsonArray) {
 		JSONObject jsonObject = null;
 		int size = jsonArray.size();
 		for (int i = 0; i < jsonArray.size(); i++) {
@@ -1234,5 +1242,193 @@ public class SharedContactsUtil {
 			logger.info("ERROR: " + e.getMessage());
 		}
 	}
+public ContactInfo makeContactInfo(ContactEntry entry){
+	ContactInfo contactInfo = new ContactInfo();
 
+	String id = entry.getEditLink().getHref();
+
+	String fullName = getFullName(entry).equals("-")?" ":getFullName(entry);
+	String familyName = getFamilyName(entry).equals("-")?" ":getFamilyName(entry);
+	String givenName = getGivenName(entry).equals("-")?" ":getGivenName(entry);
+	String orgName = getOrganization(entry, "work").equals("-")?" ":getOrganization(entry, "work");
+	String orgDept = getOrganizationDept(entry, "work").equals("-")?" ":getOrganizationDept(entry, "work");
+	String orgTitle = getOrganizationTitle(entry, "work").equals("-")?" ":getOrganizationTitle(entry, "work");
+	String workEmail = getEmail(entry, "work").equals("-")?" ":getEmail(entry, "work");
+	String homeEmail = getEmail(entry, "home").equals("-")?" ":getEmail(entry, "home");
+	String otherEmail = getEmail(entry, "other").equals("-")?" ":getEmail(entry, "other");
+	String workPhoneNumber = getPhoneNumber(entry, "work").equals("-")?" ":getPhoneNumber(entry, "work");
+	String homePhoneNumber = getPhoneNumber(entry, "home").equals("-")?" ":getPhoneNumber(entry, "home");
+	String mobilePhoneNumber = getPhoneNumber(entry, "mobile").equals("-")?" ":getPhoneNumber(entry, "mobile");
+
+	String notes = getNotes(entry).equals("-")?" ":getNotes(entry);
+
+	
+
+	String workAddress = getFormattedAddress(entry, WORK_REL);
+	String homeAddress = getFormattedAddress(entry, HOME_REL);
+	String otherAddress = getFormattedAddress(entry, CONTINUE_REL);
+	
+	contactInfo.setId(id);
+	contactInfo.setKey(KeyFactory.createKey(ContactInfo.class.getSimpleName(), id));
+	contactInfo.setFullname(fullName);
+	contactInfo.setFamilyname(familyName);
+	contactInfo.setGivenname(givenName);
+	contactInfo.setCompanyname(orgName);
+	contactInfo.setCompanydept(orgDept);
+	contactInfo.setCompanytitle(orgTitle);
+	contactInfo.setWorkemail(workEmail);
+	contactInfo.setHomeemail(homeEmail);
+	contactInfo.setOtheremail(otherEmail);
+	contactInfo.setWorkphone(workPhoneNumber);
+	contactInfo.setHomephone(homePhoneNumber);
+	contactInfo.setMobilephone(mobilePhoneNumber);
+	contactInfo.setNotes(notes);
+	contactInfo.setWorkaddress(workAddress);
+	contactInfo.setHomeaddress(homeAddress);
+	contactInfo.setOtheraddress(otherAddress);
+	
+	return contactInfo;
+}
+	public ContactEntry makeContactEntry(ContactInfo contactInfo) {
+		String fullname = contactInfo.getFullname();
+		String givenname = contactInfo.getGivenname();
+		String familyname = contactInfo.getFamilyname();
+		String companyname = contactInfo.getCompanyname();
+		String companydept = contactInfo.getCompanydept();
+		String companytitle = contactInfo.getCompanytitle();
+		String workemail = contactInfo.getWorkemail();
+		String homeemail = contactInfo.getHomeemail();
+		String otheremail = contactInfo.getOtheremail();
+		String workphone = contactInfo.getWorkphone();
+		String homephone = contactInfo.getHomephone();
+		String mobilephone = contactInfo.getMobilephone();
+		String workaddress = contactInfo.getWorkaddress();
+		String homeaddress = contactInfo.getHomeaddress();
+		String otheraddress = contactInfo.getOtheraddress();
+		String notes = contactInfo.getNotes();
+
+		// String homeRel = "http://schemas.google.com/g/2005#home";
+		// String workRel = "http://schemas.google.com/g/2005#work";
+		// String otherRel = "http://schemas.google.com/g/2005#other";
+		// String mobileRel = "http://schemas.google.com/g/2005#mobile";
+
+		ContactEntry contact = new ContactEntry();
+contact.setId(contactInfo.getId());
+		Name name = new Name();
+		if (!fullname.equals("")) {
+			name.setFullName(new FullName(fullname, null));
+		}
+		if (!givenname.equals("")) {
+			name.setGivenName(new GivenName(givenname, null));
+		}
+		if (!familyname.equals("")) {
+			name.setFamilyName(new FamilyName(familyname, null));
+		}
+		contact.setName(name);
+
+		if (!companyname.equals("") || !companytitle.equals("")) {
+			Organization org = new Organization();
+			if (!companyname.equals("")) {
+				org.setOrgName(new OrgName(companyname));
+			}
+			if (!companydept.equals("")) {
+				org.setOrgDepartment(new OrgDepartment(companydept));
+			}
+			if (!companytitle.equals("")) {
+				org.setOrgTitle(new OrgTitle(companytitle));
+			}
+			org.setRel(StaticProperties.WORK_REL);
+			contact.addOrganization(org);
+		}
+
+		if (!workemail.equals("")) {
+			Email workEmail = new Email();
+			workEmail.setAddress(workemail);
+			workEmail.setRel(StaticProperties.WORK_REL);
+			contact.addEmailAddress(workEmail);
+		}
+
+		if (!homeemail.equals("")) {
+			Email homeEmail = new Email();
+			homeEmail.setAddress(homeemail);
+			homeEmail.setRel(StaticProperties.HOME_REL);
+			contact.addEmailAddress(homeEmail);
+		}
+
+		if (!otheremail.equals("")) {
+			Email otherEmail = new Email();
+			otherEmail.setAddress(otheremail);
+			otherEmail.setRel(StaticProperties.OTHER_REL);
+			contact.addEmailAddress(otherEmail);
+		}
+
+		if (!workphone.equals("")) {
+			PhoneNumber workPhone = new PhoneNumber();
+			workPhone.setPhoneNumber(workphone);
+			workPhone.setRel(StaticProperties.WORK_REL);
+			contact.addPhoneNumber(workPhone);
+		}
+
+		if (!homephone.equals("")) {
+			PhoneNumber homePhone = new PhoneNumber();
+			homePhone.setPhoneNumber(homephone);
+			homePhone.setRel(StaticProperties.HOME_REL);
+			contact.addPhoneNumber(homePhone);
+		}
+
+		if (!mobilephone.equals("")) {
+			PhoneNumber mobilePhone = new PhoneNumber();
+			mobilePhone.setPhoneNumber(mobilephone);
+			mobilePhone.setRel(StaticProperties.MOBILE_REL);
+			contact.addPhoneNumber(mobilePhone);
+		}
+
+
+		if (!workaddress.equals("")) {
+			FormattedAddress formattedAddress = new FormattedAddress(
+					workaddress);
+			StructuredPostalAddress postalAddress = new StructuredPostalAddress();
+			postalAddress.setFormattedAddress(formattedAddress);
+			postalAddress.setRel(StaticProperties.WORK_REL);
+			// contact.addExtension(postalAddress);
+			contact.addRepeatingExtension(postalAddress);
+		}
+
+		if (!homeaddress.equals("")) {
+			FormattedAddress formattedAddress = new FormattedAddress(
+					homeaddress);
+			StructuredPostalAddress postalAddress = new StructuredPostalAddress();
+			postalAddress.setFormattedAddress(formattedAddress);
+			postalAddress.setRel(StaticProperties.HOME_REL);
+			// contact.addExtension(postalAddress);
+			contact.addRepeatingExtension(postalAddress);
+		}
+
+		if (!otheraddress.equals("")) {
+			FormattedAddress formattedAddress = new FormattedAddress(
+					otheraddress);
+			StructuredPostalAddress postalAddress = new StructuredPostalAddress();
+			postalAddress.setFormattedAddress(formattedAddress);
+			postalAddress.setRel(StaticProperties.OTHER_REL);
+			// contact.addExtension(postalAddress);
+			contact.addRepeatingExtension(postalAddress);
+		}
+
+
+		if (!notes.equals("")) {
+			// contact.setContent(new PlainTextConstruct(notes));
+			contact.getUserDefinedFields().add(
+					new UserDefinedField("Notes", notes));
+		}
+
+		return contact;
+	}
+	
+	public List<ContactEntry> getContactEntriesFromContactInfo(List<ContactInfo> contactInfos){
+		List<ContactEntry>  contactEntries = new ArrayList<ContactEntry>();
+		for(ContactInfo contactInfo : contactInfos){
+			contactEntries.add(makeContactEntry(contactInfo));
+		}
+		return contactEntries;
+	}
 }

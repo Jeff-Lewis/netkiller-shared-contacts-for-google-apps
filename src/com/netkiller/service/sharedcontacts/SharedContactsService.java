@@ -12,6 +12,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.netkiller.exception.AppException;
+import com.netkiller.googleUtil.ContactInfo;
 import com.netkiller.search.GridRequest;
 import com.netkiller.vo.AppProperties;
 import com.netkiller.vo.Customer;
@@ -39,7 +40,7 @@ public interface SharedContactsService {
 	UserLogging getUserLogging(String domainName, String userId)throws AppException;
 	
 	
-	public void create(ContactEntry contact) throws AppException;
+	public ContactEntry create(ContactEntry contact) throws AppException;
 	
 	public void createUserContact(ContactEntry contact, String userEmail) throws AppException;
 	
@@ -57,7 +58,7 @@ public interface SharedContactsService {
 	
 	public void multipleCreateUserContacts(List<ContactEntry> contactEntries, String userEmail) throws AppException;
 	
-	public void update(ContactEntry contact) throws AppException;
+	public ContactEntry update(ContactEntry contact) throws AppException;
 	
 	public void remove(List<String> ids) throws AppException;
 	
@@ -132,4 +133,16 @@ public interface SharedContactsService {
 			String workemail, String workphone, String workaddress);
 	public void removeDuplicateGroups(String groupName, String userEmail);
 	public String getMyContactsGroupId(String email)  ;
+	
+	public ContactInfo createContactInfo(ContactInfo  contactInfo) ;
+	public ContactInfo getContactInfo(Entity entity) ;
+	
+	public boolean removeContactInfo(String id);
+	
+	public List<ContactInfo> getAllDomainContacts(String domain,Integer totalLimit,String sidx, String sord);
+	
+	public List<ContactInfo> getDomainContacts(String domain, Integer limit, Integer offset, String sidx, String sord) ;
+	
+	public void updateContactCount(String domainName, Integer count);
+	public Integer getContactCount(String domainName) ;
 }

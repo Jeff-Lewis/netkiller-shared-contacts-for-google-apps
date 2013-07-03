@@ -1,6 +1,9 @@
 package com.netkiller.googleUtil;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import com.google.appengine.api.datastore.Key;
 
 public class ContactInfo implements Serializable {
 
@@ -24,6 +27,17 @@ public class ContactInfo implements Serializable {
 	private String homeaddress;
 	private String otheraddress;
 	private String notes;
+	
+	
+	/* added for db */
+	private String domain;
+	private String id;
+	private Key key;
+	private Date modifiedDate;
+	/*private String createdBy;
+	private String udpatedBy;
+	private Date createdDate;
+	private Date updatedDate;*/
 
 	public String getFullname() {
 		return fullname;
@@ -61,6 +75,14 @@ public class ContactInfo implements Serializable {
 		return companydept;
 	}
 
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
 	public void setCompanydept(String companydept) {
 		this.companydept = companydept;
 	}
@@ -72,6 +94,7 @@ public class ContactInfo implements Serializable {
 	public void setCompanytitle(String companytitle) {
 		this.companytitle = companytitle;
 	}
+
 
 	public String getWorkemail() {
 		return workemail;
@@ -107,6 +130,22 @@ public class ContactInfo implements Serializable {
 
 	public String getHomephone() {
 		return homephone;
+	}
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public void setHomephone(String homephone) {
@@ -151,6 +190,14 @@ public class ContactInfo implements Serializable {
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+	public Key getKey() {
+		return key;
+	}
+
+	public void setKey(Key key) {
+		this.key = key;
 	}
 
 	@Override

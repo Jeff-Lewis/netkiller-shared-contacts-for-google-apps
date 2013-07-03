@@ -396,7 +396,8 @@ $(document).ready(function() {
 	
 	
 	jQuery("#list2").jqGrid({ 
-		url:'/sharedcontacts/main.do?cmd=list_data<%=queryString%><%=defaultGridOrderQueryString%>',
+		url:'/sharedcontacts/griddata.do',
+		//url:'/sharedcontacts/main.do?cmd=list_data<%=queryString%><%=defaultGridOrderQueryString%>',
 		datatype: "json",
 		<%if (isAdmin||isUserPermitted) {%>
 		colNames:['id', 'No.', '&nbsp;<input type="checkbox" onclick="checkBox(event)" /> ', 'First Name', 'Last Name', 'Company', 'Email', 'Phone', 'Address', 'Action'],
@@ -411,10 +412,10 @@ $(document).ready(function() {
                    {name:'delete',index:'delete', sortable:false,search:false, formatter: "checkbox", formatoptions: {disabled : false}, editable: true, edittype:"checkbox", align:"center", width:32},		            
 		           {name:'givenname',index:'givenname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:80},
 		           {name:'familyname',index:'familyname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:80,  searchoptions:{sopt:['eq','bw']}},
-		           {name:'company',index:'company',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100}, 
-		           {name:'email',index:'email',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true, custom:true,    custom_func:isEmail}, editable:true, width:130, align:"left"}, 
-		           {name:'phone',index:'phone',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:100, align:"left"}, 
-		           {name:'address',index:'address', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:225,align:"left",sortable:false},
+		           {name:'company',index:'companyname',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100}, 
+		           {name:'email',index:'workemail',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true, custom:true,    custom_func:isEmail}, editable:true, width:130, align:"left"}, 
+		           {name:'phone',index:'workphone',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:100, align:"left"}, 
+		           {name:'address',index:'workaddress', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:225,align:"left",sortable:false},
 		           {name:'act',index:'act', width:118,search:false, sortable:false}		           
 		           
 		           <%} else {%>
@@ -422,15 +423,20 @@ $(document).ready(function() {
                    {name:'delete',index:'delete', sortable:false,search:false, formatter: "checkbox", formatoptions: {disabled : false}, editable: true, edittype:"checkbox", align:"center", width:46},		            
 		           {name:'givenname',index:'givenname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:90},
 		           {name:'familyname',index:'familyname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:90,  searchoptions:{sopt:['eq','bw']}},
-		           {name:'company',index:'company',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100}, 
-		           {name:'email',index:'email',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:130, align:"left"}, 
-		           {name:'phone',index:'phone',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100, align:"left"}, 
-		           {name:'address',index:'address', editrules:{edithidden:true, required:false}, editable:true, width:314,align:"left",sortable:false}
+		           {name:'company',index:'companyname',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100}, 
+		           {name:'email',index:'workemail',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:130, align:"left"}, 
+		           {name:'phone',index:'workphone',searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:false}, editable:true, width:100, align:"left"}, 
+		           {name:'address',index:'workaddress', editrules:{edithidden:true, required:false}, editable:true, width:314,align:"left",sortable:false}
 		           <%}%>
 		],
 		gridComplete: function(){
-			
 			var ids = jQuery("#list2").jqGrid('getDataIDs');
+			
+			$("#contactDBUpdateMsg").hide();
+			if(!ids.length){
+				$("#contactDBUpdateMsg").show();
+			}
+		
 			for(var i=0;i < ids.length;i++){
 				var cl = ids[i];
 				div1 = "<div align='center'>";
@@ -466,7 +472,7 @@ $(document).ready(function() {
   	   	rowNum:15, 
 		rowList:[5, 10, 15, 30, 50, 100],
 		pager: '#pager2', 
-		sortname: 'no', 
+		sortname: 'modifiedDate', 
 		viewrecords: true, 
 		sortorder: "asc", 
 		width: 942,
@@ -516,7 +522,7 @@ $(document).ready(function() {
 }, // search options
 			{} // view options
 	);
-	jQuery("#list2").setGridParam({url:'/sharedcontacts/main.do?cmd=list_data'}).trigger("reloadGrid");
+	jQuery("#list2").setGridParam({url:'/sharedcontacts/griddata.do'}).trigger("reloadGrid");
 	//$( "#SelectAll" ).button();
 	$( "#MailTo" ).click(function() {
 		var grid = jQuery("#list2");
@@ -860,6 +866,7 @@ function getCellValue(rowId, cellId) {
 						<table id="list2" style="width:944px; "></table>
 						<div id="pager2"></div>
 					</form>
+					<div id='contactDBUpdateMsg' style='display:none;color: red;font-size: 18px;font-weight: bold; margin-top: 5px;'> Contacts are being updated. Please refresh screen in a few minutes.</div>
 				</div></td>
 		</tr>
 		<tr><td>

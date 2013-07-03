@@ -32,6 +32,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gdata.client.Query;
 import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
 import com.google.gdata.client.authn.oauth.OAuthException;
@@ -67,6 +69,7 @@ import com.google.gdata.data.extensions.PhoneNumber;
 import com.google.gdata.data.extensions.StructuredPostalAddress;
 import com.google.gdata.util.ServiceException;
 import com.netkiller.exception.AppException;
+import com.netkiller.googleUtil.ContactInfo;
 import com.netkiller.search.GridRequest;
 import com.netkiller.security.acl.PermissionType;
 import com.netkiller.util.CommonUtil;
@@ -697,12 +700,12 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		}
 	}
 
-	public void create(ContactEntry contact) throws AppException {
+	public ContactEntry create(ContactEntry contact) throws AppException {
 		try {
 			ContactsService service = getContactsService();
 			String feedurl = getFeedUrl(appProperties.getFeedurl());
 			URL postUrl = new URL(feedurl);
-			service.insert(postUrl, contact);
+			return service.insert(postUrl, contact);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe(e.getMessage());
@@ -1057,8 +1060,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 			// ContactFeed resultFeed = service.getFeed(feedUrl,
 			// ContactFeed.class);
+			long startTime = new Date().getTime();
 			ContactFeed resultFeed = service.query(query, ContactFeed.class);
-
+			System.out.println("Time taken : " + (new Date().getTime() - startTime)/1000);
 			contactVOs = resultFeed.getEntries();
 			System.out.println("Total size contactsVO" + contactVOs.size());
 			Customer cust = getDomainAdminEmail(CommonWebUtil
@@ -1100,12 +1104,12 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		return entry;
 	}
 
-	public void update(ContactEntry contact) throws AppException {
+	public ContactEntry update(ContactEntry contact) throws AppException {
 		try {
 			ContactsService service = getContactsService();
 			URL editUrl = new URL(contact.getEditLink().getHref()
 					+ "?xoauth_requestor_id=" + userEmail);
-			service.update(editUrl, contact);
+			return service.update(editUrl, contact);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe(e.getMessage());
@@ -1141,7 +1145,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 					for (int j = 0; j < splittedList.size(); j++) {
 						contact = new ContactEntry();
-						contact.setId((String) splittedList.get(j));
+						String id =(String) splittedList.get(j);
+						contact.setId(id);
+						removeContactInfo(id);
 						BatchUtils.setBatchId(contact,
 								String.valueOf(batchCnt++));
 						BatchUtils.setBatchOperationType(contact,
@@ -1570,6 +1576,48 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		entity.setProperty("groupName", groupName);
 		datastore.put(entity);
 	}
+	
+	public void updateContactCount(String domainName, Integer count) {
+		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
+				"DomainGroup");
+		query.addFilter("domainName",
+				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
+				domainName);
+
+		PreparedQuery preparedQuery = datastore.prepare(query);
+		List<Entity> groupNames = preparedQuery.asList(FetchOptions.Builder
+				.withDefaults());
+		if (groupNames != null && !groupNames.isEmpty()){
+			Entity entity  = groupNames.get(0);
+			entity.setProperty("count", count);
+			datastore.put(entity);
+		}
+			
+	}
+	
+	public Integer getContactCount(String domainName) {
+		Integer count = 0;
+		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
+				"DomainGroup");
+		query.addFilter("domainName",
+				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
+				domainName);
+
+		PreparedQuery preparedQuery = datastore.prepare(query);
+		List<Entity> groupNames = preparedQuery.asList(FetchOptions.Builder
+				.withDefaults());
+		if (groupNames != null && !groupNames.isEmpty()){
+			Entity entity  = groupNames.get(0);
+			if(entity.getProperty("count")!=null){
+				count = ((Long) entity.getProperty("count")).intValue();
+			}
+			
+		}
+		if(count==null){
+			count=0;
+		}
+		return count;	
+	}
 
 	public String getGroupName(String domainName) {
 		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
@@ -1774,7 +1822,114 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		}
 		return null;
 	}
+	
+	public List<ContactInfo> getAllDomainContacts(String domain,Integer totalLimit,String sidx, String sord){
+		List<ContactInfo> contacts = new ArrayList<ContactInfo>();
+		int start = 0;
+		int limit = totalLimit<900?totalLimit:900;
+		while(start<totalLimit){			
+			List<ContactInfo> contacts1 = getDomainContacts(domain, limit, start, sidx, sord);
+			if(!contacts1.isEmpty()){
+				contacts.addAll(contacts1);
+			}else{
+				break;
+			}
+			start += limit;
+		}
+		return contacts;
+	}
+	
+	public List<ContactInfo> getDomainContacts(String domain, Integer limit, Integer offset,String sidx, String sord) {
+		List<ContactInfo> contacts = new ArrayList<ContactInfo>();
 
+		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
+				ContactInfo.class.getSimpleName());
+		query.addFilter("domain",
+				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
+				domain);
+		SortDirection direction = SortDirection.ASCENDING;
+		if(sord.equalsIgnoreCase("desc")){
+			direction = SortDirection.DESCENDING;
+		}
+		query.addSort(sidx, direction);
+		PreparedQuery preparedQuery = datastore.prepare(query);
+		
+		List<Entity> fetchedContacts = preparedQuery.asList(FetchOptions.Builder
+				.withLimit(limit).offset(offset));
+		if (fetchedContacts != null && !fetchedContacts.isEmpty()){
+			for(Entity entity : fetchedContacts){
+				contacts.add(getContactInfo(entity));
+			}
+		}
+return contacts;
+	}
+	
+	public ContactInfo createContactInfo(ContactInfo  contactInfo) {
+		Key key = KeyFactory.createKey(ContactInfo.class.getSimpleName(), contactInfo.getId());
+		Entity entity = new Entity(key);
+		if(StringUtils.isBlank(contactInfo.getDomain())){
+			contactInfo.setDomain(CommonWebUtil
+					.getDomain(UserServiceFactory.getUserService().getCurrentUser().getEmail()));
+		}
+		entity.setProperty("domain", contactInfo.getDomain());
+		entity.setProperty("id", contactInfo.getId());
+		
+		entity.setProperty("fullname",contactInfo.getFullname());
+		entity.setProperty("givenname",contactInfo.getGivenname());
+		entity.setProperty("familyname",contactInfo.getFamilyname());
+		entity.setProperty("companyname",contactInfo.getCompanyname());
+		entity.setProperty("companydept",contactInfo.getCompanydept());
+		entity.setProperty("companytitle",contactInfo.getCompanytitle());
+		entity.setProperty("workemail",contactInfo.getWorkemail());
+		entity.setProperty("homeemail",contactInfo.getHomeemail());
+		entity.setProperty("otheremail",contactInfo.getOtheremail());
+		entity.setProperty("workphone",contactInfo.getWorkphone());
+		entity.setProperty("homephone",contactInfo.getHomephone());
+		entity.setProperty("mobilephone",contactInfo.getMobilephone());
+		entity.setProperty("workaddress",contactInfo.getWorkaddress());
+		entity.setProperty("homeaddress",contactInfo.getHomeaddress());
+		entity.setProperty("otheraddress",contactInfo.getOtheraddress());
+		entity.setProperty("notes",contactInfo.getNotes());
+		entity.setProperty("modifiedDate",new Date());
+
+		try {
+			return getContactInfo(datastore.get(datastore.put(entity)));
+		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	public ContactInfo getContactInfo(Entity entity) {
+		ContactInfo contactInfo = new ContactInfo();
+		contactInfo.setDomain(CommonUtil.getNotNullValue(entity
+				.getProperty("domain")));
+		contactInfo.setId(CommonUtil.getNotNullValue(entity
+				.getProperty("id")));
+		contactInfo.setKey(entity.getKey());
+
+		contactInfo.setCompanydept(CommonUtil.getNotNullValue(entity.getProperty("companydept")));
+		contactInfo.setCompanyname(CommonUtil.getNotNullValue(entity.getProperty("companyname")));
+		contactInfo.setCompanytitle(CommonUtil.getNotNullValue(entity.getProperty("companytitle")));
+		contactInfo.setFamilyname(CommonUtil.getNotNullValue(entity.getProperty("familyname")));
+		contactInfo.setFullname(CommonUtil.getNotNullValue(entity.getProperty("fullname")));
+		contactInfo.setGivenname(CommonUtil.getNotNullValue(entity.getProperty("givenname")));
+		contactInfo.setHomeaddress(CommonUtil.getNotNullValue(entity.getProperty("homeaddress")));
+		contactInfo.setHomeemail(CommonUtil.getNotNullValue(entity.getProperty("homeemail")));
+		contactInfo.setHomephone(CommonUtil.getNotNullValue(entity.getProperty("homephone")));
+		contactInfo.setMobilephone(CommonUtil.getNotNullValue(entity.getProperty("mobilephone")));
+		contactInfo.setNotes(CommonUtil.getNotNullValue(entity.getProperty("notes")));
+		contactInfo.setOtheraddress(CommonUtil.getNotNullValue(entity.getProperty("otheraddress")));
+		contactInfo.setOtheremail(CommonUtil.getNotNullValue(entity.getProperty("otheremail")));
+		contactInfo.setWorkaddress(CommonUtil.getNotNullValue(entity.getProperty("workaddress")));
+		contactInfo.setWorkemail(CommonUtil.getNotNullValue(entity.getProperty("workemail")));
+		contactInfo.setWorkphone(CommonUtil.getNotNullValue(entity.getProperty("workphone")));
+		
+		return contactInfo;
+	}
+	
 	private DomainSettings getDomainSettings(Entity entity) {
 		DomainSettings domainSettings = new DomainSettings();
 		domainSettings.setDomain(CommonUtil.getNotNullValue(entity
@@ -2730,5 +2885,12 @@ System.out.println("Exception caught");
 		}
 
 		return result;
+	}
+	
+	public boolean removeContactInfo(String id){
+		id = id.substring(0,id.indexOf("?"));
+		Key key = KeyFactory.createKey(ContactInfo.class.getSimpleName(), id);
+		datastore.delete(key);
+		return true;
 	}
 }
