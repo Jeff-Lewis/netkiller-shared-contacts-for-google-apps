@@ -1148,6 +1148,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 						String id =(String) splittedList.get(j);
 						contact.setId(id);
 						removeContactInfo(id);
+						decrementContactCount(CommonWebUtil.getDomain(userEmail));
 						BatchUtils.setBatchId(contact,
 								String.valueOf(batchCnt++));
 						BatchUtils.setBatchOperationType(contact,
@@ -1578,17 +1579,8 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	}
 	
 	public void updateContactCount(String domainName, Integer count) {
-		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
-				"DomainGroup");
-		query.addFilter("domainName",
-				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
-				domainName);
-
-		PreparedQuery preparedQuery = datastore.prepare(query);
-		List<Entity> groupNames = preparedQuery.asList(FetchOptions.Builder
-				.withDefaults());
-		if (groupNames != null && !groupNames.isEmpty()){
-			Entity entity  = groupNames.get(0);
+		Entity entity  = getDomainGroupEntity(domainName);
+		if (entity != null ){
 			entity.setProperty("count", count);
 			datastore.put(entity);
 		}
@@ -1597,6 +1589,17 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	
 	public Integer getContactCount(String domainName) {
 		Integer count = 0;
+		Entity entity = getDomainGroupEntity(domainName);
+
+		if (entity != null && entity.getProperty("count") != null) {
+			count = ((Long) entity.getProperty("count")).intValue();
+		}
+
+		return count;
+	}
+
+	private Entity getDomainGroupEntity(String domainName) {
+		Entity entity = null;
 		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
 				"DomainGroup");
 		query.addFilter("domainName",
@@ -1606,19 +1609,11 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		PreparedQuery preparedQuery = datastore.prepare(query);
 		List<Entity> groupNames = preparedQuery.asList(FetchOptions.Builder
 				.withDefaults());
-		if (groupNames != null && !groupNames.isEmpty()){
-			Entity entity  = groupNames.get(0);
-			if(entity.getProperty("count")!=null){
-				count = ((Long) entity.getProperty("count")).intValue();
-			}
-			
+		if (groupNames != null && !groupNames.isEmpty()) {
+			entity = groupNames.get(0);
 		}
-		if(count==null){
-			count=0;
-		}
-		return count;	
+		return entity;
 	}
-
 	public String getGroupName(String domainName) {
 		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
 				"DomainGroup");
@@ -2888,9 +2883,48 @@ System.out.println("Exception caught");
 	}
 	
 	public boolean removeContactInfo(String id){
-		id = id.substring(0,id.indexOf("?"));
+		if(id.indexOf("?")>-1){
+			id = id.substring(0,id.indexOf("?"));
+		}
 		Key key = KeyFactory.createKey(ContactInfo.class.getSimpleName(), id);
 		datastore.delete(key);
 		return true;
+	}
+
+	@Override
+	public void incrementContactCount(String domainName) {
+		Integer count = 0;
+		Entity entity = getDomainGroupEntity(domainName);
+
+		if (entity != null ) {
+			count =  entity.getProperty("count")==null? null :((Long) entity.getProperty("count")).intValue();
+			if(count==null || count <0){
+				count = 1;
+			}else{
+				count++;
+			}
+			entity.setProperty("count", count);
+			datastore.put(entity);
+		}
+
+		
+	}
+
+	@Override
+	public void decrementContactCount(String domainName) {
+		Integer count = 0;
+		Entity entity = getDomainGroupEntity(domainName);
+
+		if (entity != null ) {
+			count =  entity.getProperty("count")==null? null :((Long) entity.getProperty("count")).intValue();
+			if(count==null || count <=0){
+				count = 0;
+			}else{
+				count--;
+			}
+			entity.setProperty("count", count);
+			datastore.put(entity);
+		}
+		
 	}
 }

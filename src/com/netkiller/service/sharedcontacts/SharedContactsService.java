@@ -144,5 +144,7 @@ public interface SharedContactsService {
 	public List<ContactInfo> getDomainContacts(String domain, Integer limit, Integer offset, String sidx, String sord) ;
 	
 	public void updateContactCount(String domainName, Integer count);
+	public void incrementContactCount(String domainName);
+	public void decrementContactCount(String domainName);
 	public Integer getContactCount(String domainName) ;
 }

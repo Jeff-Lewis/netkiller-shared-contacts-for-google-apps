@@ -175,9 +175,9 @@ public class SharedContactsFileUpload {
 				CSVFileReader x = new CSVFileReader(stream);
 				x.ReadFile();
 				
-				List<ContactEntry> list = sharedContactsService.getContacts(1, 100, getGroupId(),
-						true, null);
-				int count = list.size();
+				/*List<ContactEntry> list = sharedContactsService.getContacts(1, 100, getGroupId(),
+						true, null);*/
+				int count = sharedContactsService.getContactCount(currentCustomer.getDomain());
 				
 				if ((!currentCustomer.getAccountType().equals("Paid")
 						&& (count+x.getStoreValuesList().size()) > 100)
