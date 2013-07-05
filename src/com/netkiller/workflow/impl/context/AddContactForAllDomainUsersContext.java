@@ -16,6 +16,7 @@ public class AddContactForAllDomainUsersContext implements WorkflowContext, Seri
 	private String domain;
 	private ContactInfo contactInfo;
 	private Boolean isUseForSharedContacts;
+	private Integer start = 1;
 
 	public Boolean getIsUseForSharedContacts() {
 		return isUseForSharedContacts;
@@ -35,6 +36,14 @@ public class AddContactForAllDomainUsersContext implements WorkflowContext, Seri
 
 	public ContactInfo getContactInfo() {
 		return contactInfo;
+	}
+
+	public Integer getStart() {
+		return start;
+	}
+
+	public void setStart(Integer start) {
+		this.start = start;
 	}
 
 	public void setContactInfo(ContactInfo contactInfo) {

@@ -31,9 +31,13 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -2571,8 +2575,6 @@ public class SharedContactsController {
 	
 			Customer currentCustomer =  sharedContactsService
 						.verifyUser(getCurrentUser(request).getEmail());
-			// entries = sharedContactsService.getContacts(page, rows, sidx,
-			// sord);
 			String groupId = null;
 			if (isUseForSharedContacts) {
 				groupId = getGroupId();
@@ -2656,11 +2658,6 @@ public class SharedContactsController {
 			}
 			total_pages = (int) Math.ceil(count / limit);
 
-			/*
-			 * paymentGateway.makeRequest("http://www.google.com",request,
-			 * response);
-			 */
-
 			if (pageNum > total_pages)
 				pageNum = total_pages;
 
@@ -2701,5 +2698,42 @@ public class SharedContactsController {
 
 		context.setWorkflowInfo(workflowInfo);
 		workflowManager.triggerWorkflow(workflow);
+	}
+	
+	@RequestMapping("/test.do")
+	public void add(){
+		sharedContactsService.verifyUser("admin@vph.com");
+	}
+	
+	@RequestMapping("/sharedcontacts/triggerdeleteContactInfo.do")
+	@ResponseBody
+	public boolean triggerDeleteContactInfo(@RequestParam("domainName")String domainName){
+		Queue queue =  QueueFactory.getDefaultQueue();
+		queue.add(TaskOptions.Builder.withUrl("")
+									.url("/sharedcontacts/deleteContactInfo.do")
+									.param("domainName", domainName));
+		 
+		return true;
+	}
+	
+	@RequestMapping("/sharedcontacts/deleteContactInfo.do")
+	@ResponseBody
+	public boolean deleteContactInfo(@RequestParam("domainName")String domainName){
+		 List<ContactInfo> entries = sharedContactsService.getDomainContacts( domainName, 30000,0,"modifiedDate","desc");
+		 for(ContactInfo info : entries){
+			 sharedContactsService.removeContactInfo(info.getId());
+		 }
+		 
+		return true;
+	}
+	
+	@RequestMapping("/sharedcontacts/checkDuplicateEmail.do")
+	@ResponseBody
+	public boolean isDuplicateEmail(@RequestParam("email")String email, HttpServletRequest request){
+		 List<ContactInfo> entries = sharedContactsService.isDuplicateEmail( CommonWebUtil.getDomain( getCurrentUser(request).getEmail()), email);
+		if(!entries.isEmpty()){
+			return true;
+		}		 
+		return false;
 	}
 }

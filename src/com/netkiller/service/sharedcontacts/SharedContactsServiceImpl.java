@@ -994,7 +994,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			// query.setStartIndex(1); //paging
 			// query.setStringCustomParameter("showdeleted","true");
 			query.setStringCustomParameter("orderby", "lastmodified");
-			query.setStringCustomParameter("sortorder", "descending"); // "ascending"
+			query.setStringCustomParameter("sortorder", "ascending"); // "ascending"
 																		// or
 																		// "descending"
 			query.setStringCustomParameter("showdeleted", "false");
@@ -2926,5 +2926,29 @@ System.out.println("Exception caught");
 			datastore.put(entity);
 		}
 		
+	}
+	
+	public List<ContactInfo> isDuplicateEmail(String domain, String email) {
+		List<ContactInfo> contacts = new ArrayList<ContactInfo>();
+
+		com.google.appengine.api.datastore.Query query = new com.google.appengine.api.datastore.Query(
+				ContactInfo.class.getSimpleName());
+		query.addFilter("domain",
+				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
+				domain);
+		query.addFilter("workemail",
+				com.google.appengine.api.datastore.Query.FilterOperator.EQUAL,
+				email);
+		SortDirection direction = SortDirection.ASCENDING;
+		PreparedQuery preparedQuery = datastore.prepare(query);
+
+		List<Entity> fetchedContacts = preparedQuery
+				.asList(FetchOptions.Builder.withLimit(5));
+		if (fetchedContacts != null && !fetchedContacts.isEmpty()) {
+			for (Entity entity : fetchedContacts) {
+				contacts.add(getContactInfo(entity));
+			}
+		}
+		return contacts;
 	}
 }
