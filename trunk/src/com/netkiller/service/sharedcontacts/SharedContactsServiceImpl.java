@@ -33,6 +33,10 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.mail.MailService;
+import com.google.appengine.api.mail.MailServiceFactory;
+import com.google.appengine.api.mail.MailService.Attachment;
+import com.google.appengine.api.mail.MailService.Message;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gdata.client.Query;
 import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
@@ -1399,6 +1403,194 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			e.printStackTrace();
 		}
 	}
+	
+	public void mailCSV(List<ContactEntry> contacts,
+			String email) throws AppException {
+
+		StringBuffer csvData = new StringBuffer("");
+
+		WritableFont times16font = new WritableFont(WritableFont.TIMES, 10,
+				WritableFont.BOLD, true);
+		WritableCellFormat times16format = new WritableCellFormat(times16font);
+		List<Cell> cellList = new ArrayList<Cell>();
+
+		cellList.add(new Label(0, 0, "Full Name", times16format));
+		cellList.add(new Label(1, 0, "First Name", times16format));
+		cellList.add(new Label(2, 0, "Last Name", times16format));
+		cellList.add(new Label(3, 0, "Company", times16format));
+		cellList.add(new Label(4, 0, "Job Title", times16format));
+		cellList.add(new Label(5, 0, "Department", times16format));
+		cellList.add(new Label(6, 0, "E-Mail Address", times16format));
+		cellList.add(new Label(7, 0, "E-mail 2 Address", times16format));
+		cellList.add(new Label(8, 0, "E-mail 3 Address", times16format));
+		cellList.add(new Label(9, 0, "Business Phone", times16format));
+		cellList.add(new Label(10, 0, "Home Phone", times16format));
+		cellList.add(new Label(11, 0, "Mobile Phone", times16format));
+		cellList.add(new Label(12, 0, "Business Address", times16format));
+		cellList.add(new Label(13, 0, "Home Address", times16format));
+		cellList.add(new Label(14, 0, "Other Address", times16format));
+		cellList.add(new Label(15, 0, "Notes", times16format));
+
+		int rowNumber = 1;
+
+		for (ContactEntry entry : contacts) {
+
+			SharedContactsUtil sharedContactsUtil = SharedContactsUtil
+					.getInstance();
+			cellList.add(new Label(0, rowNumber, sharedContactsUtil
+					.getFullName(entry), times16format));
+			cellList.add(new Label(1, rowNumber, sharedContactsUtil
+					.getGivenName(entry), times16format));
+			cellList.add(new Label(2, rowNumber, sharedContactsUtil
+					.getFamilyName(entry), times16format));
+			cellList.add(new Label(3, rowNumber, sharedContactsUtil
+					.getOrganization(entry, "work"), times16format));
+			cellList.add(new Label(4, rowNumber, sharedContactsUtil
+					.getOrganizationTitle(entry, "work"), times16format));
+			cellList.add(new Label(5, rowNumber, sharedContactsUtil
+					.getOrganizationDept(entry, "work"), times16format));
+			String workEmailStr = "";
+			Email workEmail = sharedContactsUtil.getEmailObj(entry, "work");
+			if (workEmail != null) {
+				workEmailStr = workEmail.getAddress();
+			}
+			cellList.add(new Label(6, rowNumber, workEmailStr, times16format));
+
+			String homeEmailStr = "";
+			Email homeEmail = sharedContactsUtil.getEmailObj(entry, "home");
+			if (homeEmail != null) {
+				homeEmailStr = homeEmail.getAddress();
+			}
+			cellList.add(new Label(7, rowNumber, homeEmailStr, times16format));
+
+			String otherEmailStr = "";
+			Email otherEmail = sharedContactsUtil.getEmailObj(entry, "other");
+			if (otherEmail != null) {
+				otherEmailStr = workEmail.getAddress();
+			}
+			cellList.add(new Label(8, rowNumber, otherEmailStr, times16format));
+
+			String workPhoneNumberStr = "";
+			PhoneNumber workPhoneNumber = sharedContactsUtil.getPhoneNumberObj(
+					entry, "work");
+			if (workPhoneNumber != null) {
+				workPhoneNumberStr = workPhoneNumber.getPhoneNumber();
+			}
+			cellList.add(new Label(9, rowNumber, workPhoneNumberStr,
+					times16format));
+
+			String homePhoneNumberStr = "";
+			PhoneNumber homePhoneNumber = sharedContactsUtil.getPhoneNumberObj(
+					entry, "home");
+			if (homePhoneNumber != null) {
+				homePhoneNumberStr = homePhoneNumber.getPhoneNumber();
+			}
+			cellList.add(new Label(10, rowNumber, homePhoneNumberStr,
+					times16format));
+
+			String mobilePhoneNumberStr = "";
+			PhoneNumber mobilePhoneNumber = sharedContactsUtil
+					.getPhoneNumberObj(entry, "mobile");
+			if (mobilePhoneNumber != null) {
+				mobilePhoneNumberStr = mobilePhoneNumber.getPhoneNumber();
+			}
+			cellList.add(new Label(11, rowNumber, mobilePhoneNumberStr,
+					times16format));
+
+			String workAddressStr = "";
+			StructuredPostalAddress address = sharedContactsUtil
+					.getStructuredPostalAddress(entry,
+							StaticProperties.WORK_REL);
+			if (address != null) {
+				FormattedAddress formattedAddress = address
+						.getFormattedAddress();
+				logger.info("formattedAddress is null? "
+						+ (formattedAddress == null));
+				if (formattedAddress != null) {
+					workAddressStr = formattedAddress.getValue();
+				}
+			}
+			cellList.add(new Label(12, rowNumber, workAddressStr, times16format));
+
+			String homeAddressStr = "";
+			StructuredPostalAddress homeAddress = sharedContactsUtil
+					.getStructuredPostalAddress(entry,
+							StaticProperties.HOME_REL);
+			if (homeAddress != null) {
+				FormattedAddress formattedAddress = homeAddress
+						.getFormattedAddress();
+				logger.info("formattedAddress is null? "
+						+ (formattedAddress == null));
+				if (formattedAddress != null) {
+					homeAddressStr = formattedAddress.getValue();
+				}
+			}
+			cellList.add(new Label(13, rowNumber, homeAddressStr, times16format));
+
+			String otherAddressStr = "";
+			StructuredPostalAddress otherAddress = sharedContactsUtil
+					.getStructuredPostalAddress(entry,
+							StaticProperties.OTHER_REL);
+			if (otherAddress != null) {
+				FormattedAddress formattedAddress = otherAddress
+						.getFormattedAddress();
+				logger.info("formattedAddress is null? "
+						+ (formattedAddress == null));
+				if (formattedAddress != null) {
+					otherAddressStr = formattedAddress.getValue();
+				}
+			}
+			cellList.add(new Label(14, rowNumber, otherAddressStr,
+					times16format));
+			cellList.add(new Label(15, rowNumber, sharedContactsUtil
+					.getNotes(entry), times16format));
+			rowNumber++;
+
+		}
+		int rowNum = 0;
+
+		for (Cell cell : cellList) {
+			if (rowNum != cell.getRow()) {
+				rowNum = cell.getRow();
+				csvData.append('\n');
+
+			}
+			csvData.append('"');
+			csvData.append(cell.getContents());
+			csvData.append('"');
+			csvData.append(',');
+		}
+
+		try {
+			byte[] byteArray = csvData.toString().getBytes("UTF-16");
+
+			try {
+				byteArray = UnicodeUtils.convert(byteArray, "UTF-8");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			Attachment attachment = new Attachment("CSV-File.csv", byteArray);
+			Message mail = new Message();
+			mail.setTo(email);
+			mail.setSender(appProperties.getMailSender());
+			mail.setSubject("Shared Contacts CSV Data");
+			mail.setTextBody("Please find requested CSV Data as an attachment with this mail.");
+			mail.setAttachments(attachment);
+			MailService service = MailServiceFactory.getMailService();
+			try {
+				service.send(mail);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	@Override
 	public List<String> getAllDomainUsers(String domain) {

@@ -389,8 +389,9 @@ $(document).ready(function() {
 	//$( "#Download" ).button();
 	$( "#Download" ).click(function() {
 
-		
-		window.location.href = "/sharedcontacts/main.do?cmd=actdownload";
+		$.post('/sharedcontacts/download.do');
+		//window.location.href = "/sharedcontacts/main.do?cmd=actdownload";
+		alert("Contacts will be emailed to you shortly");
 		
 	});	
 	

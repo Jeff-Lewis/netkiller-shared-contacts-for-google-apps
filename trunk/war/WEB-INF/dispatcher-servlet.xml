@@ -66,6 +66,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 		<property name="paymentGatewayPassword" value="${payment-gateway-password}" />
 		<property name="paymentGatewaySignature" value="${payment-gateway-signature}" />
 		<property name="paymentGatewayAccountEmail" value="${payment-gateway-account-email}" />
+		<property name="mailSender" value="${mailSender}" />
 	</bean>
 
 	<!-- Controller Bean -->

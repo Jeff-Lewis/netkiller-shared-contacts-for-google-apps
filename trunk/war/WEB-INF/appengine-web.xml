@@ -6,7 +6,7 @@
 	<!-- <application>perezarndtsc</application> -->
 	<!-- <application>netkillersc</application> -->
 	<application>netkillersc1</application>
-	<version>7</version>
+	<version>8</version>
 	
 	<sessions-enabled>true</sessions-enabled>
 	<precompilation-enabled>true</precompilation-enabled>
