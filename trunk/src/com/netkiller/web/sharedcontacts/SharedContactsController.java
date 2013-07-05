@@ -2397,6 +2397,10 @@ public class SharedContactsController {
 				.getAllUserNamesWithWritePermissions(domain);
 		List<String> usersWithReadPermission = sharedContactsService
 				.getAllUserWithReadPermissions(domain);
+		System.out.println(users + "\n\n" + 
+				usersWithNoPermission+ "\n\n" + 
+				usersWithWritePermission	+ "\n\n" + 
+				usersWithReadPermission+ "\n\n" );
 		usersWithReadPermission.addAll(usersWithWritePermission);
 		result.put("allUsersPermitted", domainSettings.isAllUserPermitted());
 		result.put("onlyAdminPermitted", domainSettings.isOnlyAdminPermitted());
@@ -2564,14 +2568,14 @@ public class SharedContactsController {
 		String sord = CommonWebUtil.getParameter(request, "sord"); // ascending
 																	// or
 																	// descending.
-
+		long startTime = new Date().getTime();
 		int pageNum = Integer.parseInt(page);
 		int limit = Integer.parseInt(rows);
-		
+		int fetchLimit = 0;
 		int total_pages = 0;
 		int start = ((pageNum-1) * limit) ;
 		int totalRecords = 0;
-		
+		int searchStart = start;
 	
 			Customer currentCustomer =  sharedContactsService
 						.verifyUser(getCurrentUser(request).getEmail());
@@ -2595,31 +2599,36 @@ public class SharedContactsController {
 			boolean isSearch = (gridRequest != null && gridRequest.isSearch());
 			SharedContactsUtil util = SharedContactsUtil.getInstance();
 			List<ContactInfo> entries = null;
+			int rowNum = 0;
 			if(!isSearch){
-				entries =sharedContactsService.getDomainContacts(currentCustomer.getDomain(), limit,start,sidx,sord);
+				fetchLimit= limit;
 				totalRecords = sharedContactsService.getContactCount(currentCustomer.getDomain());
+				if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
+					rowNum =  totalRecords - start;
+					} else {
+						rowNum =  totalLimit - start;
+					}
 			}else{
-				entries =sharedContactsService.getAllDomainContacts(currentCustomer.getDomain(), totalLimit,sidx,sord);
+				fetchLimit = 900 ;
 			}
 			
-			if(entries.size()<=0){
+			entries =sharedContactsService.getDomainContacts(currentCustomer.getDomain(), fetchLimit,start,sidx,sord);
+			
+			if(searchStart ==0 &&  entries.size()<=0){
 				if(domainWithContactsBeingUpdated.add(currentCustomer.getDomain())){
 					triggerDBContactUpdateTask(currentCustomer);
 				}
 			}
 			
 			int counter = -1;
-			int rowNum = 0;
-			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
-			rowNum =  totalRecords - start;
-			} else {
-				rowNum =  totalLimit - start;
-			}
 			
+			do{
 			for(ContactInfo contactInfo : entries){
 				JSONObject jsonObj = new JSONObject();
 				if(!isSearch){
 					jsonObj.put("no", rowNum--);
+				}else{
+					jsonObj.put("no", start + jsonArray.size()+1);
 				}
 				jsonObj.put("id", contactInfo.getId());
 				jsonObj.put("editlink", contactInfo.getId());
@@ -2644,12 +2653,33 @@ public class SharedContactsController {
 					jsonArray.add(jsonObj);
 				}
 				
-				
+			// End of for loop	
 			}
+			
+			//deadline check
+			if(new Date().getTime() - startTime >=45000){
+				break;
+			}
+			
+			if (isSearch && jsonArray.size()>=Integer.parseInt(rows)) {
+			 break;
+			}else{
+				if(entries.size()<fetchLimit){
+					break;
+				}else{
+				searchStart += fetchLimit;
+					entries =sharedContactsService.getDomainContacts(currentCustomer.getDomain(), fetchLimit,searchStart,sidx,sord);
+					if(entries.isEmpty()){
+						break;
+					}
+				}
+			}
+			}while(isSearch );
+			
 			
 			if(isSearch){
 				count = counter+1;
-				util.insertNo(jsonArray);
+				//util.insertNo(jsonArray);
 			}
 			
 			

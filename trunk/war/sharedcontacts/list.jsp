@@ -430,10 +430,21 @@ $(document).ready(function() {
 		           <%}%>
 		],
 		gridComplete: function(){
-			var ids = jQuery("#list2").jqGrid('getDataIDs');
-			
+			if(isGridSearch){
+				// remove total count of records
+				var pageText = $(".ui-paging-info").text();
+				pageText = pageText.substring(0,pageText.indexOf('of')-1);
+				$(".ui-paging-info").html(pageText);
+				
+				// hide text Page of ...
+				var elem = $(".ui-pg-input").parent();
+				$('body').append($(".ui-pg-input"));
+				elem.empty();
+				elem.html($(".ui-pg-input"));
+			}
+			var ids = jQuery("#list2").jqGrid('getDataIDs');			
 			$("#contactDBUpdateMsg").hide();
-			if(!ids.length){
+			if(!isGridSearch && !ids.length){
 				$("#contactDBUpdateMsg").show();
 			}
 		
@@ -573,11 +584,13 @@ function resetEdit(){
     }
 }
 
+var isGridSearch  = false;
+
 function searchJqgrid()	{
 	var myfilter = { groupOp: $('#groupOperator').val(), rules: []};
 	// addFilteritem("invdate", "gt", "2007-09-06");
 	myfilter.rules.push({field: $('#field').val(),op:$('#operator').val(),data:$('#fieldData').val().replace(/^\s\s*/, '').replace(/\s\s*$/, '')});
-
+	isGridSearch  = true;
 	
 
 	// generate to top postdata filter code
