@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/Mac OS Java 1.6"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-1.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/appengine-jsr107cache-1.3.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/charts4j-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-beanutils-1.7.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-codec-1.3.jar"/>
@@ -44,8 +42,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/json-lib-2.2.3-jdk15.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/json.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsr173_1.0_api.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jstl-api-1.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jstl-impl-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jug-1.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxl-2.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/nekohtml-1.9.6.2.jar"/>
@@ -85,9 +81,11 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlbeans-qname.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlpublic.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlsec-1.3.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/netkiller-enterprise.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/wsc-20.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/wsc-gae.jar"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/appengine-java-sdk-1.4.3"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/netkiller-enterprise.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/AppsForYourDomainClient.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

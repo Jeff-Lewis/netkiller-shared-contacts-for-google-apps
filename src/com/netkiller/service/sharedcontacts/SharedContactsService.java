@@ -1,6 +1,5 @@
 package com.netkiller.service.sharedcontacts;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -8,7 +7,6 @@ import javax.servlet.ServletOutputStream;
 import org.springframework.context.MessageSource;
 
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.netkiller.exception.AppException;
@@ -149,4 +147,6 @@ public interface SharedContactsService {
 	public Integer getContactCount(String domainName) ;
 
 	public List<ContactInfo> isDuplicateEmail(String domain, String email);
+	public void mailCSV(List<ContactEntry> contacts,
+			String email) throws AppException;
 }

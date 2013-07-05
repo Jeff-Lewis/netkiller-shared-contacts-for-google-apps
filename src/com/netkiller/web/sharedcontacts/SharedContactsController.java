@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -840,7 +841,7 @@ public class SharedContactsController {
 												// ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			mnv = remove(request, response);
 		} else if (cmd.equals("actdownload")) {
-			mnv = download(request, response, currentCustomer);
+		//	mnv = download(request, response, currentCustomer);
 		} else if (cmd.equals("multicreate")) {
 			mnv = new ModelAndView("/sharedcontacts/multicreate");
 		} else if (cmd.equals("upgrade")) {
@@ -2101,7 +2102,39 @@ public class SharedContactsController {
 				result);
 	}
 
-	public ModelAndView download(HttpServletRequest request,
+	
+	@RequestMapping("/sharedcontacts/mailContacts.do")
+	@ResponseBody
+	public boolean download(@RequestParam("email")String email)
+			throws ServletException, IOException {
+		Map result = new HashMap();
+		try {
+			int totalLimit = 100;
+			Customer currentCustomer = sharedContactsService.verifyUser(email);
+			if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
+				totalLimit = 30000;
+			} else {
+				if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+					totalLimit = 50;
+				}
+			}
+			
+			List<ContactEntry> contacts = SharedContactsUtil.getInstance().getContactEntriesFromContactInfo(sharedContactsService.getAllDomainContacts(currentCustomer.getDomain(), totalLimit, "givenname", "asc"));
+			
+			sharedContactsService.mailCSV(contacts,  email);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.severe(e.getMessage());
+			String message = messageSource.getMessage("error.default", null,
+					Locale.US);
+			result.put("code", "error");
+			result.put("message", message);
+		}
+
+		return true;
+	}
+/*
+public ModelAndView download(HttpServletRequest request,
 			HttpServletResponse response, Customer currentCustomer)
 			throws ServletException, IOException {
 		Map result = new HashMap();
@@ -2117,7 +2150,7 @@ public class SharedContactsController {
 			/*List<ContactEntry> contacts = sharedContactsService.getContacts(1,
 					totalLimit, getGroupId(), isUseForSharedContacts, null);*/
 			
-			List<ContactEntry> contacts = SharedContactsUtil.getInstance().getContactEntriesFromContactInfo(sharedContactsService.getAllDomainContacts(currentCustomer.getDomain(), totalLimit, "givenname", "asc"));
+	/*		List<ContactEntry> contacts = SharedContactsUtil.getInstance().getContactEntriesFromContactInfo(sharedContactsService.getAllDomainContacts(currentCustomer.getDomain(), totalLimit, "givenname", "asc"));
 			
 			String sheetName = "SharedContacts";
 			/*
@@ -2125,7 +2158,7 @@ public class SharedContactsController {
 			 * response.setHeader("Content-Disposition", "attachment; filename="
 			 * + sheetName + ".xls");
 			 */
-			response.setContentType("application/CSV");
+		/*	response.setContentType("application/CSV");
 			response.setHeader("Content-Disposition", "attachment; filename="
 					+ sheetName + ".csv");
 
@@ -2147,7 +2180,7 @@ public class SharedContactsController {
 
 		return null;
 	}
-
+*/
 	private ModelAndView updateStatus(HttpServletRequest request,
 			HttpServletResponse response, Customer currentCustomer) {
 
@@ -2766,4 +2799,18 @@ public class SharedContactsController {
 		}		 
 		return false;
 	}
+	
+	@RequestMapping("/sharedcontacts/download.do")
+	@ResponseBody
+	public boolean triggerDownload(  HttpServletRequest request){
+		String email = getCurrentUser(request).getEmail();
+		Queue queue =  QueueFactory.getDefaultQueue();
+		queue.add(TaskOptions.Builder.withUrl("")
+									.url("/sharedcontacts/mailContacts.do")
+									.param("email", email)
+									.header("Host", BackendServiceFactory.getBackendService().getBackendAddress("worker"))
+);
+		return false;
+	}
+	
 }

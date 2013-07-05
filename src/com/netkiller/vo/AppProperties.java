@@ -26,12 +26,21 @@ public class AppProperties {
 	private String paymentGatewayPassword;
 	private String paymentGatewaySignature;
 	private String paymentGatewayAccountEmail;
+	private String mailSender;
 
 	public String getIsSortingSupported() {
 		if ("true".equals(useDb))
 			return getPropertyDB("isSortingSupported");
 		else
 			return isSortingSupported;
+	}
+
+	public String getMailSender() {
+		return mailSender;
+	}
+
+	public void setMailSender(String mailSender) {
+		this.mailSender = mailSender;
 	}
 
 	public void setIsSortingSupported(String isSortingSupported) {
