@@ -63,7 +63,8 @@ function isEmail(email) {
 	
 function isDuplicateEmail(email){
 	var result = false;
-	var $duplicateCheckData = { 
+	if(email){	
+/* 	var $duplicateCheckData = { 
 			cmd:'list_data', 
 			_search:'true',
 			rows:'15',
@@ -71,28 +72,29 @@ function isDuplicateEmail(email){
 			sidx:'no',
 			sord:'asc',
 			filters:'{"groupOp":"AND","rules":[{"field":"email","op":"eq","data":"'+email+'"}]}'
-			};
+			}; */
 	
 	$.ajax({
-		url:'/sharedcontacts/main.do',
+		url:'/sharedcontacts/checkDuplicateEmail.do',
 		type:'post',
 		async:false,
 		
-		data: $duplicateCheckData,
+		data: {email:email},
 		//success:handleSuccess,
 		//error:handleError,
 		success:function(data){
+			result=data;
 			//alert(xml);
 			
 			//var xml_text = $(xml).text();
 			//alert(xml_text);			
 
-			if(data["rows"].length!=undefined&&data["rows"].length!=null &&data["rows"].length>0)	{
+			/* if(data["rows"].length!=undefined&&data["rows"].length!=null &&data["rows"].length>0)	{
 				
 				result =  true;
 			} else{
 				result = false;
-			}
+			} */
 			
 			//alert(message);
 			
@@ -105,7 +107,8 @@ function isDuplicateEmail(email){
 			alert("Error occured");
 			
 		}
-	}); //end ajax		
+	}); //end ajax	
+	}
 	return result;
 }
 

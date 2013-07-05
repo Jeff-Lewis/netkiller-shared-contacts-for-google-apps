@@ -257,7 +257,7 @@ public class ConfigurationTemplatePreprocessor {
         templateValue = field;
         if (field.getAttribute("template").equals("optional")) {
           if (field.getFirstChild() != null) {
-            defaultValue = field.getFirstChild().getTextContent();
+            //defaultValue = field.getFirstChild().getTextContent();
           } else {
             defaultValue = "";
           }
@@ -281,7 +281,7 @@ public class ConfigurationTemplatePreprocessor {
     docBuilderFactory.setIgnoringComments(true);
     docBuilderFactory.setNamespaceAware(false);
     try {
-      docBuilderFactory.setXIncludeAware(true);
+      //docBuilderFactory.setXIncludeAware(true);
     } catch (UnsupportedOperationException e) {
       // Ignore
     }

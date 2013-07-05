@@ -147,4 +147,6 @@ public interface SharedContactsService {
 	public void incrementContactCount(String domainName);
 	public void decrementContactCount(String domainName);
 	public Integer getContactCount(String domainName) ;
+
+	public List<ContactInfo> isDuplicateEmail(String domain, String email);
 }

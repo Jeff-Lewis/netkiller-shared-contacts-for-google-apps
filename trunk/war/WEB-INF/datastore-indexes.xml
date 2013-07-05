@@ -1,6 +1,7 @@
 
-<datastore-indexes autoGenerate="true">
+<datastore-indexes autoGenerate="false">
 
+    
  <datastore-index kind="ContactInfo" ancestor="false" source="auto">
         <property name="domain" direction="asc"/>
         <property name="modifiedDate" direction="asc"/>

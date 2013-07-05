@@ -408,7 +408,7 @@ $(document).ready(function() {
 		           {name:'id',index:'id', width:0, hidden:true,search:false, hidedlg:true},		           
 		          
 		           <%if (isAdmin||isUserPermitted) {%>
-		           {name:'no',index:'no', width:32, align:"center",search:false, sortable:false},
+		           {name:'no',index:'modifiedDate', width:32, align:"center",search:false, sortable:false},
                    {name:'delete',index:'delete', sortable:false,search:false, formatter: "checkbox", formatoptions: {disabled : false}, editable: true, edittype:"checkbox", align:"center", width:32},		            
 		           {name:'givenname',index:'givenname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:80},
 		           {name:'familyname',index:'familyname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:80,  searchoptions:{sopt:['eq','bw']}},
@@ -419,7 +419,7 @@ $(document).ready(function() {
 		           {name:'act',index:'act', width:118,search:false, sortable:false}		           
 		           
 		           <%} else {%>
-		           {name:'no',index:'no', width:32, align:"center",search:false, sortable:false},
+		           {name:'no',index:'modifiedDate', width:32, align:"center",search:false, sortable:false},
                    {name:'delete',index:'delete', sortable:false,search:false, formatter: "checkbox", formatoptions: {disabled : false}, editable: true, edittype:"checkbox", align:"center", width:46},		            
 		           {name:'givenname',index:'givenname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:90},
 		           {name:'familyname',index:'familyname', searchoptions:{sopt:['eq','bw','cn']}, editrules:{edithidden:true, required:true}, editable:true, width:90,  searchoptions:{sopt:['eq','bw']}},
