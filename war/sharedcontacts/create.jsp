@@ -46,12 +46,33 @@ function checkDuplicateEmail()	{
 		$("#workemail").focus();
 		return;
 	}
+	var resultForWorkEmail = isDuplicateEmail($workemail);
+	var resultForHomeEmail = isDuplicateEmail($homeemail);
+	var resultForOtherEmail = isDuplicateEmail($otheremail);
 	
-	if(isDuplicateEmail($workemail)||isDuplicateEmail($homeemail)||isDuplicateEmail($otheremail))	{
+	var isDuplicateWorkEmailFound = resultForWorkEmail['isDuplicateEmailFound'];
+	var isDuplicateHomeEmailFound = resultForHomeEmail['isDuplicateEmailFound'];
+	var isDuplicateOtherEmailFound = resultForOtherEmail['isDuplicateEmailFound'];
+	var msg;
+	if(isDuplicateWorkEmailFound){
+		msg = resultForWorkEmail['msg'];
+		alert(msg);
+	}else if(isDuplicateHomeEmailFound){
+		msg = resultForHomeEmail['msg'];
+		alert(msg);
+	}else if(isDuplicateHomeEmailFound){
+		msg = resultForOtherEmail['msg'];
+		alert(msg);
+	}else{
+		alert('No duplicate email found');
+	}
+		
+	
+	/* if(isDuplicateEmail($workemail)||isDuplicateEmail($homeemail)||isDuplicateEmail($otheremail))	{
 		alert('Duplicate email found');
 	} else	{
 		alert('No duplicate email found');
-	}
+	} */
 	
 }
 
@@ -62,7 +83,7 @@ function isEmail(email) {
 	
 	
 function isDuplicateEmail(email){
-	var result = false;
+	var result = {};
 	if(email){	
 /* 	var $duplicateCheckData = { 
 			cmd:'list_data', 
@@ -83,7 +104,9 @@ function isDuplicateEmail(email){
 		//success:handleSuccess,
 		//error:handleError,
 		success:function(data){
+			//console.log(data);
 			result=data;
+
 			//alert(xml);
 			
 			//var xml_text = $(xml).text();
@@ -109,6 +132,7 @@ function isDuplicateEmail(email){
 		}
 	}); //end ajax	
 	}
+	//console.log(result);
 	return result;
 }
 

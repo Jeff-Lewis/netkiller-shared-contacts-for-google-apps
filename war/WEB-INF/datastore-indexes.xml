@@ -110,5 +110,11 @@
     </datastore-index>
 
 
+<datastore-index kind="ContactInfo" ancestor="false" source="manual">
+        <property name="domain" direction="asc"/>
+        <property name="modifiedDate" direction="desc"/>
+    </datastore-index>
+
+
 </datastore-indexes>
 

@@ -26,6 +26,7 @@ import javax.servlet.http.HttpUtils;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -2792,12 +2793,17 @@ public ModelAndView download(HttpServletRequest request,
 	
 	@RequestMapping("/sharedcontacts/checkDuplicateEmail.do")
 	@ResponseBody
-	public boolean isDuplicateEmail(@RequestParam("email")String email, HttpServletRequest request){
+	public Map<String,Object> isDuplicateEmail(@RequestParam("email")String email, HttpServletRequest request) throws JSONException{
+		//org.json.JSONObject jsonObject = new org.json.JSONObject();
+		Map<String,Object> result = new HashMap<String, Object>();
 		 List<ContactInfo> entries = sharedContactsService.isDuplicateEmail( CommonWebUtil.getDomain( getCurrentUser(request).getEmail()), email);
 		if(!entries.isEmpty()){
-			return true;
-		}		 
-		return false;
+			result.put("isDuplicateEmailFound", true);
+			result.put("msg", "Duplicate mail with email Id " + email + " found");
+		}else{
+			result.put("isDuplicateEmailFound", false);
+		}
+		return result;
 	}
 	
 	@RequestMapping("/sharedcontacts/download.do")
