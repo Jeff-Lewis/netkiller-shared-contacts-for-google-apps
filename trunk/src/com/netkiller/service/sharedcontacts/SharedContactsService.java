@@ -149,4 +149,5 @@ public interface SharedContactsService {
 	public List<ContactInfo> isDuplicateEmail(String domain, String email);
 	public void mailCSV(List<ContactEntry> contacts,
 			String email) throws AppException;
+
 }
