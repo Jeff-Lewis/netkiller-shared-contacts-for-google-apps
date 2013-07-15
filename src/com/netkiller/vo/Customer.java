@@ -21,6 +21,7 @@ public class Customer {
 	private Integer totalUsers=0;
 	private Integer syncedUsers=0;
 	private Integer nscUsers=0;
+	private Boolean useDatabase = false;
 	
 	public Customer(){}
 	
@@ -89,6 +90,14 @@ public class Customer {
 	}
 	public void setTotalContacts(Integer totalContacts) {
 		this.totalContacts = totalContacts;
+	}
+
+	public Boolean getUseDatabase() {
+		return useDatabase;
+	}
+
+	public void setUseDatabase(Boolean useDatabase) {
+		this.useDatabase = useDatabase;
 	}
 	
 }

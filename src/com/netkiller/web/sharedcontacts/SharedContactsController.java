@@ -404,6 +404,7 @@ public class SharedContactsController {
 
 				// set User Email in contact service
 				currentCustomer = sharedContactsService.verifyUser(email);
+				request.getSession().setAttribute("useDatabase", currentCustomer.getUseDatabase());
 				UserLogging userLogging = sharedContactsService.getUserLogging(
 						domain, userId);
 				if (userLogging == null) {
@@ -654,11 +655,22 @@ public class SharedContactsController {
 			Map<String, String> result = new HashMap<String, String>();
 				
 	
-/*
-			List<ContactEntry> list = sharedContactsService.getContacts(1,
-					limit, getGroupId(), isUseForSharedContacts, null);*/
-			count = sharedContactsService.getContactCount(CommonWebUtil.getDomain(getCurrentUser(request).getEmail()));
-			
+
+			if (!currentCustomer.getUseDatabase()) {
+				int limit = 100;
+				if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
+					limit = 30000;
+				} else {
+					if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+						limit = 50;
+					}
+				}
+				List<ContactEntry> list = sharedContactsService.getContacts(1,
+						limit, getGroupId(), isUseForSharedContacts, null);
+				count = list.size();
+			}else{
+				count = sharedContactsService.getContactCount(CommonWebUtil.getDomain(getCurrentUser(request).getEmail()));
+			}
 			if (!currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
 				int limit = 100;
 				if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
@@ -1252,7 +1264,7 @@ public class SharedContactsController {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		printParams(request);
-
+		Customer currentCustomer = sharedContactsService.verifyUser(getCurrentUser(request).getEmail());
 		String id = CommonWebUtil.getParameter(request, "id");
 		logger.info("=====> id: " + id);
 
@@ -1400,7 +1412,9 @@ public class SharedContactsController {
 
 			entry = sharedContactsService.update(entry);
 			ContactInfo contactInfo = util.makeContactInfo(entry);
-			sharedContactsService.createContactInfo(contactInfo);
+			if (currentCustomer.getUseDatabase()) {
+				sharedContactsService.createContactInfo(contactInfo);
+			}
 			String message = messageSource.getMessage("modification.success",
 					null, Locale.US);
 
@@ -1428,6 +1442,8 @@ public class SharedContactsController {
 		Map result = new HashMap();
 
 		try {
+			String email = getCurrentUser(request).getEmail();
+			Customer currentCustomer = sharedContactsService.verifyUser(email);
 			ContactEntry contact = sharedContactsService.getContact(id);
 			logger.info("contact is null? " + (contact == null));
 			logger.info("contact.getEditLink().getHref()? "
@@ -1435,7 +1451,9 @@ public class SharedContactsController {
 			update(request, contact);
 			contact = sharedContactsService.update(contact);
 			ContactInfo contactInfo = SharedContactsUtil.getInstance().makeContactInfo(contact);
-			sharedContactsService.createContactInfo(contactInfo);
+			if (currentCustomer.getUseDatabase()) {
+				sharedContactsService.createContactInfo(contactInfo);
+			}
 			String message = messageSource.getMessage("modification.success",
 					null, Locale.US);
 			result.put("code", "success");
@@ -1755,7 +1773,7 @@ public class SharedContactsController {
 		String domain = CommonWebUtil.getDomain(email);
 
 		try {
-
+			Customer currentCustomer = sharedContactsService.verifyUser(email);
 			ContactEntry entry = makeContact(request);
 
 			// ContactEntry entry = makeContact(request);
@@ -1780,13 +1798,15 @@ public class SharedContactsController {
 				// entry.getUserDefinedFields().add(new
 				// UserDefinedField("Bumun", "Management"));
 			}
-
+			
 			entry = sharedContactsService.create(entry);
 			ContactInfo contactInfo = getContactInfo(request);
 			contactInfo.setId(entry.getEditLink().getHref());
 			contactInfo.setDomain(domain);
-			sharedContactsService.createContactInfo(contactInfo);
-			sharedContactsService.incrementContactCount(domain);
+			if (currentCustomer.getUseDatabase()) {
+				sharedContactsService.createContactInfo(contactInfo);
+				sharedContactsService.incrementContactCount(domain);
+			}
 			AddContactForAllDomainUsersContext context = new AddContactForAllDomainUsersContext();
 
 			context.setContactInfo(contactInfo);
@@ -2375,7 +2395,8 @@ public ModelAndView download(HttpServletRequest request,
 		} else if (newDomainSettings.equals("onlyAdminPermitted")) {
 			domainSettings.setOnlyAdminPermitted(true);
 			domainSettings.setAllUserPermitted(false);
-		} else {
+		} else if(StringUtils.isNotBlank(request
+					.getParameter("updateUserList"))){
 			domainSettings.setOnlyAdminPermitted(false);
 			domainSettings.setAllUserPermitted(false);
 			List<String> newUsersWithUpdatePermission = Arrays.asList(request
@@ -2400,6 +2421,18 @@ public ModelAndView download(HttpServletRequest request,
 					CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
 			sharedContactsService.removeUpdatePermissions(usersToBeRemoved,
 					CommonWebUtil.getDomain(currentCustomer.getAdminEmail()));
+			
+			
+		}
+		
+		String useDatabase = CommonWebUtil.getParameter(request,
+		"useDatabase");
+		sharedContactsService.updateCustomers(domain, "useDatabase",useDatabase.equalsIgnoreCase("on"));
+		if(!useDatabase.equalsIgnoreCase("on")){
+			Queue queue =  QueueFactory.getDefaultQueue();
+			queue.add(TaskOptions.Builder.withUrl("")
+										.url("/sharedcontacts/deleteContactInfo.do")
+										.param("domainName", domain));
 		}
 
 		domainSettings = sharedContactsService
@@ -2794,7 +2827,6 @@ public ModelAndView download(HttpServletRequest request,
 	@RequestMapping("/sharedcontacts/checkDuplicateEmail.do")
 	@ResponseBody
 	public Map<String,Object> isDuplicateEmail(@RequestParam("email")String email, HttpServletRequest request) throws JSONException{
-		//org.json.JSONObject jsonObject = new org.json.JSONObject();
 		Map<String,Object> result = new HashMap<String, Object>();
 		 List<ContactInfo> entries = sharedContactsService.isDuplicateEmail( CommonWebUtil.getDomain( getCurrentUser(request).getEmail()), email);
 		if(!entries.isEmpty()){

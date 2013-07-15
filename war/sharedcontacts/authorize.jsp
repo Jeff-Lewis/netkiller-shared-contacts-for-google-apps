@@ -7,6 +7,7 @@
 <%@ page import="com.netkiller.util.CommonWebUtil"%>
 
 <%
+	Boolean useDatabase = (Boolean)session.getAttribute("useDatabase");
 	Map result = (Map)request.getAttribute("result");
 	List<String> usersWithReadPermission = (List<String>)result.get("usersWithReadPermission");
 	JSONArray usersWithReadPermissionJsonArray = CommonWebUtil.convetArraryListToJSONArray(usersWithReadPermission);
@@ -417,8 +418,14 @@ function getField()	{
 		
 <div class="panel">
 <div class="pnl_img"><img src="/css/images/top-hdng.gif"></div>
+<div class="panel_top">
+	<div class="panel_top_left2" style='width:50%;'>
+	1. Use Database to store contacts <input type='checkbox' name='useDatabase' id='useDatabase' <%=useDatabase?"checked='checked'":""%> />
+	</div>
+	<div style="clear:both;font-size: 13px;margin-left: 90px;padding-top: 10px;"><span style="border-bottom: 2px solid black;padding-bottom: 10px;">- This will make your contacts listing much faster but it will store your domain's contacts data into independent Google Data Storage managed by Netkiller.</span></div>
+	</div>
 	<div class="panel_top">
-	<div class="panel_top_left2">Choose to Allow:</div>
+	<div class="panel_top_left2">2. Choose to Allow:</div>
 		<div class="panel_top_left"><input id="allUsersPermitted" name="domainSettings" type="radio" value="allUsersPermitted" /> All Users</div>
 		<div class="panel_top_left"><input id="onlyAdminPermitted" name="domainSettings" type="radio" value="onlyAdminPermitted" /> Super Admin(s) only</div>
 		<div class="panel_top_left" style="float:right;"><input id="selectUserPermitted" name="domainSettings" checked type="radio" value="selectUserPermitted" />Admin & Selected User</div>
@@ -427,17 +434,6 @@ function getField()	{
 	<div id="messageDiv" align="center" style="color:blue; font-family:Arial;display:block;clear:both;padding-top:10px; width:100%">Only Admin and selected (enabled) users can edit shared contacts.</div>
 	
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	<div id="UserPermissionSelectDiv">
 	

@@ -9,7 +9,9 @@
 
 <%! Logger logger = Logger.getLogger(getClass().getName()); %>
 
-<%	request.setCharacterEncoding("UTF-8"); %>
+<%	request.setCharacterEncoding("UTF-8"); 
+	Boolean useDatabase = (Boolean)session.getAttribute("useDatabase");
+%>
 
 <%  logger.info("-- create.jsp --"); %>
 
@@ -37,6 +39,29 @@ font-size: 15px;
 
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 <script type="text/javascript">
+<% if(useDatabase){%>
+function isDuplicateEmail(email){
+	var result = {};
+	if(email){	
+	
+	$.ajax({
+		url:'/sharedcontacts/checkDuplicateEmail.do',
+		type:'post',
+		async:false,
+		
+		data: {email:email},
+		success:function(data){
+			result=data;
+
+		},
+		error:function(xhr,status,e){
+			alert("Error occured");
+			
+		}
+	}); //end ajax	
+	}
+	return result;
+}
 function checkDuplicateEmail()	{
 	var $workemail = $("#workemail").val();
 	var $homeemail = $("#homeemail").val();
@@ -66,26 +91,46 @@ function checkDuplicateEmail()	{
 	}else{
 		alert('No duplicate email found');
 	}
-		
-	
-	/* if(isDuplicateEmail($workemail)||isDuplicateEmail($homeemail)||isDuplicateEmail($otheremail))	{
-		alert('Duplicate email found');
-	} else	{
-		alert('No duplicate email found');
-	} */
 	
 }
 
-function isEmail(email) {
-	  var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-	  return regex.test(email);
+<% }else{ %>
+
+function checkDuplicateEmail()	{
+	var $workemail = $("#workemail").val();
+	var $homeemail = $("#homeemail").val();
+	var $otheremail = $("#otheremail").val();
+	if($otheremail == "" && $homeemail =="" && $workemail == ""){
+		alert("No Email Entered!");
+		$("#workemail").focus();
+		return;
 	}
 	
+	var resultForWorkEmail = isDuplicateEmail($workemail);
+	var resultForHomeEmail = isDuplicateEmail($homeemail);
+	var resultForOtherEmail = isDuplicateEmail($otheremail);
 	
+	if(resultForWorkEmail||resultForHomeEmail||resultForOtherEmail)	{
+		var maildId ;
+		if(resultForWorkEmail){
+			maildId = $workemail;
+		}else if(resultForHomeEmail){
+			maildId = $homeemail;
+		}else if(resultForOtherEmail){
+			maildId = $otheremail;
+		}
+		
+		alert('Duplicate mail with email Id ' + maildId + " found");
+	} else	{
+		alert('No duplicate email found');
+	}
+	
+}
+
 function isDuplicateEmail(email){
-	var result = {};
-	if(email){	
-/* 	var $duplicateCheckData = { 
+	if(email){
+	var result = false;
+	var $duplicateCheckData = { 
 			cmd:'list_data', 
 			_search:'true',
 			rows:'15',
@@ -93,31 +138,28 @@ function isDuplicateEmail(email){
 			sidx:'no',
 			sord:'asc',
 			filters:'{"groupOp":"AND","rules":[{"field":"email","op":"eq","data":"'+email+'"}]}'
-			}; */
+			};
 	
 	$.ajax({
-		url:'/sharedcontacts/checkDuplicateEmail.do',
+		url:'/sharedcontacts/main.do',
 		type:'post',
 		async:false,
 		
-		data: {email:email},
+		data: $duplicateCheckData,
 		//success:handleSuccess,
 		//error:handleError,
 		success:function(data){
-			//console.log(data);
-			result=data;
-
 			//alert(xml);
 			
 			//var xml_text = $(xml).text();
 			//alert(xml_text);			
 
-			/* if(data["rows"].length!=undefined&&data["rows"].length!=null &&data["rows"].length>0)	{
+			if(data["rows"].length!=undefined&&data["rows"].length!=null &&data["rows"].length>0)	{
 				
 				result =  true;
 			} else{
 				result = false;
-			} */
+			}
 			
 			//alert(message);
 			
@@ -130,11 +172,21 @@ function isDuplicateEmail(email){
 			alert("Error occured");
 			
 		}
-	}); //end ajax	
-	}
-	//console.log(result);
+	}); //end ajax		
 	return result;
+	}
+	return false;
 }
+
+
+<% } %>
+function isEmail(email) {
+	  var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	  return regex.test(email);
+	}
+	
+	
+
 
 function hasNumbers(t)
 {

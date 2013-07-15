@@ -59,6 +59,11 @@ public class CreateContactsInDBTask extends AbstractWorkflowTask {
 				}
 			}
 			int contactsToFetch = totalLimit>FETCH_LIMIT ? FETCH_LIMIT : totalLimit;
+			 for(ContactInfo info : sharedContactsService.getDomainContacts( domain, 30000,0,"modifiedDate","desc")){
+				 sharedContactsService.removeContactInfo(info.getId());
+			 }
+			
+			
 			System.out.println("fetching contacts from shared api");
 				List<ContactEntry> entries = sharedContactsService.getContacts(start, contactsToFetch, groupId, userContext.getIsUseForSharedContacts(), null, domainAdmin.getAdminEmail());
 				System.out.println("fetched " + entries.size());				

@@ -25,6 +25,7 @@
 
 
 <%
+	Boolean useDatabase = (Boolean)session.getAttribute("useDatabase");
 	Map<String, Object> result = (Map<String, Object>) request
 			.getAttribute("result");
 	String adminUserName = "";
@@ -97,7 +98,10 @@ document.all.prepage.style.visibility = 'hidden';
 }
 document.getElementById('container').style.display="";
 }
-
+var gridUrl = '/sharedcontacts/griddata.do';
+if(!eval("<%=useDatabase%>")){
+	gridUrl = '/sharedcontacts/main.do?cmd=list_data<%=queryString%><%=defaultGridOrderQueryString%>' ;
+}
 </script>
 
 
@@ -397,7 +401,7 @@ $(document).ready(function() {
 	
 	
 	jQuery("#list2").jqGrid({ 
-		url:'/sharedcontacts/griddata.do',
+		url:gridUrl,
 		//url:'/sharedcontacts/main.do?cmd=list_data<%=queryString%><%=defaultGridOrderQueryString%>',
 		datatype: "json",
 		<%if (isAdmin||isUserPermitted) {%>
@@ -534,7 +538,7 @@ $(document).ready(function() {
 }, // search options
 			{} // view options
 	);
-	jQuery("#list2").setGridParam({url:'/sharedcontacts/griddata.do'}).trigger("reloadGrid");
+	//jQuery("#list2").setGridParam({url:gridUrl}).trigger("reloadGrid");
 	//$( "#SelectAll" ).button();
 	$( "#MailTo" ).click(function() {
 		var grid = jQuery("#list2");

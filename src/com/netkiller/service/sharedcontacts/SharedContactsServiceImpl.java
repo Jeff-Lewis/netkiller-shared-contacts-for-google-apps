@@ -250,7 +250,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		entity.setProperty("nscUsers", 0);
 		entity.setProperty("syncedContacts", 0);
 		entity.setProperty("upgradedDate", null);
-
+		entity.setProperty("useDatabase", new Customer().getUseDatabase());
 		datastore.put(entity);
 	}
 
@@ -1125,6 +1125,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 		if (ids != null) {
 			try {
+				Customer currentCustomer = verifyUser(userEmail);
 				ContactsService service = getContactsService();
 				service.setHeader("If-Match", "*");
 				ContactFeed feed = service.getFeed(new URL(
@@ -1151,8 +1152,11 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 						contact = new ContactEntry();
 						String id =(String) splittedList.get(j);
 						contact.setId(id);
-						removeContactInfo(id);
-						decrementContactCount(CommonWebUtil.getDomain(userEmail));
+						if (currentCustomer.getUseDatabase()) {
+							removeContactInfo(id);
+							decrementContactCount(CommonWebUtil
+									.getDomain(userEmail));
+						}
 						BatchUtils.setBatchId(contact,
 								String.valueOf(batchCnt++));
 						BatchUtils.setBatchOperationType(contact,
@@ -1212,6 +1216,8 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 				: (Date) entity.getProperty("registeredData");
 		Date upgradedDate = entity.getProperty("upgradedDate") == null ? null
 				: (Date) entity.getProperty("upgradedDate");
+		
+		Boolean useDatabase = (Boolean) entity.getProperty("useDatabase"); 
 		cust.setRegisteredDate(registeredDate);
 		cust.setUpgradedDate(upgradedDate);
 		cust.setTotalContacts(entity.getProperty("totalContacts") == null ? 0
@@ -1225,6 +1231,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		cust.setNscUsers(entity.getProperty("nscUsers") == null ? 0 : Integer
 				.parseInt(entity.getProperty("nscUsers").toString()));
 		cust.setId(entity.getKey().getId());
+		if(useDatabase!=null){
+			cust.setUseDatabase(useDatabase);
+		}
 		return cust;
 	}
 
@@ -1573,6 +1582,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			Attachment attachment = new Attachment("CSV-File.csv", byteArray);
 			Message mail = new Message();
 			mail.setTo(email);
+			System.out.println("Sending mail from : " + appProperties.getMailSender());
 			mail.setSender(appProperties.getMailSender());
 			mail.setSubject("Shared Contacts CSV Data");
 			mail.setTextBody("Please find requested CSV Data as an attachment with this mail.");
@@ -3143,4 +3153,5 @@ System.out.println("Exception caught");
 		}
 		return contacts;
 	}
+
 }
