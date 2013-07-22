@@ -854,7 +854,7 @@ public class SharedContactsController {
 												// ÃƒÂ¬Ã‚Â²Ã‹Å“ÃƒÂ«Ã‚Â¦Ã‚Â¬
 			mnv = remove(request, response);
 		} else if (cmd.equals("actdownload")) {
-		//	mnv = download(request, response, currentCustomer);
+			//mnv = download(request, response, currentCustomer);
 		} else if (cmd.equals("multicreate")) {
 			mnv = new ModelAndView("/sharedcontacts/multicreate");
 		} else if (cmd.equals("upgrade")) {
@@ -2140,9 +2140,18 @@ public class SharedContactsController {
 				}
 			}
 			
-			List<ContactEntry> contacts = SharedContactsUtil.getInstance().getContactEntriesFromContactInfo(sharedContactsService.getAllDomainContacts(currentCustomer.getDomain(), totalLimit, "givenname", "asc"));
-			
+			List<ContactEntry> contacts = null;
+			System.out.println("fetching contacts");
+			if (currentCustomer.getUseDatabase()) {
+				contacts = SharedContactsUtil.getInstance().getContactEntriesFromContactInfo(sharedContactsService.getAllDomainContacts(currentCustomer.getDomain(), totalLimit, "givenname", "asc"));
+			}else{
+				sharedContactsService.setUserEamil(currentCustomer.getAdminEmail());
+				contacts = sharedContactsService.getContacts(1,
+						totalLimit, getGroupId(), isUseForSharedContacts, null);
+			}
+			System.out.println("contacts size : " + contacts.size());
 			sharedContactsService.mailCSV(contacts,  email);
+			System.out.println("mail sent");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.severe(e.getMessage());
@@ -2154,8 +2163,7 @@ public class SharedContactsController {
 
 		return true;
 	}
-/*
-public ModelAndView download(HttpServletRequest request,
+	/*public ModelAndView download(HttpServletRequest request,
 			HttpServletResponse response, Customer currentCustomer)
 			throws ServletException, IOException {
 		Map result = new HashMap();
@@ -2168,18 +2176,15 @@ public ModelAndView download(HttpServletRequest request,
 					totalLimit = 50;
 				}
 			}
-			/*List<ContactEntry> contacts = sharedContactsService.getContacts(1,
-					totalLimit, getGroupId(), isUseForSharedContacts, null);*/
-			
-	/*		List<ContactEntry> contacts = SharedContactsUtil.getInstance().getContactEntriesFromContactInfo(sharedContactsService.getAllDomainContacts(currentCustomer.getDomain(), totalLimit, "givenname", "asc"));
-			
+			List<ContactEntry> contacts = sharedContactsService.getContacts(1,
+					totalLimit, getGroupId(), isUseForSharedContacts, null);
 			String sheetName = "SharedContacts";
-			/*
+			
 			 * response.setContentType("application/vnd.ms-excel");
 			 * response.setHeader("Content-Disposition", "attachment; filename="
 			 * + sheetName + ".xls");
-			 */
-		/*	response.setContentType("application/CSV");
+			 
+			response.setContentType("application/CSV");
 			response.setHeader("Content-Disposition", "attachment; filename="
 					+ sheetName + ".csv");
 
@@ -2200,8 +2205,7 @@ public ModelAndView download(HttpServletRequest request,
 		}
 
 		return null;
-	}
-*/
+	}*/
 	private ModelAndView updateStatus(HttpServletRequest request,
 			HttpServletResponse response, Customer currentCustomer) {
 
