@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import net.sf.jsr107cache.Cache;
 import net.sf.jsr107cache.CacheManager;
 
+import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -45,7 +46,7 @@ public class NetkillerQueueService {
 		CacheManager cmanager=CacheManager.getInstance();
 		Cache cache=cmanager.getCache("WorkflowContextCache");
 		cache.put(context.getWorkflowInfo().getWorkflowInstance(),context);
-		options.param("workflowinstanceid", context.getWorkflowInfo().getWorkflowInstance());
+		options.param("workflowinstanceid", context.getWorkflowInfo().getWorkflowInstance()).header("Host", BackendServiceFactory.getBackendService().getBackendAddress("worker"));
 		queue.add(options);
 		}  
 

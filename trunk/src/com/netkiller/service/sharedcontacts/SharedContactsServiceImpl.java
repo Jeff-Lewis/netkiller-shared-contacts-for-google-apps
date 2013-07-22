@@ -2396,25 +2396,28 @@ return contacts;
 			List<ContactEntry> contacts = null;
 
 			contacts = getUserContacts(1, 30000, groupId, userEmail);
-			System.out.println("Fteched " + contacts.size() + " to be deleted");
-			int currentSize = contacts.size();
-			List<List> container = split(contacts);
-			for (int i = 0; i < container.size(); i++) {
-				multipleDeleteUserContacts(container.get(i), userEmail);
-				int retry = 0;
-				if (currentSize == getUserContacts(1, 30000, groupId, userEmail)
-						.size() && currentSize != 0 & retry <= 5) {
-					i--;
-					retry++;
-				} else {
-					if (retry > 5) {
-						continue;
-					}
-					if (currentSize - 100 >= 0) {
-						currentSize = currentSize - 100;
-					} else
-						currentSize = 0;
+			System.out.println("Fteched " +  contacts==null?0:contacts.size() + " to be deleted");
+			if (contacts!=null) {
+				int currentSize = contacts.size();
+				List<List> container = split(contacts);
+				for (int i = 0; i < container.size(); i++) {
+					multipleDeleteUserContacts(container.get(i), userEmail);
+					int retry = 0;
+					if (currentSize == getUserContacts(1, 30000, groupId,
+							userEmail).size()
+							&& currentSize != 0 & retry <= 5) {
+						i--;
+						retry++;
+					} else {
+						if (retry > 5) {
+							continue;
+						}
+						if (currentSize - 100 >= 0) {
+							currentSize = currentSize - 100;
+						} else
+							currentSize = 0;
 
+					}
 				}
 			}
 			System.out.println(" Successfully deleted");
@@ -2422,12 +2425,13 @@ return contacts;
 			if (entries!=null) {
 				GroupMembershipInfo gmInfo = new GroupMembershipInfo(); // added
 				gmInfo.setHref(groupId); // added
+				String myContactsGroupId =  getMyContactsGroupId(userEmail);
+				GroupMembershipInfo myContactsGmInfo = new GroupMembershipInfo(); // added
+				myContactsGmInfo.setHref(myContactsGroupId); 
 				for (ContactEntry entry : entries) {					
 					entry.getGroupMembershipInfos().remove(0);
-					entry.addGroupMembershipInfo(gmInfo);
-					String myContactsGroupId = getMyContactsGroupId(userEmail);
-					GroupMembershipInfo myContactsGmInfo = new GroupMembershipInfo(); // added
-					myContactsGmInfo.setHref(myContactsGroupId); // added
+					entry.addGroupMembershipInfo(gmInfo);					
+					// added
 					entry.addGroupMembershipInfo(myContactsGmInfo);
 				}
 				System.out.println("size77777777777777777:" + entries.size());

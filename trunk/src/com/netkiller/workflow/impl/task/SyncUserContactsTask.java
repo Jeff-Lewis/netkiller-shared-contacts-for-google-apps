@@ -32,7 +32,7 @@ public class SyncUserContactsTask extends AbstractWorkflowTask{
 			System.out.println("group Id = " +   syncUserContactsContext.getGroupId());
 			
 			entries = sharedContactsService.getContacts(1, syncUserContactsContext.getTotalLimit(), syncUserContactsContext.getGroupId(), syncUserContactsContext.getIsUseForSharedContacts(), null,usermail);
-			System.out.println("sync contacts " + entries);
+			System.out.println("sync contacts " + entries.size());
 		} catch (AppException e) {
 			logger.log(Level.SEVERE,"Error while fecthing Contact entries");
 		}
