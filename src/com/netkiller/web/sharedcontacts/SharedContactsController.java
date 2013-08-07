@@ -2371,8 +2371,10 @@ public class SharedContactsController {
 		List<String> users = sharedContactsService.getAllDomainUsers(domain);
 		List<String> usersWithWritePermission = sharedContactsService
 				.getAllUserNamesWithWritePermissions(domain);
+		usersWithWritePermission = filterUsers(users,usersWithWritePermission);	
 		List<String> usersWithReadPermission = sharedContactsService
 				.getAllUserWithReadPermissions(domain);
+		usersWithReadPermission = filterUsers(users,usersWithReadPermission);	
 		result.put("allUsersPermitted", domainSettings.isAllUserPermitted());
 		result.put("onlyAdminPermitted", domainSettings.isOnlyAdminPermitted());
 		result.put("usersWithWritePermission", usersWithWritePermission);
@@ -2464,10 +2466,13 @@ public class SharedContactsController {
 		List<String> users = sharedContactsService.getAllDomainUsers(domain);
 		List<String> usersWithNoPermission = sharedContactsService
 				.getAllUserNamesWithNoPermissions(domain);
+		usersWithNoPermission = filterUsers(users, usersWithNoPermission);
 		List<String> usersWithWritePermission = sharedContactsService
 				.getAllUserNamesWithWritePermissions(domain);
+		usersWithWritePermission = filterUsers(users, usersWithWritePermission);
 		List<String> usersWithReadPermission = sharedContactsService
 				.getAllUserWithReadPermissions(domain);
+		usersWithReadPermission = filterUsers(users, usersWithReadPermission);
 		System.out.println(users + "\n\n" + 
 				usersWithNoPermission+ "\n\n" + 
 				usersWithWritePermission	+ "\n\n" + 
@@ -2853,6 +2858,17 @@ public class SharedContactsController {
 									.header("Host", BackendServiceFactory.getBackendService().getBackendAddress("worker"))
 );
 		return false;
+	}
+	
+	
+	public List<String> filterUsers(List<String> domainUserList,List<String> otherUsersList){
+		List<String> filteredList = new ArrayList<String>();
+		for(String user : otherUsersList){
+			if(domainUserList!=null && domainUserList.contains(user)){
+				filteredList.add(user);
+			}
+		}
+		return filteredList;
 	}
 	
 }
