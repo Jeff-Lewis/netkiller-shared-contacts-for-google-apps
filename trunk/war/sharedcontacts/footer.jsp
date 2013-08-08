@@ -31,7 +31,7 @@
 <font style="color:#42426F;">
  &copy; 2011 Netkiller
  | 
-<a href="http://www.netkiller.com/shared-contacts/guide" target="_blank" style="text-decoration:none;color:#42426F;">User guide</a>
+<a href="https://sites.google.com/a/netkiller.com/nsc/" target="_blank" style="text-decoration:none;color:#42426F;">User guide</a>
  | 
 <a href="http://www.netkiller.com/" target="_blank" style="text-decoration:none;color:#42426F;">About us</a>
  | 
