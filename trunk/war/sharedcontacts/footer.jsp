@@ -43,41 +43,20 @@
  | 
 <a href="https://www.google.com/enterprise/marketplace/viewListing?productListingId=2333+5834727858349999229" target="_blank" style="text-decoration:none;color:#42426F;">Review.</a>
 </div>
-<!-- OggChat Tab Button : Contact Us for Help Customizing -->
-<div id="oggchat"></div>
 
-
-
-<div id="oggwindowholder"><span style="display:none"></span></div>
+<script type="text/javascript" src="//assets.zendesk.com/external/zenbox/v2.6/zenbox.js"></script>
+<style type="text/css" media="screen, projection">
+  @import url(//assets.zendesk.com/external/zenbox/v2.6/zenbox.css);
+</style>
 <script type="text/javascript">
-var page ={/*Modify or uncomment the variables below to customize*/
-'tab_align':'bottom',/*Fixed location of Tab Button, valid values are top, bottom, left, right*/
-'tab_margin_right':'45px',/*When tab is top or bottom, the right margin*/
-//'tab_margin_left':'45px',/*When tab is top or bottom, the left margin*/
-//'tab_margin_top':'45px',/*When tab is left or right, the top margin*/
-//'tab_margin_bottom':'45px',/*When tab is left or right, the bottom margin*/
-'popup_margin_right':'40px',/*The right margin of popup chat window*/
-'popup_margin_bottom':'30px',/*The top margin of popup chat window*/
-//'popup_margin_top':'30px',/*The top margin of popup chat window*/
-'tab_bg_color':'#0066ff',/*Tab Background Color*/
-'tab_hover_color':'red',/*Tab Hover Color*/
-'website':'NSC Support Chat',/*Your Domain Name*/
-//'i' : 'custom',/*Uncomment this to use your custom uploaded image buttons for the tabs*/
-'p':'0',/*Proactive Chat Timer in Seconds*/
-'online_text':'Need Help? Click to Chat',/*Custom Text to display in tab when online*/
-'offline_text': 'Offline - Leave a message',/*Custom Text to display in tab when offline*/
-'font_family':'Verdana',/*When using text, font to use*/
-'font_size':'10pt',/*When using custom text, font size*/
-'font_color':'#FFFFFF', /*When using custom text, font color*/
-'animate':'true',
-'host':'oggchat3.icoa.com',
-'cid':'c6a6ceed3a198068013a1d8c5a5e01c1',
-'act':'c6a6ceed39e91be80139ff5f8f7a0577'
-};
-(function() {function oggchat(){
-var base = (("https:" == document.location.protocol) ? "https://oggchat3.icoa.com" : "http://oggchat3.icoa.com");
-var s = document.createElement('script');s.type = 'text/javascript';s.async = true;s.src = base+'/js/oggwindow.js';
-var x = document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s, x);};
-if (window.attachEvent)window.attachEvent('onload', oggchat);else window.addEventListener('load', oggchat, false);
-})();
+  if (typeof(Zenbox) !== "undefined") {
+    Zenbox.init({
+      dropboxID:   "20206918",
+      url:         "https://collavate.zendesk.com",
+      tabTooltip:  "Support",
+      tabImageURL: "https://assets.zendesk.com/external/zenbox/images/tab_support.png",
+      tabColor: "rgb(0, 127, 236)",
+      tabPosition: "Left"
+    });
+  }
 </script>
