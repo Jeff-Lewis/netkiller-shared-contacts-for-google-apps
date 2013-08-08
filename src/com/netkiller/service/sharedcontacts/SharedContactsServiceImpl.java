@@ -1662,8 +1662,11 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 					&& !genericFeed.getEntries().isEmpty()) {
 				// System.out.println("$$$$$$$$$$$$$$$$");
 				for (UserEntry genericEntry : genericFeed.getEntries()) {
-					// System.out.println(genericEntry.getLogin().getUserName());
-					if (!genericEntry.getLogin().getAdmin()) {
+					 //System.out.println(genericEntry.getLogin().getUserName());
+					//Jitender : removed admin check due to issue raised by Yangsu
+					//https://github.com/netkillercom/nsc2/issues/11#issuecomment-2229712
+					//if (!genericEntry.getLogin().getAdmin()) {
+					 if (genericEntry.getLogin().getAdmin()) {
 						users.add(genericEntry.getLogin().getUserName());
 					}
 				}
