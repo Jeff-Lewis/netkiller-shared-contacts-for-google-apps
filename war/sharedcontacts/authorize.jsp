@@ -183,7 +183,7 @@ function appendNewCheckBoxWithinNode(nodeId,checkboxValue,checboxName,checkboxLa
 	userCheckbox.value=checkboxValue;
 	var userCheckboxLabel = document.createElement('label');
 	userCheckboxLabel.setAttribute('for',checboxName);
-	userCheckboxLabel.innerHTML=checkboxLabel;
+	userCheckboxLabel.innerHTML=unescape(checkboxLabel);
 	userCheckboxInnerDiv.appendChild(userCheckbox);
 	userCheckboxDiv.appendChild(userCheckboxInnerDiv);
 	userCheckboxDiv.appendChild(userCheckboxLabel);

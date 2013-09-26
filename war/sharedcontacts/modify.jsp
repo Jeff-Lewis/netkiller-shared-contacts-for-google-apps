@@ -249,7 +249,7 @@ $(document).ready ( function () {
 		$.ajax({
 			url:'/sharedcontacts/main.do',
 			type:'post',
-			timeout:3000,
+			timeout:30000,
 			data: $data,
 			//success:handleSuccess,
 			//error:handleError,

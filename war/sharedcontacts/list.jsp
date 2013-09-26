@@ -83,7 +83,6 @@
 <head>
 <title>Netkiller Shared Contacts</title>
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
-
 <script type="text/javascript">
 function waitPreloadPage() { //DOM
 if (document.getElementById){
@@ -102,6 +101,8 @@ var gridUrl = '/sharedcontacts/griddata.do';
 if(!eval("<%=useDatabase%>")){
 	gridUrl = '/sharedcontacts/main.do?cmd=list_data<%=queryString%><%=defaultGridOrderQueryString%>' ;
 }
+
+
 </script>
 
 
@@ -111,7 +112,7 @@ if(!eval("<%=useDatabase%>")){
 <link rel='stylesheet' type='text/css' href='/css/ui.jqgrid.css' />
 <link rel='stylesheet' type='text/css' href='/css/style.css' />
 <link rel="stylesheet" type="text/css" href="/css/fileinput.css" />
-
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
 <script type="text/javascript" src='/js/jquery-1.5.2.min.js'></script>
 
 <script type="text/javascript" src='/js/jquery-ui-1.8.12.custom.min.js'></script>
@@ -120,7 +121,105 @@ if(!eval("<%=useDatabase%>")){
 <script type="text/javascript" src='/js/jquery.jqGrid.min.js'></script>
 <script type="text/javascript" src="/js/jquery.fileinput.min.js"></script>
 <script type="text/javascript" src='/js/jquery.numeric.js'></script>
+
 <script type="text/javascript">
+
+var initialLocation = new google.maps.LatLng(37.795316, -120.459595);
+var map;
+var overlay;
+var markers = [];
+var flightPaths = [];
+var geocoder;
+
+function getUserLocation(){
+	  if(navigator.geolocation) {
+	  navigator.geolocation.getCurrentPosition(function(position) {
+	       initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+	       initializeGoogleMap();
+	  }, function(error) {
+		  defaultMapInit();
+	     });
+	 } else{
+		 defaultMapInit();
+	 }  
+
+	}
+
+function defaultMapInit(){
+	alert("No geolocation support. Setting to default location");
+	 initialLocation = new google.maps.LatLng(37.795316, -120.459595);
+	 initializeGoogleMap();
+}	
+
+
+
+function initializeGoogleMap(){
+	markers = [];
+	geocoder = new google.maps.Geocoder();
+	var myOptions = {
+	 zoom: 12,
+	 center: initialLocation,
+	 mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	map = new google.maps.Map(document.getElementById('contacs_map'),
+	   myOptions); 
+
+	   overlay = new google.maps.OverlayView();
+	overlay.draw = function() {};
+	overlay.setMap(map);
+	$("#list2 input[type=checkbox]").each(function(){
+		if($(this).is(":checked")){
+			var address=	$(this).parent().siblings("td [aria-describedby=list2_address]").attr("title");
+			if(address){
+				address = address.replace(/(\r\n|\n|\r)/gm,"");
+				var contactName = $(this).parent().siblings("td [aria-describedby=list2_givenname]").attr("title") +" " + $(this).parent().siblings("td [aria-describedby=list2_familyname]").attr("title");
+				//console.log(contactName +":" + address);
+				showAddressOnMap(address,contactName);
+			}
+		}
+	});
+}
+
+function showAddressOnMap( address,name) {
+    if (geocoder) {
+    	geocoder.geocode({'address':address},function(results, status){
+             if (status == google.maps.GeocoderStatus.OK) {
+               var latlng =  results[0].geometry.location;
+               //markers = new Array();
+               addMarkers(latlng.lat(),latlng.lng(),name);
+             } else{
+            	 console.log("address not found")
+             }
+      });
+    }
+}
+
+function addMarkers(x,y,placeTitle){
+	var latlng = new google.maps.LatLng(x, y);
+	var m1= new google.maps.Marker({
+	            position: latlng,
+	            title: placeTitle,
+	            map: map 
+	            });
+				   markers.push(m1);
+				     autoCenter(map, markers);
+	}
+	
+function autoCenter(map, markers){
+	//  Create a new viewpoint bound
+	var bounds = new google.maps.LatLngBounds();
+	//  Go through each marker...
+	for(var marker in markers){
+		bounds.extend(markers[marker].getPosition());
+	}    
+	//  Fit these bounds to the map
+
+	map.fitBounds(bounds);
+	if(markers.length==1){
+		map.setZoom(12);
+	}
+}
+	
 function hasNumbers(t,a)
 {
 	
@@ -198,7 +297,7 @@ function showLoading() {
 
 
 $(document).ready(function() {
-	
+
 	$('#loading').dialog({
 		autoOpen: false,
 		width: 520,
@@ -328,6 +427,28 @@ $(document).ready(function() {
 	$( "#Import" ).click(function() {
 		$('#ImportDialog').dialog('open');
 		return false;
+	});
+	
+	$( "#ShowMap" ).click(function() {
+			if($("#contacs_map").is(":hidden")){
+				$("#contacs_map").show();
+				getUserLocation();
+				
+				$("#list2 input[type=checkbox]").live("click",function(){
+					if($(this).is(":checked")){
+						var address=	$(this).parent().siblings("td [aria-describedby=list2_address]").attr("title");
+						if(address){
+							address = address.replace(/(\r\n|\n|\r)/gm,"");
+							var contactName = $(this).parent().siblings("td [aria-describedby=list2_givenname]").attr("title") +" " + $(this).parent().siblings("td [aria-describedby=list2_familyname]").attr("title");
+							//console.log(contactName +":" + address);
+							showAddressOnMap(address,contactName);
+						}
+					}
+				});
+		}else{
+			$("#contacs_map").hide();
+			$("#list2 input[type=checkbox]").die("click");
+		}
 	});
 	
 	
@@ -511,8 +632,19 @@ $(document).ready(function() {
 				    	/*  $('#map_canvas').dialog('open');
 				    	 showAddress(cellcontent);
  */
- 						 cellcontent=cellcontent.replace(/ /g,"+"); 
-				    	 window.open("http://maps.google.com?q="+cellcontent,"_blank");
+ 						 //cellcontent=cellcontent.replace(/ /g,"+"); 
+				    	 //window.open("http://maps.google.com?q="+cellcontent,"_blank");
+				    	 $("#list2 tr[id='" +row.id + "']").find("td[aria-describedby='list2_delete'] input").attr('checked',true);
+				    	 
+				    	  
+							if($("#contacs_map").is(":hidden")){					
+								$( "#ShowMap" ).click();								
+							}else{
+								cellcontent = cellcontent.replace(/(\r\n|\n|\r)/gm,"");
+								var contactName = row.givenname  +" " + row.familyname;
+								showAddressOnMap(cellcontent,contactName); 
+							}
+								
 				    }         
 				     else	{
 				    		document.location.href = "/sharedcontacts/main.do?cmd=details&id="+rowid;
@@ -746,26 +878,30 @@ function getCellValue(rowId, cellId) {
 					<table border="0">
 						<tr>
 						<td>
+								<button id="Download"
+									>Download</button>
+							</td>
+						<td>
 								<button id="Sync" >Sync
 									</button></td>
-							
-							<td>
-								<button id="MailTo">Mail to</button></td>
-							<td>
-								<button id="Delete">Delete</button>
-							</td>
-							<td>
-								<button id="NewContact"
-									>New
-									contact</button></td>
 							<td>
 								<button id="Import"
 									>Import</button>
 							</td>
+							
+							
+				
 							<td>
-								<button id="Download"
-									>Download</button>
+								<button id="Delete">Delete</button>
 							</td>
+							<td>
+								<button id="NewContact">
+									New</button></td>
+							
+										<td>
+								<button id="MailTo">Mail to</button></td>
+								<td>
+								<button id="ShowMap" style=" border: 1px solid #428CC4;">Map</button></td>
 						</tr>
 					</table>
 					<%
@@ -776,12 +912,16 @@ function getCellValue(rowId, cellId) {
 						<td>
 								<button id="Sync" >Sync
 									</button></td>
+									
+								<td>
+								<button id="ShowMap">Map</button></td>	
 									</tr>
 					</table>
 						<%
 						}
 					%>
 				</div>
+					
 				<div
 					style="float: left; margin: 8px 0px 2px 0px; font-size: 0.6em; overflow: auto;"
 					class="searchFilter" id="fbox_list2">
@@ -874,6 +1014,8 @@ function getCellValue(rowId, cellId) {
 						</table>
 					</form>
 				</div>
+				
+				<div style="width:100%;height:210px;display:none;" id="contacs_map"></div>
 <div id="loading" style="text-align:center;display: none;background: none;">
   					<p><img style="line-height:400px;margin-top:150px; width:20px;height:20px" src="/img/loading.gif" /> </p>
 				</div>
