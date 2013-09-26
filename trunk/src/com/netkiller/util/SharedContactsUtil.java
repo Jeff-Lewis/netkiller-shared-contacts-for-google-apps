@@ -1224,6 +1224,7 @@ public class SharedContactsUtil {
 	public void updateUserDefinedField(ContactEntry entry, String key,
 			String value) {
 		List list = null;
+		boolean isKeyFound = false;
 		try {
 			list = (List) entry.getUserDefinedFields();
 			UserDefinedField userDefinedField = null;
@@ -1233,9 +1234,14 @@ public class SharedContactsUtil {
 					key = userDefinedField.getKey();
 					if (key.equals(key)) {
 						userDefinedField.setValue(value);
+						isKeyFound = true;
 						break;
 					}
 				}
+			}
+			if(!isKeyFound){
+				entry.getUserDefinedFields().add(
+						new UserDefinedField(key, value));
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();

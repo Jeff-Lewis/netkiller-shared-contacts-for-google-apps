@@ -1,6 +1,8 @@
 package com.netkiller.web.sharedcontacts;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -570,12 +572,12 @@ public class SharedContactsController {
 			result.put("logoutUrl",
 					"https://mail.google.com/mail/?logout&hl=en");
 			result.put(
-					"isUserAdmin",
-					!sharedContactsService.getAllDomainUsers(
+					"isUserAdmin",sharedContactsService.isUserAdmin()
+					/*!sharedContactsService.getAllDomainUsers(
 							CommonWebUtil.getDomain(getCurrentUser(request)
 									.getEmail())).contains(
 							CommonWebUtil.getUserId(getCurrentUser(request)
-									.getEmail())));
+									.getEmail()))*/);
 			// result.put("logoutUrl",
 			// userService.createLogoutURL(request.getRequestURI()));
 
@@ -2418,8 +2420,15 @@ public class SharedContactsController {
 					usersToBeAdded));
 			List<String> usersToBeRemoved = new ArrayList<String>();
 			for (String user : usersWithWritePermission) {
-				if (!newUsersWithUpdatePermission.contains(user))
+				if (!newUsersWithUpdatePermission.contains(user)){
+					try {
+						user = URLDecoder.decode(user, "UTF-8");
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					usersToBeRemoved.add(user);
+				}
 			}
 			usersToBeRemoved = new ArrayList<String>(new HashSet<String>(
 					usersToBeRemoved));
@@ -2806,11 +2815,6 @@ public class SharedContactsController {
 		workflowManager.triggerWorkflow(workflow);
 	}
 	
-	@RequestMapping("/test.do")
-	public void add(){
-		sharedContactsService.verifyUser("admin@vph.com");
-	}
-	
 	@RequestMapping("/sharedcontacts/triggerdeleteContactInfo.do")
 	@ResponseBody
 	public boolean triggerDeleteContactInfo(@RequestParam("domainName")String domainName){
@@ -2864,11 +2868,18 @@ public class SharedContactsController {
 	public List<String> filterUsers(List<String> domainUserList,List<String> otherUsersList){
 		List<String> filteredList = new ArrayList<String>();
 		for(String user : otherUsersList){
+			
 			if(domainUserList!=null && domainUserList.contains(user)){
 				filteredList.add(user);
 			}
 		}
 		return filteredList;
 	}
-	
+
+	@RequestMapping("/temp.do")
+	public void addNew(){
+		/*String email = "atif.hussain@synergyhealthplc.com";
+		sharedContactsService.verifyUser(email);
+		sharedContactsService.setGroupName(CommonWebUtil.getDomain(email), "NK Shared Contacts");*/
+	}
 }

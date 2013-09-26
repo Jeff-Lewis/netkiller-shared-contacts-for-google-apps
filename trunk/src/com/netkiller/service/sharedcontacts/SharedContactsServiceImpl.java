@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -1666,7 +1668,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 					//Jitender : removed admin check due to issue raised by Yangsu
 					//https://github.com/netkillercom/nsc2/issues/11#issuecomment-2229712
 					//if (!genericEntry.getLogin().getAdmin()) {					
-						users.add(genericEntry.getLogin().getUserName());
+						users.add(URLEncoder.encode(genericEntry.getLogin().getUserName(), "utf8"));
 					//}
 				}
 			}
@@ -1674,6 +1676,9 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 			e.printStackTrace();
 
 		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -1836,6 +1841,12 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 
 	private void createUserPermission(String userId, String domain,
 			PermissionType permissionType) {
+		try {
+			userId = URLDecoder.decode(userId, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Entity entity = new Entity("UserPermission");
 		entity.setProperty("userId", userId);
 		entity.setProperty("permissionType", permissionType.toString());
@@ -1899,7 +1910,12 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		List<String> users = new ArrayList<String>();
 		;
 		for (Entity userPermission : userWithWritePermissions) {
-			users.add(getUserPermission(userPermission).getUserID());
+			try {
+				users.add(URLEncoder.encode(getUserPermission(userPermission).getUserID(), "utf8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return users;
 	}
@@ -1933,12 +1949,22 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 		List<String> allDomainUsers = getAllDomainUsers(domain);
 		List<Entity> usersWithWritePermission = getAllUserWithWritePermissions(domain);
 		for (Entity user : usersWithWritePermission) {
-			allDomainUsers.remove(getUserPermission(user).getUserID());
+			try {
+				allDomainUsers.remove(URLEncoder.encode(getUserPermission(user).getUserID(), "utf8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 		List<Entity> usersWithNoPermission = getAllUserWithNoPermissions(domain);
 		for (Entity user : usersWithNoPermission) {
-			allDomainUsers.remove(getUserPermission(user).getUserID());
+			try {
+				allDomainUsers.remove(URLEncoder.encode(getUserPermission(user).getUserID(), "utf8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 
