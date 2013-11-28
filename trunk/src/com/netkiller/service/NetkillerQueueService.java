@@ -49,5 +49,15 @@ public class NetkillerQueueService {
 		options.param("workflowinstanceid", context.getWorkflowInfo().getWorkflowInstance()).header("Host", BackendServiceFactory.getBackendService().getBackendAddress("worker"));
 		queue.add(options);
 		}  
+	
+	public void triggerContactsSyncWorkflow(WorkflowContext context) {
+		Queue queue = QueueFactory.getQueue("sync-contacts");
+		TaskOptions options = TaskOptions.Builder.withUrl("/async/task/performworkflowtasks.do");
+		CacheManager cmanager=CacheManager.getInstance();
+		Cache cache=cmanager.getCache("WorkflowContextCache");
+		cache.put(context.getWorkflowInfo().getWorkflowInstance(),context);
+		options.param("workflowinstanceid", context.getWorkflowInfo().getWorkflowInstance()).header("Host", BackendServiceFactory.getBackendService().getBackendAddress("worker"));
+		queue.add(options);
+		}  
 
 }
