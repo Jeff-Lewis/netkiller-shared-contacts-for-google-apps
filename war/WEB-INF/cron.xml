@@ -1,3 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
+
+ <cron>
+    <url>/async/triggerSyncAllTask.do</url>
+    <description>Sync all users for all domains daily</description>
+    <schedule>every day 00:00</schedule>
+	<timezone>America/New_York</timezone>
+
+  </cron>
 </cronentries>

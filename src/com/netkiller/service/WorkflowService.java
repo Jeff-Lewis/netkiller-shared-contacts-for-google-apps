@@ -118,6 +118,10 @@ public class WorkflowService {
 		workflowQueueService.triggerWorkflow(workflow.getContext());
 	}
 
+	public void triggerContactsSyncWorkflow(Workflow workflow) {
+		workflowQueueService.triggerContactsSyncWorkflow(workflow.getContext());
+	}
+	
 	public void test() {
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!This is test!!!!!!!!!!!!!!!!!!!!!!!!!");
 		

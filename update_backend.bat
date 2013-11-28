@@ -1,0 +1,1 @@
+echo amsterdam4u|C:\development\eclipse1.6\plugins\com.google.appengine.eclipse.sdkbundle_1.6.1.v201112160242r36\appengine-java-sdk-1.6.1\bin\appcfg.cmd  --email=jitender@nicefact.com backends  update war

@@ -45,9 +45,14 @@ public class WorkflowController {
 		CacheManager cmanager = CacheManager.getInstance();
 		Cache cache = cmanager.getCache("WorkflowContextCache");
 		WorkflowContext context = (WorkflowContext) cache.get(workflowinstance);
-		WorkflowProcessor workflowprocessor = (WorkflowProcessor) applicationContext.getBean(context.getWorkflowInfo().getWorkflowName());
-		workflowprocessor.setContext(context);
-		workflowprocessor.doTasks();
+		try {
+			WorkflowProcessor workflowprocessor = (WorkflowProcessor) applicationContext
+					.getBean(context.getWorkflowInfo().getWorkflowName());
+			workflowprocessor.setContext(context);
+			workflowprocessor.doTasks();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@RequestMapping("sfdc/customers.do")

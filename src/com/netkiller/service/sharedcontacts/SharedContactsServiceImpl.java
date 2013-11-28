@@ -3185,5 +3185,55 @@ System.out.println("Exception caught");
 		}
 		return contacts;
 	}
+	
+	public String getSharedContactsGroupId(String grouName, String email){
+		String result = null;
+		if (!StringUtils.isBlank(grouName)) {
+			try {
+				String feedurl = appProperties.getGroupFeedUrl()
+						+ CommonWebUtil.getDomain(email) + "/full";
+				String scGrpName = grouName;
+				logger.info("scGrpName: " + scGrpName);
+				ContactsService service = getContactsService();
+				// Collection<ContactGroupEntry> contactGroupEntries = new
+				// ArrayList<ContactGroupEntry>();
+				URL retrieveUrl = new URL(feedurl);
+				// Link nextLink = null;
+				Query query = new Query(retrieveUrl);
+				query.setMaxResults(100000); // paging
+				query.setStartIndex(1);
+				query.setStringCustomParameter("showdeleted", "false");
+				query.setStringCustomParameter("xoauth_requestor_id", email);
+
+				ContactGroupFeed resultFeed = service.query(query,
+						ContactGroupFeed.class);
+				Collection<ContactGroupEntry> contactGroupEntries = resultFeed
+						.getEntries();
+				if (!contactGroupEntries.isEmpty()) {
+					String titleTmp = null;
+					TextConstruct tc = null;
+					for (ContactGroupEntry groupEntry : contactGroupEntries) {
+						tc = groupEntry.getTitle();
+						if (tc != null) {
+							titleTmp = tc.getPlainText();
+							// logger.info("Id: " + groupEntry.getId());
+							if (titleTmp.equals(scGrpName)) {
+								result = groupEntry.getId();
+								logger.info("Group Name: " + titleTmp);
+								logger.info("Group Id: " + result);
+								break;
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				// e.printStackTrace();
+				// logger.severe("e.getMessage: " + e.getMessage());
+				logger.log(Level.SEVERE, e.getMessage(), e);
+			
+			}
+		}
+		return result;
+	}
 
 }

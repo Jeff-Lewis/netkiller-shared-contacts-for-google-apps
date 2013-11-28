@@ -47,12 +47,14 @@ import com.netkiller.entity.Workflow;
 import com.netkiller.exception.AppException;
 import com.netkiller.manager.WorkflowManager;
 import com.netkiller.service.sharedcontacts.SharedContactsService;
+import com.netkiller.util.CommonUtil;
 import com.netkiller.util.CommonWebUtil;
 import com.netkiller.vo.AppProperties;
 import com.netkiller.vo.Customer;
 import com.netkiller.vo.DomainSettings;
 import com.netkiller.workflow.WorkflowInfo;
 import com.netkiller.workflow.impl.context.DomainUpdateContext;
+import com.netkiller.workflow.impl.context.SyncUserContactsContext;
 import com.netkiller.workflow.impl.processor.WorkflowStatusType;
 
 @Controller
@@ -510,5 +512,85 @@ public class StatisticsController {
 
 		return service;
 	}
+	
+	@RequestMapping("/async/syncAllUsers.do")
+	@ResponseBody
+	public boolean syncAllUsers()
+			throws Exception {
+		Boolean isUseForSharedContacts = Boolean.parseBoolean(appProperties
+				.getIsUseForSharedContacts());
+		List<Customer> customers = sharedContactsService.getAllCustomers();
+		for (Customer currentCustomer:customers) {
+			int totalLimit = 100;
+			String groupId = getSharedContactsGroupId(currentCustomer
+					.getAdminEmail());
+			if (!StringUtils.isBlank(groupId)) {
+				if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
+					totalLimit = 30000;
+				} else {
+					if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+						totalLimit = 50;
+					}
+				}
 
+				List<String> users = sharedContactsService
+						.getAllDomainUsersIncludingAdmin(currentCustomer
+								.getDomain());
+				for (String user : users) {
+					String email = user + "@" + currentCustomer.getDomain();
+					triggerSyncUserWorkflow(email, groupId,
+							isUseForSharedContacts, totalLimit);
+				}
+			}
+		}
+		return true;
+	}
+
+	private String getSharedContactsGroupId(String email) {
+
+		String groupId = null;
+
+		try {
+				String sharedContactsGroupName = sharedContactsService
+						.getGroupName(CommonWebUtil.getDomain(email));
+
+				groupId = sharedContactsService
+						.getSharedContactsGroupId(sharedContactsGroupName,email);
+		} catch (Exception e) {
+			System.out.println("error fetching group id");
+		}
+		return groupId;
+	}
+	
+	@RequestMapping("/async/triggerSyncAllTask.do")
+	@ResponseBody
+	public boolean triggerSyncAllTask(){
+		Queue queue = QueueFactory.getQueue("sync-contacts");
+		TaskOptions options = TaskOptions.Builder.withUrl("/async/syncAllUsers.do");
+		queue.add(options);
+		return true;
+	}
+	
+	private void triggerSyncUserWorkflow(String email, String groupId,
+			Boolean isUseForSharedContacts, Integer totalLimit) {
+		SyncUserContactsContext syncUserContactsContext = new SyncUserContactsContext();
+		syncUserContactsContext.setUserEmail(email);
+		syncUserContactsContext.setGroupId(groupId);
+		syncUserContactsContext
+				.setIsUseForSharedContacts(isUseForSharedContacts);
+		syncUserContactsContext.setTotalLimit(totalLimit);
+
+		WorkflowInfo workflowInfo = new WorkflowInfo(
+				"syncUserContactsWorkflowProcessor");
+		workflowInfo.setIsNewWorkflow(true);
+
+		Workflow workflow = new Workflow();
+		workflow.setContext(syncUserContactsContext);
+		workflow.setWorkflowName(workflowInfo.getWorkflowName());
+		workflow.setWorkflowInstanceId(workflowInfo.getWorkflowInstance());
+		workflow.setWorkflowStatus(WorkflowStatusType.QUEUED.toString());
+
+		syncUserContactsContext.setWorkflowInfo(workflowInfo);
+		workflowManager.getService().triggerContactsSyncWorkflow(workflow);
+	}
 }
