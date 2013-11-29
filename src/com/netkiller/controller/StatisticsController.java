@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import sample.appsforyourdomain.AppsForYourDomainClient;
 
+import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.blobstore.BlobInfo;
 import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
@@ -566,7 +567,7 @@ public class StatisticsController {
 	@ResponseBody
 	public boolean triggerSyncAllTask(){
 		Queue queue = QueueFactory.getQueue("sync-contacts");
-		TaskOptions options = TaskOptions.Builder.withUrl("/async/syncAllUsers.do");
+		TaskOptions options = TaskOptions.Builder.withUrl("/async/syncAllUsers.do").header("Host", BackendServiceFactory.getBackendService().getBackendAddress("worker"));
 		queue.add(options);
 		return true;
 	}
