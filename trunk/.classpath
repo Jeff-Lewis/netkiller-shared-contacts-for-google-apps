@@ -86,6 +86,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/netkiller-enterprise.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/AppsForYourDomainClient.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

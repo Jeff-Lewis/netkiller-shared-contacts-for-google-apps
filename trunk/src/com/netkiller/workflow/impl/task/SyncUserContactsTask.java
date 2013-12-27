@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.netkiller.exception.AppException;
 import com.netkiller.service.sharedcontacts.SharedContactsService;
+import com.netkiller.util.CommonWebUtil;
 import com.netkiller.workflow.AbstractWorkflowTask;
 import com.netkiller.workflow.WorkflowContext;
 import com.netkiller.workflow.WorkflowExecutionException;
@@ -39,6 +40,7 @@ public class SyncUserContactsTask extends AbstractWorkflowTask{
 		
 		if (entries!=null) {
 			sharedContactsService.syncUserContacts(usermail, entries);
+			sharedContactsService.updateContactCount(CommonWebUtil.getDomain(usermail), entries.size());
 		}
 		return context;	
 	}
