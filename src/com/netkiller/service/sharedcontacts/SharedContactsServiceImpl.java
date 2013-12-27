@@ -1789,7 +1789,7 @@ public class SharedContactsServiceImpl implements SharedContactsService {
 	
 	public void updateContactCount(String domainName, Integer count) {
 		Entity entity  = getDomainGroupEntity(domainName);
-		if (entity != null ){
+		if (entity != null && ((Long) entity.getProperty("count")).intValue()!= count){
 			entity.setProperty("count", count);
 			datastore.put(entity);
 		}
