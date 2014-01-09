@@ -56,7 +56,7 @@ public class NetkillerQueueService {
 		CacheManager cmanager=CacheManager.getInstance();
 		Cache cache=cmanager.getCache("WorkflowContextCache");
 		cache.put(context.getWorkflowInfo().getWorkflowInstance(),context);
-		options.param("workflowinstanceid", context.getWorkflowInfo().getWorkflowInstance()).header("Host", BackendServiceFactory.getBackendService().getBackendAddress("worker"));
+		options.param("workflowinstanceid", context.getWorkflowInfo().getWorkflowInstance()).header("Host", BackendServiceFactory.getBackendService().getBackendAddress("contactssync"));
 		queue.add(options);
 		}  
 
