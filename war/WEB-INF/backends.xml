@@ -5,4 +5,10 @@
      <fail-fast>true</fail-fast>
    </options>
  </backend>
+ 
+  <backend name="contactssync">
+   <options>
+     <fail-fast>true</fail-fast>
+   </options>
+ </backend>
 </backends>
