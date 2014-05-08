@@ -594,4 +594,37 @@ public class StatisticsController {
 		syncUserContactsContext.setWorkflowInfo(workflowInfo);
 		workflowManager.getService().triggerContactsSyncWorkflow(workflow);
 	}
+	
+	@RequestMapping("/async/testSyncAllUsers.do")
+	@ResponseBody
+	public boolean testSyncAllUsers()
+			throws Exception {
+		Boolean isUseForSharedContacts = Boolean.parseBoolean(appProperties
+				.getIsUseForSharedContacts());
+		System.out.println("In Sync Method of nicefact.co.in");
+		//List<Customer> customers = sharedContactsService.getAllCustomers();
+		//for (Customer currentCustomer:customers) {
+			int totalLimit = 100;
+			String groupId = getSharedContactsGroupId("jitender@nicefact.co.in");
+			if (!StringUtils.isBlank(groupId)) {
+				//if (currentCustomer.getAccountType().equalsIgnoreCase("Paid")) {
+					totalLimit = 30000;
+				//} else {
+				//	if (CommonUtil.isTheSecondTypeCustomer(currentCustomer)) {
+				//		totalLimit = 50;
+				//	}
+				}
+
+				/*List<String> users = sharedContactsService
+						.getAllDomainUsersIncludingAdmin("nicefact.co.in");
+				for (String user : users) {*/
+					String email = "jitender@nicefact.co.in";
+					triggerSyncUserWorkflow(email, groupId,
+							isUseForSharedContacts, totalLimit);
+				//}
+			//}
+		//}
+		return true;
+	}
+	
 }

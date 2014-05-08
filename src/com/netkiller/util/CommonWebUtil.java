@@ -4,12 +4,17 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONArray;
 
 public class CommonWebUtil {
 
 	public static String getDomain(String emailAddr){
-		return emailAddr.substring( emailAddr.indexOf("@") + 1 );
+		String domain = "";
+		if(StringUtils.isNotBlank(emailAddr)){
+			domain = emailAddr.substring( emailAddr.indexOf("@") + 1 );
+		}
+		return domain;
 	}
 	
 	public static String getUserId(String emailAddr){
